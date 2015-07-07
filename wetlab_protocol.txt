@@ -1,0 +1,208 @@
+Matthew Jenior
+Total Bacterial mRNA RNA-Seq Protocol from Samples Containing Clostridium difficile
+
+Notes before starting:
+-	Content harvest and RNA isolation steps adapted from Lopez-Medina, E., et. al. (2011) JOVE <http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3230207/>
+-	Be aware that the acid phenol can burn skin easily.
+-	Keep samples on ice whenever you are prepping the next step.
+-	Clean all surfaces thoroughly with RNase-away.
+-	Try to thaw RNA samples less than 3 times each, they start to degrade otherwise.
+-	A large amount of RNA is lost during rRNA depletions; plan the rest of the procedure accordingly after quantifying RNA for the first time.
+-	Prepare RNA Bioanalyzer ladder prior to beginning protocol.
+-	Allow magnetic bead kit from RiboZero to equilibrate to room temperature.
+-	Use proper positive and negative PCR controls to ensure quality at each QC step.
+-	ALL TUBES MUST BE POLYPROPYLENE – low pH will dissolve others
+
+Reagents/Supplies:		Catalog Numbers:
+RNase AWAY Spray Bottle		7002
+Acid phenol/Chloroform/IAA		AM9722
+Chloroform/IAA		C0549-1QT
+Isopropanol		W292907
+Ethanol		E7023
+Ultrapure DNase/RNase-free water		10977-015
+TURBO DNaseI kit		AM2238
+DNase/RNase-free 1.5 ml microfuge tubes		AM12400
+DNase/RNase-free barrier pipette tips
+1000 μl		AM12665
+100 μl		AM12648
+10 μl		AM12635
+Serological pipettes
+25 ml		13-676-10M
+5 ml		13-676-10C
+Polypropylene conical tubes
+50 ml		14-432-22
+15 ml		14-959-49B
+Ribo-Zero rRNA removal kit (Gold Epidemiology)		MRZE724
+Zymo Quick-RNA MiniPrep		R1054
+Zymo RNA Clean & Concentrator Kit -5		R1015
+Qiagen MinElute PCR Purification Kit		28051
+Qiagen OneStep RT-PCR Kit		210210
+Qubit RNA HS Assay Kit		Q32855
+Agilent RNA 6000 Nano Kit		5067-1511
+Agilent RNA 6000 Pico Kit		5067-1513
+Sigma 95-100% ethanol		E7023
+Ambion DEPC-Treated Water		AM9922
+Agarose, molecular grade		A9539
+Preferred electrophoresis buffer		varies
+Universal bacterial primers and standard PCR reagents		varies
+
+Equipment:	
+Serological pipettor
+Centrifuge & microcentrifuge (both 4°C)
+Heat block
+Agilent Bioanalyzer			
+Micropipettors
+DNA Gel Electrophoresis Equipment
+Thermocycler
+
+
+Procedure
+
+Harvesting Murine Cecal Luminal Contents
+1.	Immerse a cleaned stainless steel mortar into a dry ice/ethanol bath.
+2.	Euthanize mice by carbon dioxide asphyxiation.
+3.	Secure mouse carcass on a dissection board and shower with 95% ethanol. Make a midline longitudinal incision through the skin from the sternum to the perineum. Reflect the skin and peritoneum to expose the abdominal cavity.
+4.	Resect the entire cecum. Hold the cecum with forceps over the stainless steel mortar. Snip both ends of the cecum with dissection scissors.
+5.	Insert a P1000 pipette tip filled with 1 ml of sterile PBS into the proximal end of the cecum. Flush the PBS and cecal luminal contents into the stainless steel mortar. 1 ml of PBS will be sufficient for flushing all of the cecal contents. Cecal flushate contents will freeze immediately upon coming into contact with the mortar.
+6.	Grind the cecal flushate contents with a sterile pestle.
+7.	Place ground frozen cecal luminal contents into a 50 ml polypropylene conical tube submerged in a dry ice/ethanol bath.
+8.	Repeat Steps 2 through 7 for each additional mouse.
+9.	Store sample at -80°C.
+
+Bacterial RNA Isolation – ALL TUBES MUST BE POLYPROPYLENE
+1.	Turn on 65°C water bath and begin heating a beaker ¾ full of water to a boil.
+2.	Warm 1 volume (based on final volume of two cecal luminal contents, approximately 3 ml) of acid phenol/chloroform/isoamyl alcohol (25:24:1) contained in a 50 ml Conical tube centrifuge tube with the cap secured in a 65°C water bath.
+3.	Boil 0.5 volume of lysis buffer (2% SDS, 16 mM EDTA and 200 mM NaCl) contained in a 50 ml polypropylene conical tube for 5 minutes.
+4.	Add boiling lysis buffer to cecal luminal contents. Homogenize. Boil for 5 minutes with periodic vortexing.
+5.	Add the 100°C cecal contents/lysis sample to the 65°C acid phenol/chloroform in the Conical tube centrifuge tube. Seal cap with parafilm.
+6.	Incubate at 65°C for 10 minutes with periodic vortexing (every 2 minutes).
+7.	Centrifuge sample at 2,500 g at 4° for 15 minutes.
+8.	Carefully transfer aqueous phase (avoiding any of the white interface) to a fresh 50 ml Conical tube centrifuge. The volume of the aqueous phase will be approximately 50% of the total volume of cecal contents, lysis buffer, and acid phenol/chloroform. Add an equal volume of acid phenol/chloroform.
+9.	Seal cap with parafilm and mix well by vortexing at high speed.
+10.	Centrifuge sample at 2,500 g at 4° for 5 minutes.
+11.	Repeat Steps 8 to 10 until there is no visible white interface between the aqueous and organic phases.  Could take ~10-15 successive transfers.  As transferred aqueous layer decreases in volume, use smaller polypropylene tubes (50 ml conical -> 15 ml conical -> 1.5 ml microcentrifugefuge)
+12.	Carefully transfer aqueous phase to a fresh 50 ml Conical tube centrifuge. Add an equal volume of chloroform/isoamyl alcohol (24:1).
+13.	Seal cap and mix well by vortexing.
+14.	Centrifuge sample at 2,500 g at 4° for 5 minutes. Remove aqueous phase (volume will be approximately 50% of the total reaction volume) to 15 ml polypropylene conical tube and add an equal volume of isopropanol.  
+15.	Incubate at -20° overnight.
+16.	Centrifuge sample at 12000 g at 4° for 45 minutes. A gel-like pellet will form at the bottom of the tube. Remove supernatant.
+17.	Wash the pellet with 1 ml of ice-cold 70% ethanol. Vortex. Centrifuge sample at 10,000 g at 4° for 5 minutes.
+18.	Remove the supernatant and invert the tube to let the pellet dry at room temperature for 10 minutes.
+19.	Resuspend the RNA pellet in 200 μl of RNase-free water. You may store this at -80°C, but it is advisable to proceed directly to DNase treatment.
+
+DNase Treatment and RNA Purification
+1.	Turn on heat block to 37°C.
+2.	Add 20 μl of 10X Turbo DNase buffer and mix gently.
+3.	Add 2 μl Turbo DNase and mix gently.
+4.	Incubate at 37°C for 30 minutes.
+5.	In a separate 1.5 ml microcentrifuge tube, mix 200 μl of Zymo RNA Binding Buffer and 200 μl of 100% ethanol, and mix well.  Add this entire volume to the sample and mix well.
+6.	Transfer the sample to a Zymo-Spin IIIC Column in a collection tube and centrifuge at 12000 x g for 1 minute.  
+7.	Transfer the flow-through to new 1.5 ml tube, label as >200 nt, and store this at -80°C.
+8.	Add 400 μl of Zymo RNA Prep Buffer to the spin column and centrifuge at 12000 x g for 1 minute.  Discard the flow-through.
+9.	Add 800 μl of Zymo RNA Wash Buffer to the spin column and centrifuge at 12000 x g for 30 seconds.  Discard the flow-through. Repeat this step with 400 μl of Zymo RNA Wash Buffer.
+10.	Centrifuge the spin column for 2 minutes at 12000 x g, then discard the collection tube.  Place spin column in a new, RNase-free 1.5 ml microcentrifure tube.
+11.	Add 30 μl of RNase-free water to the spin column and incubate at room temperature for 1 minute.  Centrifuge at 12000 x g for 30 seconds and discard the spin column.  You may store this at -80°C.
+
+First Quality Control Step
+1.	For final check of complete DNA digestion, run a PCR reaction with 27F/1492R primers (1.5 kb amplicon) and V6 region primers (124 bp amplicon) on samples with the proper positive and negative controls.  If samples are PCR positive during gel electrophoresis, use the supplementary DNase I treatment protocol.
+	
+Positive control(s)  = Bacterial genomic DNA isolated from GI content or in vitro culture
+Negative control(s)  = Ultra pure water
+
+Primer sequences:
+	27F = 5′ - AGAGTTTGATCATGGCTCAG - 3’
+	1492R = 5′ - TACCTTGTTACGACTT - 3’
+
+	V6-F = 5’ - CCAACACTYAAAKGAATTGACGGG - 3’
+	V6-R = 5’ - CCAACACRACACGAGCTGACGAC - 3’
+
+PCR protocol for 27F/1492R primers (1465 bp product):
+	95°C – 2:00
+	X1 cycle
+	95°C – 1:00
+	55°C – 1:30
+	72°C – 1:30
+	X30 cycles
+	72°C – 10:00
+	X1 cycle	
+	Hold at 4°C
+
+PCR protocol for V6 primers (>100 bp product):
+	95°C – 2:00
+	X1 cycle
+	95°C – 0:20
+	55°C – 0:15
+	72°C – 5:00
+	X30 cycles
+	72°C – 10:00
+	X1 cycle
+	Hold at 4°C
+
+*If DNA evidence appears in the 1% agarose gel following PCR, repeat DNase treatment after first adjusting the volume of the sample to 200 μl using RNase-free water.  
+
+2.	If negative, proceed to check RNA quality with Agilent RNA 6000 Nano kit using the manufacturer’s standard protocol.  Use the aasay for Total Prokaryotic RNA Nano on the Agilent software.  16S and 23S peaks should be highly represented with a smaller peak of nucleotides just below 200 nt.  Acceptable RIN scores for downstream RNA-Seq should be >7.
+3.	You need ~5 μg of total RNA to continue through Ribo-Zero due to the large amount of mass lost attributed to rRNA (~95% of sample).
+
+Ribo-Zero rRNA and Small RNA Depletion
+1.	Turn on the 50°C and 68°C heat blocks
+2.	Allow for reagents from -80°C storage to thaw on ice and for refrigerated reagents to equilibrate to room temperature.  Also, turn on the 50°C heat block.
+3.	Thoroughly mix beads into solution and add 225 μl of magnetic beads to a new nuclease-free microfuge tube very slowly to avoid bubbles.
+4.	Place tube on a magnetic rack until solution is clear, pipette of and discard supernatant.
+5.	Remove the tube from the magnetic rack and add 225 μl of nuclease-free water and mix well by pipetting up and down.
+6.	Repeat step 3.
+7.	Off of the magnetic stand, resuspend the beads in 65 μl Magnetic Bead Resuspension Solution.
+8.	Add 1 μl of RiboGuard RNase Inhibitor and mix well by pipetting.
+9.	Store mixture on ice until ready.
+10.	Add 5 μg of RNA to a new 1.5 ml nuclease-free microfuge tube (volume will vary by extraction).
+11.	Add 4 μl of Ribo-Zero Reaction Buffer to the microfuge tube.
+12.	Add 10 μl of Ribo-Zero Removal Solution.
+13.	Bring the volume up to a total of 40 μl with nuclease-free water and gently mix by pipetting up and down.
+14.	Incubate the mixture at room temperature for 5 minutes.
+15.	Add the treated RNA directly to the tube containing the washed magnetic beads, and mix by pipetting extremely gently.
+16.	Incubate the mixture at room temperature for 5 minutes.
+17.	Vortex the mixture at medium speed for 5 seconds and then incubate at 50°C for 5 minutes in a heat block.
+18.	Place tube in magnetic rack until clear.  While still of rack, carefully pipette off the supernatant into a new 1.5 ml nuclease-free microfuge tube.  This is the rRNA depleted RNA, place on ice immediately.
+19.	Adjust the volume of the RNA to 100 μl with nuclease-free water.
+20.	Add 200 μl of Zymo RNA Binding Buffer and 300 μl of 100% ethanol, and mix well.
+21.	Centrifuge at 10,000 g at room temperature for 1 minute and transfer the supernatant to a Zymo-Spin IC Column in a collection tube and centrifuge at 12000 x g for 1 minute.  Discard the flow-through.
+22.	Add 400 μl of Zymo RNA Prep Buffer to the spin column and centrifuge at 12000 x g for 1 minute.  Discard the flow-through.
+23.	Add 800 μl of Zymo RNA Wash Buffer to the spin column and centrifuge at 12000 x g for 30 seconds.  Discard the flow-through. Repeat this step with 400 μl of Zymo RNA Wash Buffer.
+24.	Centrifuge the spin column for 2 minutes at 12000 x g, then discard the collection tube.  Place spin column in a new, RNase-free 1.5 ml microcentrifure tube.
+25.	Add 50 μl of RNase-free water to the spin column and incubate at room temperature for 1 minute.  Centrifuge at 12000 x g for 30 seconds and discard the spin column.  You may store this at -80°C.
+
+Second Quality Control Step
+1.	Using the Agilent RNA 6000 Pico Kit again, assess the proper depletion of the rRNA fragments following the manufacturers standard protocol.  Use the Total Prokaryotic RNA assay on the Agilent software.  There will be no RIN score reported this time as the rRNA has been depleted.  The desired result is that bloth of the rRNA subunit peaks are missing with peaks left for the residual mRNA.
+2.	Using the One Step RT-PCR kit, ackA (C. difficile specific), and V6 primers, amplify the regions with the following PCR protocol: 
+
+Positive control(s) = Total C. difficile 630 RNA isolated from in vitro culture
+Negative control(s)  = Ultra pure water AND total RNA from non-C. difficile culture
+
+Primer sequences:
+	ackA-F = 5′ - GAAAAAGCAGGTAGAGATGATAAATACG - 3’
+	ackA-R = 5′ - GAGAAGTTCCGTGGAATCCATATC - 3’
+
+PCR protocol for ackA primers (~550 bp product, same as the previous QC step):
+	94°C – 1:00
+	X1 cycle
+	94°C – 0:30
+	48°C – 1:00
+	72°C – 1:00
+	X30 cycles
+	72°C – 10:00
+	X1 cycle
+	Hold at 4°C
+
+3.	Run a 1% agarose gel, there should be a band for ackA but little to no band for the V6 region following rRNA depletion. 
+4.	Use Qubit RNA HS Assay kit standard protocol to get an accurate measure of concentration.  You require 0.1 – 4 μg of RNA to proceed with library generation.
+
+RNA-Seq Sample Submission (U of M Sequencing Core)
+1.	Go to http://seqcore.brcf.med.umich.edu/
+2.	Click on Submit samples.
+3.	Click Submit High-Thoughput (Illumina) Sequencing Samples and sign in.	
+4.	Click the Submit Samples button.
+5.	Select the bubble that says Core Prepares the Library, and then click Continue.
+6.	Make sure you’re following their specifications, click the accept box, and finally click Agree and Continue.
+7.	Download the sample submission form, fill it out, and re-upload it to the online form.
+8.	Fill out the rest of the online form (using FTP download) and click Submit Samples.
+9.	Take the samples you just submitted the information for to the sample drop off point in 2568 MSRB II.
+10.	Assuming all goes well on their end, you should have the data soon!
