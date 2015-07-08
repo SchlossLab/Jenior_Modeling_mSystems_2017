@@ -3,7 +3,7 @@
 # This pipeline processes metagenomic reads, assembles, and annotates them to enable metatranscriptomic mapping
 
 # Table of Contents
-# 1. 
+# 1. Combine and trim metagenomic reads
 # 2. 
 # 3. 
 # 4. 
@@ -32,19 +32,13 @@ python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metagenome.read1.fast
 # Return some information about the quality trimmed, paired-end fastq
 python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fastq.stats.txt
 
-#-------------------------------------------------------------------------------------------------------------------------#
 
-# 2. In parallel, prep reads for downstream assembly QC
-
-# Convert the fastq to a fasta
+# In parallel, convert directly to fasta format to map to contigs later
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fasta
 
-# Remove 100% redundant reads for mapping to contigs downstream (QC of assembly)
-/mnt/EXT/Schloss-data/bin/fastx_collapser -i metagenome.paired.trimmed.fasta -o metagenome.paired.trimmed.unique.fasta
-
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 3. Normalization with khmer
+# 2. Normalization with khmer
 
 # 2-pass Digital normalization
 source /home/mljenior/bin/khmerEnv/bin/activate
@@ -61,7 +55,7 @@ python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.f
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 4. Clean up
+# 3. Clean up
 
 # Delete excess files created during normalization steps
 rm *.keep *.abundfilt *.pe *.se *.kh metagenome.paired.trimmed.fasta
@@ -74,7 +68,7 @@ qzip *fastq
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 5. Assembly - In new directory
+# 4. Assembly - In new directory
 
 # Assemble using Megahit
 python /home/mljenior/bin/megahit/megahit -m 45e9 -l 251 -r metagenome.paired.trimmed.normalized.fasta --cpu-only -o metagenome.paired.trimmed.normalized.megahit
@@ -87,7 +81,7 @@ python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.m
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 6. QC of assembly
+# 5. QC of assembly
 
 # Check how well the reads (uniques from first section) map back to the newly assembled contigs
 /home/mljenior/bin/bowtie/bowtie-build metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa megahit_database
@@ -97,7 +91,7 @@ python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.m
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 7. Call genes and return fasta files of sequences
+# 6. Call genes and return fasta files of sequences
 
 # Find genes using mga
 /share/scratch/bin/mga final.contigs.250.fa -m > final.contigs.250.mga.out
@@ -114,9 +108,21 @@ python /mnt/EXT/Schloss-data/seq_stats.py genes.250.fna > genes.250.fna.stats.tx
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
+# 7. Make KEGG BLAST database
+
+
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
+
 # 8. Annotate called genes
 
-# Blast genes and make new BLAST database
+# Blast genes
 blastn genes.250.fna
 
 
@@ -124,13 +130,13 @@ blastn genes.250.fna
 
 
 
-
+# Reassociate BLAST results with gene sequences
 
 
 
 
 # Create Bowtie database of annotated genes
-/home/mljenior/bin/bowtie/bowtie-build /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/conventional/assembly-plusDN/Conventional.C5.pe.se.megahit/final.contigs.250.fa conventional_megahit_database
+/home/mljenior/bin/bowtie/bowtie-build annotated.contigs.250.fa metagenome_megahit_database
 
 
 #-------------------------------------------------------------------------------------------------------------------------#
@@ -151,23 +157,38 @@ python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metatransciptome.read
 # Convert the fastq to a fasta
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metatransciptome.paired.trimmed.fastq > metatransciptome.paired.trimmed.fasta
 
-# Remove 100% redundant reads for mapping to contigs downstream (QC of assembly)
-/mnt/EXT/Schloss-data/bin/fastx_collapser -i metatransciptome.paired.trimmed.fasta -o metatransciptome.paired.trimmed.unique.fasta
-
 # Get some information on the transcript file
-python /mnt/EXT/Schloss-data/seq_stats.py metatransciptome.paired.trimmed.unique.fasta > metatransciptome.paired.trimmed.unique.fasta.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py metatransciptome.paired.trimmed.fasta > metatransciptome.paired.trimmed.fasta.stats.txt
 
 # Move the processed reads to a new directory
-mv metatransciptome.paired.trimmed.unique.fasta ../transcript_mapping
+mv metatransciptome.paired.trimmed.fasta ../transcript_mapping
 
 # Clean up
-rm metatransciptome.paired.trimmed.fasta
 gzip *fastq
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 10. Map transcripts to genes
-/home/mljenior/bin/bowtie/bowtie conventional_megahit_database -f metatransciptome.paired.trimmed.unique.fasta -p 4 -S aligned_reads.megahit.sam
+/home/mljenior/bin/bowtie/bowtie metagenome_megahit_database -f metatransciptome.paired.trimmed.fasta -p 4 -S aligned_reads.megahit.sam
+
+
+
+# Convert the sam to bam and get rid of the old sam file.
+samtools view -bS alignedreads.sam > alignedreads.bam
+rm alignedreads.sam
+
+
+# Sort the bamfile
+samtools sort alignedreads.bam alignedreads.sorted
+
+
+#create an index. This will make searching for things in the file faster
+samtools index alignedreads.sorted.bam
+
+
+# use the index to give you stats about your bam in human readable format. This is where you can see how many reads mapped to each contig
+samtools idxstats alignedreads.sorted.bam > $i.mapped2contigs.txt
+
 
 
 
