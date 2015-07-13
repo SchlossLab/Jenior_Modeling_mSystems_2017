@@ -27,14 +27,15 @@ source /home/mljenior/bin/khmerEnv/bin/activate
 python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metagenome.read1.fastq metagenome.read1.fastq metagenome.paired.fastq
 
 # Quality trim with sickle (ends and ambiguous bases)
-#/mnt/EXT/Schloss-data/kiverson/sickle-master/sickle pe -c metagenome.paired.fastq -M metagenome.paired.trimmed.fastq -t sanger
+/mnt/EXT/Schloss-data/kiverson/sickle-master/sickle pe -c metagenome.paired.fastq -M metagenome.paired.trimmed.fastq -t sanger
 
 # Return some information about the quality trimmed, paired-end fastq
 python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fastq.stats.txt
 
 
-# In parallel, convert directly to fasta format to map to contigs later
+# In parallel, convert directly to fasta format to map to contigs later and move it to the correct directory
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fasta
+mv metagenome.paired.trimmed.fasta ../assembly/bowtie
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -48,30 +49,30 @@ python /home/mljenior/bin/khmerEnv/bin/extract-paired-reads.py metagenome.paired
 python /home/mljenior/bin/khmerEnv/bin/normalize-by-median.py -C 5 -k 20 -N 4 -x 8e9 --savetable normC5k20.kh -p metagenome.paired.trimmed.fastq.keep.abundfilt.pe
 
 # Convert the normalized file to a renamed fasta
-awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq.keep.abundfilt.pe.keep > metagenome.paired.trimmed.normalized.fasta
+awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq.keep.abundfilt.pe.keep > metagenome.trimmed.normalized.paired.fasta
 
 # Return some more information about the results of digital normalization
-python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.fasta > metagenome.paired.trimmed.normalized.fasta.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py metagenome.trimmed.normalized.paired.fasta > metagenome.trimmed.normalized.paired.fasta.stats.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 3. Clean up
 
-# Delete excess files created during normalization steps
-rm *.keep *.abundfilt *.pe *.se *.kh metagenome.paired.trimmed.fasta
-
 # Move the 2 files you will need later
 mv *.fasta ../assembly
 
+# Delete excess files created during normalization steps
+rm *.keep *.abundfilt *.pe *.se *.kh *.paired.trimmed.fasta
+
 # Zip files that are not going to be used downstream
-qzip *fastq
+gzip *fastq
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 4. Assembly - In new directory
 
 # Assemble using Megahit
-python /home/mljenior/bin/megahit/megahit -m 45e9 -l 251 -r metagenome.paired.trimmed.normalized.fasta --cpu-only -o metagenome.paired.trimmed.normalized.megahit
+python /home/mljenior/bin/megahit/megahit -m 45e9 -l 251 --12 metagenome.trimmed.normalized.paired.fasta -r metagenome.trimmed.normalized.single.fasta --cpu-only --k-max 127 -o metagenome.paired.trimmed.normalized.megahit
 
 # Remove contigs shorter than the read size
 python /share/scratch/bin/removeShortContigs.py metagenome.paired.trimmed.normalized.megahit/final.contigs.fa metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa 250
@@ -84,10 +85,10 @@ python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.m
 # 5. QC of assembly
 
 # Check how well the reads (uniques from first section) map back to the newly assembled contigs
-/home/mljenior/bin/bowtie/bowtie-build metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa megahit_database
-/home/mljenior/bin/bowtie/bowtie megahit_database -f metagenome.paired.trimmed.unique.fasta -p 4 -S aligned_reads.megahit.sam
+/home/mljenior/bin/bowtie/bowtie-build metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa metagenome_megahit_database
+/home/mljenior/bin/bowtie/bowtie metagenome_megahit_database -f metagenome.paired.trimmed.fasta -p 4 -S aligned_reads.megahit.sam
 
-# The # of reads mapping to contigs will print to the screen
+# The # and % of reads mapping to contigs will print to the screen
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -103,41 +104,32 @@ python /share/scratch/bin/getgenesbypos.py final.contigs.250.mga.out final.conti
 python /share/scratch/bin/removeShortContigs.py genes.fna genes.250.fna 250
 python /share/scratch/bin/removeShortContigs.py genes.faa genes.80.faa 80
 
+# Remove duplicate sequences
+/mnt/EXT/Schloss-data/bin/fastx_collapser -i genes.250.fna -o genes.250.unique.fna
+/mnt/EXT/Schloss-data/bin/fastx_collapser -i genes.80.faa -o genes.80.unique.faa
+
 # Get some information on the called gene sequences
-python /mnt/EXT/Schloss-data/seq_stats.py genes.250.fna > genes.250.fna.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py genes.250.unique.fna > genes.250.unique.fna.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py genes.80.unique.faa > genes.80.unique.faa.stats.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 7. Make KEGG BLAST database
 
-
-
-
-
-
-
+makeblastdb -in /kegg/genes/fasta/genes.pep -dbtype 'prot' -out kegg_prot_blast.db
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-
 # 8. Annotate called genes
 
-# Blast genes
-blastn genes.250.fna
+# Blast genes (all 6 frames)
+blastp -query genes.80.unique.faa -db kegg_prot_blast.db -num_threads 16 -evalue 1e-10 -best_hit_score_edge 0.05 -best_hit_overhang 0.25 -outfmt 6 -max_target_seqs 1 -out metagenome.protVprot.out
 
+# Associate BLAST results with gene sequences
+python /home/mljenior/scripts/annotate_fasta.py genes.80.unique.faa metagenome.protVprot.out > annotated.genes.80.unique.faa
 
-
-
-
-
-# Reassociate BLAST results with gene sequences
-
-
-
-
-# Create Bowtie database of annotated genes
-/home/mljenior/bin/bowtie/bowtie-build annotated.contigs.250.fa metagenome_megahit_database
-
+# Create BLAST database of annotated genes
+makeblastdb -in ../assembly/annotated.genes.80.unique.faa -dbtype 'prot' -out annotated_metagenome_blast.db
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -169,26 +161,9 @@ gzip *fastq
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 10. Map transcripts to genes
-/home/mljenior/bin/bowtie/bowtie metagenome_megahit_database -f metatransciptome.paired.trimmed.fasta -p 4 -S aligned_reads.megahit.sam
+
+tblastn -query metatransciptome.paired.trimmed.fasta -db annotated_metagenome_blast.db -num_threads 16 -evalue 1e-10 -best_hit_score_edge 0.05 -best_hit_overhang 0.25 -outfmt 6 -max_target_seqs 1 -out mapped_transcriptsVmetagenome.out
 
 
-
-# Convert the sam to bam and get rid of the old sam file.
-samtools view -bS alignedreads.sam > alignedreads.bam
-rm alignedreads.sam
-
-
-# Sort the bamfile
-samtools sort alignedreads.bam alignedreads.sorted
-
-
-#create an index. This will make searching for things in the file faster
-samtools index alignedreads.sorted.bam
-
-
-# use the index to give you stats about your bam in human readable format. This is where you can see how many reads mapped to each contig
-samtools idxstats alignedreads.sorted.bam > $i.mapped2contigs.txt
-
-
-
+Write a script to create a table from the BLAST results
 
