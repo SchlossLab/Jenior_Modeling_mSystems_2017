@@ -2,6 +2,24 @@
 
 # This pipeline processes metagenomic reads, assembles, and annotates them to enable metatranscriptomic mapping
 
+
+#PBS -l nodes=1:ppn=8
+#PBS -l walltime=100:00:00
+#PBS -l mem=42gb
+#PBS -j oe
+#PBS -m abe
+#PBS -V
+#PBS -M mljenior@umich.edu
+#PBS -q first
+#PBS -A schloss_lab
+
+
+
+
+
+
+
+
 # Table of Contents
 # 1. Combine and trim metagenomic reads
 # 2. 
@@ -30,7 +48,7 @@ python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metagenome.read1.fast
 /mnt/EXT/Schloss-data/kiverson/sickle-master/sickle pe -c metagenome.paired.fastq -M metagenome.paired.trimmed.fastq -t sanger
 
 # Return some information about the quality trimmed, paired-end fastq
-python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fastq.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.fastq > .../metagenome/metagenome.assembly_stats.txt
 
 
 # In parallel, convert directly to fasta format to map to contigs later and move it to the correct directory
@@ -52,7 +70,16 @@ python /home/mljenior/bin/khmerEnv/bin/normalize-by-median.py -C 5 -k 20 -N 4 -x
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq.keep.abundfilt.pe.keep > metagenome.trimmed.normalized.paired.fasta
 
 # Return some more information about the results of digital normalization
-python /mnt/EXT/Schloss-data/seq_stats.py metagenome.trimmed.normalized.paired.fasta > metagenome.trimmed.normalized.paired.fasta.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py metagenome.trimmed.normalized.paired.fasta >> .../metagenome/metagenome.assembly_stats.txt
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
+# 2.5 If necessary, merge lanes and digi-normalize between them (paired and single ends)
+
+
+
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -78,7 +105,7 @@ python /home/mljenior/bin/megahit/megahit -m 45e9 -l 251 --12 metagenome.trimmed
 python /share/scratch/bin/removeShortContigs.py metagenome.paired.trimmed.normalized.megahit/final.contigs.fa metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa 250
 
 # Get some information on the assembled contigs
-python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa > metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.normalized.megahit/final.contigs.250.fa >> .../metagenome/metagenome.assembly_stats.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -109,8 +136,8 @@ python /share/scratch/bin/removeShortContigs.py genes.faa genes.80.faa 80
 /mnt/EXT/Schloss-data/bin/fastx_collapser -i genes.80.faa -o genes.80.unique.faa
 
 # Get some information on the called gene sequences
-python /mnt/EXT/Schloss-data/seq_stats.py genes.250.unique.fna > genes.250.unique.fna.stats.txt
-python /mnt/EXT/Schloss-data/seq_stats.py genes.80.unique.faa > genes.80.unique.faa.stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py genes.250.unique.fna >> .../metagenome/metagenome.assembly_stats.txt
+python /mnt/EXT/Schloss-data/seq_stats.py genes.80.unique.faa >> .../metagenome/metagenome.assembly_stats.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
