@@ -34,6 +34,16 @@
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
+# Set up directory with treatment name as top with fastqs in a folder named fastq
+
+
+for condition in 'Conventional' 'Cefoperazone' 'Clindamycin' 'Streptomycin'; do bash submit.master.bash $condition; done
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
 # 1. Process raw metagenomic read data
 
 # Combine files from the same lane and read
@@ -51,8 +61,13 @@ python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metagenome.read1.fast
 python /mnt/EXT/Schloss-data/seq_stats.py metagenome.paired.trimmed.fastq > .../metagenome/metagenome.assembly_stats.txt
 
 
+
 # In parallel, convert directly to fasta format to map to contigs later and move it to the correct directory
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metagenome.paired.trimmed.fastq > metagenome.paired.trimmed.fasta
+
+# Remove trimmed reads shorter than the smalles kmer used during assembly
+python /share/scratch/bin/removeShortContigs.py metagenome.paired.trimmed.fasta metagenome.paired.trimmed.21.fasta 21
+
 mv metagenome.paired.trimmed.fasta ../assembly/bowtie
 
 #-------------------------------------------------------------------------------------------------------------------------#
