@@ -13,8 +13,28 @@
 #PBS -q first
 #PBS -A schloss_lab
 
+echo "ncpus-2.pbs"
+cat $PBS_NODEFILE
+qstat -f $PBS_JOBID
+
+cd $PBS_O_WORKDIR
+
+NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
 
 
+# commands
+
+
+echo "qsub working directory absolute is"
+echo $PBS_O_WORKDIR
+exit
+
+
+
+
+# Create network references for metabolic networks
+cd /mnt/EXT/Schloss-data/matt/seeds/support
+python create_network_refs.py
 
 
 
@@ -35,11 +55,9 @@
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Set up directory with treatment name as top with fastqs in a folder named fastq
+/mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/{treatment name}/fastq/ unzipped fastq files
 
-
-for condition in 'Conventional' 'Cefoperazone' 'Clindamycin' 'Streptomycin'; do bash submit.master.bash $condition; done
-
-
+for condition in 'Conventional' 'Cefoperazone' 'Clindamycin' 'Streptomycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/master_pbs/submit.master.bash $condition; done
 
 
 #-------------------------------------------------------------------------------------------------------------------------#
@@ -186,7 +204,7 @@ source /home/mljenior/bin/khmerEnv/bin/activate
 python /home/mljenior/bin/khmerEnv/bin/interleave_reads.py metatransciptome.read1.fastq metatransciptome.read1.fastq metatransciptome.paired.fastq
 
 # Quality trim with sickle (ends and ambiguous bases)
-#/mnt/EXT/Schloss-data/kiverson/sickle-master/sickle pe -c metatransciptome.paired.fastq -M metatransciptome.paired.trimmed.fastq -t sanger
+#/mnt/EXT/Schloss-data/kiverson/sickle-master/sickle pe -c metatransciptome.paired.fastq -M metatransciptome.paired.trimmed.fastq -t sanger   ## Dump orphaned reads into a file as well
 
 # Convert the fastq to a fasta
 awk '{print ">" substr($0,2);getline;print;getline;getline}' metatransciptome.paired.trimmed.fastq > metatransciptome.paired.trimmed.fasta
@@ -208,4 +226,22 @@ tblastn -query metatransciptome.paired.trimmed.fasta -db annotated_metagenome_bl
 
 
 Write a script to create a table from the BLAST results
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
+# PBS scripts to automate process
+
+
+
+
+
+
+
+
+
+
+
+
 

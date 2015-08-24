@@ -1,7 +1,7 @@
 
 
 # Read in and format data - vegetative cells
-cfu_vege <- read.delim('~/Desktop/composite_cfu_vegetative.tsv', sep='\t', header=T)
+cfu_vege <- read.delim('~/Desktop/repositories/Jenior_Transcriptomics_2015.docx/data/raw/composite_cfu_vegetative.tsv', sep='\t', header=T)
 cfu_sub_vege <- subset(cfu_vege, cage < 4)
 cfu_sub_vege$mouse <- NULL
 cfu_sub_vege$cage <- NULL
@@ -10,7 +10,7 @@ cfu_sub_vege_log <- log10(cfu_sub_vege)
 
 # Plot the cfus 
 par(las=1)
-stripchart(cfu_sub_vege_log, vertical=T, method='jitter', jitter=.1, pch=16, ylim=c(1,10), xaxt='n', yaxt='n', cex=1.4)
+stripchart(cfu_sub_vege_log, vertical=T, method='jitter', jitter=.1, pch=16, ylim=c(1,10), xaxt='n', yaxt='n', cex=1.4, ylab='Vegetative cells per gram cecal content')
 axis(side = 1, at = 1:5, colnames(cfu_sub_vege), tick = FALSE, font=2)
 labelsY=parse(text=paste(rep(10,10), "^", seq(1,10,1), sep=""))
 axis(side = 2, at = 1:10, labelsY, tick = TRUE)
