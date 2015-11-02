@@ -1,7 +1,7 @@
 
 
 # Read in data
-cfu_sporeVtoxin <- read.delim('/Users/mljenior/Desktop/repositories/Jenior_Transcriptomics_2015.docx/data/raw/spores_toxin.txt', sep='\t', header=T)
+cfu_sporeVtoxin <- read.delim('', sep='\t', header=T)
 cfu_sporeVtoxin$Spores_log <- log10(cfu_sporeVtoxin$Spores)
 
 
@@ -17,7 +17,7 @@ cor.test(cfu_sporeVtoxin$Toxin, cfu_sporeVtoxin$Spores, method='spearman')  # S 
 # 0.539309 ** 2 = 0.2908542
 
 
-# Plot it
+# Plot s
 par(mar = rep(5, 4) , las = 1)
 plot(cfu_sporeVtoxin$Toxin, cfu_sporeVtoxin$Spores_log, pch=16, xlab=substitute(paste(italic('C. diffile'), ' Toxin Titer')), ylim=c(1,7), yaxt='n', ylab=substitute(paste(italic('C. diffile'), ' Spores per gram cecal content')))
 labelsY=parse(text=paste(rep(10,7), "^", seq(1,7,1), sep=""))
@@ -39,4 +39,3 @@ legend(x='bottomright',legend=c('Clindamyin', 'Streptomycin', 'Cefoperzone', 'Ge
 text(2.915, 2.55, substitute(paste(italic('p value'), ' < 0.001')), cex=0.8)
 text(2.857, 2.35, parse(text=paste('R', '^', '2', sep="")), cex=0.8)
 text(2.905, 2.35, '= 0.291', cex=0.8)
-
