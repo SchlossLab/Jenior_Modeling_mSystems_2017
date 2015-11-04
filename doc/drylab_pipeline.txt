@@ -237,10 +237,12 @@ Write a script to create a table from the BLAST results
 
 
 
+ESOM
+
+cat Conventional.final.contigs.251.fa ../../../susceptibility_genomes/Turicibacter_sanguinisPC909.fasta ../../../susceptibility_genomes/Porphyromonas_catoniaeATCC5127
 
 
-
-
+perl /home/mljenior/bin/esom/esomWrapper.pl -path /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/Conventional/esom -ext fasta -scripts /home/mljenior/bin/esom/
 
 
 
