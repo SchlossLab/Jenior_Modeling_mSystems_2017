@@ -3,33 +3,6 @@
 # This pipeline processes metagenomic reads, assembles, and annotates them to enable metatranscriptomic mapping
 
 
-#PBS -l nodes=1:ppn=8
-#PBS -l walltime=100:00:00
-#PBS -l mem=42gb
-#PBS -j oe
-#PBS -m abe
-#PBS -V
-#PBS -M mljenior@umich.edu
-#PBS -q first
-#PBS -A schloss_lab
-
-echo "ncpus-2.pbs"
-cat $PBS_NODEFILE
-qstat -f $PBS_JOBID
-
-cd $PBS_O_WORKDIR
-
-NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
-
-
-# commands
-
-
-echo "qsub working directory absolute is"
-echo $PBS_O_WORKDIR
-exit
-
-
 
 
 # Create network references for metabolic networks
@@ -225,7 +198,7 @@ gzip *fastq
 tblastn -query metatransciptome.paired.trimmed.fasta -db annotated_metagenome_blast.db -num_threads 16 -evalue 1e-10 -best_hit_score_edge 0.05 -best_hit_overhang 0.25 -outfmt 6 -max_target_seqs 1 -out mapped_transcriptsVmetagenome.out
 
 
-Write a script to create a table from the BLAST results
+Write a script to create a table from the BLAST results and bowtie count data
 
 
 
