@@ -1,9 +1,13 @@
 
+# Define variables
+toxin_file <- '/Users/schloss/Desktop/Jenior_812/data/toxin_titer.dat'
+figure_file <- '/Users/schloss/Desktop/toxin.pdf'
+
 # Read in toxin data
-raw_toxin <- read.delim('/Users/schloss/Desktop/Jenior_812/data/toxin_titer.dat', sep='\t', header=T)
+raw_toxin <- read.delim(toxin_file, sep='\t', header=T)
 raw_toxin$mouse <- NULL
 raw_toxin$cage <- NULL
-
+colnames(raw_toxin) <- c('Cefoperazone','Clindamycin','Streptomycin','Germfree')
 
 # Calculate quantiles
 cef_iqr <- quantile(raw_toxin$Cefoperazone) - 1.5
@@ -14,6 +18,7 @@ median_vector <- c(cef_iqr[3],strep_iqr[3],clinda_iqr[3],gf_iqr[3])
 
 
 # Plot the data
+pdf(file=figure_file, width=10, height=7)
 par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
 barplot(median_vector, space=0.5, col='forestgreen', ylim=c(0,1.75), yaxt='n', xaxt='n', ylab='Toxin Titer (log10)')
 axis(side=1, at=c(1,2.5,4,5.5), c('Cefoperazone','Streptomycin','Clindamycin','Germfree'), tick = FALSE, font=2, cex.axis=1.4)
@@ -40,7 +45,7 @@ segments(5.5, gf_iqr[2], 5.5, gf_iqr[4], lwd=3)
 
 # Adding significance to plot
 text(5.5, 1.6, labels='***', cex=2.5, font=2)
-
+dev.off()
 
 # Test for normal distribution
 shapiro.test(raw_toxin$Cefoperazone) # p-value = 0.003751
