@@ -4,12 +4,12 @@
 library(igraph)
 
 # Define variables
-file_name <- '~/Desktop/cefoperazone_630.bipartite.graph'
-nodes_1 <- '~/Desktop/cefoperazone_630.compound.lst'
+file_name <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.bipartite.graph'
+nodes_1 <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.compound.lst'
 nodes_1_label <- 'Substrate'
-nodes_2 <- '~/Desktop/cefoperazone_630.enzyme.lst'
+nodes_2 <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.enzyme.lst'
 nodes_2_label <- 'KEGG Ortholog'
-figure_file <- '~/Desktop/Cdifficile630.bipartite.scc.pdf'
+figure_file <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/Cdifficile630.bipartite.scc.pdf'
 
 # Read in data
 graph.file <- read.table(file_name, header = F, sep = '\t')
@@ -39,7 +39,7 @@ pdf(file=figure_file, width=10, height=7)
 par(mar=c(0,0,0,0), font=2)
 plot(largest.simple.graph, vertex.label = NA, layout = layout.graphopt,
      edge.arrow.size = 0.5, edge.arrow.width = 0.8, vertex.frame.color = 'black')
-legend('bottomleft', legend=c(nodes_2_label, nodes_1_label), 
-       pt.bg=c('blue', 'red'), col='black', pch=21, pt.cex=3, cex=1.5, bty = "n")
+legend('bottomleft', legend=c(nodes_1_label, nodes_2_label), 
+       pt.bg=c('red', 'blue'), col='black', pch=21, pt.cex=3, cex=1.5, bty = "n")
 dev.off()
 
