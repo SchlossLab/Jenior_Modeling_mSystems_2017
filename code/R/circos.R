@@ -1,6 +1,8 @@
 
-# Install packages
-#install.packages("RCircos")
+# Load package
+install.packages("RCircos")
 library(RCircos)
+
+
 
 
