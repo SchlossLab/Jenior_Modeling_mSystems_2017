@@ -1,15 +1,12 @@
 
 # Define variables
-figure_file <- '/Users/schloss/Desktop/family_barplot.pdf'
-legend_file <- '/Users/schloss/Desktop/family_barplot.legend.pdf'
+figure_file <- '/Users/pschloss/Desktop/family_barplot.pdf'
+legend_file <- '/Users/pschloss/Desktop/family_barplot.legend.pdf'
   
 # Load in and format data
-metadata <- read.delim('/Users/schloss/Desktop/Jenior_Transcriptomics_2015/data/metadata.txt', 
-                       sep='\t', header=T, row.names=1)
-taxonomy <- read.delim('/Users/schloss/Desktop/Jenior_Transcriptomics_2015/data/processed/phylotype/allabx.2.cons.family.format.taxonomy', 
-                       sep='\t', header=T, row.names=1)
-shared <- read.delim('/Users/schloss/Desktop/Jenior_Transcriptomics_2015/data/processed/phylotype/allabx.2.subsample.shared', 
-                     sep='\t', header=T, row.names=2)
+metadata <- read.delim('/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.txt', sep='\t', header=T, row.names=1)
+taxonomy <- read.delim('/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/processed/phylotype/allabx.2.cons.family.format.taxonomy', sep='\t', header=T, row.names=1)
+shared <- read.delim('/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/processed/phylotype/allabx.2.subsample.shared', sep='\t', header=T, row.names=2)
 shared$label <- NULL
 shared$numOtus <- NULL
 shared <- shared[!rownames(shared) %in% c('CefC5M2'), ] # Remove contaminated sample
@@ -49,11 +46,16 @@ final_shared[final_shared < 1] <- 0
 final_shared <- final_shared[, colSums(final_shared != 0) > 0]
 final_shared$Other <- 100 - rowSums(final_shared)
 
+# When needed, use this pallete      NEEDS WORK
+color_palette <- c('firebrick', 'blue2', 'forestgreen', 'goldenrod1', 'coral2', 'chartreuse2', 'darkorchid3', 
+                   'deepskyblue3', 'aquamarine3', 'brown2', 'palegreen3', 'navajowhite3', 'sienna2', 'blueviolet')
+# Pick to different colors at random
+colors <- sample(1:length(color_palette), ncol(final_shared), replace=F)
+
 # Plot the final formatted table
 pdf(file=figure_file, width=12, height=9)
 par(las=1, mar=c(2.2,3,1,1), mgp=c(2,0.8,0), cex=2)
-colors <- rainbow(ncol(final_shared))
-barplot(t(final_shared), col=colors, yaxt='n',
+barplot(t(final_shared), col=color_palette[colors], yaxt='n',
         ylim=c(-0.5,100.5), ylab='% Relative Abundance')
 axis(side=2, at=seq(0,100,20), tick=TRUE)
 abline(h=c(0, 100))

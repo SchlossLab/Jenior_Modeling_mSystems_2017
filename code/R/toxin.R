@@ -1,50 +1,54 @@
 
 # Define variables
-toxin_file <- '/Users/schloss/Desktop/Jenior_812/data/toxin_titer.dat'
-figure_file <- '/Users/schloss/Desktop/toxin.pdf'
+toxin_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/raw/toxin_titer.dat'
+figure_file <- '/Users/pschloss/Desktop/toxin.pdf'
 
 # Read in toxin data
 raw_toxin <- read.delim(toxin_file, sep='\t', header=T)
 raw_toxin$mouse <- NULL
 raw_toxin$cage <- NULL
-colnames(raw_toxin) <- c('Cefoperazone','Clindamycin','Streptomycin','Germfree')
+raw_toxin$treatment <- factor(raw_toxin$treatment, levels=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'))
+raw_toxin[,2] <- raw_toxin[,2] - 1.5
 
 # Calculate quantiles
-cef_iqr <- quantile(raw_toxin$Cefoperazone) - 1.5
-strep_iqr <- quantile(raw_toxin$Streptomycin) - 1.5
-clinda_iqr <- quantile(raw_toxin$Clindamycin) - 1.5
-gf_iqr <- quantile(raw_toxin$Germfree) - 1.5
-median_vector <- c(cef_iqr[3],strep_iqr[3],clinda_iqr[3],gf_iqr[3])
-
+cef_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Cefoperazone', 2])
+clinda_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Clindamycin', 2])
+strep_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Streptomycin', 2])
+gf_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Germfree', 2])
 
 # Plot the data
 pdf(file=figure_file, width=10, height=7)
 par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
-barplot(median_vector, space=0.5, col='forestgreen', ylim=c(0,1.75), yaxt='n', xaxt='n', ylab='Toxin Titer (log10)')
-axis(side=1, at=c(1,2.5,4,5.5), c('Cefoperazone','Streptomycin','Clindamycin','Germfree'), tick = FALSE, font=2, cex.axis=1.4)
-mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), 
-      side=1, at=c(1,2.5,4,5.5), cex=0.9, padj=3.5)
-axis(side=2, at=seq(0,1.75,0.25), c('1.50','1.75','2.00','2.25','2.50','2.75','3.00','3.25'), tick=TRUE, cex.axis=0.9)
-abline(h=0.5, col='black', lty=2)
+stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=1.4, bg='gray70', ylab='Toxin Titer (log10)')
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
+mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=0.9, padj=3.5)
+axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE)
 
+# Draw limit of detection
+abline(h=0.5, lty=3)
+
+# Draw median
+segments(0.8, cef_iqr[3], 1.2, cef_iqr[3], lwd=3) # cefoperazone
+segments(1.8, clinda_iqr[3], 2.2, clinda_iqr[3], lwd=3) # clindamycin
+segments(2.8, strep_iqr[3], 3.2, strep_iqr[3], lwd=3) # streptomycin
+segments(3.8, gf_iqr[3], 4.2, gf_iqr[3], lwd=3) # germfree
 
 # Draw IQR
-segments(0.7, cef_iqr[2], 1.3, cef_iqr[2], lwd=3) # cefoperazone
-segments(0.7, cef_iqr[4], 1.3, cef_iqr[4], lwd=3)
-segments(1, cef_iqr[2], 1, cef_iqr[4], lwd=3)
-segments(2.2, strep_iqr[2], 2.8, strep_iqr[2], lwd=3) # streptomycin
-segments(2.2, strep_iqr[4], 2.8, strep_iqr[4], lwd=3)
-segments(2.5, strep_iqr[2], 2.5, strep_iqr[4], lwd=3)
-segments(3.7, clinda_iqr[2], 4.3, clinda_iqr[2], lwd=3) # clindamycin
-segments(3.7, clinda_iqr[4], 4.3, clinda_iqr[4], lwd=3)
-segments(4, clinda_iqr[2], 4, clinda_iqr[4], lwd=3)
-segments(5.2, gf_iqr[2], 5.8, gf_iqr[2], lwd=3) # germfree
-segments(5.2, gf_iqr[4], 5.8, gf_iqr[4], lwd=3)
-segments(5.5, gf_iqr[2], 5.5, gf_iqr[4], lwd=3)
-
+#segments(0.85, cef_iqr[2], 1.15, cef_iqr[2], lwd=3) # cefoperazone
+#segments(0.85, cef_iqr[4], 1.15, cef_iqr[4], lwd=3)
+#segments(1, cef_iqr[2], 1, cef_iqr[4], lwd=3)
+#segments(1.85, clinda_iqr[2], 2.15, clinda_iqr[2], lwd=3) # clindamycin
+#segments(1.85, clinda_iqr[4], 2.15, clinda_iqr[4], lwd=3)
+#segments(2, clinda_iqr[2], 2, clinda_iqr[4], lwd=3)
+#segments(2.85, strep_iqr[2], 3.15, strep_iqr[2], lwd=3) # streptomycin
+#segments(2.85, strep_iqr[4], 3.15, strep_iqr[4], lwd=3)
+#segments(3, strep_iqr[2], 3, strep_iqr[4], lwd=3)
+#segments(3.85, gf_iqr[2], 4.15, gf_iqr[2], lwd=3) # germfree
+#segments(3.85, gf_iqr[4], 4.15, gf_iqr[4], lwd=3)
+#segments(4, gf_iqr[2], 4, gf_iqr[4], lwd=3)
 
 # Adding significance to plot
-text(5.5, 1.6, labels='***', cex=2.5, font=2)
+text(4, gf_iqr[4] + 0.1, labels='***', cex=2.5, font=2)
 dev.off()
 
 # Test for normal distribution

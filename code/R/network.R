@@ -31,7 +31,7 @@ largest.simple.graph <- all.simple.graph[[largest]]
 
 # Format data for plotting
 V(largest.simple.graph)$size <- 3 # Node size
-V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, "blue", "red") # Color nodes
+V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, color_palette[2], color_palette[1]) # Color nodes
 E(largest.simple.graph)$color <- 'gray15' # Color edges
 
 # Plot the network
@@ -42,4 +42,18 @@ plot(largest.simple.graph, vertex.label = NA, layout = layout.graphopt,
 legend('bottomleft', legend=c(nodes_1_label, nodes_2_label), 
        pt.bg=c('red', 'blue'), col='black', pch=21, pt.cex=3, cex=1.5, bty = "n")
 dev.off()
+
+
+
+
+# When needed, use this pallete I made
+color_palette <- c('firebrick', 'blue2', 'forestgreen', 'goldenrod1', 'coral2', 'chartreuse2', 'darkorchid3', 
+                    'deepskyblue3', 'aquamarine3', 'brown2', 'palegreen3', 'navajowhite3', 'sienna2', 'blueviolet')
+
+# Pick to different colors at random
+colors <- sample(1:length(color_palette), 2, replace=F)
+
+
+
+
 
