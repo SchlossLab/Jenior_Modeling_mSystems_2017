@@ -21,7 +21,7 @@ pdf(file=figure_file, width=10, height=7)
 
 # Plot the data
 par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
-stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='gray70', ylab='')
+stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
 mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
 axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
 mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=1, padj=3.5)
