@@ -16,39 +16,30 @@ clinda_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Clindamycin', 2])
 strep_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Streptomycin', 2])
 gf_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Germfree', 2])
 
-# Plot the data
+# Initialize PDF
 pdf(file=figure_file, width=10, height=7)
-par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
-stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=1.4, bg='gray70', ylab='Toxin Titer (log10)')
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
-mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=0.9, padj=3.5)
-axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE)
+
+# Plot the data
+par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
+stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='gray70', ylab='')
+mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
+mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=1, padj=3.5)
+axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
 
 # Draw limit of detection
-abline(h=0.5, lty=3)
+abline(h=0.5, lty=3, lwd=3)
 
 # Draw median
-segments(0.8, cef_iqr[3], 1.2, cef_iqr[3], lwd=3) # cefoperazone
-segments(1.8, clinda_iqr[3], 2.2, clinda_iqr[3], lwd=3) # clindamycin
-segments(2.8, strep_iqr[3], 3.2, strep_iqr[3], lwd=3) # streptomycin
-segments(3.8, gf_iqr[3], 4.2, gf_iqr[3], lwd=3) # germfree
-
-# Draw IQR
-#segments(0.85, cef_iqr[2], 1.15, cef_iqr[2], lwd=3) # cefoperazone
-#segments(0.85, cef_iqr[4], 1.15, cef_iqr[4], lwd=3)
-#segments(1, cef_iqr[2], 1, cef_iqr[4], lwd=3)
-#segments(1.85, clinda_iqr[2], 2.15, clinda_iqr[2], lwd=3) # clindamycin
-#segments(1.85, clinda_iqr[4], 2.15, clinda_iqr[4], lwd=3)
-#segments(2, clinda_iqr[2], 2, clinda_iqr[4], lwd=3)
-#segments(2.85, strep_iqr[2], 3.15, strep_iqr[2], lwd=3) # streptomycin
-#segments(2.85, strep_iqr[4], 3.15, strep_iqr[4], lwd=3)
-#segments(3, strep_iqr[2], 3, strep_iqr[4], lwd=3)
-#segments(3.85, gf_iqr[2], 4.15, gf_iqr[2], lwd=3) # germfree
-#segments(3.85, gf_iqr[4], 4.15, gf_iqr[4], lwd=3)
-#segments(4, gf_iqr[2], 4, gf_iqr[4], lwd=3)
+segments(0.8, cef_iqr[3], 1.2, cef_iqr[3], lwd=5) # cefoperazone
+segments(1.8, clinda_iqr[3], 2.2, clinda_iqr[3], lwd=5) # clindamycin
+segments(2.8, strep_iqr[3], 3.2, strep_iqr[3], lwd=5) # streptomycin
+segments(3.8, gf_iqr[3], 4.2, gf_iqr[3], lwd=5) # germfree
 
 # Adding significance to plot
 text(4, gf_iqr[4] + 0.1, labels='***', cex=2.5, font=2)
+
+# Close PDF
 dev.off()
 
 # Test for normal distribution
