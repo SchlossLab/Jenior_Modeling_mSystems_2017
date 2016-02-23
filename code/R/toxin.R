@@ -7,13 +7,13 @@ figure_file <- '/Users/pschloss/Desktop/toxin.pdf'
 raw_toxin <- read.delim(toxin_file, sep='\t', header=T)
 raw_toxin$mouse <- NULL
 raw_toxin$cage <- NULL
-raw_toxin$treatment <- factor(raw_toxin$treatment, levels=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'))
+raw_toxin$treatment <- factor(raw_toxin$treatment, levels=c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
 raw_toxin[,2] <- raw_toxin[,2] - 1.5
 
 # Calculate quantiles
 cef_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Cefoperazone', 2])
-clinda_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Clindamycin', 2])
 strep_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Streptomycin', 2])
+clinda_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Clindamycin', 2])
 gf_iqr <- quantile(raw_toxin[raw_toxin$treatment == 'Germfree', 2])
 
 # Initialize PDF
@@ -21,23 +21,23 @@ pdf(file=figure_file, width=10, height=7)
 
 # Plot the data
 par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
-stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
+stripchart(titer~treatment, data=raw_toxin, vertical=T, pch=21, ylim=c(0.5,1.75), xlim=c(0.5,4.5), yaxt='n', xaxt='n', cex=3, bg='forestgreen', ylab='', method='jitter', jitter=0.25)
 mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
-mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=1, padj=3.5)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
+mtext(c('0.5 mg/ml DW', '5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), cex=1, padj=3.5)
 axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
 
 # Draw limit of detection
-abline(h=0.5, lty=3, lwd=3)
+abline(h=0.5, lty=2, lwd=3)
 
 # Draw median
-segments(0.8, cef_iqr[3], 1.2, cef_iqr[3], lwd=5) # cefoperazone
-segments(1.8, clinda_iqr[3], 2.2, clinda_iqr[3], lwd=5) # clindamycin
-segments(2.8, strep_iqr[3], 3.2, strep_iqr[3], lwd=5) # streptomycin
-segments(3.8, gf_iqr[3], 4.2, gf_iqr[3], lwd=5) # germfree
+segments(0.6, cef_iqr[3], 1.4, cef_iqr[3], lwd=8) # cefoperazone
+segments(1.6, strep_iqr[3], 2.4, strep_iqr[3], lwd=8) # streptomycin
+segments(2.6, clinda_iqr[3], 3.4, clinda_iqr[3], lwd=8) # clindamycin
+segments(3.6, gf_iqr[3], 4.4, gf_iqr[3], lwd=8) # germfree
 
 # Adding significance to plot
-text(4, gf_iqr[4] + 0.1, labels='***', cex=2.5, font=2)
+text(4, gf_iqr[4] + 0.1, labels='***', cex=3, font=2)
 
 # Close PDF
 dev.off()

@@ -11,6 +11,8 @@ nodes_2 <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/c
 nodes_2_label <- 'KEGG Ortholog'
 figure_file <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/Cdifficile630.bipartite.scc.pdf'
 
+/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.txt
+
 # Read in data
 graph.file <- read.table(file_name, header = F, sep = '\t')
 node_group_1 <- as.vector(read.table(nodes_1, header = F, sep = '\t')$V1)
@@ -29,6 +31,13 @@ all.simple.graph <- decompose.graph(simple.graph)
 largest <- which.max(sapply(all.simple.graph, vcount))
 largest.simple.graph <- all.simple.graph[[largest]]
 
+# When needed, use this pallete I made
+final_colors <- c("gold1", "orangered1", "aquamarine3", "firebrick", "forestgreen", "blue3", 
+                  "mediumorchid2", "violetred4", "mediumpurple4", "dodgerblue3", "goldenrod3", "chartreuse3")
+
+# Pick to different colors at random
+colors <- final_colors[sample(1:length(color_palette), 2, replace=F)]
+
 # Format data for plotting
 V(largest.simple.graph)$size <- 3 # Node size
 V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, color_palette[2], color_palette[1]) # Color nodes
@@ -44,14 +53,6 @@ legend('bottomleft', legend=c(nodes_1_label, nodes_2_label),
 dev.off()
 
 
-
-
-# When needed, use this pallete I made
-color_palette <- c('firebrick', 'blue2', 'forestgreen', 'goldenrod1', 'coral2', 'chartreuse2', 'darkorchid3', 
-                    'deepskyblue3', 'aquamarine3', 'brown2', 'palegreen3', 'navajowhite3', 'sienna2', 'blueviolet')
-
-# Pick to different colors at random
-colors <- sample(1:length(color_palette), 2, replace=F)
 
 
 

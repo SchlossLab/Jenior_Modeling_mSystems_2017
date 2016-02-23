@@ -42,58 +42,58 @@ spore_cfu_raw$type <- NULL
 spore_cfu_raw$treatment <- factor(spore_cfu_raw$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
 spore_cfu_raw <- droplevels(spore_cfu_raw)
 
+
+cef_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Cefoperazone', 2])
+clinda_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Clindamycin', 2])
+strep_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Streptomycin', 2])
+gf_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Germfree', 2])
+
+cef_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Cefoperazone', 2])
+clinda_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Clindamycin', 2])
+strep_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Streptomycin', 2])
+gf_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Germfree', 2])
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Plot formatted data - vegetative
 pdf(file=vegetative_file, width=10, height=7)
-par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(3.5,4,1,1), mgp=c(2.5,0.7,0))
 stripchart(cfu~treatment, data=vegetative_cfu, bg='firebrick', 
-        ylim=c(5,9), xaxt='n', yaxt='n', pch=21, vertical=T, 
-        jitter=.1, cex=2, ylab='Vegetative CFU/g Cecal Content')
-
-stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', 
-           jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
-
-
-
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), 
-     tick = FALSE, font=2, cex.axis=1.4)
-mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), 
-      cex=0.9, padj=3.5)
+        ylim=c(5,9), xaxt='n', yaxt='n', pch=21, vertical=T, method='jitter',
+        jitter=0.2, cex=3, ylab='Vegetative CFU/g Cecal Content', cex.lab=1.5)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
+mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), cex=0.9, padj=3.8)
 labelsY <- parse(text=paste(rep(10,5), '^', seq(5,9,1), sep=''))
-axis(side=2, at=c(5:9), labelsY, tick=TRUE, cex.axis=1.2)
+axis(side=2, at=c(5:9), labelsY, tick=TRUE, cex.axis=1.2, las=1)
+
+# Plot medians
+segments(0.6, cef_iqr_vege[3], 1.4, cef_iqr_vege[3], lwd=8) # cefoperazone
+segments(1.6, strep_iqr_vege[3], 2.4, strep_iqr_vege[3], lwd=8) # streptomycin
+segments(2.6, clinda_iqr_vege[3], 3.4, clinda_iqr_vege[3], lwd=8) # clindamycin
+segments(3.6, gf_iqr_vege[3], 4.4, gf_iqr_vege[3], lwd=8) # germfree
 dev.off()
-
-
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
-stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
-mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
-mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=1, padj=3.5)
-axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
-
-
-
-
-
-
-
 
 
 # Plot formatted data - spores
 pdf(file=spore_file, width=10, height=7)
-par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0))
-boxplot(cfu~treatment, data=spore_cfu, col='blue2', 
-        ylim=c(1,7), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3, 
-        staplelwd=3, outline=FALSE, range=2, ylab='Spore CFU/g Cecal Content')
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), 
-     tick = FALSE, font=2, cex.axis=1.4)
-mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), 
-      cex=0.9, padj=3.5)
+par(las=1, mar=c(3.5,4,1,1), mgp=c(2.5,0.7,0))
+stripchart(cfu~treatment, data=spore_cfu, bg='blue2', 
+           ylim=c(1,7), xaxt='n', yaxt='n', pch=21, vertical=T, method='jitter',
+           jitter=0.2, cex=3, ylab='Spore CFU/g Cecal Content', cex.lab=1.5)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
+mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), cex=0.9, padj=3.8)
 labelsY <- parse(text=paste(rep(10,7), '^', seq(1,7,1), sep=''))
 axis(side=2, at=c(1:7), labelsY, tick=TRUE, cex.axis=1.2)
-abline(h=2, col="black", lty=2)
-text(4, 6.7, '***', cex=2, font=2)
+
+# Plot medians
+segments(0.6, cef_iqr_spore[3], 1.4, cef_iqr_spore[3], lwd=8) # cefoperazone
+segments(1.6, strep_iqr_spore[3], 2.4, strep_iqr_spore[3], lwd=8) # streptomycin
+segments(2.6, clinda_iqr_spore[3], 3.4, clinda_iqr_spore[3], lwd=8) # clindamycin
+segments(3.6, gf_iqr_spore[3], 4.4, gf_iqr_spore[3], lwd=8) # germfree
+
+# Plot limit of detection and significance
+abline(h=2, col="black", lty=2, lwd=4)
+text(4, 7, '***', cex=3, font=2)
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------#
