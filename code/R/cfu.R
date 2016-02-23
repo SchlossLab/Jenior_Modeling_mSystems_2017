@@ -2,10 +2,10 @@
 # Creates plots for CFU comparisons
 
 # Define variable
-cfu_file <- '/Users/schloss/Desktop/Jenior_812/data/cfu.dat'
-vegetative_file <- '/Users/schloss/Desktop/vegetative.cfu.pdf'
-spore_file <- '/Users/schloss/Desktop/spore.cfu.pdf'
-percent_file <- '/Users/schloss/Desktop/percent.cfu.pdf'
+cfu_file <- '/Users/pschloss/Desktop/Jenior_812/data/cfu.dat'
+vegetative_file <- '/Users/pschloss/Desktop/vegetative.cfu.pdf'
+spore_file <- '/Users/pschloss/Desktop/spore.cfu.pdf'
+percent_file <- '/Users/pschloss/Desktop/percent.cfu.pdf'
 
 # Read, format, and separate the data
 cfu_raw <- read.delim(cfu_file, sep='\t', header=T)
@@ -47,9 +47,15 @@ spore_cfu_raw <- droplevels(spore_cfu_raw)
 # Plot formatted data - vegetative
 pdf(file=vegetative_file, width=10, height=7)
 par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0))
-boxplot(cfu~treatment, data=vegetative_cfu, col='firebrick', 
-        ylim=c(5,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3,
-        staplelwd=3, outline=FALSE, range=2, ylab='Vegetative CFU/g Cecal Content')
+stripchart(cfu~treatment, data=vegetative_cfu, bg='firebrick', 
+        ylim=c(5,9), xaxt='n', yaxt='n', pch=21, vertical=T, 
+        jitter=.1, cex=2, ylab='Vegetative CFU/g Cecal Content')
+
+stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', 
+           jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
+
+
+
 axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), 
      tick = FALSE, font=2, cex.axis=1.4)
 mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4), 
@@ -57,6 +63,22 @@ mtext(c('0.5 mg/ml DW', '0.5 mg/ml DW', '10 mg/kg IP', ''), side=1, at=c(1:4),
 labelsY <- parse(text=paste(rep(10,5), '^', seq(5,9,1), sep=''))
 axis(side=2, at=c(5:9), labelsY, tick=TRUE, cex.axis=1.2)
 dev.off()
+
+
+par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
+stripchart(titer~treatment, data=raw_toxin, vertical=T, method='jitter', jitter=.1, pch=21, ylim=c(0.5,1.75), yaxt='n', xaxt='n', cex=2, bg='forestgreen', ylab='')
+mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.5)
+mtext(c('0.5 mg/ml DW', '10 mg/kg IP', '5 mg/ml DW', ''), side=1, at=c(1:4), cex=1, padj=3.5)
+axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
+
+
+
+
+
+
+
+
 
 # Plot formatted data - spores
 pdf(file=spore_file, width=10, height=7)

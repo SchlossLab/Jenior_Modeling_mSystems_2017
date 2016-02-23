@@ -1,4 +1,8 @@
 
+# Install color palette package
+install.packages("wesanderson")
+library(wesanderson)
+
 # Define variables
 figure_file <- '/Users/pschloss/Desktop/family_barplot.pdf'
 legend_file <- '/Users/pschloss/Desktop/family_barplot.legend.pdf'
@@ -46,16 +50,24 @@ final_shared[final_shared < 1] <- 0
 final_shared <- final_shared[, colSums(final_shared != 0) > 0]
 final_shared$Other <- 100 - rowSums(final_shared)
 
-# When needed, use this pallete      NEEDS WORK
-color_palette <- c('firebrick', 'blue2', 'forestgreen', 'goldenrod1', 'coral2', 'chartreuse2', 'darkorchid3', 
-                   'deepskyblue3', 'aquamarine3', 'brown2', 'palegreen3', 'navajowhite3', 'sienna2', 'blueviolet')
-# Pick to different colors at random
-colors <- sample(1:length(color_palette), ncol(final_shared), replace=F)
+# When needed, use this pallete   
+color_palette <- c(wes_palette("Moonrise2"), wes_palette("FantasticFox"), wes_palette("Cavalcanti"), wes_palette("Rushmore"))
+select_colors <- sample(1:length(color_palette), ncol(final_shared), replace=F)
+final_colors <- color_palette[select_colors]
+
+# Define color palette and pick
+#color_palette <- c('firebrick', 'red2', 'orangered1', 'darkorange1', 
+#                   'goldenrod3', 'gold', 'chartreuse3', 'forestgreen', 'aquamarine3', 
+#                   'dodgerblue3', 'blue3', 'mediumpurple4', 'mediumorchid2', 'violetred4')
+#final_colors <- color_palette[sample(1:length(color_palette), ncol(final_shared), replace=F)]
+
+final_colors <- c("gold1", "orangered1", "aquamarine3", "firebrick", "forestgreen", "blue3", 
+                  "mediumorchid2", "violetred4", "mediumpurple4", "dodgerblue3", "goldenrod3", "chartreuse3")
 
 # Plot the final formatted table
 pdf(file=figure_file, width=12, height=9)
 par(las=1, mar=c(2.2,3,1,1), mgp=c(2,0.8,0), cex=2)
-barplot(t(final_shared), col=color_palette[colors], yaxt='n',
+barplot(t(final_shared), col=final_colors, yaxt='n',
         ylim=c(-0.5,100.5), ylab='% Relative Abundance')
 axis(side=2, at=seq(0,100,20), tick=TRUE)
 abline(h=c(0, 100))
@@ -67,5 +79,5 @@ dev.off()
 pdf(file=legend_file, width=7, height=6)
 plot(0, type='n', axes=F, xlab='', ylab='')
 taxa <- gsub('_', ', ', rownames(t(final_shared)))
-legend('center', legend=taxa, pt.bg=colors, pch=22, pt.cex=1.8)
+legend('center', legend=taxa, pt.bg=final_colors, pch=22, pt.cex=1.8)
 dev.off()
