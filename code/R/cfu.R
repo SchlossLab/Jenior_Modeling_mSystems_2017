@@ -114,7 +114,7 @@ wilcox.test(cef_vegetative, clinda_vegetative, exact=F) # p-value = 0.2868
 wilcox.test(cef_vegetative, gf_vegetative, exact=F) # p-value = 0.01197  *
 wilcox.test(strep_vegetative, clinda_vegetative, exact=F) # p-value = 0.6908
 wilcox.test(strep_vegetative, gf_vegetative, exact=F) # p-value = 0.5644
-wilcox.test(clinda_vegetative, gf_vegetative, exact=F) # p-value = 0.0035  ***
+wilcox.test(clinda_vegetative, gf_vegetative, exact=F) # p-value = 0.0035  **
 
 
 # Calculate differences - spore

@@ -1,8 +1,4 @@
 
-# Install color palette package
-install.packages("wesanderson")
-library(wesanderson)
-
 # Define variables
 figure_file <- '/Users/pschloss/Desktop/family_barplot.pdf'
 legend_file <- '/Users/pschloss/Desktop/family_barplot.legend.pdf'
@@ -14,10 +10,9 @@ shared <- read.delim('/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomic
 shared$label <- NULL
 shared$numOtus <- NULL
 shared <- shared[!rownames(shared) %in% c('CefC5M2'), ] # Remove contaminated sample
-rel_abund <- (shared / rowSums(shared)) * 100
 
 # Rename each OTU by it's corresponding taxa
-name_shared <- merge(taxonomy, t(rel_abund), by='row.names')
+name_shared <- merge(taxonomy, t(shared), by='row.names')
 rownames(name_shared) <- name_shared$Taxonomy
 name_shared$Taxonomy <- NULL
 name_shared$Size <- NULL
@@ -45,24 +40,19 @@ rownames(final_shared) <- c('Cefoperazone', 'Clindamycin', 'Conventional', 'Stre
 final_shared <- final_shared[match(c('none', 'cefoperazone', 'clindamycin', 'streptomycin'), final_shared$abx),]
 final_shared$abx <- NULL
 
+# Calculate relative abundance
+rel_abund <- (final_shared/ rowSums(final_shared)) * 100
+
 # Bin lowly abundant OTUs into an 'Other' category
-final_shared[final_shared < 1] <- 0
-final_shared <- final_shared[, colSums(final_shared != 0) > 0]
-final_shared$Other <- 100 - rowSums(final_shared)
+rel_abund[rel_abund < 1] <- 0
+rel_abund <- rel_abund[, colSums(rel_abund != 0) > 0]
+rel_abund$Other <- 100 - rowSums(rel_abund)
 
 # When needed, use this pallete   
-color_palette <- c(wes_palette("Moonrise2"), wes_palette("FantasticFox"), wes_palette("Cavalcanti"), wes_palette("Rushmore"))
-select_colors <- sample(1:length(color_palette), ncol(final_shared), replace=F)
-final_colors <- color_palette[select_colors]
-
-# Define color palette and pick
-#color_palette <- c('firebrick', 'red2', 'orangered1', 'darkorange1', 
-#                   'goldenrod3', 'gold', 'chartreuse3', 'forestgreen', 'aquamarine3', 
-#                   'dodgerblue3', 'blue3', 'mediumpurple4', 'mediumorchid2', 'violetred4')
-#final_colors <- color_palette[sample(1:length(color_palette), ncol(final_shared), replace=F)]
-
 final_colors <- c("gold1", "orangered1", "aquamarine3", "firebrick", "forestgreen", "blue3", 
                   "mediumorchid2", "violetred4", "mediumpurple4", "dodgerblue3", "goldenrod3", "chartreuse3")
+
+
 
 # Plot the final formatted table
 pdf(file=figure_file, width=12, height=9)
