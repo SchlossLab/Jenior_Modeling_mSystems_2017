@@ -4,14 +4,13 @@
 library(igraph)
 
 # Define variables
-file_name <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.bipartite.graph'
-nodes_1 <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.compound.lst'
+file_name <- '~/Desktop/Jenior_812/bipartite_graph.txt'
+nodes_1 <- '~/Desktop/Jenior_812/compound.lst'
 nodes_1_label <- 'Substrate'
-nodes_2 <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/cefoperazone_630.enzyme.lst'
+nodes_2 <- '~/Desktop/Jenior_812/enzyme.lst'
 nodes_2_label <- 'KEGG Ortholog'
-figure_file <- '~/Desktop/Matt/data/cdf_bipartite/cefoperazone_630.bipartite.files/Cdifficile630.bipartite.scc.pdf'
+figure_file <- '~/Desktop/Jenior_812/network.pdf'
 
-/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.txt
 
 # Read in data
 graph.file <- read.table(file_name, header = F, sep = '\t')
@@ -36,11 +35,11 @@ final_colors <- c("gold1", "orangered1", "aquamarine3", "firebrick", "forestgree
                   "mediumorchid2", "violetred4", "mediumpurple4", "dodgerblue3", "goldenrod3", "chartreuse3")
 
 # Pick to different colors at random
-colors <- final_colors[sample(1:length(color_palette), 2, replace=F)]
+colors <- final_colors[sample(1:length(final_colors), 2, replace=F)]
 
 # Format data for plotting
 V(largest.simple.graph)$size <- 3 # Node size
-V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, color_palette[2], color_palette[1]) # Color nodes
+V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, colors[2], colors[1]) # Color nodes
 E(largest.simple.graph)$color <- 'gray15' # Color edges
 
 # Plot the network
