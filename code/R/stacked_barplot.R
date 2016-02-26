@@ -71,3 +71,12 @@ plot(0, type='n', axes=F, xlab='', ylab='')
 taxa <- gsub('_', ', ', rownames(t(final_shared)))
 legend('center', legend=taxa, pt.bg=final_colors, pch=22, pt.cex=1.8)
 dev.off()
+
+
+
+
+
+
+new_df <- merge(data, metadata, by='row.names')
+
+
