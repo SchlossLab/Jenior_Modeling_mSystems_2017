@@ -79,7 +79,7 @@ points(mean(subset(pick.abx.nmds.axes, abx == 'clindamycin')$axis1), mean(subset
 points(mean(subset(pick.abx.nmds.axes, abx == 'streptomycin')$axis1), mean(subset(pick.abx.nmds.axes, abx == 'streptomycin')$axis2), bg='chartreuse4', pch=21, cex=2)
 
 
-# Ploit ellipses (instead)
+# Plot ellipses (instead)
 
 
 
