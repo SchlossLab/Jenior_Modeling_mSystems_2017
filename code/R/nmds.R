@@ -24,12 +24,10 @@ plot(pick.abx.nmds.axes$axis1, pick.abx.nmds.axes$axis2, pch=21, cex=2.5,
      bg=c('black', 'firebrick2', 'blue2', 'chartreuse4')[pick.abx.nmds.axes$abx],
      xlim=c(-0.8,0.8), ylim=c(-0.8,0.8), 
      xlab='NMDS Axis 1', ylab='NMDS Axis 2')
-#plot(0, xlim=c(-0.8,0.8), ylim=c(-0.8,0.8), xlab='NMDS Axis 1', ylab='NMDS Axis 2')
 
 # Add legend
-legend('bottomright', legend=c('Conventional', 'Cefoperzone', 'Clindamycin', 'Streptomycin'), 
-       col=c('blue2', 'black', 'firebrick2', 'chartreuse4'), pch=15, cex=1.5, pt.cex=2.5, bty = "n")
-
+legend('bottomright', legend=c('Cefoperzone', 'Streptomycin', 'Clindamycin', 'Conventional'), 
+       col=c('firebrick2', 'blue2', 'chartreuse4', 'black'), pch=15, cex=1.5, pt.cex=2.5, bty = "n")
 dev.off()
 
 
