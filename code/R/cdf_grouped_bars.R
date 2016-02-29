@@ -49,11 +49,6 @@ legend('center', legend=c('Cefoperzone', 'Streptomycin', 'Clindamycin', 'Germfre
        col=c('firebrick2', 'blue2', 'chartreuse4', 'goldenrod2'), pch=15, cex=2, pt.cex=3.5)
 dev.off()
 
-
-
-
-
-
 #--------------------------------------------------------------------------------------------------------------------------#
 
 # Each expression group seperately
@@ -245,4 +240,35 @@ abline(h=seq(1:4), lty=3, lwd=2)
 axis(2, c(1:4), las=1, cex.axis=1.5)
 dev.off()
 
+#--------------------------------------------------------------------------------------------------------------------------#
 
+# Focus on a few genes of interest in a few conditions
+
+# Specify genes of interest
+aminoacid_genes <- c('prdF', 'prdR', 'prdB', 'prdA', 'prdC', 'ilvC', 'ilvB', 'ilvD', 'leuC', 'leuD', 'leuB', 'leuS')
+carbohydrate_genes <- c('gtaB-1', 'plfB', 'ptsI', 'ptsH', 'gapN', 'gapB', 'gapA', 'cggR', 'bukI', 'pflA-2', 'pflD-2', 'pflE', 'adhE-1', 'adhE-2', 'murF', 'murE')
+
+# Extract genes of interest
+aminoacid_select_expression <- aminoacid_all_expression[row.names(aminoacid_all_expression) %in% aminoacid_genes, ]
+carbohydrate_select_expression <- carbohydrate_all_expression[row.names(carbohydrate_all_expression) %in% carbohydrate_genes, ]
+
+# Plot the new figures
+pdf(file='/Users/pschloss/Desktop/aminoacid_select_expr.pdf', width=14, height=10)
+par(las=3, mar=c(5,5,3,1))
+barplot(t(aminoacid_select_expression), col=c('firebrick2', 'blue2', 'chartreuse4', 'goldenrod2'), 
+        beside=TRUE, ylim=c(0.001, 4), ylab='Log10 Transcript Abundance', 
+        cex.lab=1.8, yaxt='n', font=2, main='Stickland Fermentation/Amino Acid Metabolism')
+box()
+abline(h=seq(1:3), lty=3, lwd=2)
+axis(2, c(1:3), las=1, cex.axis=1.5)
+dev.off()
+#-------------------------#
+pdf(file='/Users/pschloss/Desktop/carbohydrate_select_expr.pdf', width=14, height=10)
+par(las=3, mar=c(5,5,3,1))
+barplot(t(carbohydrate_select_expression), col=c('firebrick2', 'blue2', 'chartreuse4', 'goldenrod2'), 
+        beside=TRUE, ylim=c(0.001, 4), ylab='Log10 Transcript Abundance', 
+        cex.lab=1.8, yaxt='n', font=2, main='Glycolysis / Carbohydrate Fermentation')
+box()
+abline(h=seq(1:3), lty=3, lwd=2)
+axis(2, c(1:3), las=1, cex.axis=1.5)
+dev.off()
