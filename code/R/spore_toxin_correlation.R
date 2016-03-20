@@ -1,10 +1,7 @@
 
-
-
-
 # Define variables
 toxin_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/raw/toxin_titer.dat'
-cfu_file <- '/Users/pschloss/Desktop/Jenior_812/data/cfu.dat'
+cfu_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/raw/cfu.dat'
 figure_file <- '/Users/pschloss/Desktop/toxin_spore_correlation.pdf'
 
 # Read in data
@@ -29,13 +26,27 @@ cfu <- cfu[with(cfu, order(treatment)), ]
 
 # Combine the datasets
 combined_toxin_spores <- cbind(toxin, cfu[,2], deparse.level = 0)
-colnames(combined_toxin_spores) <- c('treatement', 'toxin', 'spores')
+colnames(combined_toxin_spores) <- c('treatment', 'toxin', 'spores')
 
 # Calculate strength of correlation
-#cor.test(combined_toxin_spores$toxin, combined_toxin_spores$spores, method='spearman')
-# S = 3579.6, p-value = 0.0006885, rho = 0.539309 
+glm_out <- glm(combined_toxin_spores$toxin ~ combined_toxin_spores$spores)
+summary(glm_out)
+# p = 3.91e-05 ***
+# AIC: 26.423
 
 # Plot the combined data
-plot(combined_toxin_spores$toxin, combined_toxin_spores$spores)
-abline(lm(combined_toxin_spores$spores ~ combined_toxin_spores$toxin), lwd=4)
+pdf(file=figure_file, width=8, height=7)
+par(las=1, mar=c(4,4,1,1))
+plot(jitter(combined_toxin_spores$toxin, factor=0.75), log10(combined_toxin_spores$spores), 
+     xlim=c(1.75,3.25), ylim=c(1, 7), yaxt='n', pch=21, cex=1.8, cex.lab=1.2,
+     xlab='Toxin Titer', ylab='CFU Spores per gram ceal content', 
+     bg=c('firebrick2', 'blue2', 'chartreuse4', 'black')[combined_toxin_spores$treatment])
+labelsY <- parse(text=paste(rep(10,7), '^', seq(1,7,1), sep=''))
+axis(side=2, at=c(1:7), labelsY, tick=TRUE, cex.axis=1.2, las=1)
+legend('bottomright', legend=c('Cefoperzone', 'Clindamycin', 'Streptomycin', 'Germfree'), 
+       col=c('firebrick2', 'black', 'blue2', 'chartreuse4'), pch=15, cex=1.5, pt.cex=2.5, bty = "n")
+
+#abline(glm_out, col="red")
+
+dev.off()
 

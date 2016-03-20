@@ -1,9 +1,9 @@
 # Data variables
-cefoperazone_file <- '/Users/schloss/Desktop/Repos/presentations/annotated_cdf/cefoperazone_630.mapped2cdf630.annotated.txt'
-streptomycin_file <- '/Users/schloss/Desktop/Repos/presentations/annotated_cdf/streptomycin_630.mapped2cdf630.annotated.txt'
-clindamycin_file <- '/Users/schloss/Desktop/Repos/presentations/annotated_cdf/clindamycin_630.mapped2cdf630.annotated.txt'
-germfree_file <- '/Users/schloss/Desktop/Repos/presentations/annotated_cdf/germfree.mapped2cdf630.annotated.txt'
-output_file <- '/Users/schloss/Desktop/Repos/presentations/annotated_cdf/expression_figure.pdf'
+cefoperazone_file <- '/Users/pschloss/Desktop/annotated_cdf/cefoperazone_630.mapped2cdf630.annotated.txt'
+streptomycin_file <- '/Users/pschloss/Desktop/annotated_cdf/streptomycin_630.mapped2cdf630.annotated.txt'
+clindamycin_file <- '/Users/pschloss/Desktop/annotated_cdf/clindamycin_630.mapped2cdf630.annotated.txt'
+germfree_file <- '/Users/pschloss/Desktop/annotated_cdf/germfree.mapped2cdf630.annotated.txt'
+output_file <- '/Users/pschloss/Desktop/annotated_cdf/expression_figure.pdf'
 
 # Read in data
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', row.names=2, header=F)
@@ -49,6 +49,11 @@ abx_pathways$Row.names <- NULL
 abx_pathways <- merge(abx_pathways, germfree_pooled_pathways, by='row.names')
 rownames(abx_pathways) <- abx_pathways$Row.names
 abx_pathways$Row.names <- NULL
+
+# Subsample table
+colSums(abx_pathways)
+abx_pathways_subsample <- abx_pathways[,sample(1:nrow(abx_pathways), 19329, replace=FALSE)]
+abx_pathways[sample(abx_pathways[,1], 50, replace=FALSE),]
 
 # Screen low abundance pathways and transform data
 pick_abx_pathways <- abx_pathways[ which(rowSums(abx_pathways) > 150),]

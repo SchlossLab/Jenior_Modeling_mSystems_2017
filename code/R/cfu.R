@@ -1,10 +1,14 @@
 
+#install.packages('plyr')
+library(plyr)
+
 # Creates plots for CFU comparisons
 
 # Define variable
-cfu_file <- '/Users/pschloss/Desktop/Jenior_812/data/cfu.dat'
+cfu_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/raw/cfu.dat'
 vegetative_file <- '/Users/pschloss/Desktop/vegetative.cfu.pdf'
 spore_file <- '/Users/pschloss/Desktop/spore.cfu.pdf'
+both_file <- '/Users/pschloss/Desktop/vege_spore.cfu.pdf'
 percent_file <- '/Users/pschloss/Desktop/percent.cfu.pdf'
 
 # Read, format, and separate the data
@@ -18,12 +22,6 @@ cfu <- subset(cfu, cage < 4)
 cfu$cage <- NULL
 cfu <- subset(cfu, treatment != 'conventional')
 
-cfu_raw[cfu_raw == 0] <- 100
-cfu_raw$mouse <- NULL
-cfu_raw <- subset(cfu_raw, cage < 4)
-cfu_raw$cage <- NULL
-cfu_raw <- subset(cfu_raw, treatment != 'conventional')
-
 vegetative_cfu <- subset(cfu, type == 'vegetative')
 vegetative_cfu$type <- NULL
 vegetative_cfu$treatment <- factor(vegetative_cfu$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
@@ -33,15 +31,13 @@ spore_cfu$type <- NULL
 spore_cfu$treatment <- factor(spore_cfu$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
 spore_cfu <- droplevels(spore_cfu)
 
-vegetative_cfu_raw <- subset(cfu_raw, type == 'vegetative')
-vegetative_cfu_raw$type <- NULL
-vegetative_cfu_raw$treatment <- factor(vegetative_cfu_raw$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
-vegetative_cfu_raw <- droplevels(vegetative_cfu_raw)
-spore_cfu_raw <- subset(cfu_raw, type == 'spore')
-spore_cfu_raw$type <- NULL
-spore_cfu_raw$treatment <- factor(spore_cfu_raw$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
-spore_cfu_raw <- droplevels(spore_cfu_raw)
-
+vegetative_spore_cfu <- cbind(vegetative_cfu, spore_cfu)
+colnames(vegetative_spore_cfu) <- c('group', 'vegetative', 'treatment', 'spores')
+vegetative_spore_cfu$treatment <- NULL
+vegetative_spore_cfu_median <- ddply(vegetative_spore_cfu,~group,summarise,vegetative=median(vegetative),spores=median(spores))
+rownames(vegetative_spore_cfu_median) <- vegetative_spore_cfu_median$group
+vegetative_spore_cfu_median$group <- NULL
+vegetative_spore_cfu_median <- t(as.matrix(vegetative_spore_cfu_median))
 
 cef_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Cefoperazone', 2])
 clinda_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Clindamycin', 2])
@@ -98,11 +94,59 @@ dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+# Grouped bar plot of both vegetative cells and spores
+
+pdf(file=both_file, width=10, height=8)
+par(las=1, mar=c(3.5,4,1,1), mgp=c(2.5,0.7,0))
+barplot(vegetative_spore_cfu_median, col=c("blue3","firebrick"), beside=TRUE, ylim=c(0,9), xaxt='n', yaxt='n', ylab='CFU per gram cecal content', cex.lab=1.3)
+box()
+axis(side=1, at=c(2,5,8,11), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
+mtext(c('0.5 mg/ml DW', '5 mg/ml DW', '10 mg/kg IP', 'NA'), side=1, at=c(2,5,8,11), cex=0.9, padj=3.8)
+labelsY <- parse(text=paste(rep(10,7), '^', seq(1,9,1), sep=''))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
+abline(h=2, col="black", lty=2, lwd=2)
+legend('topleft', legend=c('Vegetative cells', 'Spores'), col=c("blue3","firebrick"), pch=15, cex=1, pt.cex=2)
+text(11.5, gf_iqr_spore[4]+0.3, '**', font=2, cex=2)
+
+segments(1.2, cef_iqr_vege[4], 1.8, cef_iqr_vege[4], lwd=4)
+segments(1.2, cef_iqr_vege[2], 1.8, cef_iqr_vege[2], lwd=4)
+segments(1.5, cef_iqr_vege[4], 1.5, cef_iqr_vege[2], lwd=4)
+segments(2.2, cef_iqr_spore[4], 2.8, cef_iqr_spore[4], lwd=4)
+segments(2.2, cef_iqr_spore[2], 2.8, cef_iqr_spore[2], lwd=4) 
+segments(2.5, cef_iqr_spore[4], 2.5, cef_iqr_spore[2], lwd=4)
+
+segments(4.2, strep_iqr_vege[4], 4.8, strep_iqr_vege[4], lwd=4)
+segments(4.2, strep_iqr_vege[2], 4.8, strep_iqr_vege[2], lwd=4)
+segments(4.5, strep_iqr_vege[4], 4.5, strep_iqr_vege[2], lwd=4)
+segments(5.2, strep_iqr_spore[4], 5.8, strep_iqr_spore[4], lwd=4)
+segments(5.2, strep_iqr_spore[2], 5.8, strep_iqr_spore[2], lwd=4) 
+segments(5.5, strep_iqr_spore[4], 5.5, strep_iqr_spore[2], lwd=4)
+
+segments(7.2, clinda_iqr_vege[4], 7.8, clinda_iqr_vege[4], lwd=4)
+segments(7.2, clinda_iqr_vege[2], 7.8, clinda_iqr_vege[2], lwd=4)
+segments(7.5, clinda_iqr_vege[4], 7.5, clinda_iqr_vege[2], lwd=4)
+segments(8.2, clinda_iqr_spore[4], 8.8, clinda_iqr_spore[4], lwd=4)
+segments(8.2, clinda_iqr_spore[2], 8.8, clinda_iqr_spore[2], lwd=4) 
+segments(8.5, clinda_iqr_spore[4], 8.5, clinda_iqr_spore[2], lwd=4)
+
+segments(10.2, gf_iqr_vege[4], 10.8, gf_iqr_vege[4], lwd=4)
+segments(10.2, gf_iqr_vege[2], 10.8, gf_iqr_vege[2], lwd=4)
+segments(10.5, gf_iqr_vege[4], 10.5, gf_iqr_vege[2], lwd=4)
+segments(11.2, gf_iqr_spore[4], 11.8, gf_iqr_spore[4], lwd=4)
+segments(11.2, gf_iqr_spore[2], 11.8, gf_iqr_spore[2], lwd=4) 
+segments(11.5, gf_iqr_spore[4], 11.5, gf_iqr_spore[2], lwd=4)
+dev.off()
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+
+
 # Calculate differences - vegetative
-cef_vegetative <- subset(vegetative_cfu_raw, treatment=='Cefoperazone')[,2]
-strep_vegetative <- subset(vegetative_cfu_raw, treatment=='Streptomycin')[,2]
-clinda_vegetative <- subset(vegetative_cfu_raw, treatment=='Clindamycin')[,2]
-gf_vegetative <- subset(vegetative_cfu_raw, treatment=='Germfree')[,2]
+cef_vegetative <- subset(vegetative_cfu, treatment=='Cefoperazone')[,2]
+strep_vegetative <- subset(vegetative_cfu, treatment=='Streptomycin')[,2]
+clinda_vegetative <- subset(vegetative_cfu, treatment=='Clindamycin')[,2]
+gf_vegetative <- subset(vegetative_cfu, treatment=='Germfree')[,2]
 
 shapiro.test(cef_vegetative) # p-value = 0.4805
 shapiro.test(strep_vegetative) # p-value = 0.07191
@@ -118,10 +162,10 @@ wilcox.test(clinda_vegetative, gf_vegetative, exact=F) # p-value = 0.0035  **
 
 
 # Calculate differences - spore
-cef_spore <- subset(spore_cfu_raw, treatment=='Cefoperazone')[,2]
-strep_spore <- subset(spore_cfu_raw, treatment=='Streptomycin')[,2]
-clinda_spore <- subset(spore_cfu_raw, treatment=='Clindamycin')[,2]
-gf_spore <- subset(spore_cfu_raw, treatment=='Germfree')[,2]
+cef_spore <- subset(spore_cfu, treatment=='Cefoperazone')[,2]
+strep_spore <- subset(spore_cfu, treatment=='Streptomycin')[,2]
+clinda_spore <- subset(spore_cfu, treatment=='Clindamycin')[,2]
+gf_spore <- subset(spore_cfu, treatment=='Germfree')[,2]
 
 shapiro.test(cef_spore) # p-value = 0.001587
 shapiro.test(strep_spore) # p-value = 0.002147
@@ -139,8 +183,8 @@ wilcox.test(clinda_spore, gf_spore, exact=F) # p-value = 0.0005699  ***
 
 
 # Plotting spores as a percentage of total CFU
-percentage <- (spore_cfu_raw$cfu / vegetative_cfu_raw$cfu) * 100
-treatment <- as.vector(vegetative_cfu_raw$treatment)
+percentage <- (spore_cfu$cfu / vegetative_cfu$cfu) * 100
+treatment <- as.vector(vegetative_cfu$treatment)
 cfu_percent <- as.data.frame(cbind(treatment, percentage))
 cfu_percent$percentage <- as.numeric(as.character(cfu_percent$percentage))
 cfu_percent$treatment <- factor(cfu_percent$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))

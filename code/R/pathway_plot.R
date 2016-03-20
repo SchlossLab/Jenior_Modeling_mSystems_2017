@@ -41,7 +41,7 @@ compounds <- log2(compounds)
 # Generate plot - cpd.data = compounds, cpd.idtype = "kegg", 
 
 # Carbohydrate metabolism
-pathview(gene.data = expression, gene.idtype = "KEGG", pathway.id = "00010", cpd.data = compounds, cpd.idtype = "kegg", species = "cdf", kegg.dir = ".", file.type = 'png', same.layer=TRUE) # Glycolysis
+pathview(gene.data = expression, gene.idtype = "KEGG", pathway.id = "00010", cpd.data = compounds, cpd.idtype = "kegg", species = "cdf", kegg.dir = ".", file.type = 'png', same.layer=TRUE) # glycolysis
 pathview(gene.data = expression, gene.idtype = "KEGG", pathway.id = "00020", cpd.data = compounds, cpd.idtype = "kegg", species = "cdf", kegg.dir = ".", file.type = 'png', same.layer=TRUE) # tca_cycle
 pathview(gene.data = expression, gene.idtype = "KEGG", pathway.id = "00030", cpd.data = compounds, cpd.idtype = "kegg", species = "cdf", kegg.dir = ".", file.type = 'png', same.layer=TRUE) # pentose_phosphate
 pathview(gene.data = expression, gene.idtype = "KEGG", pathway.id = "00040", cpd.data = compounds, cpd.idtype = "kegg", species = "cdf", kegg.dir = ".", file.type = 'png', same.layer=TRUE) # pentose_to_glucuronate
