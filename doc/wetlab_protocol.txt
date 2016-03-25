@@ -1,5 +1,5 @@
 Matthew Jenior
-Total Bacterial mRNA RNA-Seq Protocol from Samples Containing Clostridium difficile
+Total Bacterial RNA RNA-Seq Protocol from Samples Containing Clostridium difficile
 
 Notes before starting:
 -	Content harvest and RNA isolation steps adapted from Lopez-Medina, E., et. al. (2011) JOVE <http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3230207/>
@@ -12,6 +12,7 @@ Notes before starting:
 -	Allow magnetic bead kit from RiboZero to equilibrate to room temperature.
 -	Use proper positive and negative PCR controls to ensure quality at each QC step.
 -	ALL TUBES MUST BE POLYPROPYLENE – low pH will dissolve others
+-	To maximize the quality of extraction, perform in 4C cold room if possible.
 
 Reagents/Supplies:		Catalog Numbers:
 RNase AWAY Spray Bottle		7002

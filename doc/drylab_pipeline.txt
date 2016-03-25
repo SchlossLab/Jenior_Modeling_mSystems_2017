@@ -14,7 +14,7 @@ python create_network_refs.py
 
 
 # Table of Contents
-# 1. Combine and trim metagenomic reads
+# 1. 
 # 2. 
 # 3. 
 # 4. 
