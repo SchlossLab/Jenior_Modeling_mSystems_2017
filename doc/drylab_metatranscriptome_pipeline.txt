@@ -101,28 +101,28 @@ rm metatranscriptome.aligned.paired.transcripts2cdf630.sam metatranscriptome.ali
 
 # 4. Map reads to their corresponding metagenome
 
-/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_metaG_db -1 metatranscriptome.read1.pool.cut.trim.filter.fasta -2 metatranscriptome.read2.pool.cut.trim.filter.fasta -S metatranscriptome.pair.transcripts2metaG.sam
-samtools view -bS metatranscriptome.pair.transcripts2metaG.sam > metatranscriptome.pair.transcripts2metaG.bam
-rm metatranscriptome.pair.transcripts2metaG.sam
-samtools sort metatranscriptome.pair.transcripts2metaG.bam metatranscriptome.pair.transcripts2metaG.sorted
+/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_metaG_db -1 metatranscriptome.read1.pool.cut.trim.filter.fasta -2 metatranscriptome.read2.pool.cut.trim.filter.fasta -S metatranscriptome.pair.RNA_reads2metaG.sam
+samtools view -bS metatranscriptome.pair.RNA_reads2metaG.sam > metatranscriptome.pair.RNA_reads2metaG.bam
+rm metatranscriptome.pair.RNA_reads2metaG.sam
+samtools sort metatranscriptome.pair.RNA_reads2metaG.bam metatranscriptome.pair.RNA_reads2metaG.sorted
 
-/home/mljenior/bin/bowtie2/bowtie2 -f -x metagenome_metaG_db -U metatranscriptome.orphan.pool.cut.trim.filter.fasta -S metatranscriptome.orphan.transcripts2metaG.sam
-samtools view -bS metatranscriptome.orphan.transcripts2metaG.sam > metatranscriptome.orphan.transcripts2metaG.bam
-samtools sort metatranscriptome.orphan.transcripts2metaG.bam metatranscriptome.orphan.transcripts2metaG.sorted
+/home/mljenior/bin/bowtie2/bowtie2 -f -x metagenome_metaG_db -U metatranscriptome.orphan.pool.cut.trim.filter.fasta -S metatranscriptome.orphan.RNA_reads2metaG.sam
+samtools view -bS metatranscriptome.orphan.RNA_reads2metaG.sam > metatranscriptome.orphan.RNA_reads2metaG.bam
+samtools sort metatranscriptome.orphan.RNA_reads2metaG.bam metatranscriptome.orphan.RNA_reads2metaG.sorted
 
-samtools merge metatranscriptome.transcripts2metaG.sorted.merge.bam metatranscriptome.pair.transcripts2metaG.sorted.bam metatranscriptome.orphan.transcripts2metaG.sorted.bam
-samtools index metatranscriptome.transcripts2metaG.sorted.merge.bam
-samtools idxstats metatranscriptome.transcripts2metaG.sorted.merge.bam > metatranscriptome.mapped2metaG.txt
+samtools merge metatranscriptome.RNA_reads2metaG.sorted.merge.bam metatranscriptome.pair.RNA_reads2metaG.sorted.bam metatranscriptome.orphan.RNA_reads2metaG.sorted.bam
+samtools index metatranscriptome.RNA_reads2metaG.sorted.merge.bam
+samtools idxstats metatranscriptome.RNA_reads2metaG.sorted.merge.bam > metatranscriptome.RNA_reads2metaG.txt
 
-/home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metatranscriptome.mapped2metaG.txt
-/home/mljenior/scripts/idxstats/normalize_idxstats.py metatranscriptome.reads2metaG.pool.txt
-/home/mljenior/scripts/idxstats/count_idxstats.py input_file metatranscriptome.reads2metaG.pool.norm.txt
+/home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metatranscriptome.RNA_reads2metaG.txt
+/home/mljenior/scripts/idxstats/normalize_idxstats.py metatranscriptome.RNA_reads2metaG.pool.txt
+/home/mljenior/scripts/idxstats/count_idxstats.py input_file metatranscriptome.RNA_reads2metaG.pool.norm.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 5. After counting mapped reads, subsample evenly within a study (~90% smallest)
 
-/home/mljenior/scripts/idxstats/rarefy_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.txt ${count}
+/home/mljenior/scripts/idxstats/rarefy_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.txt count
 /home/mljenior/scripts/idxstats/relabund_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.pick.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#

@@ -125,21 +125,21 @@ python /mnt/EXT/Schloss-data/bin/seq_stats.py metagenome.genes.250.format.annota
 
 # 7. Map reads back onto annotated genes
 
-/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_metaG_db -1 metagenome.read1.pool.cut.trim.fasta -2 metagenome.read2.pool.cut.trim.fasta -S metagenome.pair.reads2genes.sam
-samtools view -bS metagenome.pair.reads2genes.sam > metagenome.pair.reads2genes.bam
-samtools sort metagenome.pair.reads2genes.bam metagenome.pair.reads2genes.sorted
+/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_metaG_db -1 metagenome.read1.pool.cut.trim.fasta -2 metagenome.read2.pool.cut.trim.fasta -S metagenome.pair.DNA_reads2metaG.sam
+samtools view -bS metagenome.pair.DNA_reads2metaG.sam > metagenome.pair.DNA_reads2metaG.bam
+samtools sort metagenome.pair.DNA_reads2metaG.bam metagenome.pair.DNA_reads2metaG.sorted
 
-/home/mljenior/bin/bowtie2/bowtie2 -f -x metagenome_metaG_db -U metagenome.pool.cut.trim.orphan.fasta -S metagenome.orphan.reads2genes.sam
-samtools view -bS metagenome.orphan.reads2genes.sam > metagenome.orphan.reads2genes.bam
-samtools sort metagenome.orphan.reads2genes.bam metagenome.orphan.reads2genes.sorted
+/home/mljenior/bin/bowtie2/bowtie2 -f -x metagenome_metaG_db -U metagenome.pool.cut.trim.orphan.fasta -S metagenome.orphan.DNA_reads2metaG.sam
+samtools view -bS metagenome.orphan.DNA_reads2metaG.sam > metagenome.orphan.DNA_reads2metaG.bam
+samtools sort metagenome.orphan.DNA_reads2metaG.bam metagenome.orphan.DNA_reads2metaG.sorted
 
-samtools merge metagenome.reads2genes.sorted.merge.bam metagenome.pair.reads2genes.sorted.bam metagenome.orphan.reads2genes.sorted.bam
-samtools index metagenome.reads2genes.sorted.merge.bam
-samtools idxstats metagenome.reads2genes.sorted.merge.bam > metagenome.reads2genes.txt
+samtools merge metagenome.DNA_reads2metaG.sorted.merge.bam metagenome.pair.DNA_reads2metaG.sorted.bam metagenome.orphan.DNA_reads2metaG.sorted.bam
+samtools index metagenome.DNA_reads2metaG.sorted.merge.bam
+samtools idxstats metagenome.DNA_reads2metaG.sorted.merge.bam > metagenome.DNA_reads2metaG.txt
 
-/home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metagenome.reads2genes.txt
-/home/mljenior/scripts/idxstats/normalize_idxstats.py metagenome.reads2genes.pool.txt
-/home/mljenior/scripts/idxstats/count_idxstats.py input_file metagenome.reads2genes.pool.norm.txt
+/home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metagenome.DNA_reads2metaG.txt
+/home/mljenior/scripts/idxstats/normalize_idxstats.py metagenome.DNA_reads2metaG.pool.txt
+/home/mljenior/scripts/idxstats/count_idxstats.py input_file metagenome.DNA_reads2metaG.pool.norm.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
