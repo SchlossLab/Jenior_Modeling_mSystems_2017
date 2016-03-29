@@ -78,13 +78,13 @@ cp /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/metagenome/assembly/metagenome.m
 rm metagenome.final.contigs.250.fa
 
 # Align reads to contigs
-/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_contig_database -1 /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/metagenome/fastq/metagenome.read1.pool.cut.trim.fasta -2 /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/metagenome/fastq/metagenome.read2.pool.cut.trim.fasta -S metagenome.reads2contigs.sam
+/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x metagenome_contig_database -1 /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/metagenome/fastq/metagenome.read1.pool.cut.trim.fasta -2 /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/metagenome/fastq/metagenome.read2.pool.cut.trim.fasta -S metagenome.DNA_reads2contigs.sam
 
 # Translate the results to human readable format
-samtools view -bS metagenome.reads2contigs.sam > metagenome.reads2contigs.bam
-samtools sort metagenome.reads2contigs.bam metagenome.reads2contigs.sorted
-samtools index metagenome.reads2contigs.sorted.bam
-samtools idxstats metagenome.reads2contigs.sorted.bam > metagenome.reads2contigs.txt
+samtools view -bS metagenome.reads2contigs.sam > metagenome.DNA_reads2contigs.bam
+samtools sort metagenome.DNA_reads2contigs.bam metagenome.DNA_reads2contigs.sorted
+samtools index metagenome.DNA_reads2contigs.sorted.bam
+samtools idxstats metagenome.DNA_reads2contigs.sorted.bam > metagenome.DNA_	reads2contigs.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -138,8 +138,8 @@ samtools index metagenome.DNA_reads2metaG.sorted.merge.bam
 samtools idxstats metagenome.DNA_reads2metaG.sorted.merge.bam > metagenome.DNA_reads2metaG.txt
 
 /home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metagenome.DNA_reads2metaG.txt
-/home/mljenior/scripts/idxstats/normalize_idxstats.py metagenome.DNA_reads2metaG.pool.txt
-/home/mljenior/scripts/idxstats/count_idxstats.py input_file metagenome.DNA_reads2metaG.pool.norm.txt
+/home/mljenior/scripts/idxstats/normalize_idxstats.py metagenome.DNA_reads2metaG.pool.txt 250
+/home/mljenior/scripts/idxstats/count_idxstats.py metagenome.DNA_reads2metaG.pool.norm.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -211,7 +211,7 @@ echo $1 read-to-contig mapping job submitted. Job ID $bowtie_job_id
 cd /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/$1/annotation
 genes_job_id=$(qsub -v metagenome=$1 -W depend=afterok:$assembly_job_id /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/gene_calling.pbs | sed 's/\..*$//')
 echo $1 gene calling job submitted. Job ID $genes_job_id
-annotation_job_id=$(qsub -v metagenome=$1 -W depend=afterok:$genes_job_id /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/annotation.pbs | sed 's/\..*$//')
+annotation_job_id=$(qsub -v metagenome=$1,count=$2 -W depend=afterok:$genes_job_id /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/annotation.pbs | sed 's/\..*$//')
 echo $1 annotation job submitted. Job ID $annotation_job_id
 
 echo

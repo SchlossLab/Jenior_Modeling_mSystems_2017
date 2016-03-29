@@ -115,8 +115,8 @@ samtools index metatranscriptome.RNA_reads2metaG.sorted.merge.bam
 samtools idxstats metatranscriptome.RNA_reads2metaG.sorted.merge.bam > metatranscriptome.RNA_reads2metaG.txt
 
 /home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metatranscriptome.RNA_reads2metaG.txt
-/home/mljenior/scripts/idxstats/normalize_idxstats.py metatranscriptome.RNA_reads2metaG.pool.txt
-/home/mljenior/scripts/idxstats/count_idxstats.py input_file metatranscriptome.RNA_reads2metaG.pool.norm.txt
+/home/mljenior/scripts/idxstats/normalize_idxstats.py metatranscriptome.RNA_reads2metaG.pool.txt 50
+/home/mljenior/scripts/idxstats/count_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
