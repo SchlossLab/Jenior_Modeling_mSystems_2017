@@ -13,21 +13,25 @@
 # 8. Subsampling
 # 9. 
 
+
+
+for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/curate_metagenome.bash $condition;  done
+
+
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 1. Pool raw read files from the same sample
 
-gunzip *.gz
+zcat *_L001_R1_*.fastq.gz > metagenome.lane1.read1.fastq.gz
+zcat *_L001_R2_*.fastq.gz > metagenome.lane1.read2.fastq.gz
+zcat *_L002_R1_*.fastq.gz > metagenome.lane2.read1.fastq.gz
+zcat *_L002_R2_*.fastq.gz > metagenome.lane2.read2.fastq.gz
 
-cat *_L001_R1_*.fastq > metagenome.lane1.read1.fastq
-cat *_L001_R2_*.fastq > metagenome.lane1.read2.fastq
-cat *_L002_R1_*.fastq > metagenome.lane2.read1.fastq
-cat *_L002_R2_*.fastq > metagenome.lane2.read2.fastq
+zcat metagenome.lane1.read1.fastq.gz metagenome.lane2.read1.fastq.gz > metagenome.read1.pool.fastq.gz
+zcat metagenome.lane1.read2.fastq.gz metagenome.lane2.read2.fastq.gz > metagenome.read2.pool.fastq.gz
 
-cat metagenome.lane1.read1.fastq metagenome.lane2.read1.fastq > metagenome.read1.pool.fastq
-cat metagenome.lane1.read2.fastq metagenome.lane2.read2.fastq > metagenome.read2.pool.fastq
-
-gzip *.lane*.fastq *_L00*.fastq
+rm *.read1.fastq.gz *.read2.fastq.gz
+gunzip metagenome.*.pool.fastq.gz
 
 python /mnt/EXT/Schloss-data/bin/seq_stats.py metagenome.read1.pool.fastq > metagenome.pooling.summary
 python /mnt/EXT/Schloss-data/bin/seq_stats.py metagenome.read2.pool.fastq >> metagenome.pooling.summary
