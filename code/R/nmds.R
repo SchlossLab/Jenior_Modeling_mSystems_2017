@@ -1,8 +1,8 @@
 
 # Define variables
-nmds_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/processed/otu/allabx.0.03.thetayc.0.03.lt.ave.nmds.axes'
-metadata_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.txt'
-figure_file <- '/Users/pschloss/Desktop/nmds.pdf'
+nmds_file <- '/Users/mattjenior/Desktop/data/processed/otu/allabx.0.03.thetayc.0.03.lt.ave.nmds.axes'
+metadata_file <- '/Users/mattjenior/Desktop/data/metadata.txt'
+figure_file <- '/Users/mattjenior/Desktop/nmds.pdf'
 
 # Load in data
 abx.nmds.axes <- read.delim(nmds_file, sep='\t', header=T, row.names=1)

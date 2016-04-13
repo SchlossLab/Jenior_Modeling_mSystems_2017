@@ -18,6 +18,9 @@
 for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/curate_metagenome.bash $condition;  done
 
 
+commands for making metagenomic dbs
+
+
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 1. Pool raw read files from the same sample

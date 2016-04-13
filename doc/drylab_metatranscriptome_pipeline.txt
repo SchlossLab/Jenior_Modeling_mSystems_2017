@@ -13,6 +13,7 @@
 
 for condition in 'cefoperazone_630' 'cefoperazone_mock' 'conventional' 'clindamycin_mock' 'clindamycin_630' 'streptomycin_630' 'streptomycin_mock' 'germfree'; do bash /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/curate_metatranscriptome.bash $condition 50; done
 
+
 # After metgenomic curation and database creation finished
 cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/metagenome
 qsub -v metagenome='Cefoperazone',metatranscriptome='cefoperazone_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
@@ -30,6 +31,14 @@ qsub -v metagenome='Clindamycin',metatranscriptome='clindamycin_mock',count=50 /
 qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
 qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
 qsub -v metagenome='Conventional',metatranscriptome='conventional',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
+
+
+cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/cdifficile630/genes
+for condition in 'cefoperazone_630' 'clindamycin_630' 'streptomycin_630' 'germfree'; do qsub -v transcriptome=$condition,count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2cdf_genes.pbs; done
+
+
+cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/cdifficile630/genome
+for condition in 'cefoperazone_630' 'clindamycin_630' 'streptomycin_630' 'germfree'; do qsub -v transcriptome=$condition,count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2cdf_genome.pbs; done
 
 
 #-------------------------------------------------------------------------------------------------------------------------#
