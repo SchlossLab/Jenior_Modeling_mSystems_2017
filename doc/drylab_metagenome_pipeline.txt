@@ -10,16 +10,14 @@
 # 5. Gene calling
 # 6. Annotation
 # 7. Read mapping
-# 8. Subsampling
-# 9. 
+# 8. Appendix
 
 
+# Single command to curate, assemble, and annotate all metagneomes
+for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/curate_metagenome.bash $condition; done
 
-for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/curate_metagenome.bash $condition;  done
-
-
-commands for making metagenomic dbs
-
+# Single command to map all RNA and DNA reads to respective metagenomes 
+for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/mapping.bash $condition 50 250; done
 
 #-------------------------------------------------------------------------------------------------------------------------#
 

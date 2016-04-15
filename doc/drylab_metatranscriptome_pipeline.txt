@@ -7,39 +7,13 @@
 # 2. Quality trimming
 # 3. Contaminant filtering
 # 4. Read mapping
-# 5. Subsampling
-# 6. 
+# 5. Appendix
 
-
+# Single command to curate and filter all metatransciptomes
 for condition in 'cefoperazone_630' 'cefoperazone_mock' 'conventional' 'clindamycin_mock' 'clindamycin_630' 'streptomycin_630' 'streptomycin_mock' 'germfree'; do bash /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/curate_metatranscriptome.bash $condition 50; done
 
-
-# After metgenomic curation and database creation finished
-cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/metagenome
-qsub -v metagenome='Cefoperazone',metatranscriptome='cefoperazone_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Cefoperazone',metatranscriptome='cefoperazone_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Clindamycin',metatranscriptome='clindamycin_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Clindamycin',metatranscriptome='clindamycin_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-qsub -v metagenome='Conventional',metatranscriptome='conventional',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome.pbs
-
-qsub -v metagenome='Cefoperazone',metatranscriptome='cefoperazone_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Cefoperazone',metatranscriptome='cefoperazone_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Clindamycin',metatranscriptome='clindamycin_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Clindamycin',metatranscriptome='clindamycin_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_630',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Streptomycin',metatranscriptome='streptomycin_mock',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-qsub -v metagenome='Conventional',metatranscriptome='conventional',count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2metagenome_w_cdf.pbs
-
-
-cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/cdifficile630/genes
-for condition in 'cefoperazone_630' 'clindamycin_630' 'streptomycin_630' 'germfree'; do qsub -v transcriptome=$condition,count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2cdf_genes.pbs; done
-
-
-cd /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/mapping/cdifficile630/genome
-for condition in 'cefoperazone_630' 'clindamycin_630' 'streptomycin_630' 'germfree'; do qsub -v transcriptome=$condition,count=50 /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/pbs/map2cdf_genome.pbs; done
-
+# Single command to map all RNA and DNA reads to respective metagenomes 
+for condition in 'Conventional' 'Cefoperazone' 'Streptomycin' 'Clindamycin'; do bash /mnt/EXT/Schloss-data/matt/metagenomes_HiSeq/pbs/mapping.bash $condition 50 250; done
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -147,13 +121,6 @@ samtools idxstats metatranscriptome.RNA_reads2metaG.sorted.merge.bam > metatrans
 /home/mljenior/scripts/idxstats/pool_unmapped_idxstats.py metatranscriptome.RNA_reads2metaG.all.txt
 /home/mljenior/scripts/idxstats/normalize_idxstats.py metatranscriptome.RNA_reads2metaG.all.pool.txt 50
 /home/mljenior/scripts/idxstats/count_idxstats.py metatranscriptome.RNA_reads2metaG.all.pool.norm.txt
-
-#-------------------------------------------------------------------------------------------------------------------------#
-
-# 5. After counting mapped reads, subsample evenly within a study (~90% smallest)
-
-/home/mljenior/scripts/idxstats/rarefy_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.txt count
-/home/mljenior/scripts/idxstats/relabund_idxstats.py metatranscriptome.RNA_reads2metaG.pool.norm.pick.txt
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
