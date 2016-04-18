@@ -7,26 +7,35 @@ metatranscriptome2_file <- '/Users/mattjenior/Desktop/gene_mapping/metatranscrip
 plot_file <- '/Users/mattjenior/Desktop/cefoperazone.metaTvsmetaG.pdf'
 
 # Load in data
-metagenome <- read.delim(metagenome_file, sep='\t', header=F, row.names=3)
-colnames(metagenome) <- c('G.relabund', 'gene', 'ko', 'pathway', 'metadata1', 'metadata2', 'metadata3')
-metagenome$gene <- NULL
-metagenome$ko <- NULL
-metagenome$pathway <- NULL
-metagenome$metadata1 <- NULL
-metagenome$metadata2 <- NULL
-metagenome$metadata3 <- NULL
-metatranscriptome1 <- read.delim(metatranscriptome1_file, sep='\t', header=F, row.names=3)
-colnames(metatranscriptome1) <- c('T.relabund', 'gene', 'ko', 'pathway', 'metadata1', 'metadata2', 'metadata3')
-metatranscriptome2 <- read.delim(metatranscriptome2_file, sep='\t', header=F, row.names=3)
-colnames(metatranscriptome2) <- c('T.relabund', 'gene', 'ko', 'pathway', 'metadata1', 'metadata2', 'metadata3')
+metagenome <- read.delim(metagenome_file, sep='\t', header=TRUE, row.names=4)
+metatranscriptome1 <- read.delim(metatranscriptome1_file, sep='\t', header=TRUE, row.names=4)
+metatranscriptome2 <- read.delim(metatranscriptome2_file, sep='\t', header=TRUE, row.names=4)
+
+# Format data for merging
+metagenome$gene_annotation <- NULL
+metagenome$evalue <- NULL
+metagenome$KEGG_ortholog <- NULL
+metagenome$pathway_annotation <- NULL
+metatranscriptome1$gene_annotation <- NULL
+metatranscriptome1$evalue <- NULL
+metatranscriptome1$KEGG_ortholog <- NULL
+metatranscriptome1$pathway_annotation <- NULL
 
 # Merge tables
-combined_data_630 <- merge(metagenome, metatranscriptome1, by='row.names')
-rownames(combined_data_630) <- combined_data_630$Row.names
-combined_data_630$Row.names <- NULL
-combined_data_mock <- merge(metagenome, metatranscriptome2, by='row.names')
-rownames(combined_data_mock) <- combined_data_mock$Row.names
-combined_data_mock$Row.names <- NULL
+combined_mapping <- merge(metagenome, metatranscriptome1, by='row.names')
+rownames(combined_mapping) <- combined_mapping$Row.names
+combined_mapping$Row.names <- NULL
+combined_mapping <- merge(combined_mapping, metatranscriptome2, by='row.names')
+rownames(combined_mapping) <- combined_mapping$Row.names
+combined_mapping$Row.names <- NULL
+colnames(combined_mapping) <- c('metagenome', 'infected_metatranscriptome', 'mock_metatranscriptome', 'gene_annotation', 'evalue', 'KEGG_ortholog', 'pathway_annotation')
+combined_mapping$gene_annotation <- NULL
+combined_mapping$evalue <- NULL
+combined_mapping$KEGG_ortholog <- NULL
+
+
+
+# Grep specific strings out of pathway annotation field
 
 # Define points for coloring later
 abc_transporters_630 <- subset(combined_data_630, metadata1 == 'ABC transporters', select = c(G.relabund, T.relabund))
@@ -56,24 +65,6 @@ pyruvate_mock <- subset(combined_data_mock, metadata1 == 'Pyruvate metabolism', 
 fatty_acid_mock <- subset(combined_data_mock, metadata1 == 'Fatty acid metabolism', select = c(G.relabund, T.relabund))
 glycerophospholipid_mock <- subset(combined_data_mock, metadata1 == 'Glycerophospholipid metabolism', select = c(G.relabund, T.relabund))
 peptidoglycan_mock <- subset(combined_data_mock, metadata1 == 'Peptidoglycan biosynthesis', select = c(G.relabund, T.relabund))
-
-# Format tables for plotting
-combined_data_630$gene <- NULL
-combined_data_630$ko <- NULL
-combined_data_630$pathway <- NULL
-combined_data_630$metadata1 <- NULL
-combined_data_630$metadata2 <- NULL
-combined_data_630$metadata3 <- NULL
-combined_data_mock$gene <- NULL
-combined_data_mock$ko <- NULL
-combined_data_mock$pathway <- NULL
-combined_data_mock$metadata1 <- NULL
-combined_data_mock$metadata2 <- NULL
-combined_data_mock$metadata3 <- NULL
-colnames(combined_data_630) <- c('Metagenome', 'Metatranscriptome')
-colnames(combined_data_mock) <- c('Metagenome', 'Metatranscriptome')
-
-
 
 # Plot the most interesting pathways
 pdf(file=plot_file, width=25, height=12)
