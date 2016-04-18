@@ -1,10 +1,10 @@
 
 
 # Define file variables
-metagenome_file <- '/Users/mattjenior/Desktop/gene_mapping/metagenome/'
-metatranscriptome1_file <- '/Users/mattjenior/Desktop/gene_mapping/metatranscriptome/remove_Cdifficile/'
-metatranscriptome2_file <- '/Users/mattjenior/Desktop/gene_mapping/metatranscriptome/remove_Cdifficile/'
-plot_file <- '/Users/mattjenior/Desktop/clindamycin.metaTvsmetaG.pdf'
+metagenome_file <- '/Users/mattjenior/Desktop/gene_mapping/metagenome/Cefoperazone.DNA_reads2metaG.all.pool.norm.remove.annotated.txt'
+metatranscriptome1_file <- '/Users/mattjenior/Desktop/gene_mapping/metatranscriptome/remove_Cdifficile/cefoperazone_630.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+metatranscriptome2_file <- '/Users/mattjenior/Desktop/gene_mapping/metatranscriptome/remove_Cdifficile/cefoperazone_mock.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+plot_file <- '/Users/mattjenior/Desktop/cefoperazone.metaTvsmetaG.pdf'
 
 # Load in data
 metagenome <- read.delim(metagenome_file, sep='\t', header=F, row.names=3)
