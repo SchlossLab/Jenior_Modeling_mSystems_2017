@@ -1,5 +1,5 @@
 
-deps <- c('vegan');
+deps <- c('vegan', 'rgl', 'klaR');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -12,13 +12,13 @@ rm(dep, deps)
 cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/cefoperazone_630.RNA_reads2cdf630.pool.norm.annotated.txt'
 clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/clindamycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
 streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/streptomycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/germfree.RNA_reads2cdf630.pool.norm.annotated.txt'
+#germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/germfree.RNA_reads2cdf630.pool.norm.annotated.txt'
 
 # Load in data
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=TRUE, row.names=2)
 clindamycin <- read.delim(clindamycin_file, sep='\t', header=TRUE, row.names=2)
 streptomycin <- read.delim(streptomycin_file, sep='\t', header=TRUE, row.names=2)
-germfree <- read.delim(germfree_file, sep='\t', header=TRUE, row.names=2)
+#germfree <- read.delim(germfree_file, sep='\t', header=TRUE, row.names=2)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -27,8 +27,8 @@ cefoperazone$gene_annotation <- NULL
 cefoperazone$pathway_annotation <- NULL
 clindamycin$gene_annotation <- NULL
 clindamycin$pathway_annotation <- NULL
-streptomycin$gene_annotation <- NULL
-streptomycin$pathway_annotation <- NULL
+#streptomycin$gene_annotation <- NULL
+#streptomycin$pathway_annotation <- NULL
 
 # Merge tables
 combined_mapping <- merge(cefoperazone, clindamycin, by='row.names')
@@ -37,39 +37,32 @@ combined_mapping$Row.names <- NULL
 combined_mapping <- merge(combined_mapping, streptomycin, by='row.names')
 rownames(combined_mapping) <- combined_mapping$Row.names
 combined_mapping$Row.names <- NULL
-combined_mapping <- merge(combined_mapping, germfree, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
-colnames(combined_mapping) <- c('cefoperazone', 'clindamycin', 'streptomycin', 'germfree', 'gene_annotation', 'pathway_annotation')
+colnames(combined_mapping) <- c('cefoperazone', 'clindamycin', 'streptomycin', 'gene_annotation', 'pathway_annotation')
+#combined_mapping <- merge(combined_mapping, germfree, by='row.names')
+#rownames(combined_mapping) <- combined_mapping$Row.names
+#combined_mapping$Row.names <- NULL
+#colnames(combined_mapping) <- c('cefoperazone', 'clindamycin', 'streptomycin', 'germfree', 'gene_annotation', 'pathway_annotation')
 
 # Remove file names and single tables from memory
-rm(cefoperazone_file, clindamycin_file, streptomycin_file, germfree_file)
-rm(cefoperazone, clindamycin, streptomycin, germfree)
+rm(cefoperazone_file, clindamycin_file, streptomycin_file)
+rm(cefoperazone, clindamycin, streptomycin)
 
 # Rarefy mappings to be equal within sequencing type
-sub_size <- round(min(colSums(combined_mapping[,c(1:4)]))*0.9)
+sub_size <- round(min(colSums(combined_mapping[,c(1:3)]))*0.9)
 combined_mapping$cefoperazone <- t(rrarefy(combined_mapping$cefoperazone, sample=sub_size))
 combined_mapping$clindamycin <- t(rrarefy(combined_mapping$clindamycin, sample=sub_size))
 combined_mapping$streptomycin <- t(rrarefy(combined_mapping$streptomycin, sample=sub_size))
-combined_mapping$germfree <- t(rrarefy(combined_mapping$germfree, sample=sub_size))
+#combined_mapping$germfree <- t(rrarefy(combined_mapping$germfree, sample=sub_size))
 
 # Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,c(1:4)]) != 0, ] 
+combined_mapping <- combined_mapping[rowSums(combined_mapping[,c(1:3)]) != 0, ] 
 
-# Log10 transform the data
+
+averages <- log10(rowSums(combined_mapping[,c(1:3)]) / 3) * 1.5
+
+# Convert each gene into the fraction of the transcription for that gene across treatments
 combined_mapping[combined_mapping == 0] <- 1
-combined_mapping$cefoperazone <- log10(combined_mapping$cefoperazone)
-combined_mapping$clindamycin <- log10(combined_mapping$clindamycin)
-combined_mapping$streptomycin <- log10(combined_mapping$streptomycin)
-combined_mapping$germfree <- log10(combined_mapping$germfree)
-norm_max <- max(combined_mapping[,c(1:4)])
-
-# Remove genes with no pathway annotation
-unannotated <- subset(combined_mapping, combined_mapping$pathway_annotation == 'none')
-#combined_mapping <- subset(combined_mapping, pathway_annotation != 'none')
-
-# Sort by pathway annotation
-combined_mapping <- combined_mapping[order(combined_mapping$pathway_annotation),] 
+combined_mapping[,c(1:3)] <- combined_mapping[,c(1:3)] / rowSums(combined_mapping[,c(1:3)])
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -128,25 +121,18 @@ secondary_metabolites <- subset(combined_mapping, grepl('*secondary_metabolites*
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway <- cdf_carbohydates[,c(1,2)]
-point_color <- 'firebrick1'
-#pathway_name <- 'Carbohydrate Metabolism'
+pathway <- cdf_carbon_sources
+point_color <- 'chartreuse3'
+pathway_name <- 'cdf_carbon_sources'
 #plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
 
 # Plot it!
 #pdf(file=plot_file, width=7, height=6)
-par(mar=c(4, 4, 1, 1), mgp=c(2.4,0.7,0))
-plot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, 
-     xlim=c(0,4.1), ylim=c(0,4.1), pch=20, col='gray25', xaxt='n', yaxt='n', cex.lab=1.3, 
-     xlab='Normalized cDNA Read Abundance', ylab='Normalized cDNA Read Abundance')
-#legend('topleft', legend=pathway_name, bty='n', cex=1.5) 
-segments(-2, -2, 8, 8, lwd=2, lty=2)
-axis_labels <- parse(text=paste(rep(10,4), '^', seq(0,4,1), sep=''))
-axis(side=1, at=c(0:4), axis_labels, tick=TRUE, cex.axis=1.2)
-axis(side=2, at=c(0:4), axis_labels, tick=TRUE, las=1, cex.axis=1.2)
-points(pathway, cex=1.5, pch=21, bg=point_color, col='black')
+triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
+        label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
+tripoints(x=pathway$cefoperazone, y=pathway$clindamycin, z=pathway$streptomycin, cex=averages, pch=21, bg=point_color, col='black')
+legend('topleft', legend=pathway_name, bty='n', cex=1.5) 
+
 #dev.off()
-
-
 
 
