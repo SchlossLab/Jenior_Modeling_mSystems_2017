@@ -138,7 +138,7 @@ triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combi
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
 tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
 tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
-legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol=1)
+legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol=1, pch=21, pt.cex=2.5, pt.bg=c(point_color1, point_color2), col='black')
 
 
 
