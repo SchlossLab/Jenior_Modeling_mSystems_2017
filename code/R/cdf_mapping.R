@@ -129,7 +129,7 @@ pathway2 <- cdf_amino_acids
 point_color1 <- 'blue2'
 point_color2 <- 'red2'
 pathway_name1 <- 'cdf_carbohydates'
-pathway_name1 <- 'cdf_carbohydates'
+pathway_name2 <- 'cdf_amino_acids'
 #plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
 
 # Plot it!
