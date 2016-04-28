@@ -124,17 +124,23 @@ xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway <- amino_sugar
-point_color <- 'red2'
-pathway_name <- 'amino_sugar'
+pathway1 <- cdf_carbohydates
+pathway2 <- cdf_amino_acids
+point_color1 <- 'blue2'
+point_color2 <- 'red2'
+pathway_name1 <- 'cdf_carbohydates'
+pathway_name1 <- 'cdf_carbohydates'
 #plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
 
 # Plot it!
 #pdf(file=plot_file, width=7, height=6)
 triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
-tripoints(x=pathway$cefoperazone, y=pathway$clindamycin, z=pathway$streptomycin, cex=averages, pch=21, bg=point_color, col='black')
-legend('topleft', legend=pathway_name, bty='n', cex=1.5) 
+tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
+tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
+legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol=1)
+
+
 
 #dev.off()
 
