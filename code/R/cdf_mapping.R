@@ -57,12 +57,15 @@ combined_mapping$streptomycin <- t(rrarefy(combined_mapping$streptomycin, sample
 # Eliminate genes with no transcripts mapping
 combined_mapping <- combined_mapping[rowSums(combined_mapping[,c(1:3)]) != 0, ] 
 
-
-averages <- log10(rowSums(combined_mapping[,c(1:3)]) / 3) * 1.5
+# Calculate the factors to scale points size by
+averages <- log10(rowSums(combined_mapping[,c(1:3)]) / 3) * 2.5
 
 # Convert each gene into the fraction of the transcription for that gene across treatments
 combined_mapping[combined_mapping == 0] <- 1
 combined_mapping[,c(1:3)] <- combined_mapping[,c(1:3)] / rowSums(combined_mapping[,c(1:3)])
+
+# Remove genes with unannotated pathways
+combined_mapping <- subset(combined_mapping, pathway_annotation != 'none')
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -117,13 +120,13 @@ sulfur_metabolism <- subset(combined_mapping, grepl('*Sulfur_metabolism*', combi
 secondary_metabolites <- subset(combined_mapping, grepl('*secondary_metabolites*', combined_mapping$pathway_annotation))
 
 
-
+xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$pathway_annotation))
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway <- cdf_carbon_sources
-point_color <- 'chartreuse3'
-pathway_name <- 'cdf_carbon_sources'
+pathway <- amino_sugar
+point_color <- 'red2'
+pathway_name <- 'amino_sugar'
 #plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
 
 # Plot it!
@@ -134,5 +137,6 @@ tripoints(x=pathway$cefoperazone, y=pathway$clindamycin, z=pathway$streptomycin,
 legend('topleft', legend=pathway_name, bty='n', cex=1.5) 
 
 #dev.off()
+
 
 

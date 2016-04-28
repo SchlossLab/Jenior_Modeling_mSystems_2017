@@ -5,30 +5,29 @@ library(plyr)
 # Creates plots for CFU comparisons
 
 # Define variable
-cfu_file <- '/Users/pschloss/Desktop/Repositories/Jenior_Transcriptomics_2015/data/raw/cfu.dat'
-vegetative_file <- '/Users/pschloss/Desktop/vegetative.cfu.pdf'
-spore_file <- '/Users/pschloss/Desktop/spore.cfu.pdf'
-both_file <- '/Users/pschloss/Desktop/vege_spore.cfu.pdf'
-percent_file <- '/Users/pschloss/Desktop/percent.cfu.pdf'
+cfu_file <- '/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/data/bench_assays/cfu.dat'
+vegetative_file <- '/Users/mattjenior/Desktop/vegetative.cfu.pdf'
+spore_file <- '/Users/mattjenior/Desktop/spore.cfu.pdf'
+both_file <- '/Users/mattjenior/Desktop/vege_spore.cfu.pdf'
+percent_file <- '/Users/mattjenior/Desktop/percent.cfu.pdf'
 
 # Read, format, and separate the data
 cfu_raw <- read.delim(cfu_file, sep='\t', header=T)
 
 cfu <- cfu_raw
 cfu[cfu == 0] <- 100
-cfu$cfu <- log10(cfu$cfu)
+cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
+cfu$cfu_spore <- log10(cfu$cfu_spore)
 cfu$mouse <- NULL
 cfu <- subset(cfu, cage < 4)
 cfu$cage <- NULL
 cfu <- subset(cfu, treatment != 'conventional')
 
-vegetative_cfu <- subset(cfu, type == 'vegetative')
-vegetative_cfu$type <- NULL
-vegetative_cfu$treatment <- factor(vegetative_cfu$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
+vegetative_cfu <- cfu
+vegetative_cfu$cfu_spore <- NULL
 vegetative_cfu <- droplevels(vegetative_cfu)
-spore_cfu <- subset(cfu, type == 'spore')
-spore_cfu$type <- NULL
-spore_cfu$treatment <- factor(spore_cfu$treatment, levels = c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'))
+spore_cfu <- cfu
+spore_cfu$cfu_vegetative <- NULL
 spore_cfu <- droplevels(spore_cfu)
 
 vegetative_spore_cfu <- cbind(vegetative_cfu, spore_cfu)
@@ -39,22 +38,22 @@ rownames(vegetative_spore_cfu_median) <- vegetative_spore_cfu_median$group
 vegetative_spore_cfu_median$group <- NULL
 vegetative_spore_cfu_median <- t(as.matrix(vegetative_spore_cfu_median))
 
-cef_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Cefoperazone', 2])
-clinda_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Clindamycin', 2])
-strep_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Streptomycin', 2])
-gf_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'Germfree', 2])
+cef_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2])
+clinda_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2])
+strep_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2])
+gf_iqr_vege <- quantile(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2])
 
-cef_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Cefoperazone', 2])
-clinda_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Clindamycin', 2])
-strep_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Streptomycin', 2])
-gf_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'Germfree', 2])
+cef_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2])
+clinda_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'clindamycin', 2])
+strep_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'streptomycin', 2])
+gf_iqr_spore <- quantile(spore_cfu[spore_cfu$treatment == 'germfree', 2])
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Plot formatted data - vegetative
 pdf(file=vegetative_file, width=10, height=7)
 par(las=1, mar=c(3.5,4,1,1), mgp=c(2.5,0.7,0))
-stripchart(cfu~treatment, data=vegetative_cfu, bg='firebrick', 
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, bg='firebrick', 
         ylim=c(5,9), xaxt='n', yaxt='n', pch=21, vertical=T, method='jitter',
         jitter=0.2, cex=3, ylab='Vegetative CFU/g Cecal Content', cex.lab=1.5)
 axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), tick = FALSE, font=2, cex.axis=1.4)
@@ -64,8 +63,8 @@ axis(side=2, at=c(5:9), labelsY, tick=TRUE, cex.axis=1.2, las=1)
 
 # Plot medians
 segments(0.6, cef_iqr_vege[3], 1.4, cef_iqr_vege[3], lwd=8) # cefoperazone
-segments(1.6, strep_iqr_vege[3], 2.4, strep_iqr_vege[3], lwd=8) # streptomycin
-segments(2.6, clinda_iqr_vege[3], 3.4, clinda_iqr_vege[3], lwd=8) # clindamycin
+segments(1.6, clinda_iqr_vege[3], 2.4, clinda_iqr_vege[3], lwd=8) # streptomycin
+segments(2.6, strep_iqr_vege[3], 3.4, strep_iqr_vege[3], lwd=8) # clindamycin
 segments(3.6, gf_iqr_vege[3], 4.4, gf_iqr_vege[3], lwd=8) # germfree
 dev.off()
 
