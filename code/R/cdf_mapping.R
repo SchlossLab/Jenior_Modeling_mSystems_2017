@@ -92,8 +92,6 @@ cdf_amino_acids <- rbind(cysteine_methionine, valine_leucine_isoleucine, glycine
 cdf_carbon_sources <- rbind(cdf_carbohydates, cdf_amino_acids)
 
 
-
-
 butanoate <- subset(combined_mapping, grepl('*Butanoate*', combined_mapping$pathway_annotation))
 pentose_glucuronate <- subset(combined_mapping, grepl('*Pentose_and_glucuronate*', combined_mapping$pathway_annotation))
 phenylalanine_tyrosine_tryptophan <- subset(combined_mapping, grepl('*Phenylalanine,_tyrosine_and_tryptophan*', combined_mapping$pathway_annotation))
@@ -119,8 +117,60 @@ diverse_environments <- subset(combined_mapping, grepl('*diverse_environments*',
 sulfur_metabolism <- subset(combined_mapping, grepl('*Sulfur_metabolism*', combined_mapping$pathway_annotation))
 secondary_metabolites <- subset(combined_mapping, grepl('*secondary_metabolites*', combined_mapping$pathway_annotation))
 
-
 xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$pathway_annotation))
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------#
+
+# amino sugars
+acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene_annotation))
+acetylmannosamine <- subset(combined_mapping, grepl('*N-acetylmannosamine*', combined_mapping$gene_annotation))
+acetylmuramate <- subset(combined_mapping, grepl('*N-acetylmuramate*', combined_mapping$gene_annotation))
+
+# Stickland substrates
+proline <- subset(combined_mapping, grepl('*proline*', combined_mapping$gene_annotation))
+glycine <- subset(combined_mapping, grepl('*glycine*', combined_mapping$gene_annotation))
+arginine <- subset(combined_mapping, grepl('*arginine*', combined_mapping$gene_annotation))
+threonine <- subset(combined_mapping, grepl('*threonine*', combined_mapping$gene_annotation))
+methionine <- subset(combined_mapping, grepl('*methionine*', combined_mapping$gene_annotation))
+serine <- subset(combined_mapping, grepl('*serine*', combined_mapping$gene_annotation))
+alanine <- subset(combined_mapping, grepl('*alanine*', combined_mapping$gene_annotation))
+
+# monosaccharides
+galactose <- subset(combined_mapping, grepl('*galactose*', combined_mapping$gene_annotation))
+tagatose <- subset(combined_mapping, grepl('*tagatose*', combined_mapping$gene_annotation))
+trehalose <- subset(combined_mapping, grepl('*trehalose*', combined_mapping$gene_annotation))
+mannose <- subset(combined_mapping, grepl('*mannose*', combined_mapping$gene_annotation))
+xylose <- subset(combined_mapping, grepl('*xylose*', combined_mapping$gene_annotation))
+ribose <- subset(combined_mapping, grepl('*ribose*', combined_mapping$gene_annotation))
+fructose <- subset(combined_mapping, grepl('*fructose*', combined_mapping$gene_annotation))
+glucose <- subset(combined_mapping, grepl('*glucose*', combined_mapping$gene_annotation))
+maltose <- subset(combined_mapping, grepl('*maltose*', combined_mapping$gene_annotation))
+lactose <- subset(combined_mapping, grepl('*lactose*', combined_mapping$gene_annotation))
+sucrose <- subset(combined_mapping, grepl('*sucrose*', combined_mapping$gene_annotation))
+
+# sugar alcohols
+ribitol <- subset(combined_mapping, grepl('*ribitol*', combined_mapping$gene_annotation))
+sorbitol <- subset(combined_mapping, grepl('*sorbitol*', combined_mapping$gene_annotation))
+mannitol <- subset(combined_mapping, grepl('*mannitol*', combined_mapping$gene_annotation))
+
+# nucleosides
+uridine <- subset(combined_mapping, grepl('*uridine*', combined_mapping$gene_annotation))
+inosine <- subset(combined_mapping, grepl('*inosine*', combined_mapping$gene_annotation))
+adenosine <- subset(combined_mapping, grepl('*adenosine*', combined_mapping$gene_annotation))
+
+# short-chain fatty acids
+butyrate <- subset(combined_mapping, grepl('*butyrate*', combined_mapping$gene_annotation))
+valerate <- subset(combined_mapping, grepl('*valerate*', combined_mapping$gene_annotation))
+acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene_annotation))
+
+# pooled metabolite groups
+
+using merge(, , by=combined_mapping$gene_annotation)
+
+
+
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
