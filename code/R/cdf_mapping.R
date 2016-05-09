@@ -146,3 +146,12 @@ legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol
 
 
 
+
+
+
+
+
+selected <- subset(combined_mapping, grepl('*rginine*', combined_mapping$pathway_annotation))
+
+
+
