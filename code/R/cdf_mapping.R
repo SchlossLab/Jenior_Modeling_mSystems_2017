@@ -167,7 +167,7 @@ acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene_ann
 
 # pooled metabolite groups
 
-using merge(, , by=combined_mapping$gene_annotation)
+test <- merge(butyrate, valerate, acetate, by=combined_mapping$gene_annotation)
 
 
 
