@@ -127,6 +127,7 @@ xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$
 acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene_annotation))
 acetylmannosamine <- subset(combined_mapping, grepl('*N-acetylmannosamine*', combined_mapping$gene_annotation))
 acetylmuramate <- subset(combined_mapping, grepl('*N-acetylmuramate*', combined_mapping$gene_annotation))
+amino_sugars <- rbind(acetylglucosamine, acetylmannosamine, acetylmuramate)
 
 # Stickland substrates
 proline <- subset(combined_mapping, grepl('*proline*', combined_mapping$gene_annotation))
@@ -136,6 +137,7 @@ threonine <- subset(combined_mapping, grepl('*threonine*', combined_mapping$gene
 methionine <- subset(combined_mapping, grepl('*methionine*', combined_mapping$gene_annotation))
 serine <- subset(combined_mapping, grepl('*serine*', combined_mapping$gene_annotation))
 alanine <- subset(combined_mapping, grepl('*alanine*', combined_mapping$gene_annotation))
+stickland <- rbind(proline, glycine, arginine, threonine, methionine, serine, alanine)
 
 # monosaccharides
 galactose <- subset(combined_mapping, grepl('*galactose*', combined_mapping$gene_annotation))
@@ -149,27 +151,25 @@ glucose <- subset(combined_mapping, grepl('*glucose*', combined_mapping$gene_ann
 maltose <- subset(combined_mapping, grepl('*maltose*', combined_mapping$gene_annotation))
 lactose <- subset(combined_mapping, grepl('*lactose*', combined_mapping$gene_annotation))
 sucrose <- subset(combined_mapping, grepl('*sucrose*', combined_mapping$gene_annotation))
+monosaccharides <- rbind(galactose, tagatose, trehalose, mannose, xylose, ribose, fructose, glucose, maltose, lactose, sucrose)
 
 # sugar alcohols
 ribitol <- subset(combined_mapping, grepl('*ribitol*', combined_mapping$gene_annotation))
 sorbitol <- subset(combined_mapping, grepl('*sorbitol*', combined_mapping$gene_annotation))
 mannitol <- subset(combined_mapping, grepl('*mannitol*', combined_mapping$gene_annotation))
+sugar_alcohols <- rbind(ribitol, sorbitol, mannitol)
 
 # nucleosides
 uridine <- subset(combined_mapping, grepl('*uridine*', combined_mapping$gene_annotation))
 inosine <- subset(combined_mapping, grepl('*inosine*', combined_mapping$gene_annotation))
 adenosine <- subset(combined_mapping, grepl('*adenosine*', combined_mapping$gene_annotation))
+nucleosides <- rbind(uridine, inosine, adenosine)
 
 # short-chain fatty acids
 butyrate <- subset(combined_mapping, grepl('*butyrate*', combined_mapping$gene_annotation))
 valerate <- subset(combined_mapping, grepl('*valerate*', combined_mapping$gene_annotation))
 acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene_annotation))
-
-# pooled metabolite groups
-
-test <- merge(butyrate, valerate, acetate, by=combined_mapping$gene_annotation)
-
-
+scfas <- rbind(butyrate, valerate, acetate)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
