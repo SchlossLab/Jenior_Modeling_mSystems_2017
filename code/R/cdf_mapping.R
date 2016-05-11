@@ -174,34 +174,52 @@ scfas <- rbind(butyrate, valerate, acetate)
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway1 <- cdf_carbohydates
-pathway2 <- cdf_amino_acids
+pathway1 <- amino_sugars
+pathway2 <- stickland
+pathway3 <- monosaccharides
+pathway4 <- sugar_alcohols
+pathway5 <- nucleosides
+pathway6 <- scfas
 point_color1 <- 'blue2'
 point_color2 <- 'red2'
-pathway_name1 <- 'cdf_carbohydates'
-pathway_name2 <- 'cdf_amino_acids'
-#plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
+point_color3 <- 'chartreuse3'
+point_color4 <- 'chocolate2'
+point_color5 <- 'goldenrod1'
+point_color6 <- 'deepskyblue1'
+pathway_name1 <- 'Amino sugars'
+pathway_name2 <- 'Stickland substrates'
+pathway_name3 <- 'Monosaccharides'
+pathway_name4 <- 'Sugar alcohols'
+pathway_name5 <- 'Nucleosides'
+pathway_name6 <- 'Short-chain fatty acids'
+plot_file <- '~/Desktop/cdf_nutrients.pdf'
 
 # Plot it!
-#pdf(file=plot_file, width=7, height=6)
+pdf(file=plot_file, width=7, height=6)
 triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
 tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
 tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
-legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol=1, pch=21, pt.cex=2.5, pt.bg=c(point_color1, point_color2), col='black')
+tripoints(x=pathway3$cefoperazone, y=pathway3$clindamycin, z=pathway3$streptomycin, cex=averages, pch=21, bg=point_color3, col='black')
+tripoints(x=pathway4$cefoperazone, y=pathway4$clindamycin, z=pathway4$streptomycin, cex=averages, pch=21, bg=point_color4, col='black')
+tripoints(x=pathway5$cefoperazone, y=pathway5$clindamycin, z=pathway5$streptomycin, cex=averages, pch=21, bg=point_color5, col='black')
+tripoints(x=pathway6$cefoperazone, y=pathway6$clindamycin, z=pathway6$streptomycin, cex=averages, pch=21, bg=point_color6, col='black')
+
+tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
+tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
+dev.off()
 
 
 
-#dev.off()
+pdf(file=plot_file, width=6, height=5)
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
+legend('center', legend=c(pathway_name1, pathway_name2, pathway_name3, pathway_name4, pathway_name5, pathway_name6), 
+    cex=1.5, ncol=1, pch=21, pt.cex=2.5, col='black', 
+    pt.bg=c(point_color1, point_color2, point_color3, point_color4, point_color5, point_color6))
+dev.off()
 
 
 
-
-
-
-
-
-selected <- subset(combined_mapping, grepl('*rginine*', combined_mapping$pathway_annotation))
 
 
 
