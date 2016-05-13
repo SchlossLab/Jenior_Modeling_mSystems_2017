@@ -92,8 +92,6 @@ cdf_amino_acids <- rbind(cysteine_methionine, valine_leucine_isoleucine, glycine
 cdf_carbon_sources <- rbind(cdf_carbohydates, cdf_amino_acids)
 
 
-
-
 butanoate <- subset(combined_mapping, grepl('*Butanoate*', combined_mapping$pathway_annotation))
 pentose_glucuronate <- subset(combined_mapping, grepl('*Pentose_and_glucuronate*', combined_mapping$pathway_annotation))
 phenylalanine_tyrosine_tryptophan <- subset(combined_mapping, grepl('*Phenylalanine,_tyrosine_and_tryptophan*', combined_mapping$pathway_annotation))
@@ -119,30 +117,109 @@ diverse_environments <- subset(combined_mapping, grepl('*diverse_environments*',
 sulfur_metabolism <- subset(combined_mapping, grepl('*Sulfur_metabolism*', combined_mapping$pathway_annotation))
 secondary_metabolites <- subset(combined_mapping, grepl('*secondary_metabolites*', combined_mapping$pathway_annotation))
 
-
 xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$pathway_annotation))
+
+
+
+#----------------------------------------------------------------------------------------------------------------------------#
+
+# amino sugars
+acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene_annotation))
+acetylmannosamine <- subset(combined_mapping, grepl('*N-acetylmannosamine*', combined_mapping$gene_annotation))
+acetylmuramate <- subset(combined_mapping, grepl('*N-acetylmuramate*', combined_mapping$gene_annotation))
+amino_sugars <- rbind(acetylglucosamine, acetylmannosamine, acetylmuramate)
+
+# Stickland substrates
+proline <- subset(combined_mapping, grepl('*proline*', combined_mapping$gene_annotation))
+glycine <- subset(combined_mapping, grepl('*glycine*', combined_mapping$gene_annotation))
+arginine <- subset(combined_mapping, grepl('*arginine*', combined_mapping$gene_annotation))
+threonine <- subset(combined_mapping, grepl('*threonine*', combined_mapping$gene_annotation))
+methionine <- subset(combined_mapping, grepl('*methionine*', combined_mapping$gene_annotation))
+serine <- subset(combined_mapping, grepl('*serine*', combined_mapping$gene_annotation))
+alanine <- subset(combined_mapping, grepl('*alanine*', combined_mapping$gene_annotation))
+stickland <- rbind(proline, glycine, arginine, threonine, methionine, serine, alanine)
+
+# monosaccharides
+galactose <- subset(combined_mapping, grepl('*galactose*', combined_mapping$gene_annotation))
+tagatose <- subset(combined_mapping, grepl('*tagatose*', combined_mapping$gene_annotation))
+trehalose <- subset(combined_mapping, grepl('*trehalose*', combined_mapping$gene_annotation))
+mannose <- subset(combined_mapping, grepl('*mannose*', combined_mapping$gene_annotation))
+xylose <- subset(combined_mapping, grepl('*xylose*', combined_mapping$gene_annotation))
+ribose <- subset(combined_mapping, grepl('*ribose*', combined_mapping$gene_annotation))
+fructose <- subset(combined_mapping, grepl('*fructose*', combined_mapping$gene_annotation))
+glucose <- subset(combined_mapping, grepl('*glucose*', combined_mapping$gene_annotation))
+maltose <- subset(combined_mapping, grepl('*maltose*', combined_mapping$gene_annotation))
+lactose <- subset(combined_mapping, grepl('*lactose*', combined_mapping$gene_annotation))
+sucrose <- subset(combined_mapping, grepl('*sucrose*', combined_mapping$gene_annotation))
+monosaccharides <- rbind(galactose, tagatose, trehalose, mannose, xylose, ribose, fructose, glucose, maltose, lactose, sucrose)
+
+# sugar alcohols
+ribitol <- subset(combined_mapping, grepl('*ribitol*', combined_mapping$gene_annotation))
+sorbitol <- subset(combined_mapping, grepl('*sorbitol*', combined_mapping$gene_annotation))
+mannitol <- subset(combined_mapping, grepl('*mannitol*', combined_mapping$gene_annotation))
+sugar_alcohols <- rbind(ribitol, sorbitol, mannitol)
+
+# nucleosides
+uridine <- subset(combined_mapping, grepl('*uridine*', combined_mapping$gene_annotation))
+inosine <- subset(combined_mapping, grepl('*inosine*', combined_mapping$gene_annotation))
+adenosine <- subset(combined_mapping, grepl('*adenosine*', combined_mapping$gene_annotation))
+nucleosides <- rbind(uridine, inosine, adenosine)
+
+# short-chain fatty acids
+butyrate <- subset(combined_mapping, grepl('*butyrate*', combined_mapping$gene_annotation))
+valerate <- subset(combined_mapping, grepl('*valerate*', combined_mapping$gene_annotation))
+acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene_annotation))
+scfas <- rbind(butyrate, valerate, acetate)
+
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway1 <- cdf_carbohydates
-pathway2 <- cdf_amino_acids
+pathway1 <- amino_sugars
+pathway2 <- stickland
+pathway3 <- monosaccharides
+pathway4 <- sugar_alcohols
+pathway5 <- nucleosides
+pathway6 <- scfas
 point_color1 <- 'blue2'
 point_color2 <- 'red2'
-pathway_name1 <- 'cdf_carbohydates'
-pathway_name2 <- 'cdf_amino_acids'
-#plot_file <- '~/Desktop/figures/cdf_amino_acids.streptomycin.pdf'
+point_color3 <- 'chartreuse3'
+point_color4 <- 'chocolate2'
+point_color5 <- 'goldenrod1'
+point_color6 <- 'deepskyblue1'
+pathway_name1 <- 'Amino sugars'
+pathway_name2 <- 'Stickland substrates'
+pathway_name3 <- 'Monosaccharides'
+pathway_name4 <- 'Sugar alcohols'
+pathway_name5 <- 'Nucleosides'
+pathway_name6 <- 'Short-chain fatty acids'
+plot_file <- '~/Desktop/cdf_nutrients.pdf'
 
 # Plot it!
-#pdf(file=plot_file, width=7, height=6)
+pdf(file=plot_file, width=7, height=6)
 triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
 tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
 tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
-legend('topleft', legend=c(pathway_name1, pathway_name2), bty='n', cex=1.5, ncol=1, pch=21, pt.cex=2.5, pt.bg=c(point_color1, point_color2), col='black')
+tripoints(x=pathway3$cefoperazone, y=pathway3$clindamycin, z=pathway3$streptomycin, cex=averages, pch=21, bg=point_color3, col='black')
+tripoints(x=pathway4$cefoperazone, y=pathway4$clindamycin, z=pathway4$streptomycin, cex=averages, pch=21, bg=point_color4, col='black')
+tripoints(x=pathway5$cefoperazone, y=pathway5$clindamycin, z=pathway5$streptomycin, cex=averages, pch=21, bg=point_color5, col='black')
+tripoints(x=pathway6$cefoperazone, y=pathway6$clindamycin, z=pathway6$streptomycin, cex=averages, pch=21, bg=point_color6, col='black')
+
+tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
+tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
+dev.off()
 
 
 
-#dev.off()
+pdf(file=plot_file, width=6, height=5)
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
+legend('center', legend=c(pathway_name1, pathway_name2, pathway_name3, pathway_name4, pathway_name5, pathway_name6), 
+    cex=1.5, ncol=1, pch=21, pt.cex=2.5, col='black', 
+    pt.bg=c(point_color1, point_color2, point_color3, point_color4, point_color5, point_color6))
+dev.off()
+
+
+
 
 
 
