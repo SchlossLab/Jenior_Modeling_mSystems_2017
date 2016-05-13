@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'rgl', 'klaR');
+deps <- c('vegan', 'klaR');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -9,9 +9,9 @@ for (dep in deps){
 rm(dep, deps)
 
 # Define input file names
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/cefoperazone_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/clindamycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/streptomycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/cefoperazone_630.RNA_reads2cdf630.pool.norm.annotated.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/clindamycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/streptomycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
 #germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/germfree.RNA_reads2cdf630.pool.norm.annotated.txt'
 
 # Load in data
@@ -194,10 +194,38 @@ pathway_name5 <- 'Nucleosides'
 pathway_name6 <- 'Short-chain fatty acids'
 plot_file <- '~/Desktop/cdf_nutrients.pdf'
 
+
+pal <- function(col, border = "light gray", ...){
+  n <- length(col)
+  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
+       axes = FALSE, xlab = "", ylab = "", ...)
+  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
+}
+
+rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
+pal(rainbow)
+
+
+
 # Plot it!
-pdf(file=plot_file, width=7, height=6)
+#pdf(file=plot_file, width=7, height=6)
 triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
+
+selected <- ribitol
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- sorbitol
+current_color <- rainbow[5]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- mannitol 
+current_color <- rainbow[10]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+
+
 tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
 tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
 tripoints(x=pathway3$cefoperazone, y=pathway3$clindamycin, z=pathway3$streptomycin, cex=averages, pch=21, bg=point_color3, col='black')
@@ -207,7 +235,7 @@ tripoints(x=pathway6$cefoperazone, y=pathway6$clindamycin, z=pathway6$streptomyc
 
 tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
 tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
-dev.off()
+#dev.off()
 
 
 
