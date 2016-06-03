@@ -9,16 +9,20 @@ for (dep in deps){
 rm(dep, deps)
 
 # Define input file names
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/cefoperazone_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/clindamycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/streptomycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-#germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile630/genes/germfree.RNA_reads2cdf630.pool.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/cefoperazone_630.RNA_reads2cdf630.pool.norm.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/clindamycin_630.RNA_reads2cdf630.pool.norm.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/streptomycin_630.RNA_reads2cdf630.pool.norm.txt'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/germfree.RNA_reads2cdf630.pool.norm.txt'
 
 # Load in data
-cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=TRUE, row.names=2)
-clindamycin <- read.delim(clindamycin_file, sep='\t', header=TRUE, row.names=2)
-streptomycin <- read.delim(streptomycin_file, sep='\t', header=TRUE, row.names=2)
-#germfree <- read.delim(germfree_file, sep='\t', header=TRUE, row.names=2)
+cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
+colnames(cefoperazone) <- c('annotation', 'cefoperazone')
+clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE, row.names=1)
+colnames(clindamycin) <- c('annotation', 'clindamycin')
+streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE, row.names=1)
+colnames(streptomycin) <- c('annotation', 'streptomycin')
+germfree <- read.delim(germfree_file, sep='\t', header=FALSE, row.names=1)
+colnames(germfree) <- c('annotation', 'germfree')
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -69,11 +73,8 @@ combined_mapping <- subset(combined_mapping, pathway_annotation != 'none')
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# Plotting 
+# Pathways 
 
-
-
-# Subset data to color specific groups
 # Highest resolution - Known C. difficile 630 carbon sources
 glycolysis <- subset(combined_mapping, grepl('*Glycolysis_/_Gluconeogenesis*', combined_mapping$pathway_annotation))
 amino_sugar <- subset(combined_mapping, grepl('*Amino_sugar*', combined_mapping$pathway_annotation))
@@ -174,28 +175,10 @@ scfas <- rbind(butyrate, valerate, acetate)
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define which pathway to plot and the ouput file name
-pathway1 <- amino_sugars
-pathway2 <- stickland
-pathway3 <- monosaccharides
-pathway4 <- sugar_alcohols
-pathway5 <- nucleosides
-pathway6 <- scfas
-point_color1 <- 'blue2'
-point_color2 <- 'red2'
-point_color3 <- 'chartreuse3'
-point_color4 <- 'chocolate2'
-point_color5 <- 'goldenrod1'
-point_color6 <- 'deepskyblue1'
-pathway_name1 <- 'Amino sugars'
-pathway_name2 <- 'Stickland substrates'
-pathway_name3 <- 'Monosaccharides'
-pathway_name4 <- 'Sugar alcohols'
-pathway_name5 <- 'Nucleosides'
-pathway_name6 <- 'Short-chain fatty acids'
 plot_file <- '~/Desktop/cdf_nutrients.pdf'
 
-
-pal <- function(col, border = "light gray", ...){
+# Define and check color palette
+palette_plot <- function(col, border = "light gray", ...){
   n <- length(col)
   plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
        axes = FALSE, xlab = "", ylab = "", ...)
@@ -203,7 +186,7 @@ pal <- function(col, border = "light gray", ...){
 }
 
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
-pal(rainbow)
+palette_plot(rainbow)
 
 
 
@@ -212,39 +195,132 @@ pal(rainbow)
 triplot(x=combined_mapping$cefoperazone, y=combined_mapping$clindamycin, z=combined_mapping$streptomycin,
         label=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pch=16, col='gray25', grid=FALSE, center=TRUE)
 
+# plot monosaccharides
+selected <- galactose
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- mannose
+current_color <- rainbow[2]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- ribose 
+current_color <- rainbow[4]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- fructose
+current_color <- rainbow[7]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- glucose
+current_color <- rainbow[10]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- maltose 
+current_color <- rainbow[12]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- lactose
+current_color <- rainbow[14]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+
+# plot peptides
+selected <- proline
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- glycine
+current_color <- rainbow[4]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- arginine
+current_color <- rainbow[6]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- threonine
+current_color <- rainbow[8]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- methionine
+current_color <- rainbow[10]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- serine
+current_color <- rainbow[12]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- alanine
+current_color <- rainbow[14]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+
+# plot short-schain fatty acids
+selected <- butyrate
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- valerate
+current_color <- rainbow[4]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- acetate
+current_color <- rainbow[14]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+
+# plot nucleosides
+selected <- uridine
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- inosine
+current_color <- rainbow[8]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- adenosine
+current_color <- rainbow[14]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+
+# plot sugar alcohols
 selected <- ribitol
 current_color <- rainbow[1]
 tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
           cex=averages, pch=21, bg=current_color, col='black')
 selected <- sorbitol
-current_color <- rainbow[5]
+current_color <- rainbow[8]
 tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
           cex=averages, pch=21, bg=current_color, col='black')
-selected <- mannitol 
-current_color <- rainbow[10]
+selected <- mannitol
+current_color <- rainbow[14]
 tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
           cex=averages, pch=21, bg=current_color, col='black')
 
+# plot amino sugars
+selected <- acetylglucosamine
+current_color <- rainbow[1]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- acetylmannosamine
+current_color <- rainbow[4]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
+selected <- acetylmuramate
+current_color <- rainbow[14]
+tripoints(x=selected$cefoperazone, y=selected$clindamycin, z=selected$streptomycin, 
+          cex=averages, pch=21, bg=current_color, col='black')
 
-tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
-tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
-tripoints(x=pathway3$cefoperazone, y=pathway3$clindamycin, z=pathway3$streptomycin, cex=averages, pch=21, bg=point_color3, col='black')
-tripoints(x=pathway4$cefoperazone, y=pathway4$clindamycin, z=pathway4$streptomycin, cex=averages, pch=21, bg=point_color4, col='black')
-tripoints(x=pathway5$cefoperazone, y=pathway5$clindamycin, z=pathway5$streptomycin, cex=averages, pch=21, bg=point_color5, col='black')
-tripoints(x=pathway6$cefoperazone, y=pathway6$clindamycin, z=pathway6$streptomycin, cex=averages, pch=21, bg=point_color6, col='black')
-
-tripoints(x=pathway2$cefoperazone, y=pathway2$clindamycin, z=pathway2$streptomycin, cex=averages, pch=21, bg=point_color2, col='black')
-tripoints(x=pathway1$cefoperazone, y=pathway1$clindamycin, z=pathway1$streptomycin, cex=averages, pch=21, bg=point_color1, col='black')
 #dev.off()
 
 
 
-pdf(file=plot_file, width=6, height=5)
+#pdf(file=plot_file, width=6, height=5)
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
 legend('center', legend=c(pathway_name1, pathway_name2, pathway_name3, pathway_name4, pathway_name5, pathway_name6), 
     cex=1.5, ncol=1, pch=21, pt.cex=2.5, col='black', 
     pt.bg=c(point_color1, point_color2, point_color3, point_color4, point_color5, point_color6))
-dev.off()
+#dev.off()
 
 
 
