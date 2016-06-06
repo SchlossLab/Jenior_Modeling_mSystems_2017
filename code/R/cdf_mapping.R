@@ -17,10 +17,10 @@ palette_plot <- function(col, border = "light gray", ...){
 }
 
 # Define input file names
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/cefoperazone_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/clindamycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/streptomycin_630.RNA_reads2cdf630.pool.norm.annotated.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/cdifficile/germfree.RNA_reads2cdf630.pool.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/germfree.RNA_reads2cdf630.norm.annotated.txt'
 
 # Define which pathway to plot and the ouput file name
 plot_file <- '~/Desktop/cdf_nutrients.pdf'
@@ -54,7 +54,7 @@ rownames(combined_mapping) <- combined_mapping$Row.names
 combined_mapping$Row.names <- NULL
 
 # Rarefy mappings to be equal within sequencing type
-sub_size <- round(min(colSums(combined_mapping[,c(1:3)]))*0.9)
+sub_size <- round(min(colSums(combined_mapping[,c(1:3)]))*0.9) # 34050
 combined_mapping$cefoperazone <- t(rrarefy(combined_mapping$cefoperazone, sample=sub_size))
 combined_mapping$clindamycin <- t(rrarefy(combined_mapping$clindamycin, sample=sub_size))
 combined_mapping$streptomycin <- t(rrarefy(combined_mapping$streptomycin, sample=sub_size))
@@ -194,19 +194,23 @@ acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene))
 scfas <- rbind(butyrate, valerate, acetate)
 rm(butyrate, valerate, acetate)
 
+# Remove gene column
+combined_mapping$gene <- NULL
+
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define a color palette
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
-palette_plot(rainbow)
+#palette_plot(rainbow)
 
 # Plot it!
 #pdf(file=plot_file, width=7, height=6)
 tick_labels <- c('10%','','30%','','50%','','70%','','90%')
-triax.plot(axis.labels=c('Cefoperazone ', 'Clindamycin', 'Streptomycin'),  
+triax.plot(x=combined_mapping, pch=20, lty.grid=2, no.add=FALSE, 
+           axis.labels=c('Cefoperazone ', 'Clindamycin', 'Streptomycin'),  
            tick.labels=list(l=tick_labels, r=tick_labels, b=tick_labels), 
-           cex.axis=1.5, cex.ticks=1, cc.axes=TRUE, align.labels=TRUE, lty.grid=2,
-           show.grid=TRUE, mar=c(4,0,0,0), at=seq(0.1,0.9,by=0.1),no.add=FALSE)
+           cex.axis=1.5, cex.ticks=1, cc.axes=TRUE, align.labels=TRUE, 
+           show.grid=TRUE, mar=c(4.5,0,0,0), at=seq(0.1,0.9,by=0.1))
 lines(x=c(0.25,0.75), y=c(0.433,0.433))
 lines(x=c(0.25,0.5), y=c(0.433,0))
 lines(x=c(0.5,0.75), y=c(0,0.433))
@@ -217,15 +221,18 @@ lines(x=c(0.5,0.75), y=c(0,0.433))
 selected <- hexose
 selected$gene <- NULL
 current_color <- rainbow[1]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 selected <- pentose 
 selected$gene <- NULL
 current_color <- rainbow[4]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 selected <- disaccharides
 selected$gene <- NULL
 current_color <- rainbow[10]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 #selected <- saccharides # all
 #selected$gene <- NULL
 #current_color <- rainbow[14]
@@ -235,29 +242,32 @@ triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=cur
 selected <- stickland
 selected$gene <- NULL
 current_color <- rainbow[14]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 # sugar alcohols
 selected <- sugar_alcohols
 selected$gene <- NULL
 current_color <- rainbow[8]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 # short-schain fatty acids
 selected <- scfas
 selected$gene <- NULL
 current_color <- rainbow[13]
-triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
+triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 #dev.off()
 
 
 
 #pdf(file=plot_file, width=6, height=5)
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
-legend('center', legend=c(pathway_name1, pathway_name2, pathway_name3, pathway_name4, pathway_name5, pathway_name6), 
+#plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
+legend(x=0, y=1, legend=c('pathway1','pathway2'), 
     cex=1.5, ncol=1, pch=21, pt.cex=2.5, col='black', 
-    pt.bg=c(point_color1, point_color2, point_color3, point_color4, point_color5, point_color6))
+    pt.bg=c('red', 'blue'))
 #dev.off()
 
 
