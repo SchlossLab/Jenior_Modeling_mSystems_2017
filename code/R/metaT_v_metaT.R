@@ -43,8 +43,8 @@ combined_mapping$KEGG_ortholog <- NULL
 
 # Rarefy mappings to be equal within sequencing type
 read_totals <- colSums(combined_mapping[,c(1:3)])
-metaG_size <- round(read_totals[1]*0.9)
-metaT_size <- round(min(read_totals[2:3])*0.9)
+metaG_size <- round(read_totals[1] * 0.9) # 8309039
+metaT_size <- round(min(read_totals[2:3]) * 0.9) # 3375147
 combined_mapping$metagenome <- t(rrarefy(combined_mapping$metagenome, sample=metaG_size))
 combined_mapping$infected_metatranscriptome <- t(rrarefy(combined_mapping$infected_metatranscriptome, sample=metaT_size))
 combined_mapping$mock_metatranscriptome <- t(rrarefy(combined_mapping$mock_metatranscriptome, sample=metaT_size))
