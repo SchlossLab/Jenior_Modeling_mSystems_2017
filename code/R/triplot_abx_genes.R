@@ -150,6 +150,9 @@ triax.plot(x=combined_mapping[,1:3], pch=20, lty.grid=2, no.add=FALSE,
 lines(x=c(0.25,0.75), y=c(0.433,0.433))
 lines(x=c(0.25,0.5), y=c(0.433,0))
 lines(x=c(0.5,0.75), y=c(0,0.433))
+lines(x=c(0,0.75), y=c(0,0.433))
+lines(x=c(0.5,0.5), y=c(0,0.865))
+lines(x=c(0.25,1), y=c(0.433,0))
 
 # Plot points with color +/- relative size
 #triax.points(hexose[,c(2,1,3)], cex=1.7, col.symbols='black', pch=21, bg.symbols=fox[1])
