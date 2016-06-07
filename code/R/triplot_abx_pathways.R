@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'plotrix');
+deps <- c('vegan', 'plotrix', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -131,7 +131,6 @@ xenobiotics <- subset(combined_mapping, grepl('*Xenobiotics*', combined_mapping$
 
 # Remove non-useful groups
 combined_mapping$ko <- NULL
-combined_mapping$pathway <- NULL
 
 # amino sugars
 acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene))
@@ -194,23 +193,25 @@ acetate <- subset(combined_mapping, grepl('*acetate*', combined_mapping$gene))
 scfas <- rbind(butyrate, valerate, acetate)
 rm(butyrate, valerate, acetate)
 
-# Remove gene column
-combined_mapping$gene <- NULL
-
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define a color palette
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
+fox <- wes_palette("FantasticFox")
+tick_labels <- c('10%','','30%','','50%','','70%','','90%')
+plotting_map_data <- combined_mapping
+plotting_map_data$ko <- NULL
+plotting_map_data$gene <- NULL
+plotting_map_data$pathway <- NULL
 #palette_plot(rainbow)
 
 # Plot it!
 #pdf(file=plot_file, width=7, height=6)
-tick_labels <- c('10%','','30%','','50%','','70%','','90%')
-triax.plot(x=combined_mapping, pch=20, lty.grid=2, no.add=FALSE, 
+triax.plot(x=plotting_map_data, pch=20, lty.grid=2, no.add=FALSE, 
            axis.labels=c('Cefoperazone ', 'Clindamycin', 'Streptomycin'),  
            tick.labels=list(l=tick_labels, r=tick_labels, b=tick_labels), 
            cex.axis=1.5, cex.ticks=1, cc.axes=TRUE, align.labels=TRUE, 
-           show.grid=TRUE, mar=c(4.5,0,0,0), at=seq(0.1,0.9,by=0.1))
+           show.grid=TRUE, mar=c(4.5,0,0,0), at=seq(0.1,0.9, by=0.1))
 lines(x=c(0.25,0.75), y=c(0.433,0.433))
 lines(x=c(0.25,0.5), y=c(0.433,0))
 lines(x=c(0.5,0.75), y=c(0,0.433))
@@ -220,18 +221,13 @@ lines(x=c(0.5,0.75), y=c(0,0.433))
 # hexose, pentose, disaccharides, all = saccharides
 selected <- hexose
 selected$gene <- NULL
-current_color <- rainbow[1]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+current_color <- fox[1]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
 #triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 selected <- pentose 
 selected$gene <- NULL
-current_color <- rainbow[4]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
-#triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
-selected <- disaccharides
-selected$gene <- NULL
-current_color <- rainbow[10]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+current_color <- fox[2]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
 #triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 #selected <- saccharides # all
 #selected$gene <- NULL
@@ -241,33 +237,66 @@ triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_
 # peptides
 selected <- stickland
 selected$gene <- NULL
-current_color <- rainbow[14]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+current_color <- fox[3]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
 #triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 # sugar alcohols
 selected <- sugar_alcohols
 selected$gene <- NULL
-current_color <- rainbow[8]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+current_color <- fox[4]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
 #triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 # short-schain fatty acids
 selected <- scfas
 selected$gene <- NULL
-current_color <- rainbow[13]
-triax.points(selected, cex=1.5, col.symbols='black', pch=21, bg.symbols=current_color)
+current_color <- fox[5]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
 #triax.points(selected, cex=averages, col.symbols='black', pch=21, bg.symbols=current_color)
 
 #dev.off()
 
 
 
+
+selected <- glycolysis
+selected$ko <- NULL
+selected$gene <- NULL
+selected$pathway <- NULL
+current_color <- fox[1]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
+selected <- amino_sugar
+selected$ko <- NULL
+selected$gene <- NULL
+selected$pathway <- NULL
+current_color <- fox[2]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
+selected <- galactose
+selected$ko <- NULL
+selected$gene <- NULL
+selected$pathway <- NULL
+current_color <- fox[3]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
+selected <- fructose_mannose
+selected$ko <- NULL
+selected$gene <- NULL
+selected$pathway <- NULL
+current_color <- fox[4]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
+selected <- starch_sucrose
+selected$ko <- NULL
+selected$gene <- NULL
+selected$pathway <- NULL
+current_color <- fox[5]
+triax.points(selected, cex=1.7, col.symbols='black', pch=21, bg.symbols=current_color)
+
+
 #pdf(file=plot_file, width=6, height=5)
 #plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4,4), ylim=c(-4,4))
 legend(x=0, y=1, legend=c('pathway1','pathway2'), 
     cex=1.5, ncol=1, pch=21, pt.cex=2.5, col='black', 
-    pt.bg=c('red', 'blue'))
+    pt.bg=fox[1:5])
 #dev.off()
 
 
