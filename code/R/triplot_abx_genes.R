@@ -144,60 +144,62 @@ plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures
 pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
+triplot(frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
+
+#triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+#        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
 
 # 50% lines
-lines(x=c(-0.288,0.288), y=c(0.1665,0.1665))
-lines(x=c(-0.288,0), y=c(0.1665,-0.333))
-lines(x=c(0,0.288), y=c(-0.333,0.1665))
+#lines(x=c(-0.288,0.288), y=c(0.1665,0.1665))
+#lines(x=c(-0.288,0), y=c(0.1665,-0.333))
+#lines(x=c(0,0.288), y=c(-0.333,0.1665))
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
 # Left axis - Clindmycin
-lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
-lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
-lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
-lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
-lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
-lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
-lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
-lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
-lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
-text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=tick_labels, cex=0.9)
-text(x=-0.18, y=0.63, labels='Clindamycin', cex=1.4)
+#lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
+#lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
+#lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
+#lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
+#lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
+#lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
+#lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
+#lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
+#lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
+#text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
+#     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
+#     labels=tick_labels, cex=0.9)
+text(x=0, y=0.7, labels='Clindamycin', cex=1.4)
 
 # Right axis - Streptomycin
-lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
-lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
-lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
-lines(x=c(0.346,0.366), y=c(0.067,0.067))
-lines(x=c(0.289,0.309), y=c(0.167,0.167))
-lines(x=c(0.23,0.25), y=c(0.267,0.267))
-lines(x=c(0.173,0.193), y=c(0.367,0.367))
-lines(x=c(0.115,0.135), y=c(0.467,0.467))
-lines(x=c(0.057,0.077), y=c(0.567,0.567))
-text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=rev(tick_labels), cex=0.9)
-text(x=0.72, y=-0.295, labels='Streptomycin', cex=1.4)
+#lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
+#lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
+#lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
+#lines(x=c(0.346,0.366), y=c(0.067,0.067))
+#lines(x=c(0.289,0.309), y=c(0.167,0.167))
+#lines(x=c(0.23,0.25), y=c(0.267,0.267))
+#lines(x=c(0.173,0.193), y=c(0.367,0.367))
+#lines(x=c(0.115,0.135), y=c(0.467,0.467))
+#lines(x=c(0.057,0.077), y=c(0.567,0.567))
+#text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
+#     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
+#     labels=rev(tick_labels), cex=0.9)
+text(x=0.65, y=-0.38, labels='Streptomycin', cex=1.4)
 
 # Bottom axis - Cefoperzone
-lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
-lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
-lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
-lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
-lines(x=c(0,0), y=c(-0.333,-0.353))
-lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
-lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
-lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
-lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
-text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
-     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
-     labels=rev(tick_labels), cex=0.9)
+#lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
+#lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
+#lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
+#lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
+#lines(x=c(0,0), y=c(-0.333,-0.353))
+#lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
+#lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
+#lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
+#lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
+#text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
+#     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
+#     labels=rev(tick_labels), cex=0.9)
 text(x=-0.65, y=-0.38, labels='Cefoperzone', cex=1.4)
 
 # Color points by substrate
@@ -208,7 +210,7 @@ tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=
 tripoints(x=butyrate[,1], y=butyrate[,2], z=butyrate[,3], pch=21, cex=2, bg=fox[5])
 
 # Add the legend
-legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associated', 'Stickland substrate associated', 'Sugar alcohol associated', 'Butyrate associated'), 
+legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associated', 'Stickland substrate associated', 'Sugar alcohol associated', 'Butyrate associated', 'Other'), 
     cex=1, ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5]))
 
 # Add figure label
