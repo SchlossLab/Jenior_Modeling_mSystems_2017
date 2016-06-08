@@ -144,8 +144,8 @@ plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures
 pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
-triplot(x = combined_mapping[,1], y = combined_mapping[,2], z = combined_mapping[,3], frame=TRUE, 
-        label = c('','',''), grid = seq(0.1,0.9,by=0.1), set.par=TRUE, pch=20)
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
 
 # 50% lines
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665))
