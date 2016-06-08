@@ -141,7 +141,7 @@ tick_labels <- c('10%','','30%','','50%','','70%','','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/cdf_abx_genes.pdf'
 
 # Open a PDF
-pdf(file=plot_file, width=9, height=6.5)
+#pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
 triplot(frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
@@ -216,7 +216,7 @@ legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associat
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
 
-dev.off()
+#dev.off()
 
 
 
