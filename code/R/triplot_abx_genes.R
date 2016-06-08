@@ -75,61 +75,61 @@ rm(cefoperazone, clindamycin, streptomycin)
 # Subset by gene annotations
 
 # amino sugars
-acetylglucosamine <- subset(combined_mapping[,1:3], grepl('*N-acetylglucosamine*', combined_mapping$gene))
-acetylmannosamine <- subset(combined_mapping[,1:3], grepl('*N-acetylmannosamine*', combined_mapping$gene))
-acetylmuramate <- subset(combined_mapping[,1:3], grepl('*N-acetylmuramate*', combined_mapping$gene))
+acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene))
+acetylmannosamine <- subset(combined_mapping, grepl('*N-acetylmannosamine*', combined_mapping$gene))
+acetylmuramate <- subset(combined_mapping, grepl('*N-acetylmuramate*', combined_mapping$gene))
 amino_sugars <- rbind(acetylglucosamine, acetylmannosamine, acetylmuramate)
 rm(acetylglucosamine, acetylmannosamine, acetylmuramate)
 
 # Stickland substrates
-proline <- subset(combined_mapping[,1:3], grepl('*proline*', combined_mapping$gene))
-glycine <- subset(combined_mapping[,1:3], grepl('*glycine*', combined_mapping$gene))
-arginine <- subset(combined_mapping[,1:3], grepl('*arginine*', combined_mapping$gene))
-threonine <- subset(combined_mapping[,1:3], grepl('*threonine*', combined_mapping$gene))
-methionine <- subset(combined_mapping[,1:3], grepl('*methionine*', combined_mapping$gene))
-serine <- subset(combined_mapping[,1:3], grepl('*serine*', combined_mapping$gene))
-alanine <- subset(combined_mapping[,1:3], grepl('*alanine*', combined_mapping$gene))
+proline <- subset(combined_mapping, grepl('*proline*', combined_mapping$gene))
+glycine <- subset(combined_mapping, grepl('*glycine*', combined_mapping$gene))
+arginine <- subset(combined_mapping, grepl('*arginine*', combined_mapping$gene))
+threonine <- subset(combined_mapping, grepl('*threonine*', combined_mapping$gene))
+methionine <- subset(combined_mapping, grepl('*methionine*', combined_mapping$gene))
+serine <- subset(combined_mapping, grepl('*serine*', combined_mapping$gene))
+alanine <- subset(combined_mapping, grepl('*alanine*', combined_mapping$gene))
 stickland <- rbind(proline, glycine, arginine, threonine, methionine, serine, alanine)
 rm(proline, glycine, arginine, threonine, methionine, serine, alanine)
 
 # Saccharides
 # hexose
-galactose <- subset(combined_mapping[,1:3], grepl('*galactose*', combined_mapping$gene))
-mannose <- subset(combined_mapping[,1:3], grepl('*mannose*', combined_mapping$gene))
-glucose <- subset(combined_mapping[,1:3], grepl('*glucose*', combined_mapping$gene))
-tagatose <- subset(combined_mapping[,1:3], grepl('*tagatose*', combined_mapping$gene))
-fructose <- subset(combined_mapping[,1:3], grepl('*fructose*', combined_mapping$gene)) #keto-
+galactose <- subset(combined_mapping, grepl('*galactose*', combined_mapping$gene))
+mannose <- subset(combined_mapping, grepl('*mannose*', combined_mapping$gene))
+glucose <- subset(combined_mapping, grepl('*glucose*', combined_mapping$gene))
+tagatose <- subset(combined_mapping, grepl('*tagatose*', combined_mapping$gene))
+fructose <- subset(combined_mapping, grepl('*fructose*', combined_mapping$gene)) #keto-
 hexose <- rbind(galactose, mannose, glucose, tagatose, fructose)
 # pentose
-xylose <- subset(combined_mapping[,1:3], grepl('*xylose*', combined_mapping$gene))
-ribose <- subset(combined_mapping[,1:3], grepl('*ribose*', combined_mapping$gene))
+xylose <- subset(combined_mapping, grepl('*xylose*', combined_mapping$gene))
+ribose <- subset(combined_mapping, grepl('*ribose*', combined_mapping$gene))
 pentose <- rbind(xylose, ribose)
 # disaccharides
-sucrose <- subset(combined_mapping[,1:3], grepl('*sucrose*', combined_mapping$gene))
-lactose <- subset(combined_mapping[,1:3], grepl('*lactose*', combined_mapping$gene))
-maltose <- subset(combined_mapping[,1:3], grepl('*maltose*', combined_mapping$gene))
-trehalose <- subset(combined_mapping[,1:3], grepl('*trehalose*', combined_mapping$gene))
-disaccharides <- rbind(sucrose, lactose, maltose, trehalose)
+#sucrose <- subset(combined_mapping, grepl('*sucrose*', combined_mapping$gene))
+#lactose <- subset(combined_mapping, grepl('*lactose*', combined_mapping$gene))
+#maltose <- subset(combined_mapping, grepl('*maltose*', combined_mapping$gene))
+#trehalose <- subset(combined_mapping, grepl('*trehalose*', combined_mapping$gene))
+#disaccharides <- rbind(sucrose, lactose, maltose, trehalose)
 # all
-saccharides <- rbind(galactose, tagatose, trehalose, mannose, xylose, ribose, fructose, glucose, maltose, lactose, sucrose)
-rm(galactose, tagatose, trehalose, mannose, xylose, ribose, glucose, maltose, lactose, sucrose)
+#saccharides <- rbind(galactose, tagatose, trehalose, mannose, xylose, ribose, fructose, glucose, maltose, lactose, sucrose)
+#rm(galactose, tagatose, trehalose, mannose, xylose, ribose, glucose, maltose, lactose, sucrose)
 
 # sugar alcohols
-ribitol <- subset(combined_mapping[,1:3], grepl('*ribitol*', combined_mapping$gene))
-sorbitol <- subset(combined_mapping[,1:3], grepl('*sorbitol*', combined_mapping$gene))
-mannitol <- subset(combined_mapping[,1:3], grepl('*mannitol*', combined_mapping$gene))
+ribitol <- subset(combined_mapping, grepl('*ribitol*', combined_mapping$gene))
+sorbitol <- subset(combined_mapping, grepl('*sorbitol*', combined_mapping$gene))
+mannitol <- subset(combined_mapping, grepl('*mannitol*', combined_mapping$gene))
 sugar_alcohols <- rbind(ribitol, sorbitol, mannitol)
 rm(ribitol, sorbitol, mannitol)
 
 # nucleosides
-uridine <- subset(combined_mapping[,1:3], grepl('*uridine*', combined_mapping$gene))
-inosine <- subset(combined_mapping[,1:3], grepl('*inosine*', combined_mapping$gene))
-adenosine <- subset(combined_mapping[,1:3], grepl('*adenosine*', combined_mapping$gene))
-nucleosides <- rbind(uridine, inosine, adenosine)
-rm(uridine, inosine, adenosine)
+#uridine <- subset(combined_mapping, grepl('*uridine*', combined_mapping$gene))
+#inosine <- subset(combined_mapping, grepl('*inosine*', combined_mapping$gene))
+#adenosine <- subset(combined_mapping, grepl('*adenosine*', combined_mapping$gene))
+#nucleosides <- rbind(uridine, inosine, adenosine)
+#rm(uridine, inosine, adenosine)
 
 # short-chain fatty acids
-butyrate <- subset(combined_mapping[,1:3], grepl('*butyrate*', combined_mapping$gene))
+butyrate <- subset(combined_mapping, grepl('*butyrate*', combined_mapping$gene))
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -208,7 +208,7 @@ tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=
 tripoints(x=butyrate[,1], y=butyrate[,2], z=butyrate[,3], pch=21, cex=2, bg=fox[5])
 
 # Add the legend
-legend('topright', legend=c('6-carbon sugars','5-carbon sugars', 'Stickland substrates', 'Sugar alcohols', 'Butyrate production'), 
+legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associated', 'Stickland substrate associated', 'Sugar alcohol associated', 'Butyrate associated'), 
     cex=1, ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5]))
 
 # Add figure label
