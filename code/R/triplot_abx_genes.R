@@ -144,10 +144,8 @@ plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures
 #pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
-triplot(frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
-
-#triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-#        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
 
 # 50% lines
 #lines(x=c(-0.288,0.288), y=c(0.1665,0.1665))
@@ -211,7 +209,7 @@ tripoints(x=butyrate[,1], y=butyrate[,2], z=butyrate[,3], pch=21, cex=2, bg=fox[
 
 # Add the legend
 legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associated', 'Stickland substrate associated', 'Sugar alcohol associated', 'Butyrate associated', 'Other'), 
-    cex=1, ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5]))
+    cex=1, ncol=1, pch=c(21,21,21,21,21,20), pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5], NA))
 
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
