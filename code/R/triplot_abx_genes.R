@@ -53,9 +53,6 @@ combined_mapping$Cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample
 combined_mapping$Clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
 combined_mapping$Streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
 
-# Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) != 0, ] 
-
 # Calculate the factors to scale points size by
 averages <- log10(rowSums(combined_mapping[, 1:3]) / 3) * 2.5
 
@@ -63,8 +60,8 @@ averages <- log10(rowSums(combined_mapping[, 1:3]) / 3) * 2.5
 combined_mapping[combined_mapping == 0] <- 1
 combined_mapping[,1:3] <- combined_mapping[, 1:3] / rowSums(combined_mapping[,1:3])
 
-# Remove genes with unannotated pathways
-combined_mapping <- subset(combined_mapping, pathway != 'none')
+# Eliminate genes with no transcripts mapping
+combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) != 0, ] 
 
 # Free up memory
 rm(cefoperazone_file, clindamycin_file, streptomycin_file)
@@ -75,25 +72,34 @@ rm(cefoperazone, clindamycin, streptomycin)
 # Subset by gene annotations
 
 # amino sugars
-acetylglucosamine <- subset(combined_mapping, grepl('*N-acetylglucosamine*', combined_mapping$gene))
-acetylmannosamine <- subset(combined_mapping, grepl('*N-acetylmannosamine*', combined_mapping$gene))
-acetylmuramate <- subset(combined_mapping, grepl('*N-acetylmuramate*', combined_mapping$gene))
-amino_sugars <- rbind(acetylglucosamine, acetylmannosamine, acetylmuramate)
-rm(acetylglucosamine, acetylmannosamine, acetylmuramate)
+mur <- rbind(subset(combined_mapping, grepl('mur.;', combined_mapping$gene)), subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # 
+nag <- rbind(subset(combined_mapping, grepl('nag.;', combined_mapping$gene)), subset(combined_mapping, grepl('nag;', combined_mapping$gene))) # 
+acd <- rbind(subset(combined_mapping, grepl('acd.;', combined_mapping$gene)), subset(combined_mapping, grepl('acd;', combined_mapping$gene))) # 
+ldt <- rbind(subset(combined_mapping, grepl('ldt.;', combined_mapping$gene)), subset(combined_mapping, grepl('ldt;', combined_mapping$gene))) # 
+gne <- rbind(subset(combined_mapping, grepl('gne.;', combined_mapping$gene)), subset(combined_mapping, grepl('gne;', combined_mapping$gene))) # 
+anm <- rbind(subset(combined_mapping, grepl('anm.;', combined_mapping$gene)), subset(combined_mapping, grepl('anm;', combined_mapping$gene))) # 
+nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)), subset(combined_mapping, grepl('nan;', combined_mapping$gene))) # 
+amino_sugars <- rbind(mur, nag, acd, ldt, gne, anm, nan)
+rm(mur, nag, acd, ldt, gne, anm, nan)
 
-# Stickland substrates
-proline <- subset(combined_mapping, grepl('*proline*', combined_mapping$gene))
-glycine <- subset(combined_mapping, grepl('*glycine*', combined_mapping$gene))
-arginine <- subset(combined_mapping, grepl('*arginine*', combined_mapping$gene))
+# Stickland fermentation
+pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), subset(combined_mapping, grepl('pep;', combined_mapping$gene))) # general peptidases
+prd <- rbind(subset(combined_mapping, grepl('prd.;', combined_mapping$gene)), subset(combined_mapping, grepl('prd;', combined_mapping$gene))) # proline reductase/racemase
+grd <- rbind(subset(combined_mapping, grepl('grd.;', combined_mapping$gene)), subset(combined_mapping, grepl('grd;', combined_mapping$gene))) # glycine reductase/racemase
+ldhA <- subset(combined_mapping, grepl('ldhA;', combined_mapping$gene)) # (R)-2-hydroxyisocaproate dehydrogenase (leucine degradation)
+hadA <- subset(combined_mapping, grepl('hadA;', combined_mapping$gene)) # (R)-2-hydroxyisocaproyl-CoA transferase (leucine degradation)
+
 threonine <- subset(combined_mapping, grepl('*threonine*', combined_mapping$gene))
 methionine <- subset(combined_mapping, grepl('*methionine*', combined_mapping$gene))
 serine <- subset(combined_mapping, grepl('*serine*', combined_mapping$gene))
 alanine <- subset(combined_mapping, grepl('*alanine*', combined_mapping$gene))
+
 stickland <- rbind(proline, glycine, arginine, threonine, methionine, serine, alanine)
-rm(proline, glycine, arginine, threonine, methionine, serine, alanine)
+rm()
 
 # Saccharides
 # hexose
+
 galactose <- subset(combined_mapping, grepl('*galactose*', combined_mapping$gene))
 mannose <- subset(combined_mapping, grepl('*mannose*', combined_mapping$gene))
 glucose <- subset(combined_mapping, grepl('*glucose*', combined_mapping$gene))
@@ -119,17 +125,23 @@ ribitol <- subset(combined_mapping, grepl('*ribitol*', combined_mapping$gene))
 sorbitol <- subset(combined_mapping, grepl('*sorbitol*', combined_mapping$gene))
 mannitol <- subset(combined_mapping, grepl('*mannitol*', combined_mapping$gene))
 sugar_alcohols <- rbind(ribitol, sorbitol, mannitol)
-rm(ribitol, sorbitol, mannitol)
+#rm(ribitol, sorbitol, mannitol)
 
-# nucleosides
-#uridine <- subset(combined_mapping, grepl('*uridine*', combined_mapping$gene))
-#inosine <- subset(combined_mapping, grepl('*inosine*', combined_mapping$gene))
-#adenosine <- subset(combined_mapping, grepl('*adenosine*', combined_mapping$gene))
-#nucleosides <- rbind(uridine, inosine, adenosine)
-#rm(uridine, inosine, adenosine)
+# Butyrate production
+buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), subset(combined_mapping, grepl('buk.;', combined_mapping$gene)))
+ptb <- rbind(subset(combined_mapping, grepl('ptb;', combined_mapping$gene)), subset(combined_mapping, grepl('ptb.;', combined_mapping$gene)))
+butyrate <- rbind(buk, ptb)
 
-# short-chain fatty acids
-butyrate <- subset(combined_mapping, grepl('*butyrate*', combined_mapping$gene))
+pta <- rbind(subset(combined_mapping, grepl('pta;', combined_mapping$gene)), subset(combined_mapping, grepl('pta.;', combined_mapping$gene)))
+acetate <- rbind()
+
+# GABA 
+gabT <- subset(combined_mapping, grepl('gabT;', combined_mapping$gene))
+
+
+# Remove genes with unannotated pathways
+annotated <- subset(combined_mapping, pathway != 'none')
+rm(combined_mapping)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -141,16 +153,13 @@ tick_labels <- c('10%','','30%','','50%','','70%','','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/cdf_abx_genes.pdf'
 
 # Open a PDF
-#pdf(file=plot_file, width=9, height=6.5)
+pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+triplot(x=annotated[,1], y=annotated[,2], z=annotated[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
 
 # 50% lines
-#lines(x=c(-0.288,0.288), y=c(0.1665,0.1665))
-#lines(x=c(-0.288,0), y=c(0.1665,-0.333))
-#lines(x=c(0,0.288), y=c(-0.333,0.1665))
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
@@ -209,12 +218,12 @@ tripoints(x=butyrate[,1], y=butyrate[,2], z=butyrate[,3], pch=21, cex=2, bg=fox[
 
 # Add the legend
 legend('topright', legend=c('6-carbon sugar associated','5-carbon sugar associated', 'Stickland substrate associated', 'Sugar alcohol associated', 'Butyrate associated', 'Other'), 
-    cex=1, ncol=1, pch=c(21,21,21,21,21,20), pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5], NA))
+    ncol=1, pch=c(21,21,21,21,21,20), pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[7],fox[3],rainbow[1],fox[5], NA))
 
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
 
-#dev.off()
+dev.off()
 
 
 
