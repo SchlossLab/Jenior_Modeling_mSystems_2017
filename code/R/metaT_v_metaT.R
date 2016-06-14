@@ -8,9 +8,14 @@ for (dep in deps){
 }
 
 # Define input file names
-metagenome_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metagenome/Cefoperazone.DNA_reads2metaG.all.pool.norm.remove.annotated.txt'
-metatranscriptome1_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/remove_cdf/cefoperazone_630.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
-metatranscriptome2_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/gene_mapping/metatranscriptome/remove_cdf/cefoperazone_mock.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+#metagenome_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/metagenome/Cefoperazone.DNA_reads2metaG.all.pool.norm.remove.annotated.txt'
+#metatranscriptome1_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/metatranscriptome/remove_cdf/cefoperazone_630.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+#metatranscriptome2_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/metatranscriptome/remove_cdf/cefoperazone_mock.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+metagenome_file <- '/media/mjenior/Data/mapping/metagenome/Cefoperazone.DNA_reads2metaG.all.pool.norm.remove.annotated.txt'
+metatranscriptome1_file <- '/media/mjenior/Data/mapping/metatranscriptome/remove_cdf/cefoperazone_630.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+metatranscriptome2_file <- '/media/mjenior/Data/mapping/metatranscriptome/remove_cdf/cefoperazone_mock.RNA_reads2metaG.cdf.all.pool.norm.remove.annotated.txt'
+
+
 
 # Load in data
 metagenome <- read.delim(metagenome_file, sep='\t', header=TRUE, row.names=4)
