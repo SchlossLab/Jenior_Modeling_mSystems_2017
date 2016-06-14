@@ -122,8 +122,8 @@ fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene))
                   subset(combined_mapping, grepl('fru.;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fru...;', combined_mapping$gene))) # hexose
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
-monosaccharides <- rbind(glycolysis, galactose, mng, tagatose, fructose, xylose)
-rm(glycolysis, galactose, mng, tagatose, fructose, xylose)
+monosaccharides <- rbind(glycolysis, galactose, mannose, tagatose, fructose, xylose)
+rm(glycolysis, galactose, mannose, tagatose, fructose, xylose)
 
 # Disaccharides
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -226,8 +226,8 @@ text(x=0.65, y=-0.38, labels='Streptomycin', cex=1.4)
 text(x=-0.65, y=-0.38, labels='Cefoperzone', cex=1.4)
 
 # Color points by substrate
-tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
 tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
+tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
 tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
 #tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg=rainbow[7])
 tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
@@ -241,7 +241,7 @@ legend('topright', legend=c('Monosaccharide catabolism', 'Sugar alcohol cataboli
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
 
-dev.off()
+#dev.off()
 
 
 
