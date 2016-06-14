@@ -155,8 +155,6 @@ rm(sucrose, maltose, tre, glucosidase, cel)
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
              subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
 
-
-
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
 
@@ -193,6 +191,18 @@ plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures
 
 # Open a PDF
 pdf(file=plot_file, width=9, height=6.5)
+
+
+
+
+
+# Start multi-plot figure
+layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
+
+
+
+
+
 
 # Generate raw plot
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
@@ -258,13 +268,12 @@ tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, ce
 tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='black')
 
 # Add the legend
-legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland fermentation', 'Fermentation end steps', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
+legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation genes', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
     ncol=1, pch=21, pt.cex=c(2,2,2,2,2,2,2,0.8), col='black', pt.bg=c(fox[1],'black','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'))
 
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
 
 dev.off()
-
 
 
