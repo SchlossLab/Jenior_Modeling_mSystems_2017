@@ -17,9 +17,12 @@ palette_plot <- function(col, border = "light gray", ...){
 }
 
 # Define input file names
-cefoperazone_file <- '/media/mjenior/Data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-clindamycin_file <- '/media/mjenior/Data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-streptomycin_file <- '/media/mjenior/Data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+#cefoperazone_file <- '/media/mjenior/Data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+#clindamycin_file <- '/media/mjenior/Data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+#streptomycin_file <- '/media/mjenior/Data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
 
 # Load in data
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
@@ -71,7 +74,7 @@ rm(cefoperazone, clindamycin, streptomycin)
 
 # Subset by gene annotations
 
-# amino sugars
+# Amino sugar catabolism
 mur <- rbind(subset(combined_mapping, grepl('mur.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # 
 nag <- rbind(subset(combined_mapping, grepl('nag.;', combined_mapping$gene)), 
@@ -98,6 +101,7 @@ prd <- rbind(subset(combined_mapping, grepl('prd.;', combined_mapping$gene)),
              subset(combined_mapping, grepl('prd;', combined_mapping$gene))) # proline fermentation
 grd <- rbind(subset(combined_mapping, grepl('grd.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('grd;', combined_mapping$gene))) # glycine fermentation
+kamA <- subset(combined_mapping, grepl('kam.;', combined_mapping$gene)) # lycine fermentation
 ldhA <- subset(combined_mapping, grepl('ldhA;', combined_mapping$gene)) # (R)-2-hydroxyisocaproate dehydrogenase (leucine degradation)
 had <- subset(combined_mapping, grepl('had.;', combined_mapping$gene)) # Leucine fermentation
 tdcB <- subset(combined_mapping, grepl('tdcB;', combined_mapping$gene)) # threonine dehydratase
@@ -106,40 +110,55 @@ panB  <- subset(combined_mapping, grepl('panB;', combined_mapping$gene)) # Butan
 arg <- subset(combined_mapping, grepl('arg.;', combined_mapping$gene)) # arginine deaminase operon
 serA <- subset(combined_mapping, grepl('serA;', combined_mapping$gene)) # D-3-phosphoglycerate dehydrogenase (serine catabolism)
 sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-serine dehydratase (serine catabolism)
-stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB)
-rm(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB)
+stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
+rm(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
 
-# Monosaccharides
-glycolysis <- subset(combined_mapping, grepl('Glycolysis_/_Gluconeogenesis', combined_mapping$pathway))
+# Monosaccharide catabolism
+gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
+gpmI <- subset(combined_mapping, grepl('gpmI;', combined_mapping$gene)) # Phosphoglyceromutase (Glycolysis)
+pfk <- rbind(subset(combined_mapping, grepl('pfkA;', combined_mapping$gene)),
+              subset(combined_mapping, grepl('phosphofructokinase', combined_mapping$gene)))# Phosphofructokinase (Glycolysis)
+tpi <- subset(combined_mapping, grepl('tpi;', combined_mapping$gene)) # Triosephosphate isomerase (Glycolysis)
+pyk <- subset(combined_mapping, grepl('pyk;', combined_mapping$gene)) # Pyruvate kinase (Glycolysis)
+eno <- subset(combined_mapping, grepl('eno;', combined_mapping$gene)) # Enolase (Glycolysis)
+pgm <- rbind(subset(combined_mapping, grepl('pgm;', combined_mapping$gene)),
+             subset(combined_mapping, grepl('phosphoglycerate_mutase', combined_mapping$gene))) # Phosphoglycerate mutase (Glycolysis)
 galactose <- rbind(subset(combined_mapping, grepl('galE;', combined_mapping$gene)), 
                    subset(combined_mapping, grepl('galactose-1-phosphate_uridylyltransferase', combined_mapping$gene))) # hexose
 mannose <- rbind(subset(combined_mapping, grepl('mng.;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('man.;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('pmi;', combined_mapping$gene)))# mannose utilization 
+                 subset(combined_mapping, grepl('pmi;', combined_mapping$gene)))# hexose
 tagatose <- subset(combined_mapping, grepl('tagatose', combined_mapping$gene)) # hexose 
 fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fru;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fru.;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fru...;', combined_mapping$gene))) # hexose
+                  subset(combined_mapping, grepl('fru...;', combined_mapping$gene)),
+                  subset(combined_mapping, grepl('fba;', combined_mapping$gene))) # hexose
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
-monosaccharides <- rbind(glycolysis, galactose, mannose, tagatose, fructose, xylose)
-rm(glycolysis, galactose, mannose, tagatose, fructose, xylose)
+monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
+rm(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 
-# Disaccharides
+# Disaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
 maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosidase', combined_mapping$gene)),
                  subset(combined_mapping, grepl('maa;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('map.;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('maltose_O-acetyltransferase', combined_mapping$gene)))
 tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalose utilization operon
-disaccharides <- rbind(sucrose,  maltose, tre)
-rm(sucrose, maltose, tre)
+glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
+cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
+             subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
+disaccharides <- rbind(sucrose,  maltose, tre, glucosidase, cel)
+rm(sucrose, maltose, tre, glucosidase, cel)
 
 # PTS systems
-PTS <- subset(combined_mapping, grepl('PTS_system', combined_mapping$gene))
+PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
+             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
+
+
 
 # ABC transporters
-ABC <- subset(combined_mapping, grepl('ABC_transporter', combined_mapping$gene))
+ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
 
 # sugar alcohols
 srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
@@ -148,16 +167,20 @@ mtl <- subset(combined_mapping, grepl('mtl.;', combined_mapping$gene)) # mannito
 sugar_alcohols <- rbind(srl, srlE, mtl)
 rm(srl, srlE, mtl)
 
-# Butyrate production
+# Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('buk.;', combined_mapping$gene))) # Butyrate kinase
 ptb <- rbind(subset(combined_mapping, grepl('ptb;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('ptb.;', combined_mapping$gene))) # phosphate butyryltransferase
-butyrate <- rbind(buk, ptb)
-rm(buk, ptb)
-
-# GABA 
-#gabT <- subset(combined_mapping, grepl('gabT;', combined_mapping$gene))
+acetate <- subset(combined_mapping, grepl('acetate', combined_mapping$gene))
+valerate <- subset(combined_mapping, grepl('valerate', combined_mapping$gene))
+sucD <- subset(combined_mapping, grepl('sucD;', combined_mapping$gene)) # succinate-semialdehyde dehydrogenase
+adh <- subset(combined_mapping, grepl('adh.;', combined_mapping$gene)) # Alcohol dehydrogenase
+cat <- subset(combined_mapping, grepl('cat.;', combined_mapping$gene)) # Acetate to butyrate conversion
+abfD <- subset(combined_mapping, grepl('abfD;', combined_mapping$gene)) # gamma-aminobutyrate metabolism dehydratase
+hbd <- subset(combined_mapping, grepl('hbd;', combined_mapping$gene)) # 3-hydroxybutyryl-CoA dehydrogenase
+fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
+rm(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -169,11 +192,11 @@ tick_labels <- c('10%','','30%','','50%','','70%','','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/cdf_abx_genes.pdf'
 
 # Open a PDF
-#pdf(file=plot_file, width=9, height=6.5)
+pdf(file=plot_file, width=9, height=6.5)
 
 # Generate raw plot
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), pch=20)
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 
 # 50% lines
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
@@ -223,25 +246,25 @@ text(x=0.65, y=-0.38, labels='Streptomycin', cex=1.4)
 #text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
 #     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
 #     labels=rev(tick_labels), cex=0.9)
-text(x=-0.65, y=-0.38, labels='Cefoperzone', cex=1.4)
+text(x=-0.65, y=-0.38, labels='Cefoperazone', cex=1.4)
 
 # Color points by substrate
-tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
 tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
+tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
 tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
-#tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg=rainbow[7])
 tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
-tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg=rainbow[1])
-tripoints(x=butyrate[,1], y=butyrate[,2], z=butyrate[,3], pch=21, cex=2, bg=fox[5])
+tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
+tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
+tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='black')
 
 # Add the legend
-legend('topright', legend=c('Monosaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland fermentation', 'Butyrate production', 'PTS genes', 'ABC transporters', 'Other'), 
-    ncol=1, pch=c(21,21,21,21,21,21,20), pt.cex=2, col='black', pt.bg=c(fox[1],rainbow[1],fox[2],fox[5],fox[3],rainbow[7], NA))
+legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland fermentation', 'Fermentation end steps', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
+    ncol=1, pch=21, pt.cex=c(2,2,2,2,2,2,2,0.8), col='black', pt.bg=c(fox[1],'black','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'))
 
 # Add figure label
 text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
 
-#dev.off()
+dev.off()
 
 
 
