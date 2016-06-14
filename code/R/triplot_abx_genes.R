@@ -17,9 +17,9 @@ palette_plot <- function(col, border = "light gray", ...){
 }
 
 # Define input file names
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+cefoperazone_file <- '/media/mjenior/Data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+clindamycin_file <- '/media/mjenior/Data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+streptomycin_file <- '/media/mjenior/Data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
 
 # Load in data
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
