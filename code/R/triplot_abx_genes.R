@@ -266,38 +266,35 @@ legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabol
 # Add figure label
 legend('topleft', legend='A', cex=2, bty='n')
 
-# PTS alone
+# monosaccharides alone
 par(mar=c(0,0,0,0))
-triplot(x=PTS[,1], y=PTS[,2], z=PTS[,3], 
+triplot(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 legend('topleft', legend='B', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
 
-# ABC alone
+# disaccharides alone
 par(mar=c(0,0,0,0))
-triplot(x=ABC[,1], y=ABC[,2], z=ABC[,3], 
+triplot(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 legend('topleft', legend='C', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='blue3')
 
-# monosaccharides alone
+# sugar_alcohols alone
 par(mar=c(0,0,0,0))
-triplot(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
+triplot(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 legend('topleft', legend='D', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
 
 # stickland alone
 par(mar=c(0,0,0,0))
@@ -308,40 +305,36 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
-
-# sugar_alcohols alone
-par(mar=c(0,0,0,0))
-triplot(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='F', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
 
 # fermentation alone
 par(mar=c(0,0,0,0))
 triplot(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='G', cex=2, bty='n')
+legend('topleft', legend='F', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
-#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
 
-# disaccharides alone
+# PTS alone
 par(mar=c(0,0,0,0))
-triplot(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], 
+triplot(x=PTS[,1], y=PTS[,2], z=PTS[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='G', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
+
+# ABC alone
+par(mar=c(0,0,0,0))
+triplot(x=ABC[,1], y=ABC[,2], z=ABC[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 legend('topleft', legend='H', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='blue3')
-#legend('topright', legend=c('test'), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c('blue3'))
+tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
 
 dev.off()
 
