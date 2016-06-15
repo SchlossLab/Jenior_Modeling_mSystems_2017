@@ -92,7 +92,6 @@ nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)),
 glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('glm;', combined_mapping$gene)))
 amino_sugars <- rbind(mur, nag, acd, ldt, gne, anm, nan, glm)
-rm(mur, nag, acd, ldt, gne, anm, nan, glm)
 
 # Stickland fermentation
 pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
@@ -111,7 +110,6 @@ arg <- subset(combined_mapping, grepl('arg.;', combined_mapping$gene)) # arginin
 serA <- subset(combined_mapping, grepl('serA;', combined_mapping$gene)) # D-3-phosphoglycerate dehydrogenase (serine catabolism)
 sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-serine dehydratase (serine catabolism)
 stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
-rm(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
 
 # Monosaccharide catabolism
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
@@ -123,6 +121,7 @@ pyk <- subset(combined_mapping, grepl('pyk;', combined_mapping$gene)) # Pyruvate
 eno <- subset(combined_mapping, grepl('eno;', combined_mapping$gene)) # Enolase (Glycolysis)
 pgm <- rbind(subset(combined_mapping, grepl('pgm;', combined_mapping$gene)),
              subset(combined_mapping, grepl('phosphoglycerate_mutase', combined_mapping$gene))) # Phosphoglycerate mutase (Glycolysis)
+glycolysis <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm)
 galactose <- rbind(subset(combined_mapping, grepl('galE;', combined_mapping$gene)), 
                    subset(combined_mapping, grepl('galactose-1-phosphate_uridylyltransferase', combined_mapping$gene))) # hexose
 mannose <- rbind(subset(combined_mapping, grepl('mng.;', combined_mapping$gene)),
@@ -136,7 +135,6 @@ fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene))
                   subset(combined_mapping, grepl('fba;', combined_mapping$gene))) # hexose
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
 monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
-rm(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 
 # Disaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -149,7 +147,6 @@ glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$ge
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
              subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
 disaccharides <- rbind(sucrose,  maltose, tre, glucosidase, cel)
-rm(sucrose, maltose, tre, glucosidase, cel)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
@@ -163,7 +160,6 @@ srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbito
 srlE <- subset(combined_mapping, grepl('srlE.;', combined_mapping$gene)) # sorbitol import
 mtl <- subset(combined_mapping, grepl('mtl.;', combined_mapping$gene)) # mannitol utilization locus
 sugar_alcohols <- rbind(srl, srlE, mtl)
-rm(srl, srlE, mtl)
 
 # Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
@@ -178,7 +174,6 @@ cat <- subset(combined_mapping, grepl('cat.;', combined_mapping$gene)) # Acetate
 abfD <- subset(combined_mapping, grepl('abfD;', combined_mapping$gene)) # gamma-aminobutyrate metabolism dehydratase
 hbd <- subset(combined_mapping, grepl('hbd;', combined_mapping$gene)) # 3-hydroxybutyryl-CoA dehydrogenase
 fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
-rm(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -190,21 +185,17 @@ tick_labels <- c('10%','','30%','','50%','','70%','','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/cdf_abx_genes.pdf'
 
 # Open a PDF
-pdf(file=plot_file, width=9, height=6.5)
+pdf(file=plot_file, width=9, height=9)
 
-
-
-
-
-# Start multi-plot figure
-layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE))
-
-
-
-
-
+# Create layout for multi-plot
+layout(mat=matrix(c(1,1,1,2, 
+                    1,1,1,3, 
+                    1,1,1,4, 
+                    5,6,7,8), 
+                  nrow=4, ncol=4, byrow=TRUE))
 
 # Generate raw plot
+par(mar=c(0,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 
@@ -213,67 +204,146 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
+# Axis labels
+text(x=-0.45, y=-0.41, labels='Cefoperazone', cex=1.4)
+text(x=-0.15, y=0.58, labels='Clindamycin', cex=1.4, srt=60)
+text(x=0.58, y=-0.18, labels='Streptomycin', cex=1.4, srt=-60)
+
 # Left axis - Clindmycin
-#lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
-#lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
-#lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
-#lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
-#lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
-#lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
-#lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
-#lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
-#lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
-#text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
-#     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-#     labels=tick_labels, cex=0.9)
-text(x=0, y=0.7, labels='Clindamycin', cex=1.4)
+lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
+lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
+lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
+lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
+lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
+lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
+lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
+lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
+lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
+text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
+     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
+     labels=tick_labels, cex=0.9)
 
 # Right axis - Streptomycin
-#lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
-#lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
-#lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
-#lines(x=c(0.346,0.366), y=c(0.067,0.067))
-#lines(x=c(0.289,0.309), y=c(0.167,0.167))
-#lines(x=c(0.23,0.25), y=c(0.267,0.267))
-#lines(x=c(0.173,0.193), y=c(0.367,0.367))
-#lines(x=c(0.115,0.135), y=c(0.467,0.467))
-#lines(x=c(0.057,0.077), y=c(0.567,0.567))
-#text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
-#     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-#     labels=rev(tick_labels), cex=0.9)
-text(x=0.65, y=-0.38, labels='Streptomycin', cex=1.4)
+lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
+lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
+lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
+lines(x=c(0.346,0.366), y=c(0.067,0.067))
+lines(x=c(0.289,0.309), y=c(0.167,0.167))
+lines(x=c(0.23,0.25), y=c(0.267,0.267))
+lines(x=c(0.173,0.193), y=c(0.367,0.367))
+lines(x=c(0.115,0.135), y=c(0.467,0.467))
+lines(x=c(0.057,0.077), y=c(0.567,0.567))
+text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
+     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
+     labels=rev(tick_labels), cex=0.9)
 
 # Bottom axis - Cefoperzone
-#lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
-#lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
-#lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
-#lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
-#lines(x=c(0,0), y=c(-0.333,-0.353))
-#lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
-#lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
-#lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
-#lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
-#text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
-#     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
-#     labels=rev(tick_labels), cex=0.9)
-text(x=-0.65, y=-0.38, labels='Cefoperazone', cex=1.4)
+lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
+lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
+lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
+lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
+lines(x=c(0,0), y=c(-0.333,-0.353))
+lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
+lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
+lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
+lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
+text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
+     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
+     labels=rev(tick_labels), cex=0.9)
 
 # Color points by substrate
-tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
-tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
-tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
-tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
-tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
-tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
-tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='black')
+tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2.3, bg=fox[3])
+tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2.3, bg=rainbow[7])
+tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2.3, bg=fox[1])
+tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2.3, bg=fox[2])
+tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2.3, bg='darkorchid3')
+tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2.3, bg=fox[5])
+tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2.3, bg='blue3')
 
 # Add the legend
 legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation genes', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
-    ncol=1, pch=21, pt.cex=c(2,2,2,2,2,2,2,0.8), col='black', pt.bg=c(fox[1],'black','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'))
-
+    ncol=1, pch=21, pt.cex=c(2,2,2,2,2,2,2,0.8), col='black', pt.bg=c(fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'))
 # Add figure label
-text(x=-0.8, y=0.75, labels='A', font=2, cex=2)
+legend('topleft', legend='A', cex=2, bty='n')
+
+# PTS alone
+par(mar=c(0,0,0,0))
+triplot(x=PTS[,1], y=PTS[,2], z=PTS[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='B', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# ABC alone
+par(mar=c(0,0,0,0))
+triplot(x=ABC[,1], y=ABC[,2], z=ABC[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='C', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# monosaccharides alone
+par(mar=c(0,0,0,0))
+triplot(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='D', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# stickland alone
+par(mar=c(0,0,0,0))
+triplot(x=stickland[,1], y=stickland[,2], z=stickland[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='E', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# sugar_alcohols alone
+par(mar=c(0,0,0,0))
+triplot(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='F', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# fermentation alone
+par(mar=c(0,0,0,0))
+triplot(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='G', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
+#legend('topright', legend=c(), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c())
+
+# disaccharides alone
+par(mar=c(0,0,0,0))
+triplot(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], 
+        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+legend('topleft', legend='H', cex=2, bty='n')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='blue3')
+#legend('topright', legend=c('test'), ncol=1, pch=21, pt.cex=2, col='black', pt.bg=c('blue3'))
 
 dev.off()
+
 
 
