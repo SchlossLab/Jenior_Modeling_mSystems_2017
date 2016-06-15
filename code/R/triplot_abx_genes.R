@@ -136,7 +136,7 @@ fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene))
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
 monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 
-# Disaccharide catabolism
+# Polysaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
 maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosidase', combined_mapping$gene)),
                  subset(combined_mapping, grepl('maa;', combined_mapping$gene)),
@@ -146,7 +146,7 @@ tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalo
 glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
              subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
-disaccharides <- rbind(sucrose,  maltose, tre, glucosidase, cel)
+polysaccharides <- rbind(sucrose,  maltose, tre, glucosidase, cel)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
@@ -258,7 +258,7 @@ tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], p
 tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2.3, bg=fox[2])
 tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2.3, bg='darkorchid3')
 tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2.3, bg=fox[5])
-tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2.3, bg='blue3')
+tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2.3, bg='blue3')
 
 # Add the legend
 legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation genes', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
@@ -276,15 +276,15 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
 
-# disaccharides alone
+# polysaccharides alone
 par(mar=c(0,0,0,0))
-triplot(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], 
+triplot(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
 legend('topleft', legend='C', cex=2, bty='n')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=disaccharides[,1], y=disaccharides[,2], z=disaccharides[,3], pch=21, cex=2, bg='blue3')
+tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2, bg='blue3')
 
 # sugar_alcohols alone
 par(mar=c(0,0,0,0))
