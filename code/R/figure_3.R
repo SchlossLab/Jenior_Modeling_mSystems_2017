@@ -177,7 +177,7 @@ fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# Defineplot details
+# Define plot details
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
 #palette_plot(rainbow)
 fox <- wes_palette("FantasticFox")
