@@ -264,7 +264,7 @@ tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], p
 legend(x=0.26, y=0.63, legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation end steps', 'PEP group translocators', 'ABC sugar transporters', 'Other'), 
     ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col='black', pt.bg=c(fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'), bty='n')
 # Add figure label
-legend('topleft', legend='A', cex=2, bty='n')
+legend(x=-0.6, y=0.6, legend='A', cex=2, bty='n')
 
 # monosaccharides alone
 par(mar=c(0,0,0,0))
