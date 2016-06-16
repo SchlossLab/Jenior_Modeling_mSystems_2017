@@ -146,7 +146,7 @@ tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalo
 glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
              subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
-polysaccharides <- rbind(sucrose,  maltose, tre, glucosidase, cel)
+polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
@@ -182,7 +182,7 @@ rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "
 #palette_plot(rainbow)
 fox <- wes_palette("FantasticFox")
 tick_labels <- c('10%','','30%','','50%','','70%','','90%')
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/cdf_abx_genes.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
 
 # Open a PDF
 pdf(file=plot_file, width=9, height=9)
@@ -261,8 +261,8 @@ tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, ce
 tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2.3, bg='blue3')
 
 # Add the legend
-legend('topright', legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation genes', 'PEP group translocation genes', 'ABC sugar transporters', 'Other'), 
-    ncol=1, pch=21, pt.cex=c(2,2,2,2,2,2,2,0.8), col='black', pt.bg=c(fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'))
+legend(x=0.26, y=0.63, legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation end steps', 'PEP group translocators', 'ABC sugar transporters', 'Other'), 
+    ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col='black', pt.bg=c(fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'), bty='n')
 # Add figure label
 legend('topleft', legend='A', cex=2, bty='n')
 
