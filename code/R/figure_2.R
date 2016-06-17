@@ -1,10 +1,18 @@
 
 # Define variables
-cef <- '/Users/schloss/Desktop/cefoperazone_630.mapped2cdf630.annotated.txt'
-strep <- '/Users/schloss/Desktop/clindamycin_630.mapped2cdf630.annotated.txt'
-clinda <- '/Users/schloss/Desktop/streptomycin_630.mapped2cdf630.annotated.txt'
-gf <- '/Users/schloss/Desktop/germfree.mapped2cdf630.annotated.txt'
-figure_file <- '/Users/schloss/Desktop/pathway_relabund.pdf'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/germfree.RNA_reads2cdf630.norm.annotated.txt'
+
+cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
+colnames(cefoperazone) <- c('Cefoperazone', 'ko', 'gene', 'pathway')
+clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE, row.names=1)
+colnames(clindamycin) <- c('Clindamycin', 'ko', 'gene', 'pathway')
+streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE, row.names=1)
+colnames(streptomycin) <- c('Streptomycin', 'ko', 'gene', 'pathway')
+
+
 
 #--------------------------------------------------------------------------------------------------------------#
 
