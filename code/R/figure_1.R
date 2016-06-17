@@ -1,7 +1,4 @@
-
-
-
-deps <- c('wesanderson', 'plyr');
+deps <- c('wesanderson', 'igraph');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -9,16 +6,6 @@ for (dep in deps){
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 rm(dep, deps)
-
-# Define and check color palette
-palette_plot <- function(col, border = "light gray", ...){
-  n <- length(col)
-  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
-       axes = FALSE, xlab = "", ylab = "", ...)
-  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
-}
-
-col_palette <- wes_palette("Darjeeling")
 
 cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
 toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
@@ -34,28 +21,12 @@ cfu$cfu_spore <- log10(cfu$cfu_spore)
 cfu$mouse <- NULL
 cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
 cfu$cage <- NULL
-cfu <- droplevels(cfu)
-vegetative_median <- c()
-spore_median <- c()
-index <- 1
-for (group in c('conventional', 'cefoperazone', 'clindamycin', 'streptomycin', 'germfree')){
-  cfu_subset <- subset(cfu, treatment==group)
-  vegetative_median[index] <- median(cfu_subset$cfu_vegetative)
-  spore_median[index] <- median(cfu_subset$cfu_spore)
-  index <- index + 1
-}
-cfu_medians <- as.data.frame(cbind(vegetative_median, spore_median))
-rownames(cfu_medians) <- c('conventional', 'cefoperazone', 'clindamycin', 'streptomycin', 'germfree')
-rm(cfu_file, cfu_subset, vegetative_median, spore_median)
-
-# alt method
+cfu$treatment <- factor(cfu$treatment, levels=c('cefoperazone', 'streptomycin', 'clindamycin', 'germfree', 'conventional'))
 vegetative_cfu <- cfu
 vegetative_cfu$cfu_spore <- NULL
 spore_cfu <- cfu
 spore_cfu$cfu_vegetative <- NULL
-rm(cfu)
-
-
+rm(cfu_file, cfu)
 
 # Format toxin data and find summary statistics
 toxin$mouse <- NULL
@@ -68,12 +39,13 @@ clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(cef, strep, clinda, gf, conv)
-rm(cef, strep, clinda, gf, conv)
+rm(cef, strep, clinda, gf, conv, toxin_file)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
+fox <- wes_palette('FantasticFox')
 pdf(file=plot_file, width=15, height=9)
 layout(matrix(c(1,2,
                 3,4), 
@@ -118,10 +90,9 @@ legend('topleft', legend='A', cex=2, bty='n')
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
 stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
            ylim=c(0.5,1.75), xlim=c(0.5,5.5), yaxt='n', xaxt='n', 
-           cex=2.5, col='black', ylab='', method='jitter', jitter=0.25)
-mtext('Toxin Titer (log10)', side=2, at=1.125, cex=1.5, padj=-3, las=0)
+           cex=2.5, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
 axis(side=1, at=c(1:5), 
-     c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree', 'Conventional'), 
+     c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
      tick=FALSE, cex.axis=1.2)
 axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
 
@@ -144,38 +115,30 @@ mtext('B', side=2, line=2, las=2, adj=2.4, padj=-9, cex=1.5)
 
 
 
-
-
 # Plot formatted data - vegetative
-par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0))
-boxplot(cfu~treatment, data=vegetative_cfu, 
-        ylim=c(5,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3,
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
+boxplot(cfu_vegetative~treatment, data=vegetative_cfu, 
+        ylim=c(1,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3,
         staplelwd=3, outline=FALSE, range=2, ylab='Vegetative CFU/g Cecal Content')
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), 
-     tick = FALSE, font=2, cex.axis=1.4)
-      cex=0.9, padj=3.5)
-labelsY <- parse(text=paste(rep(10,5), '^', seq(5,9,1), sep=''))
-axis(side=2, at=c(5:9), labelsY, tick=TRUE, cex.axis=1.2)
-
-
-
-
-
-
+axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
+     tick = FALSE, cex.axis=1.2)
+labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
+abline(h=2, col="black", lty=2)
+mtext('C', side=2, line=2, las=2, adj=1.8, padj=-9, cex=1.5)
 
 # Plot formatted data - spores
-par(las=1, mar=c(4,3.5,1,1), mgp=c(2.5,0.7,0))
-boxplot(cfu~treatment, data=spore_cfu, col='gray64', 
-        ylim=c(1,7), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3, 
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
+boxplot(cfu_spore~treatment, data=spore_cfu, col='gray64', 
+        ylim=c(1,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3, 
         staplelwd=3, outline=FALSE, range=2, ylab='Spore CFU/g Cecal Content')
-axis(side=1, at=c(1:4), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree'), 
-     tick = FALSE, font=2, cex.axis=1.4)
-      cex=0.9, padj=3.5)
-labelsY <- parse(text=paste(rep(10,7), '^', seq(1,7,1), sep=''))
-axis(side=2, at=c(1:7), labelsY, tick=TRUE, cex.axis=1.2)
+axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
+     tick = FALSE, cex.axis=1.2)
+labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
 abline(h=2, col="black", lty=2)
 text(4, 6.7, '***', cex=2, font=2)
-
+mtext('D', side=2, line=2, las=2, adj=1.8, padj=-9, cex=1.5)
 
 
 dev.off()
