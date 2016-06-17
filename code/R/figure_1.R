@@ -46,7 +46,7 @@ rm(cef, strep, clinda, gf, conv, toxin_file)
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
 fox <- wes_palette('FantasticFox')
-pdf(file=plot_file, width=15, height=9)
+pdf(file=plot_file, width=12, height=6)
 layout(matrix(c(1,2,
                 3,4), 
               nrow=2, ncol=2, byrow = TRUE))
@@ -56,33 +56,33 @@ layout(matrix(c(1,2,
 # Figure 1A.  Timeline of mouse experiments
 
 # Create an empty plot
-par(mar=c(1,1,1,1))
+par(mar=c(1,2,1,1))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4.75,4), ylim=c(-2,5))
 
 # Abx in drinking water timeline
 rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col=fox[3], border='black')
-Arrows(x0=-4, y0=3, x1=3.5, y1=3, lwd=4, arr.type='triangle', arr.length=0.75, arr.width=0.4)
+Arrows(x0=-4, y0=3, x1=3.5, y1=3, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,0,2,2.75), y0=c(3.5,3.5,3.5,3.5), x1=c(-4,0,2,2.75), y1=c(2.5,2.5,2.5,2.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(3.25,3.25,3.25,3.25,3.25), x1=c(-4,-3,-2,-1,1), y1=c(2.75,2.75,2.75,2.75,2.75), lwd=2)
 points(x=c(2,2.75), y=c(4,4), pch=25, bg=c('white','black'), col='black', cex=2.5)
 text(x=c(-4,0,2,2.75), y=c(2.2,2.2,2.2,2.2), c('Day -7', 'Day -2', 'Day 0', '18 hrs'), cex=0.9)
-text(x=-4.5, y=3.2, 'Cefoperazone', cex=0.8)
-text(x=-4.5, y=2.95, 'or', font=2)
-text(x=-4.5, y=2.7, 'Streptomycin', cex=0.8)
+text(x=-4.6, y=3.2, 'Cefoperazone', cex=0.7)
+text(x=-4.6, y=2.95, 'or', font=2, cex=0.8)
+text(x=-4.6, y=2.7, 'Streptomycin', cex=0.7)
 
 # IP injection abx timeline
-Arrows(x0=-4, y0=0, x1=-1.5, y1=0, lwd=4, arr.type='triangle', arr.length=0.75, arr.width=0.4)
+Arrows(x0=-4, y0=0, x1=-1.5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,-3,-2.25), y0=c(-0.5,-0.5,-0.5), x1=c(-4,-3,-2.25), y1=c(0.5,0.5,0.5), lwd=4)
 points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c(fox[5],'white','black'), col='black', cex=2.5)
 text(x=c(-4,-3,-2.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=0.9)
-text(x=-4.5, y=0, 'Clindamycin', cex=0.8)
+text(x=-4.6, y=0, 'Clindamycin', cex=0.7)
 
 # Legend
 legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic',paste(italic('C. difficile'), ' Spore Gavage'), 'Sacrifice & Necropsy'), 
-       pt.bg=c(fox[3],fox[5],'white','black'), pch=c(22,25,25,25), cex=1.5, pt.cex=c(3.8,3,3,3), bty='n')
+       pt.bg=c(fox[3],fox[5],'white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 
 # Plot label
-legend('topleft', legend='A', cex=2, bty='n')
+mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -90,14 +90,12 @@ legend('topleft', legend='A', cex=2, bty='n')
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
 stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
            ylim=c(0.5,1.75), xlim=c(0.5,5.5), yaxt='n', xaxt='n', 
-           cex=2.5, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), 
-     c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
-     tick=FALSE, cex.axis=1.2)
-axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE, cex=1.2)
+           cex=2, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
+axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick=FALSE)
+axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE)
 
 # Draw limit of detection
-abline(h=0.5, lty=2, lwd=3)
+abline(h=0.5, lty=2, lwd=1.5)
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
@@ -107,38 +105,35 @@ segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
 segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
-text(4, gf_iqr[4] + 0.1, labels='***', cex=2, font=2)
+text(4, toxin_medians[4] + 0.1, labels='***', cex=2, font=2)
 
 # Plot label
-mtext('B', side=2, line=2, las=2, adj=2.4, padj=-9, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)
 
-
-
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Plot formatted data - vegetative
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
 boxplot(cfu_vegetative~treatment, data=vegetative_cfu, 
         ylim=c(1,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3,
         staplelwd=3, outline=FALSE, range=2, ylab='Vegetative CFU/g Cecal Content')
-axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
-     tick = FALSE, cex.axis=1.2)
+axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
-axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
-abline(h=2, col="black", lty=2)
-mtext('C', side=2, line=2, las=2, adj=1.8, padj=-9, cex=1.5)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
+mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
 
 # Plot formatted data - spores
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
 boxplot(cfu_spore~treatment, data=spore_cfu, col='gray64', 
         ylim=c(1,9), xaxt='n', yaxt='n', boxlwd=3, outwex=2, whisklwd=3, 
         staplelwd=3, outline=FALSE, range=2, ylab='Spore CFU/g Cecal Content')
-axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), 
-     tick = FALSE, cex.axis=1.2)
+axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
-axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
-abline(h=2, col="black", lty=2)
-text(4, 6.7, '***', cex=2, font=2)
-mtext('D', side=2, line=2, las=2, adj=1.8, padj=-9, cex=1.5)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
+text(4, 6.8, '***', cex=2, font=2)
+mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
 
 dev.off()
