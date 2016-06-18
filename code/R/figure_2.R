@@ -86,6 +86,8 @@ amino_acid <- subset(combined_mapping, grepl('Amino_acid_metabolism', combined_m
 amino_acid <- t(as.data.frame(colSums(amino_acid[,1:4])))
 other_amino_acids <- subset(combined_mapping, grepl('Metabolism_of_other_amino_acids', combined_mapping$pathway))
 other_amino_acids <- t(as.data.frame(colSums(other_amino_acids[,1:4])))
+all_amino_acid <- amino_acid + other_amino_acids
+rm(amino_acid, other_amino_acids)
 glycan <- subset(combined_mapping, grepl('Glycan_biosynthesis_and_metabolism', combined_mapping$pathway))
 glycan <- t(as.data.frame(colSums(glycan[,1:4])))
 cofactors_and_vitamins <- subset(combined_mapping, grepl('Metabolism_of_cofactors_and_vitamins', combined_mapping$pathway))
@@ -103,41 +105,33 @@ motility <- t(as.data.frame(colSums(motility[,1:4])))
 rm(combined_mapping)
 
 # Assemble final table
-pooled_mapping <- rbind(carbohydrate, energy, lipid, nucleotide, amino_acid, other_amino_acids, glycan,
+pooled_mapping <- rbind(carbohydrate, energy, lipid, nucleotide, all_amino_acid, glycan,
                         cofactors_and_vitamins, terpenoids_and_polyketides, secondary_metabolites,
                         xenobiotics, genetics, motility)
-rm(carbohydrate, energy, lipid, nucleotide, amino_acid, other_amino_acids, glycan, cofactors_and_vitamins, terpenoids_and_polyketides, secondary_metabolites, xenobiotics, genetics, motility)
+rm(carbohydrate, energy, lipid, nucleotide, all_amino_acid, glycan, cofactors_and_vitamins, terpenoids_and_polyketides, secondary_metabolites, xenobiotics, genetics, motility)
 rownames(pooled_mapping) <- c('Carbohydrate metabolism','Energy metabolism','Lipid metabolism','Nucleotide metabolism',
-                              'Amino acid metabolism','Metabolism of other amino acids','Glycan biosynthesis and metabolism',
-                              'Metabolism of cofactors and vitamins','Metabolism of terpenoids and polyketides','Biosynthesis of other secondary metabolites',
-                              'Xenobiotics biodegradation and metabolism','Genetic Information Processing','Cell motility')
-normalized_mapping <- pooled_mapping
+                              'Amino acid metabolism','Glycan metabolism', 'Cofactor/Vitamin metabolism','Terpenoid/Polyketide metabolism',
+                              'Secondary metabolite synthesis', 'Xenobiotic metabolism','Genetic Information Processing','Cell motility')
 transformed_mapping <- log10(pooled_mapping)
 rm(pooled_mapping)
 
 #--------------------------------------------------------------------------------------------------------------#
 
+# Set the color palette and output file name
 darjeeling <- wes_palette("Darjeeling")
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
 
 # Open a PDF
-pdf(file=plot_file, width=12, height=5)
-
-# Pathway abundance bar chart
-par(las=1, mar=c(6,4,1,1))
+pdf(file=plot_file, width=12, height=7)
+par(las=1, mar=c(8,4,1,1))
 barplot(t(transformed_mapping), col=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), 
         beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5))
 box()
 labelsY <- parse(text=paste(rep(10,4), '^', seq(1,4,1), sep=''))
-axis(side=2, at=c(1:4), labelsY, tick=TRUE, las=1)
-abline(h=c(1:8), lty=2)
+axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
+abline(h=c(1:4), lty=2)
 legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Gnotobiotic'), pt.cex=2, bty='n',
        pch=22, col='black', pt.bg=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), ncol=2)
-
-
-
-text(y = seq(0, 100, by=20), par("usr")[1], labels = rownames(transformed_mapping), srt = 45, pos = 2, xpd = TRUE, cex=0.8)
-
-
-
+text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+     labels=rownames(transformed_mapping), srt=45, adj=1, xpd=TRUE, cex=0.8)
 dev.off()
