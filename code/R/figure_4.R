@@ -1,5 +1,5 @@
 
-deps <- c('wesanderson', 'igraph');
+deps <- c('vegan', 'igraph');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -16,54 +16,71 @@ palette_plot <- function(col, border = "light gray", ...){
   rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
 }
 
-fox <- wes_palette("FantasticFox")
-
 # Define variables
-file_name <- '~/Desktop/Jenior_812/bipartite_graph.txt'
-nodes_1 <- '~/Desktop/Jenior_812/compound.lst'
-nodes_1_label <- 'Substrate'
-nodes_2 <- '~/Desktop/Jenior_812/enzyme.lst'
-nodes_2_label <- 'KEGG Ortholog'
-figure_file <- '~/Desktop/Jenior_812/network.pdf'
-
+network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/meabolic_models/'
+ko_score_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/meabolic_models/'
+substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/meabolic_models/'
 
 # Read in data
-graph.file <- read.table(file_name, header = F, sep = '\t')
-node_group_1 <- as.vector(read.table(nodes_1, header = F, sep = '\t')$V1)
-node_group_2 <- as.vector(read.table(nodes_2, header = F, sep = '\t')$V1)
+network <- read.table(network_file, header=FALSE, sep='\t')
+ko_score <- read.table(ko_score_file, header=FALSE, sep='\t')
+substrate_file <- as.vector(read.table(substrate_file, header=FALSE, sep='\t')$V1)
+rm(network_file, ko_score_file, substrate_file)
 
 # Format directed graph
-raw.graph <- graph.data.frame(graph.file, directed = T)
+raw_graph <- graph.data.frame(network, directed=TRUE)
 
 # Remove loops and multiple edges to make visualzation easier
-simple.graph <- simplify(raw.graph)
-
-# Decompose graph
-all.simple.graph <- decompose.graph(simple.graph)
+simple_graph <- simplify(raw_graph)
 
 # Get largest component
-largest <- which.max(sapply(all.simple.graph, vcount))
-largest.simple.graph <- all.simple.graph[[largest]]
-
-# When needed, use this pallete I made
-final_colors <- c("gold1", "orangered1", "aquamarine3", "firebrick", "forestgreen", "blue3", 
-                  "mediumorchid2", "violetred4", "mediumpurple4", "dodgerblue3", "goldenrod3", "chartreuse3")
-
-# Pick to different colors at random
-colors <- final_colors[sample(1:length(final_colors), 2, replace=F)]
+largest_component <- which.max(sapply(simple_graph, vcount))
+largest_simple_graph <- simple.graph[[largest_component]]
 
 # Format data for plotting
-V(largest.simple.graph)$size <- 3 # Node size
+V(largest.simple.graph)$size <- # need these to scale by expression....where is that other script????
 V(largest.simple.graph)$color <- ifelse(V(largest.simple.graph)$name %in% node_group_2, colors[2], colors[1]) # Color nodes
 E(largest.simple.graph)$color <- 'gray15' # Color edges
 
-# Plot the network
-pdf(file=figure_file, width=10, height=7)
-par(mar=c(0,0,0,0), font=2)
-plot(largest.simple.graph, vertex.label = NA, layout = layout.graphopt,
-     edge.arrow.size = 0.5, edge.arrow.width = 0.8, vertex.frame.color = 'black')
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Set up ployying environment
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
+pdf(file=plot_file, width=12, height=6)
+layout(matrix(c(1,2,
+                3,4), 
+              nrow=2, ncol=2, byrow = TRUE))
+
+# Plot the large component of th graph
+par(mar=c(0,0,0,0))
+plot(largest_simple_graph, vertex.label=NA, layout=layout.graphopt,
+     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
 legend('bottomleft', legend=c(nodes_1_label, nodes_2_label), 
        pt.bg=c('red', 'blue'), col='black', pch=21, pt.cex=3, cex=1.5, bty = "n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 dev.off()
 
 
