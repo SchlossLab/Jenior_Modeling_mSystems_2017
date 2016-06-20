@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'igraph');
+deps <- c('vegan', 'igraph', 'ggplot2');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -8,74 +8,81 @@ for (dep in deps){
 }
 rm(dep, deps)
 
-# Define and check color palette
-palette_plot <- function(col, border='light gray', ...){
-  n <- length(col)
-  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
-       axes = FALSE, xlab = "", ylab = "", ...)
-  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
-}
-
 # Define variables
-network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/'
-ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/'
-substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/'
+network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.RNA_reads2cdf630.norm.ko.txt'
+substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/compound.lst'
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in metabolic network data
 network <- read.table(network_file, header=FALSE, sep='\t')
 ko <- read.table(ko_file, header=FALSE, sep='\t')
-rm(network_file, ko_score_file, substrate_file)
+substrate <- as.vector(read.table(substrate_file, header=FALSE, sep='\t')$V1)
+rm(network_file, ko_file, substrate_file)
 
 # Format directed graph
 raw_graph <- graph.data.frame(network, directed=TRUE)
+rm(network)
+
+# Scale points by number of transcripts mapped
+nodes <- c(as.vector(ko[,1]), substrate)
+ko[,2][ko[,2] == 0] <- 0.25
+mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate)))
+node_size <- as.matrix(setNames(mappings, nodes))
+V(raw_graph)$size <- node_size
+
+# Color nodes
+V(raw_graph)$color <- ifelse(grepl('K', V(raw_graph)$name), 'firebrick', 'blue3') # Color nodes
 
 # Remove loops and multiple edges to make visualzation easier
 simple_graph <- simplify(raw_graph)
+rm(raw_graph)
+
+# Decompose graph
+decomp_simple_graph <- decompose.graph(simple_graph)
+rm(simple_graph)
 
 # Get largest component
-largest_component <- which.max(sapply(simple_graph, vcount))
-largest_simple_graph <- simple.graph[[largest_component]]
+largest_component <- which.max(sapply(decomp_simple_graph, vcount))
+largest_simple_graph <- decomp_simple_graph[[largest_component]]
+rm(decomp_simple_graph, largest_component)
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+# Remove zeroes so transformation doesn't return negative infinity
+ko[,2][ko[,2] == 0] <- 1
+ko[,2] <- log10(ko[,2])
+#V(net)$size=degree(net)*5 Scale by degree!
 
-# Read in compound importace data
-substrate <- as.vector(read.table(substrate_file, header=FALSE, sep='\t')$V1)
+# Calculate optimal layout
+optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.01, mass=50, spring.length=0, spring.constant=1)
 
 
 
 
+E(largest_simple_graph)$color <- 'gray15' # Color edges
 
-
+node transparency!!!!!!! will let you see them all!
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
-pdf(file=plot_file, width=12, height=6)
-layout(matrix(c(1,2,
-                3,4), 
-              nrow=2, ncol=2, byrow = TRUE))
+pdf(file=plot_file, width=8, height=12)
+layout(matrix(c(1,
+                2), 
+              nrow=2, ncol=1, byrow = TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Figure 4A
 
-# Scale points by number of transcripts mapped
-mappings <- (log10(ko_score[,2])) / 2
-V(largest_simple_graph)$size <- mappings
-  
-# Color nodes
-V(largest_simple_graph)$color <- ifelse(V(largest_simple_graph)$name %in% substrate, 'firebrick', 'blue3') # Color nodes
-E(largest_simple_graph)$color <- 'gray15' # Color edges
-
-# Plot the large component of th graph
+# Plot the large component of the graph
 par(mar=c(0,0,0,0))
-plot(largest_simple_graph, vertex.label=NA, layout=layout.graphopt,
-     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
+plot(largest_simple_graph, vertex.label=NA, layout=optimal,
+     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black', vertex.size=node_size)
+
 legend('bottomleft', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
-       pt.bg=c('firebrick', 'blue3'), col='black', pch=21, pt.cex=2.5, bty = "n")
+       pt.bg=c('firebrick', 'blue3'), col='black', pch=21, pt.cex=2.3)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -94,16 +101,6 @@ dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,
 
 
 # Compound importance dotplot  , all 3 on same plot - 3 different colors of dots
-
-
-
-
-
-
-
-
-
-
 
 
 
