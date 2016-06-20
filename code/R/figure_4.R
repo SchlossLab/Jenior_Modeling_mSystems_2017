@@ -11,29 +11,18 @@ rm(dep, deps)
 # Define variables
 network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
 ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.RNA_reads2cdf630.norm.ko.txt'
-substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/compound.lst'
+substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/'
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in metabolic network data
 network <- read.table(network_file, header=FALSE, sep='\t')
 ko <- read.table(ko_file, header=FALSE, sep='\t')
-substrate <- as.vector(read.table(substrate_file, header=FALSE, sep='\t')$V1)
-rm(network_file, ko_file, substrate_file)
+rm(network_file, ko_file)
 
 # Format directed graph
 raw_graph <- graph.data.frame(network, directed=TRUE)
 rm(network)
-
-# Scale points by number of transcripts mapped
-nodes <- c(as.vector(ko[,1]), substrate)
-ko[,2][ko[,2] == 0] <- 0.25
-mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate)))
-node_size <- as.matrix(setNames(mappings, nodes))
-V(raw_graph)$size <- node_size
-
-# Color nodes
-V(raw_graph)$color <- ifelse(grepl('K', V(raw_graph)$name), 'firebrick', 'blue3') # Color nodes
 
 # Remove loops and multiple edges to make visualzation easier
 simple_graph <- simplify(raw_graph)
@@ -51,23 +40,37 @@ rm(decomp_simple_graph, largest_component)
 # Remove zeroes so transformation doesn't return negative infinity
 ko[,2][ko[,2] == 0] <- 1
 ko[,2] <- log10(ko[,2])
-#V(net)$size=degree(net)*5 Scale by degree!
+ko[,2][ko[,2] < 0.4] <- 0.4
 
-# Calculate optimal layout
-optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.01, mass=50, spring.length=0, spring.constant=1)
+# Scale points by number of transcripts mapped
+ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
+substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
+nodes <- c(ko_simp, substrate_simp)
+ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
+ko <- ko[match(ko_simp, ko$V1),]
+mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
+node_size <- cbind.data.frame(nodes, mappings)
+node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
+node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
+V(largest_simple_graph)$size <- as.matrix(node_size)
+rm(ko, ko_simp, substrate_simp, node_size, mappings, nodes)
+#V(largest_simple_graph)$size <- degree(largest_simple_graph) * 5 # Scale by degree!
 
-
-
-
+# Color graph
+V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
 E(largest_simple_graph)$color <- 'gray15' # Color edges
 
-node transparency!!!!!!! will let you see them all!
+# Calculate optimal layout
+#optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.001, mass=50, spring.length=0, spring.constant=1)
+#optimal <- layout.kamada.kawai(graph=largest_simple_graph)
+#optimal <- layout.fruchterman.reingold(graph=largest_simple_graph)
+optimal <- layout_nicely(graph=largest_simple_graph, dim=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
-pdf(file=plot_file, width=8, height=12)
+pdf(file=plot_file, width=6, height=12)
 layout(matrix(c(1,
                 2), 
               nrow=2, ncol=1, byrow = TRUE))
@@ -79,18 +82,10 @@ layout(matrix(c(1,
 # Plot the large component of the graph
 par(mar=c(0,0,0,0))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal,
-     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black', vertex.size=node_size)
-
-
-
-plot(g, 
-     vertex.color = adjustcolor("SkyBlue2", alpha.f = .5), 
-     vertex.label.color = adjustcolor("black", .5))
-
-
-
-legend('bottomleft', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
-       pt.bg=c('firebrick', 'blue3'), col='black', pch=21, pt.cex=2.3)
+     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
+legend('bottomright', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+text(x=-1.5, y=1, labels='A', cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
