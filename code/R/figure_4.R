@@ -81,6 +81,14 @@ par(mar=c(0,0,0,0))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black', vertex.size=node_size)
 
+
+
+plot(g, 
+     vertex.color = adjustcolor("SkyBlue2", alpha.f = .5), 
+     vertex.label.color = adjustcolor("black", .5))
+
+
+
 legend('bottomleft', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick', 'blue3'), col='black', pch=21, pt.cex=2.3)
 
