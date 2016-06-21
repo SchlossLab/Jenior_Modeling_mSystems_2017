@@ -87,6 +87,10 @@ legend('bottomright', legend=c('KEGG Ortholog', 'Enzyme Substrate'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
 text(x=-1.5, y=1, labels='A', cex=1.5)
 
+
+Add network metadata to other corner
+
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Figure 4B
