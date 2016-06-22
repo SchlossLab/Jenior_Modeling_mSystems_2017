@@ -3,17 +3,16 @@ deps <- c('vegan', 'igraph', 'ggplot2');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  }
+  } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 rm(dep, deps)
 
-# Define variables
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Define file variables for network plot
 network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
 ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.RNA_reads2cdf630.norm.ko.txt'
-substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/'
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in metabolic network data
 network <- read.table(network_file, header=FALSE, sep='\t')
@@ -61,60 +60,107 @@ V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name)
 E(largest_simple_graph)$color <- 'gray15' # Color edges
 
 # Calculate optimal layout
-#optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.001, mass=50, spring.length=0, spring.constant=1)
+optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.001, mass=50, spring.length=0, spring.constant=1)
 #optimal <- layout.kamada.kawai(graph=largest_simple_graph)
 #optimal <- layout.fruchterman.reingold(graph=largest_simple_graph)
-optimal <- layout_nicely(graph=largest_simple_graph, dim=2)
+#optimal <- layout_nicely(graph=largest_simple_graph, dim=2)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Read in substrate importance data
+
+cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.monte_carlo.score.txt'
+clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/clindamycin_630.monte_carlo.score.txt'
+strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/streptomycin_630.monte_carlo.score.txt'
+gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree.bipartite.files/germfree.monte_carlo.score.txt'
+
+cef_importance <- read.table(cef_importance_file, header=TRUE, sep='\t', row.names=1)
+clinda_importance <- read.table(clinda_importance_file, header=TRUE, sep='\t', row.names=1)
+strep_importance <- read.table(strep_importance_file, header=TRUE, sep='\t', row.names=1)
+gf_importance <- read.table(gf_importance_file, header=TRUE, sep='\t', row.names=1)
+rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_importance_file)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format inout and output importances
+cef_input <- cef_importance[,c(1,2,4)]
+cef_input <- cef_input[order(-cef_input$Input_metabolite_score),] 
+cef_input <- cef_input[c(1:12),]
+cef_input <- cef_input[order(cef_input$Input_metabolite_score),] 
+clinda_input <- clinda_importance[,c(1,2,4)]
+clinda_input <- clinda_input[order(-clinda_input$Input_metabolite_score),]
+clinda_input <- clinda_input[c(1:12),]
+clinda_input <- clinda_input[order(clinda_input$Input_metabolite_score),]
+strep_input <- strep_importance[,c(1,2,4)]
+strep_input <- strep_input[order(-strep_input$Input_metabolite_score),]
+strep_input <- strep_input[c(1:12),]
+strep_input <- strep_input[order(strep_input$Input_metabolite_score),]
+gf_input <- gf_importance[,c(1,2,4)]
+gf_input <- gf_input[order(-gf_input$Input_metabolite_score),]
+gf_input <- gf_input[c(1:12),]
+gf_input <- gf_input[order(gf_input$Input_metabolite_score),]
+
+#cef_output <- cef_importance[,c(1,5,7)]
+#cef_output <- cef_output[order(-cef_output$Output_metabolite_score),]
+#clinda_output <- clinda_importance[,c(1,5,7]
+#clinda_output <- clinda_output[order(-clinda_output$Output_metabolite_score),]
+#strep_output <- strep_importance[,c(1,5,7)]
+#strep_output <- strep_output[order(-strep_output$Output_metabolite_score),]
+#gf_output <- gf_importance[,c(1,5,7)]
+#gf_output <- gf_output[order(-gf_output$Output_metabolite_score),]
+
+rm(cef_importance, clinda_importance, strep_importance, gf_importance)
+
+# Merge tables
+cef_input$abx <- 'Cefoperazone'
+cef_input$abx <- factor(cef_input$abx)
+cef_input$color <- 'forestgreen'
+clinda_input$abx <- 'Clindamycin'
+clinda_input$abx <- factor(clinda_input$abx)
+clinda_input$color <- 'darkorange3'
+strep_input$abx <- 'Streptomycin'
+strep_input$abx <- factor(strep_input$abx)
+strep_input$color <- 'dodgerblue4'
+gf_input$abx <- 'Gnotobiotic'
+gf_input$abx <- factor(gf_input$abx)
+gf_input$color <- 'darkorchid4'
+input_importance <- rbind(cef_input, clinda_input, strep_input, gf_input)
+
+rm(cef_input, clinda_input, strep_input, gf_input)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
-pdf(file=plot_file, width=6, height=12)
-layout(matrix(c(1,
-                2), 
-              nrow=2, ncol=1, byrow = TRUE))
+pdf(file=plot_file, width=6, height=15)
+layout(matrix(c(1, 2,2), nrow=3, ncol=1, byrow = TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Figure 4A
 
 # Plot the large component of the graph
-par(mar=c(0,0,0,0))
+par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
-legend('bottomright', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
+legend('topright', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-legend('topright', legend=c('Total nodes: ', 'KO nodes: ', 'Substrate nodes: '), pt.cex=0)  # NEED OT FINISH THIS
-text(x=-1.5, y=1, labels='A', cex=1.5)
+legend(x=0.7, y=-0.8, legend=c('Total nodes: 1070', 'KO nodes: 404', 'Substrate nodes: 666'), pt.cex=0, text.font=c(2,1,1), bty='n')
+mtext('A', side=2, line=2, las=2, adj=0.5, padj=-12, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Figure 4B
 
-par(mar=c(0,0,0,0))
+par(mar=c(4,3,1,1))
+dotchart(input_importance$Input_metabolite_score, labels=gsub('_',' ',input_importance$Compound_name), 
+         groups= input_importance$abx, color=input_importance$color,
+         xlab="Input Metabolite Score", gcolor="black", pch=19)
+mtext('B', side=2, line=2, las=2, adj=0.5, padj=-26, cex=1.5)
 
-x <- mtcars[order(mtcars$mpg),] # sort by mpg
-x$cyl <- factor(x$cyl) # it must be a factor
-x$color[x$cyl==4] <- "red"
-x$color[x$cyl==6] <- "blue"
-x$color[x$cyl==8] <- "darkgreen"	
-dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,
-         main="Gas Milage for Car Models\ngrouped by cylinder",
-         xlab="Miles Per Gallon", gcolor="black", color=x$color)
-
-
-# Compound importance dotplot  , all 3 on same plot - 3 different colors of dots
-
-
-
-
-
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 dev.off()
-
-
-
 
 
 
