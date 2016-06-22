@@ -152,7 +152,6 @@ rownames(pooled_carbohydrate) <- c('Glycolysis/Gluconeogenesis', 'Starch/Sucrose
 transformed_carbohydrate <- log10(pooled_carbohydrate)
 rm(pooled_carbohydrate)
 
-
 # Amino acids
 alanine_aspartate_glutamate <- subset(all_amino_acid, grepl('Alanine,_aspartate_and_glutamate_metabolism', all_amino_acid$pathway))
 alanine_aspartate_glutamate <- t(as.data.frame(colSums(alanine_aspartate_glutamate[,1:4])))

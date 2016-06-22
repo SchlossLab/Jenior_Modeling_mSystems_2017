@@ -140,7 +140,7 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
 legend('topright', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-legend(x=0.7, y=-0.8, legend=c('Total nodes: 1070', 'KO nodes: 404', 'Substrate nodes: 666'), pt.cex=0, text.font=c(2,1,1), bty='n')
+legend(x=0.7, y=-0.8, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), pt.cex=0, text.font=c(2,1,1), bty='n')
 mtext('A', side=2, line=2, las=2, adj=0.5, padj=-12, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
