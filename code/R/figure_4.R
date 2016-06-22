@@ -85,11 +85,8 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
 legend('bottomright', legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+legend('topright', legend=c('Total nodes: ', 'KO nodes: ', 'Substrate nodes: '), pt.cex=0)  # NEED OT FINISH THIS
 text(x=-1.5, y=1, labels='A', cex=1.5)
-
-
-Add network metadata to other corner
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
