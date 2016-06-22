@@ -32,7 +32,6 @@ rm(cfu_file, cfu)
 toxin$mouse <- NULL
 toxin$cage <- NULL
 toxin$treatment <- factor(toxin$treatment, levels=c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree', 'Conventional'))
-toxin$titer <- toxin$titer - 1.5
 cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
 strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
 clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
@@ -89,13 +88,12 @@ mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
 # Plot toxin data
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
 stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
-           ylim=c(0.5,1.75), xlim=c(0.5,5.5), yaxt='n', xaxt='n', 
+           ylim=c(0,3.5), xlim=c(0.5,5.5), xaxt='n', 
            cex=2, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
 axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick=FALSE)
-axis(side=2, at=c(0.5, 0.75, 1, 1.25, 1.5, 1.75), c(2, 2.25, 2.5, 2.75, 3, 3.25), tick=TRUE)
 
 # Draw limit of detection
-abline(h=0.5, lty=2, lwd=1.5)
+abline(h=2, lty=2, lwd=1.5)
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone

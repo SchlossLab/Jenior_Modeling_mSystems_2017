@@ -84,30 +84,25 @@ rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_import
 
 # Format inout and output importances
 cef_input <- cef_importance[,c(1,2,4)]
+cef_input <- subset(cef_input, cef_input$StD_from_Sim_Input_Mean > 1)
 cef_input <- cef_input[order(-cef_input$Input_metabolite_score),] 
-cef_input <- cef_input[c(1:12),]
+cef_input <- cef_input[c(1:10),]
 cef_input <- cef_input[order(cef_input$Input_metabolite_score),] 
 clinda_input <- clinda_importance[,c(1,2,4)]
+clinda_input <- subset(clinda_input, clinda_input$StD_from_Sim_Input_Mean > 1)
 clinda_input <- clinda_input[order(-clinda_input$Input_metabolite_score),]
-clinda_input <- clinda_input[c(1:12),]
+clinda_input <- clinda_input[c(1:10),]
 clinda_input <- clinda_input[order(clinda_input$Input_metabolite_score),]
 strep_input <- strep_importance[,c(1,2,4)]
+strep_input <- subset(strep_input, strep_input$StD_from_Sim_Input_Mean > 1)
 strep_input <- strep_input[order(-strep_input$Input_metabolite_score),]
-strep_input <- strep_input[c(1:12),]
+strep_input <- strep_input[c(1:10),]
 strep_input <- strep_input[order(strep_input$Input_metabolite_score),]
 gf_input <- gf_importance[,c(1,2,4)]
+gf_input <- subset(gf_input, gf_input$StD_from_Sim_Input_Mean > 1)
 gf_input <- gf_input[order(-gf_input$Input_metabolite_score),]
-gf_input <- gf_input[c(1:12),]
+gf_input <- gf_input[c(1:10),]
 gf_input <- gf_input[order(gf_input$Input_metabolite_score),]
-
-#cef_output <- cef_importance[,c(1,5,7)]
-#cef_output <- cef_output[order(-cef_output$Output_metabolite_score),]
-#clinda_output <- clinda_importance[,c(1,5,7]
-#clinda_output <- clinda_output[order(-clinda_output$Output_metabolite_score),]
-#strep_output <- strep_importance[,c(1,5,7)]
-#strep_output <- strep_output[order(-strep_output$Output_metabolite_score),]
-#gf_output <- gf_importance[,c(1,5,7)]
-#gf_output <- gf_output[order(-gf_output$Output_metabolite_score),]
 
 rm(cef_importance, clinda_importance, strep_importance, gf_importance)
 
