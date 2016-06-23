@@ -12,11 +12,11 @@ rm(dep, deps)
 
 # Define file variables for network plot
 network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
-ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.RNA_reads2cdf630.norm.ko.txt'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.original_mapping.txt'
 
 # Read in metabolic network data
 network <- read.table(network_file, header=FALSE, sep='\t')
-ko <- read.table(ko_file, header=FALSE, sep='\t')
+ko <- read.table(ko_file, header=TRUE, sep='\t')
 rm(network_file, ko_file)
 
 # Format directed graph
