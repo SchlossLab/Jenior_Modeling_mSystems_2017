@@ -145,7 +145,7 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal,
 legend(x=0.4, y=1.2, legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
 legend(x=0.4, y=-0.8, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), pt.cex=0, text.font=c(2,1,1), bty='n')
-mtext('A', side=2, line=2, las=2, adj=0.5, padj=-20.5, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -155,7 +155,7 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.5, groups=top_importances$abx, color=top_importances$color, 
          xlab='Metabolite Importance Score', xlim=c(0,14), gcolor="black", pch=19)
 segments(x0=rep(0, 15), y0=c(1:6, 9:12, 15:18, 21), x1=rep(14, 15), y1=c(1:6, 9:12, 15:18, 21), lty=2)
-mtext('B', side=2, line=2, las=2, adj=0.5, padj=-18, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
