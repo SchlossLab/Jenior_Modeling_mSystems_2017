@@ -1,4 +1,4 @@
-deps <- c('wesanderson');
+deps <- c('wesanderson', 'shape');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -7,6 +7,7 @@ for (dep in deps){
 }
 rm(dep, deps)
 
+# Select files
 cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
 toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
 
@@ -88,7 +89,7 @@ mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
 # Plot toxin data
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
 stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
-           ylim=c(0,3.5), xlim=c(0.5,5.5), xaxt='n', 
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', 
            cex=2, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
 axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick=FALSE)
 
@@ -133,6 +134,7 @@ abline(h=2, col="black", lty=2, lwd=1.5)
 text(4, 6.8, '***', cex=2, font=2)
 mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 dev.off()
 
