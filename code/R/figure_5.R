@@ -12,7 +12,7 @@ rm(dep, deps)
 
 # Define file variables for network plot
 network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
-ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.original_mapping.txt'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.mapping.txt'
 
 # Read in metabolic network data
 network <- read.table(network_file, header=FALSE, sep='\t')
@@ -123,18 +123,35 @@ gf_only_importance$color <- 'darkorchid4'
 
 top_importances <- rbind(cef_only_importance[,c(1,2,5,6)], clinda_only_importance[,c(1,2,5,6)], strep_only_importance[,c(1,2,5,6)], gf_only_importance[,c(1,2,5,6)])
 top_importances$abx <- as.factor(top_importances$abx)
-top_importances$abx <- ordered(top_importances$abx, levels=c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic'))
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
-top_importances <- top_importances[ !(rownames(top_importances) %in% c('C03688', 'C11436')), ]
+top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')), ]
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Read in growth rate data
+growth_data_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
+
+growth_data <- read.table(growth_data_file, header=TRUE, sep='\t', row.names=1)
+rm(growth_data_file)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format growth curves
+
+
+
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=16, height=8)
-layout(matrix(c(1,2), nrow=1, ncol=2, byrow = TRUE))
+pdf(file=plot_file, width=20, height=8)
+layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -153,9 +170,17 @@ mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 par(mar=c(4,3,1,1), xaxs='i')
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color=top_importances$color, 
-         xlab='Metabolite Importance Score', xlim=c(0,14), gcolor="black", pch=19)
-segments(x0=rep(0, 15), y0=c(1:6, 9:12, 15:18, 21), x1=rep(14, 15), y1=c(1:6, 9:12, 15:18, 21), lty=2)
+         xlab='Metabolite Importance Score', xlim=c(0,25), gcolor="black", pch=19)
+segments(x0=rep(0, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(25, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
 mtext('B', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Figure 4C - Growth on important compounds
+par(mar=c(3,3,1,1), xaxs='i')
+
+
+mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
