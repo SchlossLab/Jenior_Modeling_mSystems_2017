@@ -61,9 +61,6 @@ E(largest_simple_graph)$color <- 'gray15' # Color edges
 
 # Calculate optimal layout
 optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.001, mass=50, spring.length=0, spring.constant=1)
-#optimal <- layout.kamada.kawai(graph=largest_simple_graph)
-#optimal <- layout.fruchterman.reingold(graph=largest_simple_graph)
-#optimal <- layout_nicely(graph=largest_simple_graph, dim=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -121,7 +118,8 @@ strep_only_importance$color <- 'firebrick3'
 gf_only_importance$abx <- 'Gnotobiotic'
 gf_only_importance$color <- 'darkorchid4'
 
-top_importances <- rbind(cef_only_importance[,c(1,2,5,6)], clinda_only_importance[,c(1,2,5,6)], strep_only_importance[,c(1,2,5,6)], gf_only_importance[,c(1,2,5,6)])
+top_importances <- rbind(cef_only_importance[,c(1,2,5,6)], clinda_only_importance[,c(1,2,5,6)], 
+                         strep_only_importance[,c(1,2,5,6)], gf_only_importance[,c(1,2,5,6)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
@@ -142,7 +140,7 @@ rm(growth_data_file)
 # Format growth curves
 
 
-
+growth_data$color <- ''
 
 
 
@@ -161,7 +159,8 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
 legend(x=0.4, y=1.2, legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-legend(x=0.4, y=-0.8, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), pt.cex=0, text.font=c(2,1,1), bty='n')
+legend(x=0.4, y=-0.8, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
+       pt.cex=0, text.font=c(2,1,1), bty='n')
 mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
