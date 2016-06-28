@@ -130,17 +130,17 @@ top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in growth rate data
-growth_data_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
+#growth_data_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
 
-growth_data <- read.table(growth_data_file, header=TRUE, sep='\t', row.names=1)
-rm(growth_data_file)
+#growth_data <- read.table(growth_data_file, header=TRUE, sep='\t', row.names=1)
+#rm(growth_data_file)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format growth curves
 
 
-growth_data$color <- ''
+#growth_data$color <- ''
 
 
 
@@ -149,7 +149,7 @@ growth_data$color <- ''
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
 pdf(file=plot_file, width=20, height=8)
-layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow=TRUE))
+layout(matrix(c(1,2), nrow=1, ncol=2, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -157,7 +157,7 @@ layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow=TRUE))
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
-legend(x=0.4, y=1.2, legend=c('KEGG Ortholog', 'Enzyme Substrate'), 
+legend(x=0.4, y=1.2, legend=c('KEGG Ortholog', 'Reaction Substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
 legend(x=0.4, y=-0.8, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
        pt.cex=0, text.font=c(2,1,1), bty='n')
@@ -176,10 +176,10 @@ mtext('B', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Figure 4C - Growth on important compounds
-par(mar=c(3,3,1,1), xaxs='i')
+#par(mar=c(3,3,1,1), xaxs='i')
 
 
-mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+#mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
