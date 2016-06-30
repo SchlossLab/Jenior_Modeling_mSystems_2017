@@ -43,5 +43,5 @@ optimal <- layout.graphopt(graph=network, niter=1000, charge=0.001, mass=50, spr
 plot(network, vertex.label=NA, layout=optimal,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
 
-
+# need to add equation
 
