@@ -183,7 +183,7 @@ layout(matrix(c(1,2,
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4A - Large component of graph
+# A - Large component of graph
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
@@ -195,7 +195,7 @@ mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4B - Example network and importance calculation
+# B - Example network and importance calculation
 par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 text(0.6, -0.8, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.7) # Importance algorithm
@@ -211,7 +211,7 @@ mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4C - Top compound importances
+# C - Top compound importances
 par(mar=c(4,3,1,1), xaxs='i')
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color=top_importances$color, 
@@ -221,7 +221,7 @@ mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4D - Growth on important compounds
+# D - Growth on important compounds
 #par(mar=c(3,3,1,1), xaxs='i')
 #plot()
 
@@ -229,8 +229,9 @@ mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
+# Clean up
 dev.off()
-
+rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
 
 
 
