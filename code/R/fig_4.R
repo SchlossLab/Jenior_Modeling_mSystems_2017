@@ -275,6 +275,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
+text(x=0, y=-0.41, labels='Monosaccharide catabolism')
 
 # polysaccharides alone
 par(mar=c(0,0,0,0))
@@ -285,6 +286,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2, bg='blue3')
+text(x=0, y=-0.41, labels='Polysaccharide catabolism')
 
 # sugar_alcohols alone
 par(mar=c(0,0,0,0))
@@ -295,6 +297,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
+text(x=0, y=-0.41, labels='Sugar alcohol catabolism')
 
 # stickland alone
 par(mar=c(0,0,0,0))
@@ -305,8 +308,9 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
+text(x=0, y=-0.41, labels='Stickland reactions')
 
-# fermentation alone
+# fermentation
 par(mar=c(0,0,0,0))
 triplot(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], 
         frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
@@ -315,6 +319,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
+text(x=0, y=-0.41, labels='Fermentation end steps')
 
 # PTS alone
 par(mar=c(0,0,0,0))
@@ -325,6 +330,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
+text(x=0, y=-0.41, labels='PEP group translocators')
 
 # ABC alone
 par(mar=c(0,0,0,0))
@@ -335,8 +341,14 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
+text(x=0, y=-0.41, labels='ABC sugar transporters')
 
+#-------------------------------------------------------------------------------------------------------------------------#
+
+# Clean up
 dev.off()
-
-
-
+rm(abfD, ABC, acd, acetate, adh, amino_sugars, anm, arg, buk, cat, cel, combined_mapping, eno, fdh, fermentation, fructose,
+   galactose, glycolysis, gne, gpmI, grd, had, hbd, kamA, ldhA, ldt, maltose, mannose, monosaccharides, mtl, mur, nag, nan,
+   panB, pep, pfk, pgm, polysaccharides, prd, ptb, PTS, pyk, sdaB, serA, srl, srlE, stickland, sucD, sucrose, sugar_alcohols,
+   tagatose, tdcB, tpi, tre, valerate, xylose, averages, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,
+   glm, glucosidase)
