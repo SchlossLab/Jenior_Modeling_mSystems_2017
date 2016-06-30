@@ -1,4 +1,16 @@
 
+
+deps <- c('RCircos');
+for (dep in deps){
+  if (dep %in% installed.packages()[,"Package"] == FALSE){
+    install.packages(as.character(dep), quiet=TRUE);
+  }
+  library(dep, verbose=FALSE, character.only=TRUE)
+}
+rm(dep, deps)
+
+
+
 # Import read-to-gene mapping data
 coverage <- read.delim('~/Desktop/cefoperazone_630.mapped2genes.txt', sep='\t', header=F)
 colnames(coverage) <- c('ref_name','ref_length','mapped','unmapped')
