@@ -15,12 +15,10 @@ rm(dep, deps)
 network <- matrix(c('K01', 'C01',
                     'C01', 'K02',
                     'C01', 'K03'), nrow=3, ncol=2, byrow=TRUE)
-node_size <- matrix(c('K01', '1',
-                      'K02', '2',
-                      'K03', '2.4',
-                      'C01', '1',
-                      'C02', '1',
-                      'C03', '1'), nrow=3, ncol=2, byrow=TRUE)
+node_size <- matrix(c('K01', '15',
+                      'K02', '45',
+                      'K03', '45',
+                      'C01', '20'), nrow=4, ncol=2, byrow=TRUE)
 
 # Format directed graph
 network <- graph.data.frame(network, directed=TRUE)
@@ -32,7 +30,7 @@ V(network)$size <- as.matrix(node_size)
 rm(node_size)
 
 # Color graph
-V(network)$color <- ifelse(grepl('K', V(network)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
+V(network)$color <- ifelse(grepl('K', V(network)$name), 'firebrick3', 'blue3') # Color nodes
 E(network)$color <- 'gray15' # Color edges
 
 # Calculate optimal layout
@@ -40,8 +38,11 @@ optimal <- layout.graphopt(graph=network, niter=1000, charge=0.001, mass=50, spr
 
 #------------------------------------------------------------------------------------------------------------------#
 
-plot(network, vertex.label=NA, layout=optimal,
-     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
+
+plot(network, vertex.label=NA, layout=optimal, vertex.frame.color='black')
+
+
+
 
 # need to add equation
 
