@@ -33,8 +33,7 @@ No difference in vegetative cell load was found in any susceptible condition tes
 
 
 
-![Figure 1](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf)
-
+<img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf" width=800 />
 
 Figure 1 discussion
 
@@ -90,12 +89,12 @@ figure 3 – C. difficile gene expression is different across susceptible commun
 
 
 
-![Figure 4](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf)
+<img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf" width=800 />
 
 
 
 
-![Figure 5](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf)
+<img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf" width=800 />
 
 
 
