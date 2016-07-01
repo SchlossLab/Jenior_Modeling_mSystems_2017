@@ -19,7 +19,7 @@ In this study we observed that not only the disease and lifecycle phenotypes of 
 This principle was then extended through using genome-scale metabolic modeling to infer differences in exploited  nutrient niches between the susceptible gut communities.  These findings were supported with in vitro growth assays to demonstrate that C. difficile str. 630 would indeed utilize them for growth to high levels.  Additionally, relative toxin production levels were recapitulated in vitro compared to those in antibiotic treated animals, suggesting alternative nutrient niches may explain differences in disease pathology or severity.  Taken together, it appears that C. difficile has a large potential niche space in the murine gastrointestinal tract and may provided indications of a hierarchy of growth substrate preference in the context of specific competitors.
 
 
-$$+/-\sqrt{\Big| \frac{\sum_{} T_i}{e_{o}} - \frac{\sum_{} T_o}{e_{i}} \Big|}$$
+$$log_{2}\Big(\frac{\sum_{} T_i}{e_{o}} - \frac{\sum_{} T_o}{e_{i}} \Big)$$
 
 
 
@@ -33,9 +33,8 @@ No difference in vegetative cell load was found in any susceptible condition tes
 
 
 
+![Figure 1](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf)
 
-
-Figure 1 legend. 
 
 Figure 1 discussion
 
@@ -62,14 +61,22 @@ Previous work (mark’s paper) demonstrated that at least one other strain of C.
 |               |                  | bacilli                           | ribosomal subunit                     |                           |                      |
 +---------------+------------------+-----------------------------------+---------------------------------------+---------------------------+----------------------+
 
-Table 1 – Antibiotic classes and effect
+Table 1 – Descriptions of antibiotics used during this study
 
 
 
-figure 1 – experimental design and antibiotic treatment timelines
 
 
-figure 2 – C. difficile sporulation and toxin production are varied by treatment
+
+
+
+
+
+
+
+
+
+
 
 
 Sporulation is a critical step for C. difficile to disseminate between hosts. This phenotype has been linked to the local concentration of various nutrient sources and envirnmental signals (citations). We hypothesized that across antibiotic treatment, transcripts for specific nutrient utilization loci would be over represented and signify a focus in nutrient catabolism for the bacterium in the given treatment.
@@ -83,12 +90,12 @@ figure 3 – C. difficile gene expression is different across susceptible commun
 
 
 
-figure 4 - specific gene vs germ free plot
+![Figure 4](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf)
 
 
-figure 4 – Metabolite utilization by C. difficile appears different across environments
 
-figure 5 – in vitro validation of top hits from metabolic networks
+
+![Figure 5](/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf)
 
 
 
