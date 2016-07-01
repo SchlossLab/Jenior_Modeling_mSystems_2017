@@ -94,7 +94,6 @@ E(network)$color <- 'gray15' # Color edges
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in substrate importance data
-
 cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.monte_carlo.score.txt'
 clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/clindamycin_630.monte_carlo.score.txt'
 strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/streptomycin_630.monte_carlo.score.txt'
@@ -147,8 +146,8 @@ strep_only_importance$color <- 'darkorange3'
 gf_only_importance$abx <- 'Gnotobiotic'
 gf_only_importance$color <- 'darkorchid4'
 
-top_importances <- rbind(cef_only_importance[,c(1,2,5,6)], clinda_only_importance[,c(1,2,5,6)], 
-                         strep_only_importance[,c(1,2,5,6)], gf_only_importance[,c(1,2,5,6)])
+top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
+                         strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
@@ -217,8 +216,15 @@ mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 par(mar=c(4,3,1,1), xaxs='i')
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color=top_importances$color, 
-         xlab='Metabolite Importance Score', xlim=c(0,12), gcolor="black", pch=19)
-segments(x0=rep(0, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(12, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
+         xlab='Metabolite Importance Score', xlim=c(-2,10), gcolor="black", pch=19)
+segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
+
+# Add simulated means
+points(x=top_importances[c(14:7),3], y=c(1:8), cex=1.3, col='darkorchid4', pch='|') # Gnotobiotic
+points(x=top_importances[2,3], y=11, cex=1.3, col='chartreuse4', pch='|') # Clindamycin
+points(x=top_importances[1,3], y=14, cex=1.3, col='dodgerblue3', pch='|') # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=1.3, col='darkorange3', pch='|') # Streptomycin
+
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

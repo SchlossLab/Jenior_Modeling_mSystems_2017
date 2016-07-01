@@ -3,4 +3,4 @@ KO expression file: cefoperazone_630.RNA_reads2cdf630.norm.ko.txt
 Graph name: cefoperazone_630
 KEGG ortholog nodes: 1183
 Substrate nodes: 758
-Monte Carlo simulation iterations: 500
+Monte Carlo simulation iterations: 1000
