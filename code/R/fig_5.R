@@ -187,7 +187,7 @@ layout(matrix(c(1,2,
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
-legend(x=0.4, y=1.1, legend=c('KEGG Ortholog', 'Reaction Substrate'), 
+legend(x=0.4, y=1.1, legend=c('KEGG ortholog', 'Reaction substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
 legend(x=-1.2, y=-0.75, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
        pt.cex=0, text.font=c(2,1,1), bty='n')
@@ -207,6 +207,8 @@ text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2) # Enzyme 3
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.1) # Enzyme 3 transcription
 text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.3, font=c(2,1)) # Compound & calculated importance
 segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
+legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
 mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
