@@ -9,7 +9,7 @@ output: html_document
 
 ###Introduction
 Clostridium difficile is a Gram-positive, sporulating, anaerobic bacillus which causes a toxin-mediated disease in the gastrointestinal tract of many vertebrates.  Infection by C. difficile can cause a spectrum of conditions ranging from asymptomatic colonization, abdominal pain, diarrhea, to the more dangerous symptoms pseudomembraneous colitis and toxin megacolon.  Numerous studies have demonstrated that the gut microbiota limits the capacity of pathogens like C. difficile through an attribute known as colonization ().  This collection of indigenous microorganisms that inhabit the gastrointestinal tract positively contributes to numerous aspects of host health aside colonization resistance .  Disruptions to the integrity of the healthy community, through a variety of means including chemotherapy or antibiotic administration, can lead to a complete loss of colonization resistance (Young 2008).  This can become problematic in health-care settings where many patients are not only likely to have factors leading to perturbed gut communities, but may also be exposed to C. difficile spores ().  As such, C. difficile infections (CDI) have rapidly increased in prevalence over the last decade to become the most prevalent form of hospital-acquired infection infecting >500,000 individuals per year domestically, with ~29,000  of these instances resulting in death (Lessa).
-	The pathology associated with CDI is mediated by expression of it's toxin genes whose production has many known connections to the nutrient niche of the bacterium ().  Conversely, very little is known about how the perturbed gut microbiota niche landscape is changed in a way to promote C. difficile colonization.  A recent study by Theriot at al. demonstrated that the cecal metabolome of antibiotic-treated mice are enriched for established C. difficile growth substrates.  This finding leads to the hypothesis that the healthy gut microbiota excludes C. difficile based on a preferred nutrient niche.  
+	The pathology associated with CDI is mediated by expression of it's toxin genes whose production has many known connections to the nutrient niche of the bacterium ().  Conversely, very little is known about how the perturbed gut microbiota niche landscape is changed in a way to promote C. difficile colonization.  A recent study by Theriot at al. demonstrated that the cecal metabolome of antibiotic-treated mice are enriched for established C. difficile growth substrates.  It is therefore not unlikely that other classes of antibiotic that lead to CDI suscpetibility may cause similar changes to the gut nutrient environment.	These findings also lead to the hypothesis that the healthy gut microbiota excludes C. difficile based on a preferred nutrient niche.  
 
 A large genome, a wide variety of growth substrates, and a large host range are all strong indications that C. difficile is an ecological generalist.  The ability of C. difficile to colonize a tremendous range of community structures also supports the hypothesis that the pathogen could have a relatively large potential niche space it could occupy during infection.
 - Different antibiotics result in different community structures, cite alyx's first mouse paper
@@ -18,18 +18,11 @@ A large genome, a wide variety of growth substrates, and a large host range are 
 In this study we observed that not only the disease and lifecycle phenotypes of C. difficile different across antibiotic treatments, but expression of key metabolic pathways was also unique. 
 This principle was then extended through using genome-scale metabolic modeling to infer differences in exploited  nutrient niches between the susceptible gut communities.  These findings were supported with in vitro growth assays to demonstrate that C. difficile str. 630 would indeed utilize them for growth to high levels.  Additionally, relative toxin production levels were recapitulated in vitro compared to those in antibiotic treated animals, suggesting alternative nutrient niches may explain differences in disease pathology or severity.  Taken together, it appears that C. difficile has a large potential niche space in the murine gastrointestinal tract and may provided indications of a hierarchy of growth substrate preference in the context of specific competitors.
 
-
-$$log_{2}\Big(\frac{\sum_{} T_i}{e_{o}} - \frac{\sum_{} T_o}{e_{i}} \Big)$$
-
-
-
 ###Results
-
-cfg and toxin
 
 As timing of sporulation has been linked to environmental cues for metabolism such as glucose or glycine concentrations ().  With this in mind, differential plating was performed to determine the load of both spores and vegetative cells respectively in each treatment condition.  This was accomplished by first plating on agar media without the primary C. difficile germinant taurocholate to enumerate vegetative cells exclusively.  Immediately following was a 30 minute 65 C heat treatment to eliminate vegetative cells, and plating on media containing taurocholate. 
 
-No difference in vegetative cell load was found in any susceptible condition tested.  However, significantly more (p=0.00012) spores were detected in gnotobiotic mice than in amy other the antibiotic treated conventional mice.
+No difference in vegetative cell load was found in any susceptible condition tested.  However, significantly more (p=0.00012) spores were detected in gnotobiotic mice than in any other the antibiotic treated mice.  Control, untreated mice remained resistant to colonization by C. difficile.
 
 
 
@@ -40,7 +33,6 @@ Figure 1 discussion
 
 
 
-experimental timeline methods
 Previous work (mark’s paper) demonstrated that at least one other strain of C. difficile exhibited very little capacity for sporulation 18 hours post-infection while being at maximum bacterial load.  We hypothesized that this timepoint would be optimal for transcriptomic analysis 
 
 
@@ -93,6 +85,18 @@ figure 3 – C. difficile gene expression is different across susceptible commun
 
 
 
+Genes included in each group are in Supplementary Table 1.
+
+
+In each antibiotic treated condition, C. difficile 630 demonstrates differential expression of genes in pathways for unique forms of metabolism.  
+
+
+
+
+
+
+
+
 
 <img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf" width=800 />
 
@@ -135,7 +139,13 @@ Read Mapping and normalization  Read mapping for downstream analysis was perform
 
 Statistical analysis
 
+
+
 Metabolic modeling  Single organism level metabolic modeling was accomplished using KEGG gene annotations.  
+
+$$log_{2}\Big(\frac{\sum_{} T_i}{e_{o}} - \frac{\sum_{} T_o}{e_{i}} \Big)$$
+
+
 
 Protocols, code, and data availability
 
