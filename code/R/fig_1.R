@@ -1,4 +1,13 @@
 
+deps <- c('shape');
+for (dep in deps){
+  if (dep %in% installed.packages()[,"Package"] == FALSE){
+    install.packages(as.character(dep), quiet=TRUE);
+  } 
+  library(dep, verbose=FALSE, character.only=TRUE)
+}
+rm(dep, deps)
+
 # Select files
 cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
 toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
@@ -50,7 +59,6 @@ rm(cef, strep, clinda, gf, conv)
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-fox <- wes_palette('FantasticFox')
 pdf(file=plot_file, width=12, height=6)
 layout(matrix(c(1,2,
                 3,4), 
@@ -161,6 +169,6 @@ mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
 #Clean up
 dev.off()
-rm(fox, labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu)
+rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu)
 
 

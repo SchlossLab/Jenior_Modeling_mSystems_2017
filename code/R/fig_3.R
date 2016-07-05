@@ -8,77 +8,6 @@ for (dep in deps){
 }
 rm(dep, deps)
 
-<<<<<<< Updated upstream
-=======
-# Define variables
-network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
-ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.RNA_reads2cdf630.norm.ko.txt'
-substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/'
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Format network information
-
-# Read in metabolic network data
-network <- read.table(network_file, header=FALSE, sep='\t')
-ko <- read.table(ko_file, header=FALSE, sep='\t')
-rm(network_file, ko_file)
-
-# Format directed graph
-raw_graph <- graph.data.frame(network, directed=TRUE)
-rm(network)
-
-# Remove loops and multiple edges to make visualzation easier
-simple_graph <- simplify(raw_graph)
-rm(raw_graph)
-
-# Decompose graph
-decomp_simple_graph <- decompose.graph(simple_graph)
-rm(simple_graph)
-
-# Get largest component
-largest_component <- which.max(sapply(decomp_simple_graph, vcount))
-largest_simple_graph <- decomp_simple_graph[[largest_component]]
-rm(decomp_simple_graph, largest_component)
-
-# Remove zeroes so transformation doesn't return negative infinity
-ko[,2][ko[,2] == 0] <- 1
-ko[,2] <- log10(ko[,2])
-ko[,2][ko[,2] < 0.4] <- 0.4
-
-# Scale points by number of transcripts mapped
-ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
-substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
-nodes <- c(ko_simp, substrate_simp)
-ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
-ko <- ko[match(ko_simp, ko$V1),]
-mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
-node_size <- cbind.data.frame(nodes, mappings)
-node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
-node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
-V(largest_simple_graph)$size <- as.matrix(node_size)
-rm(ko, ko_simp, substrate_simp, node_size, mappings, nodes)
-#V(largest_simple_graph)$size <- degree(largest_simple_graph) * 5 # Scale by degree!
-
-# Color graph
-V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
-E(largest_simple_graph)$color <- 'gray15' # Color edges
-
-# Calculate optimal layout
-optimal <- layout.graphopt(graph=largest_simple_graph, niter=1000, charge=0.001, mass=50, spring.length=0, spring.constant=1)
-#optimal <- layout.kamada.kawai(graph=largest_simple_graph)
-#optimal <- layout.fruchterman.reingold(graph=largest_simple_graph)
-#optimal <- layout_nicely(graph=largest_simple_graph, dim=2)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Format importance information
-
-
-
->>>>>>> Stashed changes
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
 # Import and format transcript mapping data
 cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
 clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
@@ -151,10 +80,46 @@ strep_gf_comparison <- subset(strep_gf_comparison, (strep_gf_comparison$Streptom
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# Plot
+# Select genes associated with lifecycle and virulence
+
+# Sporulation associated genes
+spo <- rbind(subset(combined_mapping, grepl('spo.....;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('spo....;', combined_mapping$gene)),
+             subset(combined_mapping, grepl('spo...;', combined_mapping$gene)),
+             subset(combined_mapping, grepl('spo..;', combined_mapping$gene)), 
+             subset(combined_mapping, grepl('spo.;', combined_mapping$gene)), 
+             subset(combined_mapping, grepl('spo;', combined_mapping$gene)))
+sig <- rbind(subset(combined_mapping, grepl('sig.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('sig;', combined_mapping$gene)))
+sod <- rbind(subset(combined_mapping, grepl('sod.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('sod;', combined_mapping$gene)))
+sip <- rbind(subset(combined_mapping, grepl('sip.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('sip;', combined_mapping$gene)))
+spm <- rbind(subset(combined_mapping, grepl('spm.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('spm;', combined_mapping$gene)))
+yqf <- rbind(subset(combined_mapping, grepl('yqf.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('yqf;', combined_mapping$gene)))
+yab <- rbind(subset(combined_mapping, grepl('yab.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('yab;', combined_mapping$gene)))
+oxa <- rbind(subset(combined_mapping, grepl('oxa.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('oxa;', combined_mapping$gene)))
+cot <- rbind(subset(combined_mapping, grepl('cot.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('cot;', combined_mapping$gene)))
+bcl <- rbind(subset(combined_mapping, grepl('bcl.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('bcl;', combined_mapping$gene)))
+ssp <- rbind(subset(combined_mapping, grepl('ssp.;', combined_mapping$gene)), # 
+             subset(combined_mapping, grepl('ssp;', combined_mapping$gene)))
+
+# Toxin associated genes
+tcd <- rbind(subset(combined_mapping, grepl('tcd.;', combined_mapping$gene)), # Toxin operon
+             subset(combined_mapping, grepl('tcd;', combined_mapping$gene)))
+cdt <- rbind(subset(combined_mapping, grepl('cdt.;', combined_mapping$gene)), # Binary toxin
+             subset(combined_mapping, grepl('cdt;', combined_mapping$gene)))
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
+# Set up plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
-<<<<<<< Updated upstream
-=======
 pdf(file=plot_file, width=7, height=14)
 layout(matrix(c(1,2), nrow=2, ncol=1, byrow = TRUE))
 
@@ -192,8 +157,6 @@ dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,
 
 
 
-
->>>>>>> Stashed changes
 
 # Generate figure
 pdf(file=plot_file, width=12, height=10)

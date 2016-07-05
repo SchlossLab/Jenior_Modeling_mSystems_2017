@@ -8,10 +8,11 @@ output: html_document
 
 
 ###Introduction
-Clostridium difficile is a Gram-positive, sporulating, anaerobic bacillus which causes a toxin-mediated disease in the gastrointestinal tract of many vertebrates.  Infection by C. difficile can cause a spectrum of conditions ranging from asymptomatic colonization, abdominal pain, diarrhea, to the more dangerous symptoms pseudomembraneous colitis and toxin megacolon.  Numerous studies have demonstrated that the gut microbiota limits the capacity of pathogens like C. difficile through an attribute known as colonization ().  This collection of indigenous microorganisms that inhabit the gastrointestinal tract positively contributes to numerous aspects of host health aside colonization resistance .  Disruptions to the integrity of the healthy community, through a variety of means including chemotherapy or antibiotic administration, can lead to a complete loss of colonization resistance (Young 2008).  This can become problematic in health-care settings where many patients are not only likely to have factors leading to perturbed gut communities, but may also be exposed to C. difficile spores ().  As such, C. difficile infections (CDI) have rapidly increased in prevalence over the last decade to become the most prevalent form of hospital-acquired infection infecting >500,000 individuals per year domestically, with ~29,000  of these instances resulting in death (Lessa).
-	The pathology associated with CDI is mediated by expression of it's toxin genes whose production has many known connections to the nutrient niche of the bacterium ().  Conversely, very little is known about how the perturbed gut microbiota niche landscape is changed in a way to promote C. difficile colonization.  A recent study by Theriot at al. demonstrated that the cecal metabolome of antibiotic-treated mice are enriched for established C. difficile growth substrates.  It is therefore not unlikely that other classes of antibiotic that lead to CDI suscpetibility may cause similar changes to the gut nutrient environment.	These findings also lead to the hypothesis that the healthy gut microbiota excludes C. difficile based on a preferred nutrient niche.  
+Clostridium difficile is a Gram-positive, sporulating, anaerobic bacillus which causes a toxin-mediated disease in the gastrointestinal tract of many animals.  Infection by *C. difficile* can cause a spectrum of conditions ranging from asymptomatic colonization, abdominal pain, diarrhea, to the more dangerous symptoms pseudomembraneous colitis and toxin megacolon.  Numerous studies have demonstrated that the gut microbiota limits the capacity of pathogens like *C. difficile* through an attribute known as colonization ().  This collection of indigenous microorganisms that inhabit the gastrointestinal tract positively contributes to numerous aspects of host health aside colonization resistance.  Disruptions to the integrity of the healthy community, through a variety of means including chemotherapy or antibiotic administration, can lead to a complete loss of colonization resistance (Young 2008).  This can become problematic in health-care settings where many patients are not only likely to have factors leading to perturbed gut communities, but may also be exposed to *C. difficile* spores ().  As such, *C. difficile* infections (CDI) have rapidly increased in prevalence over the last decade to become the most prevalent form of hospital-acquired infection infecting >500,000 individuals per year domestically, with ~29,000  of these instances resulting in death (Lessa).
 
-A large genome, a wide variety of growth substrates, and a large host range are all strong indications that C. difficile is an ecological generalist.  The ability of C. difficile to colonize a tremendous range of community structures also supports the hypothesis that the pathogen could have a relatively large potential niche space it could occupy during infection.
+The pathology associated with CDI is mediated by expression of it's toxin genes whose production has many known connections to the bacteria's access to nutirients ().  Conversely, very little is known about how the perturbed gut microbiota niche landscape is changed in a way to promote *C. difficile* colonization.  A recent study by Theriot at al. demonstrated that the cecal metabolome of antibiotic-treated mice are enriched for established C. difficile growth substrates.  It is therefore not unlikely that other classes of antibiotic that lead to CDI suscpetibility may cause similar changes to the gut nutrient environment.	These findings also lead to the hypothesis that the healthy gut microbiota excludes *C. difficile* based on a preferred nutrient niche.  
+
+A large genome, a wide variety of growth substrates, and a large host range are all strong indications that *C. difficile* is an ecological generalist.  The ability of C. difficile to colonize a tremendous range of community structures also supports the hypothesis that the pathogen could have a relatively large potential niche space it could occupy during infection.
 - Different antibiotics result in different community structures, cite alyx's first mouse paper
 - each unique community may present a unique set of circumstances that C. difficile must cope with in order to successfully infect the new host.
 
@@ -53,18 +54,6 @@ Previous work (mark’s paper) demonstrated that at least one other strain of C.
 +---------------+------------------+-----------------------------------+---------------------------------------+---------------------------+----------------------+
 
 Table 1 – Descriptions of antibiotics used during this study
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -121,7 +110,7 @@ It seems that the metabolic response of C. difficile is dependent on the context
 
 
 ###Materials and Methods
-Animal care, antibiotic administration, C. difficile infection, and necropsy  Six-to-eight week-old specific pathogen free (SPF) C57BL/6 mice were obtained from a single breeding colony maintained at the University of Michigan for all experiments. All animal protocols were approved by the University Committee on Use and Care of Animals at the University of Michigan and carried out in accordance with the approved guidelines.  Six-to-eight week-old germfree C57BL/6 mice were obtained from a single breeding colony maintained at the University of Michigan for all experiments. All animal protocols were approved by the University Committee on Use and Care of Animals at the University of Michigan and carried out in accordance with the approved guidelines.
+Animal care, antibiotic administration, C. difficile infection, and necropsy  Six-to-eight week-old specific pathogen free (SPF) C57BL/6 mice were obtained from a single breeding colony maintained at the University of Michigan for all experiments. All animal protocols were approved by the University Committee on Use and Care of Animals at the University of Michigan and carried out in accordance with the approved guidelines. Six-to-eight week-old germfree C57BL/6 mice were obtained from a single breeding colony maintained at the University of Michigan for all experiments. All animal protocols were approved by the University Committee on Use and Care of Animals at the University of Michigan and carried out in accordance with the approved guidelines.
 	Specified SPF animals were administered one of three antibiotics;  including cefoperazone, streptomycin, or clindamycin (Table 1). Cefoperazone (0.5 mg/ml) and streptomycin (5.0 mg/ml) were both administered in the drinking water for 5 days while clindamycin (10 mg/kg) was given via intraperitoneal injection.  Antibiotic-treated mice were given a brief recovery period (48 hrs for cefoperazone & streptomycin, 24 hrs for clindamycin) with untreated drinking water prior to C. difficile challenge.
 	C. difficile strain 630 spores were prepared from a single large batch whose concentration was determined in the week prior to challenge for all experiments (27).  On the day of challenge, 103 C. difficile spores were administered to mice via oral gavage in phosphate-buffered saline (PBS). Subsequent quantitative plating for CFU was performed to ensure correct dosage.
 	18 hours following infection, mice was euthanized by carbon dioxide asphyxiation.  Necropsy was then performed and cecal content was split into three small aliquots (~100 μl).  Two were flash frozen immediately for later DNA extraction and toxin titer analysis.  The third aliquot was quickly moved to an anaerobic chamber for CFU quantification.  The remaining content in the ceca (~1 ml) was emptied into a stainless steel mortar in a dry ice/ethanol bath using 1 ml of sterile PBS.  This process was repeated for each mouse within a treatment group to pool content into a single large sample (9 mice).  The content was then finely ground and stored at -80 C for subsequent RNA extraction.
@@ -152,11 +141,14 @@ Statistical analysis
 
 Metabolic modeling  Single organism level metabolic modeling was accomplished using KEGG gene annotations.  
 
+
+
 $$log_{2}\Big(\frac{\sum_{} T_i}{e_{o}} - \frac{\sum_{} T_o}{e_{i}} \Big)$$
 
 
 
-Protocols, code, and data availability
+Protocols, code, and are available in a Github repository 
+https://github.com/SchlossLab/Jenior_Transcriptomics_2015
 
 
 ###References
