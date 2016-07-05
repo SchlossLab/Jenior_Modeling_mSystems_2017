@@ -92,7 +92,7 @@ mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # B.  Toxin data
-par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE)
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE, xaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', 
            cex=2, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
@@ -117,7 +117,7 @@ mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Vegetative cell CFU
-par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xaxs='i')
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=20, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
            ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25)
@@ -138,7 +138,7 @@ mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D.  Spore CFU
-par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xaxs='i')
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=20, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
            ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25)

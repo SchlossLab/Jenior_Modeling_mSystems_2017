@@ -208,6 +208,12 @@ text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.3,
 segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
 legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+text(x=-0.5, y=-1.1, expression(t[i]), col='white', cex=1.4) # labeled transcription for input reactions
+text(x=0.99, y=0.34, expression(t[i]), col='white', cex=1.4)
+text(x=-1, y=0.9, expression(t[o]), col='black', cex=1.4) # labeled transcription for output reactions
+text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.4) # labeled indegree
+text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
+text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
 mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
