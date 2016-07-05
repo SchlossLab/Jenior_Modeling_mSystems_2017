@@ -74,25 +74,29 @@ Sporulation is a critical step for C. difficile to disseminate between hosts. Th
 
 The amount of C. difficile spores quantified in each condition was changedConcentration of spores in each condition was derived through differential plating with and without the primary germinant taurocholate.
 
+Figure 2 - Circos plot of C. difficile genome converage in each of the conditions
 
 
+Figure 3 – Expression of C. difficile genes for sporulation and toxin production
 
-figure 3 – C. difficile gene expression is different across susceptible communities
+
 
 
 
 <img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf" width=800 />
 
+Figure 4 - Expression of metabolism genes across the different environments
 
 
 Genes included in each group are in Supplementary Table 1.
 
 
-In each antibiotic treated condition, C. difficile 630 demonstrates differential expression of genes in pathways for unique forms of metabolism.  
+In each antibiotic treated condition, *C. difficile* 630 demonstrates differential expression of genes in pathways for seperate aspects of carbon metabolism.
 
 
 
 
+These data support the hypothesis that *C. difficile* may inhabit alternative realized niches accross the susceptible microbiomes in colonizes.
 
 
 
@@ -101,6 +105,11 @@ In each antibiotic treated condition, C. difficile 630 demonstrates differential
 <img src="/Users/mattjenior/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf" width=800 />
 
 
+
+
+
+
+Figure 6 - targeted metabolomics
 
 
 
