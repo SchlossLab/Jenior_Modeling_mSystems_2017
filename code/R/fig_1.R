@@ -70,7 +70,7 @@ layout(matrix(c(1,2,
 
 # Create an empty plot
 par(mar=c(1,2,1,1))
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4.75,4), ylim=c(-2,5))
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4.8,4), ylim=c(-2,5))
 
 # Abx in drinking water timeline
 rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='dodgerblue1', border='black')
@@ -91,7 +91,7 @@ text(x=c(-4,-3,-2.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=
 text(x=-4.6, y=0, 'Clindamycin', cex=0.7)
 
 # Legend
-legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic',paste(italic('C. difficile'), ' Spore Gavage'), 'Sacrifice & Necropsy'), 
+legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic',paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 
        pt.bg=c('dodgerblue1','firebrick','white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 
 # Plot label
@@ -128,7 +128,7 @@ mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xaxs='i')
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=20, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
-           ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25)
+           ylab='Vegetative CFU/g Cecal Content (Log10)', method='jitter', jitter=0.25, cex.lab=0.9)
 axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
@@ -149,7 +149,7 @@ mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xaxs='i')
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=20, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
-           ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25)
+           ylab='Spore CFU/g Cecal Content (Log10)', method='jitter', jitter=0.25)
 axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
