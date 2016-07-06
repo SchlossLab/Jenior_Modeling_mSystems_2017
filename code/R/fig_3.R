@@ -1,5 +1,5 @@
 
-deps <- c('vegan');
+deps <- c('vegan', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -58,26 +58,6 @@ combined_mapping$Streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample
 combined_mapping$Germfree <- t(rrarefy(combined_mapping$Germfree, sample=sub_size))
 rm(sub_size)
 
-# Remove zeroes before transformation
-combined_mapping[combined_mapping == 0] <- 1
-
-# Transform mapping values
-combined_mapping$Cefoperazone <- log10(combined_mapping$Cefoperazone)
-combined_mapping$Clindamycin <- log10(combined_mapping$Clindamycin)
-combined_mapping$Streptomycin <- log10(combined_mapping$Streptomycin)
-combined_mapping$Germfree <- log10(combined_mapping$Germfree)
-
-# Seperate into each comparison table
-cef_gf_comparison <- combined_mapping[,c(1,4,6,7)]
-clinda_gf_comparison <- combined_mapping[,c(2,4,6,7)]
-strep_gf_comparison <- combined_mapping[,c(3,4,6,7)]
-rm(combined_mapping)
-
-# Eliminate rows with no transcription
-cef_gf_comparison <- subset(cef_gf_comparison, (cef_gf_comparison$Cefoperazone+cef_gf_comparison$Germfree) != 0)
-clinda_gf_comparison <- subset(clinda_gf_comparison, (clinda_gf_comparison$Clindamycin+clinda_gf_comparison$Germfree) != 0)
-strep_gf_comparison <- subset(strep_gf_comparison, (strep_gf_comparison$Streptomycin+strep_gf_comparison$Germfree) != 0)
-
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Select genes associated with lifecycle and virulence
@@ -115,56 +95,40 @@ tcd <- rbind(subset(combined_mapping, grepl('tcd.;', combined_mapping$gene)), # 
              subset(combined_mapping, grepl('tcd;', combined_mapping$gene)))
 cdt <- rbind(subset(combined_mapping, grepl('cdt.;', combined_mapping$gene)), # Binary toxin
              subset(combined_mapping, grepl('cdt;', combined_mapping$gene)))
+rm(combined_mapping)
+
+# Assemble final table
+select_mapping <- rbind(spo, sig, sod, sip, spm, yqf, yab, oxa, cot, bcl, ssp, tcd, cdt)
+rm(spo, sig, sod, sip, spm, yqf, yab, oxa, cot, bcl, ssp, tcd, cdt)
+rownames(select_mapping) <- c('spo', 'sig', 'sod', 'sip', 'spm', 'yqf', 'yab', 'oxa', 'cot', 'bcl', 'ssp', 'tcd', 'cdt')
+select_mapping[select_mapping == 0] <- 1
+transformed_mapping <- log10(select_mapping)
+rm(select_mapping)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
+darjeeling <- wes_palette("Darjeeling")
 pdf(file=plot_file, width=7, height=14)
-layout(matrix(c(1,2), nrow=2, ncol=1, byrow = TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4A
-
-# Plot the large component of the graph
-par(mar=c(0,0,0,0))
-plot(largest_simple_graph, vertex.label=NA, layout=optimal,
-     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
-legend('bottomright', legend=c('KEGG ortholog', 'Reaction substrate/product'), 
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-legend('topright', legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Compound nodes: 666'), ncol=1, pt.cex=0, bty='n', text.font=c(2,1,1))
-text(x=-1.05, y=1, labels='A', cex=1.5)
+# Plot the data
+par(las=1, mar=c(8,4,1,1))
+barplot(t(transformed_mapping), col=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), 
+        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5))
+box()
+axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
+abline(h=c(1:4), lty=2)
+legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Gnotobiotic'), pt.cex=2, bty='n',
+       pch=22, col='black', pt.bg=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), ncol=2)
+text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+     labels=rownames(transformed_mapping), srt=45, adj=1, xpd=TRUE, cex=0.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Figure 4B
-
-par(mar=c(0,0,0,0))
-
-x <- mtcars[order(mtcars$mpg),] # sort by mpg
-x$cyl <- factor(x$cyl) # it must be a factor
-x$color[x$cyl==4] <- "red"
-x$color[x$cyl==6] <- "blue"
-x$color[x$cyl==8] <- "darkgreen"	
-dotchart(x$mpg,labels=row.names(x),cex=.7,groups= x$cyl,
-         main="Gas Milage for Car Models\ngrouped by cylinder",
-         xlab="Miles Per Gallon", gcolor="black", color=x$color)
-
-
-# Compound importance dotplot  , all 3 on same plot - 3 different colors of dots
-
-
-
-
-
-# Generate figure
-pdf(file=plot_file, width=12, height=10)
-
-
-
-
-# generate a figure like cody's paper
-
-
+# Clean up
+dev.off()
+rm(transformed_mapping, darjeeling, plot_file)
 
