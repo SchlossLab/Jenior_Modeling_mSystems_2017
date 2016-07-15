@@ -92,6 +92,7 @@ nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)),
 glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('glm;', combined_mapping$gene)))
 amino_sugars <- rbind(mur, nag, acd, ldt, gne, anm, nan, glm)
+amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
 
 # Stickland fermentation
 pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
@@ -110,6 +111,7 @@ arg <- subset(combined_mapping, grepl('arg.;', combined_mapping$gene)) # arginin
 serA <- subset(combined_mapping, grepl('serA;', combined_mapping$gene)) # D-3-phosphoglycerate dehydrogenase (serine catabolism)
 sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-serine dehydratase (serine catabolism)
 stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
+stickland$grouping <- rep('Stickland reactions', nrow(stickland))
 
 # Monosaccharide catabolism
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
@@ -135,6 +137,7 @@ fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene))
                   subset(combined_mapping, grepl('fba;', combined_mapping$gene))) # hexose
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
 monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
+monosaccharides$grouping <- rep('Monosaccharide catabolism', nrow(monosaccharides))
 
 # Polysaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -147,19 +150,23 @@ glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$ge
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
              subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
 polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
+polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
              subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
+PTS$grouping <- rep('PEP group translocators', nrow(PTS))
 
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
+ABC$grouping <- rep('ABC sugar transporters', nrow(ABC))
 
 # sugar alcohols
 srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
 srlE <- subset(combined_mapping, grepl('srlE.;', combined_mapping$gene)) # sorbitol import
 mtl <- subset(combined_mapping, grepl('mtl.;', combined_mapping$gene)) # mannitol utilization locus
 sugar_alcohols <- rbind(srl, srlE, mtl)
+sugar_alcohols$grouping <- rep('Sugar alcohol catabolism', nrow(sugar_alcohols))
 
 # Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
@@ -174,6 +181,19 @@ cat <- subset(combined_mapping, grepl('cat.;', combined_mapping$gene)) # Acetate
 abfD <- subset(combined_mapping, grepl('abfD;', combined_mapping$gene)) # gamma-aminobutyrate metabolism dehydratase
 hbd <- subset(combined_mapping, grepl('hbd;', combined_mapping$gene)) # 3-hydroxybutyryl-CoA dehydrogenase
 fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
+fermentation$grouping <- rep('Fermentation end steps', nrow(fermentation))
+
+# Combine genes to for supplementary table
+gene_table <- rbind(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation)
+gene_table$pathway <- NULL
+gene_table$Cefoperazone <- NULL
+gene_table$Clindamycin <- NULL
+gene_table$Streptomycin <- NULL
+
+# Write table
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S2.tsv'
+write.table(gene_table, file=table_file, sep='\t', row.names=TRUE, col.names=TRUE, quote=FALSE)
+rm(table_file, gene_table)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 

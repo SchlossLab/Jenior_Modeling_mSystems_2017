@@ -1,0 +1,280 @@
+ko	gene	grouping
+cdf:CD630_01230	K00790	murA;_UDP-N-acetylglucosamine_1-carboxyvinyltransferase_(EC:2.5.1.7)	Amino sugar catabolism
+cdf:CD630_26510	K02563	murG;_UDP-N-acetylglucosamine-N-acetylmuramyl-(pentapeptide)_pyrophosphoryl-undecaprenol_N-acetylglucosamine_transferase_(EC:2.4.1.227)	Amino sugar catabolism
+cdf:CD630_26530	K01925	murD;_UDP-N-acetylmuramoylalanine--D-glutamate_ligase_(UDP-N-acetylmuramoyl-L-alanyl-D-glutamate_synthetase)_(D-glutamic_acid-adding_enzyme)_(EC:6.3.2.9)	Amino sugar catabolism
+cdf:CD630_26550	K01929	murF;_UDP-N-acetylmuramoyl-tripeptide--D-alanyl-D-alanine_ligase_(EC:6.3.2.10)	Amino sugar catabolism
+cdf:CD630_26640	K01928	murE;_UDP-N-acetylmuramoylalanyl-D-glutamate--2,6-diaminopimelate_ligase_(EC:6.3.2.13)	Amino sugar catabolism
+cdf:CD630_30460	K07106	murQ;_N-acetylmuramic_acid_6-phosphate_etherase_(EC:4.2.-.-)	Amino sugar catabolism
+cdf:CD630_34020	K00075	murB;_UDP-N-acetylenolpyruvoylglucosamine_reductase_(EC:1.1.1.158)	Amino sugar catabolism
+cdf:CD630_35180	K01924	murC;_UDP-N-acetylmuramate--L-alanine_ligase_(EC:6.3.2.8)	Amino sugar catabolism
+cdf:CD630_35620	K01776	murI;_glutamate_racemase_(EC:5.1.1.3)	Amino sugar catabolism
+cdf:CD630_10100	none	nagA;_N-acetylglucosamine-6-phosphate_deacetylase_(EC:3.5.1.25)	Amino sugar catabolism
+cdf:CD630_10110	K02564	nagB;_glucosamine-6-phosphate_deaminase_(EC:3.5.99.6)	Amino sugar catabolism
+cdf:CD630_03990	K00248	acdB;_acyl-CoA_dehydrogenase_(EC:1.3.99.-)	Amino sugar catabolism
+cdf:CD630_13040	none	acd;_mannosyl-glycoprotein_endo-beta-N-acetylglucosamidase_(EC:3.2.1.96)	Amino sugar catabolism
+cdf:CD630_30510	none	anmK;_anhydro-N-acetylmuramic_acid_kinase_(AnhMurNAc_kinase)_(EC:2.7.1.-)	Amino sugar catabolism
+cdf:CD630_22400	K01639	nanA;_N-acetylneuraminate_lyase_(EC:4.1.3.3)	Amino sugar catabolism
+cdf:CD630_22410	K01788	nanE;_N-acetylmannosamine-6-phosphate_2-epimerase_(EC:5.1.3.9)	Amino sugar catabolism
+cdf:CD630_01190	none	glmM;_phosphoglucosamine_mutase_(EC:5.4.2.10)	Amino sugar catabolism
+cdf:CD630_01200	K00820	glmS;_glucosamine--fructose-6-phosphate_aminotransferase_(EC:2.6.1.16)	Amino sugar catabolism
+cdf:CD630_35150	K04042	glmU;_bifunctional_N-acetylglucosamine-1-phosphate_uridyltransferase/glucosamine-1-phosphate_acetyltransferase_(EC:2.3.1.157_2.7.7.23)	Amino sugar catabolism
+cdf:CD630_07080	K01270	pepD;_peptidase_D,_aminoacyl-histidine_dipeptidase	Stickland reactions
+cdf:CD630_10460	K01258	pepT;_peptidase_T_(EC:3.4.11.4)	Stickland reactions
+cdf:CD630_13000	K01255	pepA;_multifunctional_aminopeptidase_A_(EC:3.4.11.1)	Stickland reactions
+cdf:CD630_30410	K01259	pepI;_proline_iminopeptidase_(Proline_aminopeptidase)_(PIP),_peptidase_S33_family_(EC:3.4.11.5)	Stickland reactions
+cdf:CD630_32370	K01777	prdF;_proline_racemase_(EC:5.1.1.4)	Stickland reactions
+cdf:CD630_32390	K10796	prdE;_proline_reductase_PrdE_(EC:1.21.4.1)	Stickland reactions
+cdf:CD630_32400	none	prdD;_proline_reductase_PrdD_(EC:1.21.4.1)	Stickland reactions
+cdf:CD630_32410	none	prdB;_proline_reductase_(EC:1.21.4.1)	Stickland reactions
+cdf:CD630_32440	K10793	prdA;_D-proline_reductase_proprotein_prdA_(EC:1.21.4.1)	Stickland reactions
+cdf:CD630_32450	none	prdR;_sigma-54_dependent_transcriptional_regulator	Stickland reactions
+cdf:CD630_32470	none	prdC;_electron_transfer_protein	Stickland reactions
+cdf:CD630_23480	K10670	grdD;_glycine_reductase_complex_component_C_subunit_alpha_(Protein_PC_alpha)_(EC:1.21.4.3_1.21.4.4_1.21.4.2)	Stickland reactions
+cdf:CD630_23490	K10670	grdC;_glycine_reductase_complex_component_C_subunit_beta_(Protein_PC_beta)_(EC:1.21.4.2)	Stickland reactions
+cdf:CD630_23510	none	grdB;_glycine_reductase_complex_component_B_subunit_gamma_(EC:1.21.4.2)	Stickland reactions
+cdf:CD630_23520	none	grdA;_glycine/sarcosine/betaine_reductase_complex_protein_A_(EC:1.21.4.2_1.21.4.3_1.21.4.4)	Stickland reactions
+cdf:CD630_23540	K10670	grdE;_glycine_reductase_complex_component_B_subunits_alpha_and_beta_(EC:1.21.4.2)	Stickland reactions
+cdf:CD630_23570	none	grdX;_glycine_reductase_complex_component	Stickland reactions
+cdf:CD630_03940	K03778	ldhA;_D-lactate_dehydrogenase_(EC:1.1.1.28)	Stickland reactions
+cdf:CD630_03950	none	hadA;_Isocaprenoyl-CoA:2-hydroxyisocaproate_CoA-transferase_(EC:2.8.3.-)	Stickland reactions
+cdf:CD630_03960	none	hadI;_activator_of_2-hydroxyisocaproyl-CoA_dehydratase	Stickland reactions
+cdf:CD630_03970	none	hadB;_subunit_of_oxygen-sensitive_2-hydroxyisocaproyl-CoA_dehydratase_B	Stickland reactions
+cdf:CD630_03980	none	hadC;_subunit_of_oxygen-sensitive_2-hydroxyisocaproyl-CoA_dehydratase_C	Stickland reactions
+cdf:CD630_25140	K01754	tdcB;_threonine_dehydratase_II_(EC:4.3.1.19)	Stickland reactions
+cdf:CD630_33160	K02379	fdhD;_formate_dehydrogenase_formation_protein	Stickland reactions
+cdf:CD630_33170	none	fdhF;_formate_dehydrogenase-H_(EC:1.2.1.2)	Stickland reactions
+cdf:CD630_15130	K00606	panB;_3-methyl-2-oxobutanoate_hydroxymethyltransferase_(EC:2.1.2.11)	Stickland reactions
+cdf:CD630_03030	K01438	argE;_acetylornithine_deacetylase_ArgE_(EC:3.5.1.16)	Stickland reactions
+cdf:CD630_07110	K01887	argS;_arginyl-tRNA_ligase_(EC:6.1.1.19)	Stickland reactions
+cdf:CD630_17850	K01940	argG;_argininosuccinate_synthase_(EC:6.3.4.5)	Stickland reactions
+cdf:CD630_20300	K00611	argF;_ornithine_carbamoyltransferase_(EC:2.1.3.3)	Stickland reactions
+cdf:CD630_20310	K00821	argM;_succinylornithine_transaminase_(ACOAT)_(EC:2.6.1.-)	Stickland reactions
+cdf:CD630_20320	K00930	argB;_acetylglutamate_kinase_(EC:2.7.2.8)	Stickland reactions
+cdf:CD630_20330	K00620	argJ;_Arginine_biosynthesis_bifunctional_glutamate_N-acetyltransferase/amino-acid_acetyltransferase_(EC:2.3.1.1_2.3.1.35)	Stickland reactions
+cdf:CD630_20340	K00145	argC;_N-acetyl-gamma-glutamyl-phosphate_reductase_(EC:1.2.1.38)	Stickland reactions
+cdf:CD630_25000	none	argH;_Argininosuccinate_lyase_(Arginosuccinase)_(ASAL)_(EC:4.3.2.1)	Stickland reactions
+cdf:CD630_09950	K00058	serA;_D-3-phosphoglycerate_dehydrogenase_(EC:1.1.1.95)	Stickland reactions
+cdf:CD630_32220	K01752	sdaB;_L-serine_dehydratase_(EC:4.3.1.17)	Stickland reactions
+cdf:CD630_22520	K01843	kamA;_L-lysine_2,3-aminomutase_(KAM)_(LAM)_(EC:5.4.3.2)	Stickland reactions
+cdf:CD630_05800	K00131	gapN;_glyceraldehyde-3-phosphate_dehydrogenase_(NADP(+))_(GADPH)_(EC:1.2.1.9)	Monosaccharide catabolism
+cdf:CD630_17670	K00134	gapB;_glyceraldehyde-3-phosphate_dehydrogenase_(EC:1.2.1.12)	Monosaccharide catabolism
+cdf:CD630_31740	K00134	gapA;_glyceraldehyde-3-phosphate_dehydrogenase_(EC:1.2.1.12)	Monosaccharide catabolism
+cdf:CD630_31710	K15633	gpmI;_phosphoglyceromutase_(EC:5.4.2.1)	Monosaccharide catabolism
+cdf:CD630_33950	K00850	pfkA;_6-phosphofructokinase_(EC:2.7.1.11)	Monosaccharide catabolism
+cdf:CD630_31100	K00850	6-phosphofructokinase_(EC:2.7.1.11)	Monosaccharide catabolism
+cdf:CD630_339501	K00850	pfkA;_6-phosphofructokinase_(EC:2.7.1.11)	Monosaccharide catabolism
+cdf:CD630_31720	K01803	tpi;_triosephosphate_isomerase_(EC:5.3.1.1)	Monosaccharide catabolism
+cdf:CD630_33940	K00873	pyk;_pyruvate_kinase_(EC:2.7.1.40)	Monosaccharide catabolism
+cdf:CD630_31700	K01689	eno;_enolase_(2-phosphoglycerate_dehydratase)_(2-phospho-D-glycerate_hydro-lyase)_(EC:4.2.1.11)	Monosaccharide catabolism
+cdf:CD630_15770	K01835	pgm;_phosphoglucomutase_(EC:5.4.2.2)	Monosaccharide catabolism
+cdf:CD630_27800	K01835	pgm;_phosphoglucomutase_(EC:5.4.2.2)	Monosaccharide catabolism
+cdf:CD630_18140	K15634	phosphoglycerate_mutase	Monosaccharide catabolism
+cdf:CD630_34360	K02226	cobC;_cobalamin_biosynthesis_phosphoglycerate_mutase_CobC_(EC:3.1.3.-)	Monosaccharide catabolism
+cdf:CD630_27140	K01784	galE;_UDP-glucose_4-epimerase_(EC:5.1.3.2)	Monosaccharide catabolism
+cdf:CD630_13400	K00965	galactose-1-phosphate_uridylyltransferase_(EC:2.7.7.12)	Monosaccharide catabolism
+cdf:CD630_30850	K15524	mngB;_alpha-mannosidase_(EC:3.2.1.24)	Monosaccharide catabolism
+cdf:CD630_30860	K11198	mngA;_PTS_system_2-O-a-mannosyl-D-glycerate_specific_transporter_subunit_IIABC_(EC:2.7.1.69)	Monosaccharide catabolism
+cdf:CD630_27790	K00971	manC;_mannose-1-phosphate_guanylyltransferase_(EC:2.7.7.22)	Monosaccharide catabolism
+cdf:CD630_24910	K01809	pmi;_mannose-6-phosphate_isomerase_(Phosphomannose_isomerase)_(PMI)_(Phosphohexomutase)_(EC:5.3.1.8)	Monosaccharide catabolism
+cdf:CD630_02090	none	tagatose_6-phosphate_kinase	Monosaccharide catabolism
+cdf:CD630_30740	K08302	tagatose-bisphosphate_aldolase_(EC:4.1.2.2)	Monosaccharide catabolism
+cdf:CD630_30750	K02769	tagABC;_PTS_system_tagatose-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	Monosaccharide catabolism
+cdf:CD630_34480	K08302	tagatose-bisphosphate_aldolase_(EC:4.1.2.-)	Monosaccharide catabolism
+cdf:CD630_34490	none	phosphosugar_isomerase;_putative_tagatose-6-phosphate_ketose/aldose_isomerase_AgaS_(EC:5.-.-.-)	Monosaccharide catabolism
+cdf:CD630_34510	K00917	carbohydrate/purine_kinase;_putative_tagatose-6-phosphate_kinase_LacC_(EC:2.7.1.-)	Monosaccharide catabolism
+cdf:CD630_11910	K04041	fbp;_fructose-1,6-bisphosphatase_(EC:3.1.3.11)	Monosaccharide catabolism
+cdf:CD630_22700	K00882	fruK;_fructose_1-phosphate_kinase_(EC:2.7.1.56)	Monosaccharide catabolism
+cdf:CD630_22690	K02768	fruABC;_PTS_system_fructose-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	Monosaccharide catabolism
+cdf:CD630_04030	K01624	fba;_fructose-1,6-bisphosphate_aldolase_(EC:4.1.2.13)	Monosaccharide catabolism
+cdf:CD630_00340	none	xylose_transporter,_sodium:galactoside_symporter_family	Monosaccharide catabolism
+cdf:CD630_30640	K01805	xylA;_xylose_isomerase_(EC:5.3.1.5)	Monosaccharide catabolism
+cdf:CD630_18040	K03484	scrR;_LacI_family_transcriptional_regulator	Polysaccharide catabolism
+cdf:CD630_18050	K01193	scrB;_sucrose-6-phosphate_hydrolase_(EC:3.2.1.26)	Polysaccharide catabolism
+cdf:CD630_18060	K00847	scrK;_fructokinase_(EC:2.7.1.4)	Polysaccharide catabolism
+cdf:CD630_08640	K01232	maltose-6'-phosphate_glucosidase_(EC:3.2.1.122)	Polysaccharide catabolism
+cdf:CD630_08720	K00661	maa;_maltose_O-acetyltransferase_(EC:2.3.1.79)	Polysaccharide catabolism
+cdf:CD630_00920	K01265	map1;_methionine_aminopeptidase_Map1_(MAP)_(Peptidase_M)_(EC:3.4.11.18)	Polysaccharide catabolism
+cdf:CD630_15960	K01265	map2;_methionine_aminopeptidase_Map2_(MAP)_(Peptidase_M)_(EC:3.4.11.18)	Polysaccharide catabolism
+cdf:CD630_21880	K00691	mapA;_maltose_phosphorylase_(EC:2.4.1.8)	Polysaccharide catabolism
+cdf:CD630_087201	K00661	maa;_maltose_O-acetyltransferase_(EC:2.3.1.79)	Polysaccharide catabolism
+cdf:CD630_16670	none	maltose_O-acetyltransferase_(EC:2.3.1.79)	Polysaccharide catabolism
+cdf:CD630_30900	K03486	treR;_GntR_family_transcriptional_regulator	Polysaccharide catabolism
+cdf:CD630_30910	K01226	treA;_trehalose-6-phosphate_hydrolase_(EC:3.2.1.93)	Polysaccharide catabolism
+cdf:CD630_00320	none	beta-glucosidase_(EC:3.2.1.58)	Polysaccharide catabolism
+cdf:CD630_03890	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_04680	none	oligo-1,6-glucosidase_(Sucrase-isomaltase)_(EC:3.2.1.10)	Polysaccharide catabolism
+cdf:CD630_08180	K01223	6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_086401	K01232	maltose-6'-phosphate_glucosidase_(EC:3.2.1.122)	Polysaccharide catabolism
+cdf:CD630_13380	K01232	6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_30600	none	phospho-alpha-glucosidase_(EC:3.2.1.122)	Polysaccharide catabolism
+cdf:CD630_30790	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_30950	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_30960	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_31150	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_31240	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_31300	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_31360	K01223	bglA;_6-phospho-beta-glucosidase_(EC:3.2.1.86)	Polysaccharide catabolism
+cdf:CD630_28810	K03478	celG;_cellobiose-phosphate_degrading_protein	Polysaccharide catabolism
+cdf:CD630_28800	K02759	celC;_PTS_system_cellobiose-specific_transporter_subunit_IIA_(EC:2.7.1.69)	Polysaccharide catabolism
+cdf:CD630_08730	K01989	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_08740	K05833	ABC_transporter_sugar-family_ATP-binding_protein_(EC:3.6.3.-)	ABC sugar transporters
+cdf:CD630_08750	K05832	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_08760	K01989	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_08770	K05833	ABC_transporter_sugar-family_ATP-binding_protein_(EC:3.6.3.-)	ABC sugar transporters
+cdf:CD630_08780	K05832	ABC_transporter_sugar-specific_permease	ABC sugar transporters
+cdf:CD630_15870	K10441	ABC_transporter_sugar-family_ATP-binding_protein_(EC:3.6.3.-)	ABC sugar transporters
+cdf:CD630_15880	K10440	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_15890	K10439	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_24560	K10112	ABC_transporter_sugar-family_ATP-binding_protein_(EC:3.6.3.-)	ABC sugar transporters
+cdf:CD630_25480	K02026	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_25490	none	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_25500	none	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_26450	none	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_34140	K05813	ABC_transporter_sugar-family_extracellular_solute-binding_protein	ABC sugar transporters
+cdf:CD630_34150	K05815	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_34160	K05814	ABC_transporter_sugar-family_permease	ABC sugar transporters
+cdf:CD630_34170	K05816	ABC_transporter_sugar-family_ATP-binding_protein_(EC:3.6.3.-)	ABC sugar transporters
+cdf:CD630_00410	K02773	PTS_system_galactitol-specific_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_00420	K02774	PTS_system_galactitol-specific_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_00430	K02775	PTS_system_galactitol-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_01350	K02759	PTS_system_lactose/cellobiose-family_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_01360	K02760	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_01370	K02761	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_02060	K02768	PTS_system_fructose-like_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_02070	K11203	PTS_system_fructose-like_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_02080	K11202	PTS_system_fructose-like_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_02840	K02793	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_02850	none	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_02860	K17464	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_02870	K17465	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_02880	K17466	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_02890	K17467	PTS_system_mannose/fructose/sorbose_transporter_subunit_IID	PEP group translocators
+cdf:CD630_03880	K02755	bglF;_PTS_system_beta-glucoside-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_04690	K02808	PTS_system_sucrose-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_04910	K02793	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_04920	K02794	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_04930	K02795	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_04940	K02796	PTS_system_mannose/fructose/sorbose_transporter_subunit_IID	PEP group translocators
+cdf:CD630_07640	K02783	srlA;_PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_07650	K02782	srlEa;_PTS_system_sorbitol-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_07660	K02783	srlEb;_PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_07670	K02781	srlB;_PTS_system_sorbitol-specific_transporter_subunit_IIA_(EC:2.7.1.-)	PEP group translocators
+cdf:CD630_08130	none	PTS_system_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_08610	none	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_08620	K02761	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_08630	none	PTS_system_lactose/cellobiose-family_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_10740	K02793	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_10760	K02794	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_10770	K02795	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_10780	K02796	PTS_system_mannose/fructose/sorbose_transporter_subunit_IID	PEP group translocators
+cdf:CD630_10830	K02774	PTS_system_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_13360	K02790	PTS_system_maltose_and_glucose-specific_transporter_subunits_IICB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_16020	K02760	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_22560	K07035	PTS_system_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_226901	K02768	fruABC;_PTS_system_fructose-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_22800	K02775	PTS_system_fructose/mannitol_family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_22810	K02774	PTS_system_fructose/mannitol_family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_22820	none	PTS_system_fructose/mannitol_family_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_23250	K02775	PTS_system_fructose/mannitol_family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_23260	K02774	PTS_system_fructose/mannitol_family_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_23270	K02773	PTS_system_fructose/mannitol_family_transporter_subunit_IIA_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_23320	K02798	mtlF;_PTS_system_mannitol-specific_transporter_subunit_IIA_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_23340	K02799	mtlA;_PTS_system_mannitol-specific_transporter_subunit_IICB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_24140	K02781	PTS_system_sorbitol-like_transporter_subunit_IIA_(EC:2.7.1.-)	PEP group translocators
+cdf:CD630_24170	K02782	PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_24180	K02783	PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_24860	K11203	PTS_system_fructose-like_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_24870	K11202	PTS_system_fructose-like_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_24880	K02806	PTS_system_fructose-like_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_25100	K02790	PTS_system_glucose-like_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_25120	K02777	PTS_system_glucose-like_transporter_subunit_IIA_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_25550	K02822	PTS_system_fructose/mannitol-family_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_25560	none	PTS_system_fructose/mannitol-family_transporter_subunit_IIAB	PEP group translocators
+cdf:CD630_25660	K02768	PTS_system_mannose-specfic_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_25670	K02769	PTS_system_mannose-specfic_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_25680	K02770	PTS_system_mannose-specfic_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_26660	K02763	ptsG-A;_PTS_system_glucose-specific_transporter_subunit_IIA_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_26670	K02763	ptsG-BC;_PTS_system_glucose-specific_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_27560	K11189	ptsH;_PTS_system_HPr_protein	PEP group translocators
+cdf:CD630_288001	K02759	celC;_PTS_system_cellobiose-specific_transporter_subunit_IIA_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_28830	K02761	celB;_PTS_system_cellobiose-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_28840	K02760	celA;_PTS_system_cellobiose-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30130	K02770	PTS_system_mannose-specfic_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_30140	K02769	PTS_system_mannose-specfic_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30150	K02768	PTS_system_mannose-specfic_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_30270	K02777	PTS_system_glucose-like_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_30300	K02790	PTS_system_glucose-like_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30480	K02761	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_30490	K02760	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_30580	none	PTS_system_alpha-glucoside-specific_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_30610	K02749	PTS_system_alpha-glucoside-specific_transporter_subunit_IICB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30670	K02793	xynA;_PTS_system_xyloside-specific_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_30680	K02794	xynB;_PTS_system_xyloside-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30690	K02796	xynD;_PTS_system_xyloside-specific_transporter_subunit_IID	PEP group translocators
+cdf:CD630_30700	K02795	xynC;_PTS_system_xyloside-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_307501	K02769	tagABC;_PTS_system_tagatose-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30800	K02759	PTS_system_lactose/cellobiose-family_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_30810	K02761	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_30820	K02760	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_308601	K11198	mngA;_PTS_system_2-O-a-mannosyl-D-glycerate_specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30890	K02803	PTS_system_glucose-like_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_30970	K02755	bglF;_PTS_system_beta-glucoside-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31010	none	PTS_system_glucose-like_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31030	K02777	PTS_system_glucose-like_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_31160	K02755	bglF;_PTS_system_beta-glucoside-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31250	K02755	bglF;_PTS_system_beta-glucoside-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31270	K02756	PTS_system_beta-glucoside-like_transporter_subunit_IIBC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31320	none	PTS_system_fructose-like_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_31340	K02768	PTS_system_fructose-like_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_31370	K02755	bglF;_PTS_system_beta-glucoside-specific_transporter_subunit_IIABC_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_32760	K02796	PTS_system_mannose/fructose/sorbose_transporter_subunit_IID	PEP group translocators
+cdf:CD630_32770	K02795	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_32780	K02793	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_32790	K02794	PTS_system_mannose/fructose/sorbose_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_34430	K02761	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_34440	K02760	PTS_system_lactose/cellobiose-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_34450	none	PTS_system_lactose/cellobiose-family_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_36290	K03475	PTS_system_ascorbate-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_36300	K02822	PTS_system_fructose/mannitol-family_transporter_subunit_IIB	PEP group translocators
+cdf:CD630_36450	K02761	licC;_PTS_system_lichenan-specific_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_36470	K02759	licA;_PTS_system_lichenan-specific_transporter_subunit_IIA	PEP group translocators
+cdf:CD630_36480	K02760	licB;_PTS_system_lichenan-specific_transporter_subunit_IIB_(EC:2.7.1.69)	PEP group translocators
+cdf:CD630_36500	none	PTS_system_lactose/cellobiose-family_transporter_subunit_IIC	PEP group translocators
+cdf:CD630_19730	none	pyridoxal_phosphate-dependent_transferase;_putative_aluminium_resistance	PEP group translocators
+cdf:CD630_23820	none	pyridoxal_phosphate-dependent_transferase	PEP group translocators
+cdf:CD630_24240	none	pyridoxal_phosphate-dependent_transferase_(EC:2.6.1.-)	PEP group translocators
+cdf:CD630_24840	K14155	pyridoxal_phosphate-dependent_transferase	PEP group translocators
+cdf:CD630_25020	none	pyridoxal_phosphate-dependent_transferase	PEP group translocators
+cdf:CD630_26960	K14155	pyridoxal_phosphate-dependent_transferase	PEP group translocators
+cdf:CD630_27330	K14155	pyridoxal_phosphate-dependent_transferase	PEP group translocators
+cdf:CD630_30320	none	pyridoxal_phosphate-dependent_transferase_(EC:2.8.1.7)	PEP group translocators
+cdf:CD630_34410	none	pyridoxal_phosphate-dependent_transferase_(PLP-dependent_transferase)_(EC:2.6.1.-)	PEP group translocators
+cdf:CD630_07620	none	srlR;_PTS_operon_transcription_antiterminator	Sugar alcohol catabolism
+cdf:CD630_07630	none	srlM;_Sorbitol_operon_activator_protein_(Glucitol)	Sugar alcohol catabolism
+cdf:CD630_076401	K02783	srlA;_PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIC	Sugar alcohol catabolism
+cdf:CD630_076701	K02781	srlB;_PTS_system_sorbitol-specific_transporter_subunit_IIA_(EC:2.7.1.-)	Sugar alcohol catabolism
+cdf:CD630_07680	K00068	srlD;_sorbitol-6-phosphate_dehydrogenase_(EC:1.1.1.140)	Sugar alcohol catabolism
+cdf:CD630_076501	K02782	srlEa;_PTS_system_sorbitol-specific_transporter_subunit_IIB_(EC:2.7.1.69)	Sugar alcohol catabolism
+cdf:CD630_076601	K02783	srlEb;_PTS_system_glucitol/sorbitol-specific_transporter_subunit_IIB_(EC:2.7.1.69)	Sugar alcohol catabolism
+cdf:CD630_23310	K00009	mtlD;_mannitol-1-phosphate_5-dehydrogenase_(EC:1.1.1.17)	Sugar alcohol catabolism
+cdf:CD630_233201	K02798	mtlF;_PTS_system_mannitol-specific_transporter_subunit_IIA_(EC:2.7.1.69)	Sugar alcohol catabolism
+cdf:CD630_23330	none	mtlR;_PTS_operon_transcription_antiterminator	Sugar alcohol catabolism
+cdf:CD630_233401	K02799	mtlA;_PTS_system_mannitol-specific_transporter_subunit_IICB_(EC:2.7.1.69)	Sugar alcohol catabolism
+cdf:CD630_01130	K00929	buk;_butyrate_kinase_(EC:2.7.2.7)	Fermentation end steps
+cdf:CD630_23790	K00929	buk;_butyrate_kinase_(EC:2.7.2.7)	Fermentation end steps
+cdf:CD630_24260	K00929	buk1;_butyrate_kinase_(EC:2.7.2.7)	Fermentation end steps
+cdf:CD630_01120	K00634	ptb;_phosphate_butyryltransferase_(EC:2.3.1.19)	Fermentation end steps
+cdf:CD630_07150	K00634	ptb;_phosphate_butyryltransferase_(Phosphotransbutyrylase)_(EC:2.3.1.19)	Fermentation end steps
+cdf:CD630_24250	none	ptb;_phosphate_butyryltransferase_(Phosphotransbutyrylase)_(EC:2.3.1.19)	Fermentation end steps
+cdf:CD630_01530	none	4-hydroxyphenylacetate_decarboxylase,catalytic_subunit_HpdB	Fermentation end steps
+cdf:CD630_01540	none	4-hydroxyphenylacetate_decarboxylase,regulatory_subunit_HpdC	Fermentation end steps
+cdf:CD630_01550	K04069	4-hydroxyphenylacetate_decarboxylase,activating_subunit_HpdA;_putative_glycyl-radical_activating_family_protein	Fermentation end steps
+cdf:CD630_11750	K00925	ackA;_acetate_kinase_(EC:2.7.2.1)	Fermentation end steps
+cdf:CD630_01160	K00174	2-ketoisovalerate_ferredoxin_reductase_(EC:1.2.7.-)	Fermentation end steps
+cdf:CD630_23420	none	sucD;_succinate-semialdehyde_dehydrogenase_(NAD(P)+)_(EC:1.2.1.16)	Fermentation end steps
+cdf:CD630_03340	K04072	adhE;_bifunctional_acetaldehyde-CoA/alcohol_dehydrogenase_(EC:1.2.1.10_1.1.1.1)	Fermentation end steps
+cdf:CD630_29660	K04072	adhE;_bifunctional_acetaldehyde-CoA/alcohol_dehydrogenase_(EC:1.2.1.10_1.1.1.1)	Fermentation end steps
+cdf:CD630_23390	none	cat2;_4-hydroxybutyrate_CoA-transferase	Fermentation end steps
+cdf:CD630_23430	none	cat1;_succinyl-CoA:coenzyme_A_transferase_(EC:2.8.3.-)	Fermentation end steps
+cdf:CD630_23410	K14534	abfD;_gamma-aminobutyrate_metabolism_dehydratase/isomerase_(EC:4.2.1.-_5.3.3.3)	Fermentation end steps
+cdf:CD630_10580	K00074	hbd;_3-hydroxybutyryl-CoA_dehydrogenase_(EC:1.1.1.157)	Fermentation end steps

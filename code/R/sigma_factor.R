@@ -76,8 +76,20 @@ combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:4]) != 0, ]
 # SUBSET BY SIGMA FACTOR HERE
 
 
-agr # quorum sensing
-ccp
+CcpA
+CodY
+TcdR
+TxeR
+Sig
+UviA
+TetR
+TcsR
+TpeR
+Rex
+
+RstA
+PlcR, NprR and PrgX
+
 
 # add virulence gene plot to supplement, tcdE
 
