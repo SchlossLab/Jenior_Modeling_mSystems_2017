@@ -69,36 +69,29 @@ combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:4]) != 0, ]
 
 #--------------------------------------------------------------------------------------------------------------#
 
-# Subset by KEGG catagory and pool
+# Subset for sigma factors
+
+CcpA <- subset(combined_mapping, grepl('CcpA;', combined_mapping$gene))
 
 
-
-# SUBSET BY SIGMA FACTOR HERE
-
-
-CcpA
-CodY
-TcdR
-TxeR
-Sig
-UviA
-TetR
-TcsR
-TpeR
-Rex
-
-RstA
-PlcR, NprR and PrgX
-
-
-# add virulence gene plot to supplement, tcdE
+CodY <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+TcdR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+TxeR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+Sig <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+UviA <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+TetR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+TcsR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+TpeR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+Rex <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+PrdR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+RstA <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+PlcR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+NprR <- subset(combined_mapping, grepl(';', combined_mapping$gene))
+PrgX <- subset(combined_mapping, grepl(';', combined_mapping$gene))
 
 
 
 
-
-all_carbohydrate <- subset(combined_mapping, grepl('Carbohydrate_metabolism', combined_mapping$pathway))
-carbohydrate <- t(as.data.frame(colSums(all_carbohydrate[,1:4])))
 
 
 rm(combined_mapping)
