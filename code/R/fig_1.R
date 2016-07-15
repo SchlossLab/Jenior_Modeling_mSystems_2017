@@ -20,7 +20,9 @@ rm(cfu_file, toxin_file)
 # Format CFU data and collect summary statistics
 cfu[cfu == 0] <- 100
 cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
+cfu$cfu_vegetative[cfu$cfu_vegetative == 2] <- 1.8
 cfu$cfu_spore <- log10(cfu$cfu_spore)
+cfu$cfu_spore[cfu$cfu_spore == 2] <- 1.8
 cfu$mouse <- NULL
 cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
 cfu$cage <- NULL
