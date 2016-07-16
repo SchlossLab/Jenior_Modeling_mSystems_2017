@@ -71,15 +71,10 @@ combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:4]) != 0, ]
 
 # Subset for sigma factors
 
-CcpA <- subset(combined_mapping, grepl('ccp', combined_mapping$gene))
 
 
-CodY <- subset(combined_mapping, grepl('codY;', combined_mapping$gene))
-TcdR <- subset(combined_mapping, grepl('TcdR;', combined_mapping$gene))
-TxeR <- subset(combined_mapping, grepl('TxeR;', combined_mapping$gene))
-Sig <- subset(combined_mapping, grepl('Sig.;', combined_mapping$gene))
+Sig <- subset(combined_mapping, grepl('sig;', combined_mapping$gene))
 UviA <- subset(combined_mapping, grepl('UviA;', combined_mapping$gene))
-TetR <- subset(combined_mapping, grepl('TetR;', combined_mapping$gene))
 TcsR <- subset(combined_mapping, grepl('TcsR;', combined_mapping$gene))
 TpeR <- subset(combined_mapping, grepl('TpeR;', combined_mapping$gene))
 Rex <- subset(combined_mapping, grepl('Rex;', combined_mapping$gene))
