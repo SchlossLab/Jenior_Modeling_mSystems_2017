@@ -73,14 +73,13 @@ segments(x0=rep(-14,14), y0=c(1:14), x1=rep(14,14), y1=c(1:14), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=cef_importance$Sim_Mean, y=c(1:14), cex=2, pch=4) # mean
-points(x=cef_importance$Sim_Mean - cef_importance$Sim_StD, y=c(1:14), cex=1.4, pch='|') # lower std 1
-points(x=cef_importance$Sim_Mean + cef_importance$Sim_StD, y=c(1:14), cex=1.4, pch='|') # upper std 1
-points(x=cef_importance$Sim_Mean - (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|') # lower std 2
-points(x=cef_importance$Sim_Mean + (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|') # upper std 2
-points(x=cef_importance$Sim_Mean - (3*cef_importance$Sim_StD), y=c(1:14), cex=1.8, pch='|') # lower std 3
-points(x=cef_importance$Sim_Mean + (3*cef_importance$Sim_StD), y=c(1:14), cex=1.8, pch='|') # upper std 3
-
+#points(x=cef_importance$Sim_Mean, y=c(1:14), cex=2, pch=4) # mean
+points(x=cef_importance$Sim_Mean - (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|')
+points(x=cef_importance$Sim_Mean + (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|')
+points(x=cef_importance$Sim_Mean - (3*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|')
+points(x=cef_importance$Sim_Mean + (3*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|')
+segments(x0=cef_importance$Sim_Mean - (3*cef_importance$Sim_StD), y0=c(1:14), 
+         x1=cef_importance$Sim_Mean + (3*cef_importance$Sim_StD), y1=c(1:14))
 mtext('A', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #------------------#
@@ -88,20 +87,19 @@ mtext('A', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 # B - Clindamycin
 par(mar=c(4,3,1,1), yaxs='i', xaxs='i')
 dotchart(clinda_importance$Metabolite_score, labels=clinda_importance$Compound_name, 
-         xlab='Metabolite Importance Score', xlim=c(-12,12), pch=19,
+         xlab='Metabolite Importance Score', xlim=c(-14,14), pch=19,
          col=c('black','black','black','black','red'))
-segments(x0=rep(-12, 5), y0=c(1:5), x1=rep(12, 5), y1=c(1:5), lty=2)
+segments(x0=rep(-14, 5), y0=c(1:5), x1=rep(14, 5), y1=c(1:5), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=clinda_importance$Sim_Mean, y=c(1:5), cex=2, pch=4) # mean
-points(x=clinda_importance$Sim_Mean - clinda_importance$Sim_StD, y=c(1:5), cex=1.4, pch='|') # lower std 1
-points(x=clinda_importance$Sim_Mean + clinda_importance$Sim_StD, y=c(1:5), cex=1.4, pch='|') # upper std 1
-points(x=clinda_importance$Sim_Mean - (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|') # lower std 2
-points(x=clinda_importance$Sim_Mean + (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|') # upper std 2
-points(x=clinda_importance$Sim_Mean - (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.8, pch='|') # lower std 3
-points(x=clinda_importance$Sim_Mean + (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.8, pch='|') # upper std 3
-
+#points(x=clinda_importance$Sim_Mean, y=c(1:5), cex=2, pch=4) # mean
+points(x=clinda_importance$Sim_Mean - (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|')
+points(x=clinda_importance$Sim_Mean + (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|')
+points(x=clinda_importance$Sim_Mean - (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|')
+points(x=clinda_importance$Sim_Mean + (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|')
+segments(x0=clinda_importance$Sim_Mean - (3*clinda_importance$Sim_StD), 
+         y0=c(1:5), x1=clinda_importance$Sim_Mean + (3*clinda_importance$Sim_StD), y1=c(1:5))
 mtext('B', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #------------------#
@@ -109,22 +107,18 @@ mtext('B', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 # C - Streptomycin
 par(mar=c(4,3,1,1), yaxs='i', xaxs='i')
 dotchart(strep_importance$Metabolite_score, labels=strep_importance$Compound_name, 
-         xlab='Metabolite Importance Score', xlim=c(-14,14), pch=19,
-         col=c('black','black','black','black','black','black','black',
-               'black','black','black','black','black','black','black',
-               'black','black','black'))
+         xlab='Metabolite Importance Score', xlim=c(-14,14), pch=19)
 segments(x0=rep(-14, 17), y0=c(1:17), x1=rep(14, 17), y1=c(1:17), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=strep_importance$Sim_Mean, y=c(1:17), cex=2, pch=4) # mean
-points(x=strep_importance$Sim_Mean - strep_importance$Sim_StD, y=c(1:17), cex=1.4, pch='|') # lower std 1
-points(x=strep_importance$Sim_Mean + strep_importance$Sim_StD, y=c(1:17), cex=1.4, pch='|') # upper std 1
-points(x=strep_importance$Sim_Mean - (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|') # lower std 2
-points(x=strep_importance$Sim_Mean + (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|') # upper std 2
-points(x=strep_importance$Sim_Mean - (3*strep_importance$Sim_StD), y=c(1:17), cex=1.8, pch='|') # lower std 3
-points(x=strep_importance$Sim_Mean + (3*strep_importance$Sim_StD), y=c(1:17), cex=1.8, pch='|') # upper std 3
-
+#points(x=strep_importance$Sim_Mean, y=c(1:17), cex=2, pch=4) # mean
+points(x=strep_importance$Sim_Mean - (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|')
+points(x=strep_importance$Sim_Mean + (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|')
+points(x=strep_importance$Sim_Mean - (3*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|')
+points(x=strep_importance$Sim_Mean + (3*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|')
+segments(x0=strep_importance$Sim_Mean - (3*strep_importance$Sim_StD), y0=c(1:17), 
+         x1=strep_importance$Sim_Mean + (3*strep_importance$Sim_StD), y1=c(1:17))
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
