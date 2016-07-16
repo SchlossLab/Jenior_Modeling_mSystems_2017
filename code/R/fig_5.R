@@ -158,19 +158,52 @@ top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Read in growth rate data
-#growth_data_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
+# Define variables
+growth_file <- '/home/mjenior/Desktop/growth_curve/formatted_wells.tsv'
 
-#growth_data <- read.table(growth_data_file, header=TRUE, sep='\t', row.names=1)
-#rm(growth_data_file)
+# Read in data
+growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
+growth <- as.data.frame(t(growth))
+rm(growth_file)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format growth curves
+# Average treatement groups
+galactitol <- rowMeans(cbind(growth$E2, growth$F2, growth$G2), na.rm=TRUE)
+starch <-  rowMeans(cbind(growth$E3, growth$F3, growth$G3), na.rm=TRUE)
+fructose <-  rowMeans(cbind(growth$E4, growth$F4, growth$G4), na.rm=TRUE)
+mannitol <- rowMeans(cbind(growth$E6, growth$F6, growth$G6), na.rm=TRUE)
+salicin <- rowMeans(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE)
+sorbitol <- rowMeans(cbind(growth$E8, growth$F8, growth$G8), na.rm=TRUE)
 
+y_glucose_y_aa <- rowMeans(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE)
+n_glucose_y_aa <- rowMeans(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE)
+y_glucose_n_aa <- rowMeans(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE)
+n_glucose_n_aa <- rowMeans(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE)
 
-#growth_data$color <- ''
+y_glucose_n_MTV <- rowMeans(cbind(growth$B6, growth$C6, growth$D6), na.rm=TRUE) 
+n_glucose_n_MTV <- rowMeans(cbind(growth$B7, growth$C7, growth$D7), na.rm=TRUE) 
 
+blank <- rowMeans(cbind(growth$B9, growth$C9, growth$D9, growth$B10, growth$C10, growth$D10, growth$B11, growth$C11, growth$D11), na.rm=TRUE)
+rm(growth)
 
+# Subtract blank means
+galactitol <- galactitol - blank
+starch <- starch - blank
+fructose <- fructose - blank
+mannitol <- mannitol - blank
+salicin <- salicin - blank
+sorbitol <- sorbitol - blank
+
+y_glucose_y_aa <- y_glucose_y_aa - blank
+n_glucose_y_aa <- n_glucose_y_aa - blank
+y_glucose_n_aa <- y_glucose_n_aa - blank
+n_glucose_n_aa <- n_glucose_n_aa - blank
+
+y_glucose_n_MTV <- y_glucose_n_MTV - blank
+n_glucose_n_MTV <- n_glucose_n_MTV - blank
+rm(blank)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -226,18 +259,31 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
 segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
 
 # Add simulated means
-points(x=top_importances[c(14:7),3], y=c(1:8), cex=1.6, col='darkorchid4', pch='|') # Gnotobiotic
-points(x=top_importances[2,3], y=11, cex=1.6, col='chartreuse4', pch='|') # Clindamycin
-points(x=top_importances[1,3], y=14, cex=1.6, col='dodgerblue3', pch='|') # Cefoperazone
-points(x=top_importances[c(3:6),3], y=c(17:20), cex=1.6, col='darkorange3', pch='|') # Streptomycin
+points(x=top_importances[c(14:7),3], y=c(1:8), cex=1.6, col='darkorchid4', pch=4) # Gnotobiotic
+points(x=top_importances[2,3], y=11, cex=1.6, col='chartreuse4', pch=4) # Clindamycin
+points(x=top_importances[1,3], y=14, cex=1.6, col='dodgerblue3', pch=4) # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=1.6, col='darkorange3', pch=4) # Streptomycin
 
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D - Growth on important compounds
-par(mar=c(3,3,1,1), xaxs='i')
-plot(0)
+par(mar=c(2,3,1,1), xaxs='i')
+
+
+
+
+
+
+plot(0, type='o')
+
+abline(h=c(), lty=2)
+
+legend('topleft', legend=c(), col=c())
+
+
+
 
 mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
@@ -246,6 +292,6 @@ mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 # Clean up
 dev.off()
 rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
-
+rm(galactitol, starch, fructose, mannitol, salicin, sorbitol, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, y_glucose_n_MTV, n_glucose_n_MTV)
 
 
