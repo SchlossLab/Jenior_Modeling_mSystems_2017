@@ -24,6 +24,12 @@ rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_import
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
+# Format columns
+cef_importance$Compound_name <- as.character(cef_importance$Compound_name)
+clinda_importance$Compound_name <- as.character(clinda_importance$Compound_name)
+strep_importance$Compound_name <- as.character(strep_importance$Compound_name)
+gf_importance$Compound_name <- as.character(gf_importance$Compound_name)
+
 # Subset substrates outside of randomized confidence interval
 cef_importance <- subset(cef_importance, cef_importance$Std_from_Sim_Mean > 1)
 clinda_importance <- subset(clinda_importance, clinda_importance$Std_from_Sim_Mean > 1)
@@ -31,17 +37,27 @@ strep_importance <- subset(strep_importance, strep_importance$Std_from_Sim_Mean 
 gf_importance <- subset(gf_importance, gf_importance$Std_from_Sim_Mean > 1)
 
 # Rank metabolite importance scores
-cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
-clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
-strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
-gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
+cef_importance <- cef_importance[order(cef_importance$Metabolite_score),]
+clinda_importance <- clinda_importance[order(clinda_importance$Metabolite_score),]
+strep_importance <- strep_importance[order(strep_importance$Metabolite_score),]
+gf_importance <- gf_importance[order(gf_importance$Metabolite_score),]
+
+# Replace long compound names with shorter versions
+cef_importance$Compound_name <- replace(cef_importance$Compound_name, cef_importance$Compound_name=='[Dihydrolipoyllysine-residue_acetyltransferase]_S-acetyldihydrolipoyllysine', 'Acetyldihydrolipoyllysine')
+strep_importance$Compound_name <- replace(strep_importance$Compound_name, strep_importance$Compound_name=='3-Hydroxy-3-(4-methylpent-3-en-1-yl)glutaryl-CoA', '3-Hydroxy-3-isohexeneylglutaryl-CoA')
+
+# Replace '_' with ' '
+cef_importance$Compound_name <- gsub('_', ' ', cef_importance$Compound_name)
+clinda_importance$Compound_name <- gsub('_', ' ', clinda_importance$Compound_name)
+strep_importance$Compound_name <- gsub('_', ' ',strep_importance$Compound_name)
+gf_importance$Compound_name <- gsub('_', ' ', gf_importance$Compound_name)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=15, height=7)
-layout(matrix(c(1,2,3), nrow=2, ncol=3, byrow=FALSE))
+pdf(file=plot_file, width=10, height=12)
+layout(matrix(c(1,2,3), nrow=3, ncol=1, byrow=FALSE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -50,53 +66,71 @@ layout(matrix(c(1,2,3), nrow=2, ncol=3, byrow=FALSE))
 # A - Cefoperazone
 par(mar=c(4,3,1,1), yaxs='i', xaxs='i')
 dotchart(cef_importance$Metabolite_score, labels=cef_importance$Compound_name, 
-         xlab='Metabolite Importance Score', xlim=c(-12,12), pch=19, cex=1.5)
-segments(x0=rep(-12,14), y0=c(1:14), x1=rep(12,14), y1=c(1:14), lty=2)
+         xlab='Metabolite Importance Score', xlim=c(-14,14), pch=19,
+         col=c('black','black','black','black','red','black','red',
+               'red','black','black','black','black','black','black'))
+segments(x0=rep(-14,14), y0=c(1:14), x1=rep(14,14), y1=c(1:14), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=cef_importance$Sim_Mean, y=c(1:14), cex=1.8, pch='|') # mean
-points(x=cef_importance$Sim_Mean - cef_importance$Sim_StD, y=c(1:14), cex=1.6, pch='|') # lower std
-points(x=cef_importance$Sim_Mean + cef_importance$Sim_StD, y=c(1:14), cex=1.6, pch='|') # upper std
+points(x=cef_importance$Sim_Mean, y=c(1:14), cex=2, pch=4) # mean
+points(x=cef_importance$Sim_Mean - cef_importance$Sim_StD, y=c(1:14), cex=1.4, pch='|') # lower std 1
+points(x=cef_importance$Sim_Mean + cef_importance$Sim_StD, y=c(1:14), cex=1.4, pch='|') # upper std 1
+points(x=cef_importance$Sim_Mean - (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|') # lower std 2
+points(x=cef_importance$Sim_Mean + (2*cef_importance$Sim_StD), y=c(1:14), cex=1.6, pch='|') # upper std 2
+points(x=cef_importance$Sim_Mean - (3*cef_importance$Sim_StD), y=c(1:14), cex=1.8, pch='|') # lower std 3
+points(x=cef_importance$Sim_Mean + (3*cef_importance$Sim_StD), y=c(1:14), cex=1.8, pch='|') # upper std 3
 
-mtext('A', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+mtext('A', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #------------------#
 
 # B - Clindamycin
 par(mar=c(4,3,1,1), yaxs='i', xaxs='i')
 dotchart(clinda_importance$Metabolite_score, labels=clinda_importance$Compound_name, 
-         xlab='Metabolite Importance Score', xlim=c(-12,12), pch=19, cex=1.5)
+         xlab='Metabolite Importance Score', xlim=c(-12,12), pch=19,
+         col=c('black','black','black','black','red'))
 segments(x0=rep(-12, 5), y0=c(1:5), x1=rep(12, 5), y1=c(1:5), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=clinda_importance$Sim_Mean, y=c(1:5), cex=1.8, pch='|') # mean
-points(x=clinda_importance$Sim_Mean - clinda_importance$Sim_StD, y=c(1:5), cex=1.6, pch='|') # lower std
-points(x=clinda_importance$Sim_Mean + clinda_importance$Sim_StD, y=c(1:5), cex=1.6, pch='|') # upper std
+points(x=clinda_importance$Sim_Mean, y=c(1:5), cex=2, pch=4) # mean
+points(x=clinda_importance$Sim_Mean - clinda_importance$Sim_StD, y=c(1:5), cex=1.4, pch='|') # lower std 1
+points(x=clinda_importance$Sim_Mean + clinda_importance$Sim_StD, y=c(1:5), cex=1.4, pch='|') # upper std 1
+points(x=clinda_importance$Sim_Mean - (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|') # lower std 2
+points(x=clinda_importance$Sim_Mean + (2*clinda_importance$Sim_StD), y=c(1:5), cex=1.6, pch='|') # upper std 2
+points(x=clinda_importance$Sim_Mean - (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.8, pch='|') # lower std 3
+points(x=clinda_importance$Sim_Mean + (3*clinda_importance$Sim_StD), y=c(1:5), cex=1.8, pch='|') # upper std 3
 
-mtext('B', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+mtext('B', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #------------------#
 
 # C - Streptomycin
 par(mar=c(4,3,1,1), yaxs='i', xaxs='i')
 dotchart(strep_importance$Metabolite_score, labels=strep_importance$Compound_name, 
-         xlab='Metabolite Importance Score', xlim=c(-12,12), pch=19, cex=1.5)
-segments(x0=rep(-12, 17), y0=c(1:17), x1=rep(12, 17), y1=c(1:17), lty=2)
+         xlab='Metabolite Importance Score', xlim=c(-14,14), pch=19,
+         col=c('black','black','black','black','black','black','black',
+               'black','black','black','black','black','black','black',
+               'black','black','black'))
+segments(x0=rep(-14, 17), y0=c(1:17), x1=rep(14, 17), y1=c(1:17), lty=2)
 abline(v=0)
 
 # Add simulated means and standard deviation
-points(x=strep_importance$Sim_Mean, y=c(1:17), cex=1.8, pch='|') # mean
-points(x=strep_importance$Sim_Mean - strep_importance$Sim_StD, y=c(1:17), cex=1.6, pch='|') # lower std
-points(x=strep_importance$Sim_Mean + strep_importance$Sim_StD, y=c(1:17), cex=1.6, pch='|') # upper std
+points(x=strep_importance$Sim_Mean, y=c(1:17), cex=2, pch=4) # mean
+points(x=strep_importance$Sim_Mean - strep_importance$Sim_StD, y=c(1:17), cex=1.4, pch='|') # lower std 1
+points(x=strep_importance$Sim_Mean + strep_importance$Sim_StD, y=c(1:17), cex=1.4, pch='|') # upper std 1
+points(x=strep_importance$Sim_Mean - (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|') # lower std 2
+points(x=strep_importance$Sim_Mean + (2*strep_importance$Sim_StD), y=c(1:17), cex=1.6, pch='|') # upper std 2
+points(x=strep_importance$Sim_Mean - (3*strep_importance$Sim_StD), y=c(1:17), cex=1.8, pch='|') # lower std 3
+points(x=strep_importance$Sim_Mean + (3*strep_importance$Sim_StD), y=c(1:17), cex=1.8, pch='|') # upper std 3
 
-mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+mtext('C', side=2, line=2, las=2, adj=0.5, padj=-10, cex=1.3)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
-rm(cef_importance, clinda_importance, strep_importance, gf_importance, plot_file)
+#rm(cef_importance, clinda_importance, strep_importance, gf_importance, plot_file)
 
 
