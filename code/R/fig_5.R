@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'igraph', 'ggplot2');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -230,7 +230,7 @@ mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 # B - Example network and importance calculation
 par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(0.6, -0.8, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.7) # Importance algorithm
+text(0.6, -0.5, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.7) # Importance algorithm
 text(x=-1, y=1.1, labels='Tetrathionate reductase', font=2) # Enzyme 1 name
 text(x=-1, y=1, labels='5', col='white') # Enzyme 1 transcription
 text(x=-0.5, y=-1.3, labels='Sulfane reductase', font=2) # Enzyme 2 name
@@ -248,6 +248,14 @@ text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.4) # labeled indegree
 text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
 text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
 mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
+Arrows(x0=0.7, y0=-0.9, x1=0.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+Arrows(x0=0.7, y0=-0.9, x1=1.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+segments(x0=0.6, y0=-0.85, x1=0.6, y1=-0.95, lwd=3)
+text(x=0.6, y=-1.03, '0', cex=1.6) 
+text(x=0.1, y=-1, expression(- infinity), cex=1.6)
+text(x=1.1, y=-1, expression(+ infinity), cex=1.6)
+text(x=1.1, y=-0.8, 'More likely taken from environment')
+text(x=0.15, y=-0.8, 'More likely added to environment')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
