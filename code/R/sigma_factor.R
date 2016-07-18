@@ -73,17 +73,8 @@ combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:4]) != 0, ]
 
 
 
-Sig <- subset(combined_mapping, grepl('sig;', combined_mapping$gene))
-UviA <- subset(combined_mapping, grepl('UviA;', combined_mapping$gene))
-TcsR <- subset(combined_mapping, grepl('TcsR;', combined_mapping$gene))
-TpeR <- subset(combined_mapping, grepl('TpeR;', combined_mapping$gene))
-Rex <- subset(combined_mapping, grepl('Rex;', combined_mapping$gene))
-PrdR <- subset(combined_mapping, grepl('PrdR;', combined_mapping$gene))
-RstA <- subset(combined_mapping, grepl('RstA;', combined_mapping$gene))
-PlcR <- subset(combined_mapping, grepl('PlcR;', combined_mapping$gene))
-NprR <- subset(combined_mapping, grepl('NprR;', combined_mapping$gene))
-PrgX <- subset(combined_mapping, grepl('PrgX;', combined_mapping$gene))
-rm(combined_mapping)
+
+
 
 # Assemble final table
 pooled_mapping <- rbind(carbohydrate, energy, lipid, nucleotide, amino_acids, glycan,
