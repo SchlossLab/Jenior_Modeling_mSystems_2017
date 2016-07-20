@@ -1,374 +1,305 @@
 
-deps <- c('vegan', 'klaR', 'wesanderson');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  }
+  } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 rm(dep, deps)
 
-# Define and check color palette
-palette_plot <- function(col, border = "light gray", ...){
-  n <- length(col)
-  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
-       axes = FALSE, xlab = "", ylab = "", ...)
-  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
-}
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Define input file names
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
-#cefoperazone_file <- '/media/mjenior/Data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-#clindamycin_file <- '/media/mjenior/Data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-#streptomycin_file <- '/media/mjenior/Data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+# Define file variables for network plot
+network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.mapping.txt'
+layout_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/optimal_layout.tsv'
 
-# Load in data
-cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
-colnames(cefoperazone) <- c('Cefoperazone', 'ko', 'gene', 'pathway')
-clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE, row.names=1)
-colnames(clindamycin) <- c('Clindamycin', 'ko', 'gene', 'pathway')
-streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE, row.names=1)
-colnames(streptomycin) <- c('Streptomycin', 'ko', 'gene', 'pathway')
+# Read in metabolic network data
+network <- read.table(network_file, header=FALSE, sep='\t')
+ko <- read.table(ko_file, header=TRUE, sep='\t')
+optimal_layout1 <- as.matrix(read.table(layout_file, header=TRUE, sep='\t', row.names=1))
+rm(network_file, ko_file, layout_file)
 
-#-------------------------------------------------------------------------------------------------------------------------#
+# Format directed graph
+raw_graph <- graph.data.frame(network, directed=TRUE)
+rm(network)
 
-# Format data for merging
-cefoperazone$ko <- NULL
-cefoperazone$gene <- NULL
-cefoperazone$pathway <- NULL
-clindamycin$ko <- NULL
-clindamycin$gene <- NULL
-clindamycin$pathway <- NULL
+# Remove loops and multiple edges to make visualzation easier
+simple_graph <- simplify(raw_graph)
+rm(raw_graph)
 
-# Merge tables
-combined_mapping <- merge(cefoperazone, clindamycin, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
-combined_mapping <- merge(combined_mapping, streptomycin, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
+# Decompose graph
+decomp_simple_graph <- decompose.graph(simple_graph)
+rm(simple_graph)
 
-# Rarefy mappings to be equal within sequencing type
-sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
-combined_mapping$Cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
-combined_mapping$Clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
-combined_mapping$Streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
+# Get largest component
+largest_component <- which.max(sapply(decomp_simple_graph, vcount))
+largest_simple_graph <- decomp_simple_graph[[largest_component]]
+rm(decomp_simple_graph, largest_component)
 
-# Calculate the factors to scale points size by
-averages <- log10(rowSums(combined_mapping[, 1:3]) / 3) * 2.5
+# Remove zeroes so transformation doesn't return negative infinity
+ko[,2][ko[,2] == 0] <- 1
+ko[,2] <- log10(ko[,2])
+ko[,2][ko[,2] < 0.4] <- 0.4
 
-# Convert each gene into the fraction of the transcription for that gene across treatments
-combined_mapping[combined_mapping == 0] <- 1
-combined_mapping[,1:3] <- combined_mapping[, 1:3] / rowSums(combined_mapping[,1:3])
+# Scale points by number of transcripts mapped
+ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
+substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
+nodes <- c(ko_simp, substrate_simp)
+ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
+ko <- ko[match(ko_simp, ko$KO_code),]
+mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
+node_size <- cbind.data.frame(nodes, mappings)
+node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
+node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
+V(largest_simple_graph)$size <- as.matrix(node_size)
+rm(ko, ko_simp, substrate_simp, node_size, mappings, nodes)
+#V(largest_simple_graph)$size <- degree(largest_simple_graph) * 5 # Scale by degree!
 
-# Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) != 0, ] 
+# Color graph
+V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
+E(largest_simple_graph)$color <- 'gray15' # Color edges
 
-# Free up memory
-rm(cefoperazone_file, clindamycin_file, streptomycin_file)
-rm(cefoperazone, clindamycin, streptomycin)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-#----------------------------------------------------------------------------------------------------------------------------#
+# Set up example network
 
-# Subset by gene annotations
+# Define file variables for network plot and layout
+network <- matrix(c('K01', 'C01',
+                    'C01', 'K02',
+                    'C01', 'K03'), nrow=3, ncol=2, byrow=TRUE)
+node_size <- matrix(c('K01', '10',
+                      'K02', '45',
+                      'K03', '50',
+                      'C01', '20'), nrow=4, ncol=2, byrow=TRUE)
+optimal_layout2 <- matrix(c(-21.09826017, 22.1407060,
+                           0.09077637, 0.2154631,
+                           -8.32243732, -29.0949351,
+                           29.67130628, 7.6231375), nrow=4, ncol=2, byrow=TRUE)
 
-# Amino sugar catabolism
-mur <- rbind(subset(combined_mapping, grepl('mur.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # 
-nag <- rbind(subset(combined_mapping, grepl('nag.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('nag;', combined_mapping$gene))) # 
-acd <- rbind(subset(combined_mapping, grepl('acd.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('acd;', combined_mapping$gene))) # 
-ldt <- rbind(subset(combined_mapping, grepl('ldt.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('ldt;', combined_mapping$gene))) # 
-gne <- rbind(subset(combined_mapping, grepl('gne.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('gne;', combined_mapping$gene))) # 
-anm <- rbind(subset(combined_mapping, grepl('anm.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('anm;', combined_mapping$gene))) # 
-nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('nan;', combined_mapping$gene))) #
-glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('glm;', combined_mapping$gene)))
-amino_sugars <- rbind(mur, nag, acd, ldt, gne, anm, nan, glm)
-amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
+# Format directed graph
+network <- graph.data.frame(network, directed=TRUE)
 
-# Stickland fermentation
-pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('pep;', combined_mapping$gene))) # general peptidases
-prd <- rbind(subset(combined_mapping, grepl('prd.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('prd;', combined_mapping$gene))) # proline fermentation
-grd <- rbind(subset(combined_mapping, grepl('grd.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('grd;', combined_mapping$gene))) # glycine fermentation
-kamA <- subset(combined_mapping, grepl('kam.;', combined_mapping$gene)) # lycine fermentation
-ldhA <- subset(combined_mapping, grepl('ldhA;', combined_mapping$gene)) # (R)-2-hydroxyisocaproate dehydrogenase (leucine degradation)
-had <- subset(combined_mapping, grepl('had.;', combined_mapping$gene)) # Leucine fermentation
-tdcB <- subset(combined_mapping, grepl('tdcB;', combined_mapping$gene)) # threonine dehydratase
-fdh <- subset(combined_mapping, grepl('fdh.;', combined_mapping$gene)) # Formate dehydrogenase
-panB  <- subset(combined_mapping, grepl('panB;', combined_mapping$gene)) # Butanoate formation
-arg <- subset(combined_mapping, grepl('arg.;', combined_mapping$gene)) # arginine deaminase operon
-serA <- subset(combined_mapping, grepl('serA;', combined_mapping$gene)) # D-3-phosphoglycerate dehydrogenase (serine catabolism)
-sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-serine dehydratase (serine catabolism)
-stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
-stickland$grouping <- rep('Stickland reactions', nrow(stickland))
+# Assign nodes sizes
+node_size <- node_size[match(V(network)$name, node_size[,1]),]
+node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
+V(network)$size <- as.matrix(node_size)
+rm(node_size)
 
-# Monosaccharide catabolism
-gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
-gpmI <- subset(combined_mapping, grepl('gpmI;', combined_mapping$gene)) # Phosphoglyceromutase (Glycolysis)
-pfk <- rbind(subset(combined_mapping, grepl('pfkA;', combined_mapping$gene)),
-              subset(combined_mapping, grepl('phosphofructokinase', combined_mapping$gene)))# Phosphofructokinase (Glycolysis)
-tpi <- subset(combined_mapping, grepl('tpi;', combined_mapping$gene)) # Triosephosphate isomerase (Glycolysis)
-pyk <- subset(combined_mapping, grepl('pyk;', combined_mapping$gene)) # Pyruvate kinase (Glycolysis)
-eno <- subset(combined_mapping, grepl('eno;', combined_mapping$gene)) # Enolase (Glycolysis)
-pgm <- rbind(subset(combined_mapping, grepl('pgm;', combined_mapping$gene)),
-             subset(combined_mapping, grepl('phosphoglycerate_mutase', combined_mapping$gene))) # Phosphoglycerate mutase (Glycolysis)
-glycolysis <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm)
-galactose <- rbind(subset(combined_mapping, grepl('galE;', combined_mapping$gene)), 
-                   subset(combined_mapping, grepl('galactose-1-phosphate_uridylyltransferase', combined_mapping$gene))) # hexose
-mannose <- rbind(subset(combined_mapping, grepl('mng.;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('man.;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('pmi;', combined_mapping$gene)))# hexose
-tagatose <- subset(combined_mapping, grepl('tagatose', combined_mapping$gene)) # hexose 
-fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fru;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fru.;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fru...;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fba;', combined_mapping$gene))) # hexose
-xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
-monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
-monosaccharides$grouping <- rep('Monosaccharide catabolism', nrow(monosaccharides))
+# Color graph
+V(network)$color <- ifelse(grepl('K', V(network)$name), 'firebrick3', 'blue3') # Color nodes
+E(network)$color <- 'gray15' # Color edges
 
-# Polysaccharide catabolism
-sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
-maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosidase', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('maa;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('map.;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('maltose_O-acetyltransferase', combined_mapping$gene)))
-tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalose utilization operon
-glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
-cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
-             subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
-polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
-polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# PTS systems
-PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
-             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
-PTS$grouping <- rep('PEP group translocators', nrow(PTS))
+# Read in substrate importance data
+cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.monte_carlo.score.txt'
+clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/clindamycin_630.monte_carlo.score.txt'
+strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/streptomycin_630.monte_carlo.score.txt'
+gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree.bipartite.files/germfree.monte_carlo.score.txt'
 
-# ABC transporters
-ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
-ABC$grouping <- rep('ABC sugar transporters', nrow(ABC))
+cef_importance <- read.table(cef_importance_file, header=TRUE, sep='\t', row.names=1)
+clinda_importance <- read.table(clinda_importance_file, header=TRUE, sep='\t', row.names=1)
+strep_importance <- read.table(strep_importance_file, header=TRUE, sep='\t', row.names=1)
+gf_importance <- read.table(gf_importance_file, header=TRUE, sep='\t', row.names=1)
+rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_importance_file)
 
-# sugar alcohols
-srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
-srlE <- subset(combined_mapping, grepl('srlE.;', combined_mapping$gene)) # sorbitol import
-mtl <- subset(combined_mapping, grepl('mtl.;', combined_mapping$gene)) # mannitol utilization locus
-sugar_alcohols <- rbind(srl, srlE, mtl)
-sugar_alcohols$grouping <- rep('Sugar alcohol catabolism', nrow(sugar_alcohols))
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Fermentation genes
-buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('buk.;', combined_mapping$gene))) # Butyrate kinase
-ptb <- rbind(subset(combined_mapping, grepl('ptb;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('ptb.;', combined_mapping$gene))) # phosphate butyryltransferase
-acetate <- subset(combined_mapping, grepl('acetate', combined_mapping$gene))
-valerate <- subset(combined_mapping, grepl('valerate', combined_mapping$gene))
-sucD <- subset(combined_mapping, grepl('sucD;', combined_mapping$gene)) # succinate-semialdehyde dehydrogenase
-adh <- subset(combined_mapping, grepl('adh.;', combined_mapping$gene)) # Alcohol dehydrogenase
-cat <- subset(combined_mapping, grepl('cat.;', combined_mapping$gene)) # Acetate to butyrate conversion
-abfD <- subset(combined_mapping, grepl('abfD;', combined_mapping$gene)) # gamma-aminobutyrate metabolism dehydratase
-hbd <- subset(combined_mapping, grepl('hbd;', combined_mapping$gene)) # 3-hydroxybutyryl-CoA dehydrogenase
-fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
-fermentation$grouping <- rep('Fermentation end steps', nrow(fermentation))
+# Format metabolite importance scores
+cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
+clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
+strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
+gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
-# Combine genes to for supplementary table
-gene_table <- rbind(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation)
-gene_table$pathway <- NULL
-gene_table$Cefoperazone <- NULL
-gene_table$Clindamycin <- NULL
-gene_table$Streptomycin <- NULL
+cef_importance <- cef_importance[c(1:25),]
+clinda_importance <- clinda_importance[c(1:25),]
+strep_importance <- strep_importance[c(1:25),]
+gf_importance <- gf_importance[c(1:25),]
 
-# Write table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S2.tsv'
-write.table(gene_table, file=table_file, sep='\t', row.names=TRUE, col.names=TRUE, quote=FALSE)
-rm(table_file, gene_table)
+cef_only_importance <- as.data.frame(subset(cef_importance, !(cef_importance[,1] %in% clinda_importance[,1])))
+cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance[,1])))
+cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_importance, !(clinda_importance[,1] %in% cef_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_importance, !(strep_importance[,1] %in% clinda_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %in% clinda_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
+rm(cef_importance, clinda_importance, strep_importance, gf_importance)
 
-#-------------------------------------------------------------------------------------------------------------------------#
+cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
+clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Metabolite_score),]
+strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
+gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
 
-# Define plot details
-rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
-#palette_plot(rainbow)
-fox <- wes_palette("FantasticFox")
-tick_labels <- c('10%','','30%','','50%','','70%','','90%')
+cef_only_importance$abx <- 'Cefoperazone'
+cef_only_importance$color <- 'dodgerblue3'
+clinda_only_importance$abx <- 'Clindamycin'
+clinda_only_importance$color <- 'chartreuse4'
+strep_only_importance$abx <- 'Streptomycin'
+strep_only_importance$color <- 'darkorange3'
+gf_only_importance$abx <- 'Gnotobiotic'
+gf_only_importance$color <- 'darkorchid4'
+
+top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
+                         strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
+top_importances$abx <- as.factor(top_importances$abx)
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
+top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
+rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
+
+top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')), ]
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Read in growth rate data
+# Define variables
+growth_file <- '/home/mjenior/Desktop/growth_curve/formatted_wells.tsv'
+
+# Read in data
+growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
+growth <- as.data.frame(t(growth))
+rm(growth_file)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format growth curves
+# Average treatement groups
+galactitol <- rowMeans(cbind(growth$E2, growth$F2, growth$G2), na.rm=TRUE)
+starch <-  rowMeans(cbind(growth$E3, growth$F3, growth$G3), na.rm=TRUE)
+fructose <-  rowMeans(cbind(growth$E4, growth$F4, growth$G4), na.rm=TRUE)
+mannitol <- rowMeans(cbind(growth$E6, growth$F6, growth$G6), na.rm=TRUE)
+salicin <- rowMeans(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE)
+sorbitol <- rowMeans(cbind(growth$E8, growth$F8, growth$G8), na.rm=TRUE)
+
+y_glucose_y_aa <- rowMeans(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE)
+n_glucose_y_aa <- rowMeans(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE)
+y_glucose_n_aa <- rowMeans(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE)
+n_glucose_n_aa <- rowMeans(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE)
+
+y_glucose_n_MTV <- rowMeans(cbind(growth$B6, growth$C6, growth$D6), na.rm=TRUE) 
+n_glucose_n_MTV <- rowMeans(cbind(growth$B7, growth$C7, growth$D7), na.rm=TRUE) 
+
+blank <- rowMeans(cbind(growth$B9, growth$C9, growth$D9, growth$B10, growth$C10, growth$D10, growth$B11, growth$C11, growth$D11), na.rm=TRUE)
+rm(growth)
+
+# Subtract blank means
+galactitol <- galactitol - blank
+starch <- starch - blank
+fructose <- fructose - blank
+mannitol <- mannitol - blank
+salicin <- salicin - blank
+sorbitol <- sorbitol - blank
+
+y_glucose_y_aa <- y_glucose_y_aa - blank
+n_glucose_y_aa <- n_glucose_y_aa - blank
+y_glucose_n_aa <- y_glucose_n_aa - blank
+n_glucose_n_aa <- n_glucose_n_aa - blank
+
+y_glucose_n_MTV <- y_glucose_n_MTV - blank
+n_glucose_n_MTV <- n_glucose_n_MTV - blank
+rm(blank)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
+pdf(file=plot_file, width=17, height=16)
+layout(matrix(c(1,2,
+                3,4), nrow=2, ncol=2, byrow=TRUE))
 
-# Open a PDF
-pdf(file=plot_file, width=9, height=9)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Create layout for multi-plot
-layout(mat=matrix(c(1,1,1,2, 
-                    1,1,1,3, 
-                    1,1,1,4, 
-                    5,6,7,8), 
-                  nrow=4, ncol=4, byrow=TRUE))
+# A - Large component of graph
+par(mar=c(1,3,1,1))
+plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
+     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
+legend(x=0.4, y=1.1, legend=c('KEGG ortholog', 'Reaction substrate'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+legend(x=-1.2, y=-0.75, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
+       pt.cex=0, text.font=c(2,1,1), bty='n')
+mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
-# Generate raw plot
-par(mar=c(0,0,0,0))
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# 50% lines
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+# B - Example network and importance calculation
+par(mar=c(0,1,0,0))
+plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
+text(0.6, -0.5, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.7) # Importance algorithm
+text(x=-1, y=1.1, labels='Tetrathionate reductase', font=2) # Enzyme 1 name
+text(x=-1, y=1, labels='5', col='white') # Enzyme 1 transcription
+text(x=-0.5, y=-1.3, labels='Sulfane reductase', font=2) # Enzyme 2 name
+text(x=-0.5, y=-1, labels='97', col='white', cex=2) # Enzyme 2 transcription
+text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2) # Enzyme 3
+text(x=0.99, y=0.44, labels='115', col='white', cex=2.1) # Enzyme 3 transcription
+text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.3, font=c(2,1)) # Compound & calculated importance
+segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
+legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+text(x=-0.5, y=-1.1, expression(t[i]), col='white', cex=1.4) # labeled transcription for input reactions
+text(x=0.99, y=0.34, expression(t[i]), col='white', cex=1.4)
+text(x=-1, y=0.9, expression(t[o]), col='black', cex=1.4) # labeled transcription for output reactions
+text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.4) # labeled indegree
+text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
+text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
+mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
+Arrows(x0=0.7, y0=-0.9, x1=0.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+Arrows(x0=0.7, y0=-0.9, x1=1.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+segments(x0=0.6, y0=-0.85, x1=0.6, y1=-0.95, lwd=3)
+text(x=0.6, y=-1.03, '0', cex=1.6) 
+text(x=0.1, y=-1, expression(- infinity), cex=1.6)
+text(x=1.1, y=-1, expression(+ infinity), cex=1.6)
+text(x=1.1, y=-0.8, 'More likely taken from environment')
+text(x=0.15, y=-0.8, 'More likely added to environment')
 
-# Axis labels
-text(x=-0.35, y=-0.41, labels='Cefoperazone', cex=1.4)
-text(x=-0.21, y=0.48, labels='Clindamycin', cex=1.4, srt=60)
-text(x=0.55, y=-0.12, labels='Streptomycin', cex=1.4, srt=-60)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Left axis - Clindmycin
-lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
-lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
-lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
-lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
-lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
-lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
-lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
-lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
-lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
-text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=tick_labels, cex=0.9)
+# C - Top compound importances
+par(mar=c(4,3,1,1), xaxs='i')
+dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
+         lcolor=NA, cex=1.5, groups=top_importances$abx, color=top_importances$color, 
+         xlab='Metabolite Importance Score', xlim=c(-2,10), gcolor="black", pch=19)
+segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
 
-# Right axis - Streptomycin
-lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
-lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
-lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
-lines(x=c(0.346,0.366), y=c(0.067,0.067))
-lines(x=c(0.289,0.309), y=c(0.167,0.167))
-lines(x=c(0.23,0.25), y=c(0.267,0.267))
-lines(x=c(0.173,0.193), y=c(0.367,0.367))
-lines(x=c(0.115,0.135), y=c(0.467,0.467))
-lines(x=c(0.057,0.077), y=c(0.567,0.567))
-text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=rev(tick_labels), cex=0.9)
+# Add simulated means
+points(x=top_importances[c(14:7),3], y=c(1:8), cex=1.6, col='darkorchid4', pch=4) # Gnotobiotic
+points(x=top_importances[2,3], y=11, cex=1.6, col='chartreuse4', pch=4) # Clindamycin
+points(x=top_importances[1,3], y=14, cex=1.6, col='dodgerblue3', pch=4) # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=1.6, col='darkorange3', pch=4) # Streptomycin
 
-# Bottom axis - Cefoperzone
-lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
-lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
-lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
-lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
-lines(x=c(0,0), y=c(-0.333,-0.353))
-lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
-lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
-lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
-lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
-text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
-     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
-     labels=rev(tick_labels), cex=0.9)
+mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
-# Color points by substrate
-tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2.3, bg=fox[3])
-tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2.3, bg=rainbow[7])
-tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2.3, bg=fox[1])
-tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2.3, bg=fox[2])
-tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2.3, bg='darkorchid3')
-tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2.3, bg=fox[5])
-tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2.3, bg='blue3')
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Add the legend
-legend(x=0.26, y=0.63, legend=c('Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Stickland reactions', 'Fermentation end steps', 'PEP group translocators', 'ABC sugar transporters', 'All other genes'), 
-    ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col='black', pt.bg=c(fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'), bty='n')
-# Add figure label
-legend(x=-0.6, y=0.6, legend='A', cex=2, bty='n')
+# D - Growth on important compounds
+par(mar=c(2,3,1,1), xaxs='i')
 
-# monosaccharides alone
-par(mar=c(0,0,0,0))
-triplot(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='B', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], pch=21, cex=2, bg=fox[1])
-text(x=0, y=-0.41, labels='Monosaccharide catabolism')
 
-# polysaccharides alone
-par(mar=c(0,0,0,0))
-triplot(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='C', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=polysaccharides[,1], y=polysaccharides[,2], z=polysaccharides[,3], pch=21, cex=2, bg='blue3')
-text(x=0, y=-0.41, labels='Polysaccharide catabolism')
 
-# sugar_alcohols alone
-par(mar=c(0,0,0,0))
-triplot(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='D', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=sugar_alcohols[,1], y=sugar_alcohols[,2], z=sugar_alcohols[,3], pch=21, cex=2, bg='darkorchid3')
-text(x=0, y=-0.41, labels='Sugar alcohol catabolism')
 
-# stickland alone
-par(mar=c(0,0,0,0))
-triplot(x=stickland[,1], y=stickland[,2], z=stickland[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='E', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=stickland[,1], y=stickland[,2], z=stickland[,3], pch=21, cex=2, bg=fox[2])
-text(x=0, y=-0.41, labels='Stickland reactions')
 
-# fermentation
-par(mar=c(0,0,0,0))
-triplot(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='F', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=fermentation[,1], y=fermentation[,2], z=fermentation[,3], pch=21, cex=2, bg=fox[5])
-text(x=0, y=-0.41, labels='Fermentation end steps')
 
-# PTS alone
-par(mar=c(0,0,0,0))
-triplot(x=PTS[,1], y=PTS[,2], z=PTS[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='G', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=PTS[,1], y=PTS[,2], z=PTS[,3], pch=21, cex=2, bg=fox[3])
-text(x=0, y=-0.41, labels='PEP group translocators')
+plot(0, type='o')
 
-# ABC alone
-par(mar=c(0,0,0,0))
-triplot(x=ABC[,1], y=ABC[,2], z=ABC[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0.8)
-legend('topleft', legend='H', cex=2, bty='n')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=ABC[,1], y=ABC[,2], z=ABC[,3], pch=21, cex=2, bg=rainbow[7])
-text(x=0, y=-0.41, labels='ABC sugar transporters')
+abline(h=c(), lty=2)
 
-#-------------------------------------------------------------------------------------------------------------------------#
+legend('topleft', legend=c(), col=c())
+
+
+
+
+mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
-rm(abfD, ABC, acd, acetate, adh, amino_sugars, anm, arg, buk, cat, cel, combined_mapping, eno, fdh, fermentation, fructose,
-   galactose, glycolysis, gne, gpmI, grd, had, hbd, kamA, ldhA, ldt, maltose, mannose, monosaccharides, mtl, mur, nag, nan,
-   panB, pep, pfk, pgm, polysaccharides, prd, ptb, PTS, pyk, sdaB, serA, srl, srlE, stickland, sucD, sucrose, sugar_alcohols,
-   tagatose, tdcB, tpi, tre, valerate, xylose, averages, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,
-   glm, glucosidase)
+rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
+rm(galactitol, starch, fructose, mannitol, salicin, sorbitol, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, y_glucose_n_MTV, n_glucose_n_MTV)
+
+

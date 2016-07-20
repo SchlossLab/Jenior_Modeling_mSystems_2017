@@ -1,5 +1,5 @@
 
-deps <- c('shape');
+deps <- c('shape', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -61,6 +61,7 @@ rm(cef, strep, clinda, gf, conv)
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
+select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5])
 pdf(file=plot_file, width=12, height=6)
 layout(matrix(c(1,2,
                 3,4), 
@@ -119,7 +120,7 @@ segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
 segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
-text(4, toxin_medians[4] + 0.2, labels='*', cex=2, font=2)
+text(4, toxin_medians[4] + 0.2, labels='**', cex=2, font=2)
 
 # Plot label
 mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)

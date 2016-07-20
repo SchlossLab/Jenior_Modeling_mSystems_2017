@@ -55,7 +55,7 @@ gf_importance$Compound_name <- gsub('_', ' ', gf_importance$Compound_name)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figure_S4.pdf'
 pdf(file=plot_file, width=10, height=12)
 layout(matrix(c(1,2,3), nrow=3, ncol=1, byrow=FALSE))
 
