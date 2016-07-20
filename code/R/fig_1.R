@@ -175,6 +175,6 @@ mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
 #Clean up
 dev.off()
-rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette)
+rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette, pch_palette)
 
 
