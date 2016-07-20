@@ -20,13 +20,11 @@ rm(cfu_file, toxin_file)
 # Format CFU data and collect summary statistics
 cfu[cfu == 0] <- 100
 cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
-cfu$cfu_vegetative[cfu$cfu_vegetative == 2] <- 1.8
 cfu$cfu_spore <- log10(cfu$cfu_spore)
-cfu$cfu_spore[cfu$cfu_spore == 2] <- 1.8
 cfu$mouse <- NULL
 cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
 cfu$cage <- NULL
-cfu$treatment <- factor(cfu$treatment, levels=c('cefoperazone', 'streptomycin', 'clindamycin', 'germfree', 'conventional'))
+cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
 vegetative_cfu <- cfu
 vegetative_cfu$cfu_spore <- NULL
 spore_cfu <- cfu
@@ -36,32 +34,37 @@ strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomy
 clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
-vege_medians <- c(cef, strep, clinda, gf, conv)
+vege_medians <- c(strep, cef, clinda, gf, conv)
 cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
 strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
 clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
-spore_medians <- c(cef, strep, clinda, gf, conv)
+spore_medians <- c(strep, cef, clinda, gf, conv)
 rm(cfu, cef, strep, clinda, gf, conv)
+vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
+vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
+spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
 
 # Format toxin data and find summary statistics
 toxin$mouse <- NULL
 toxin$cage <- NULL
-toxin$treatment <- factor(toxin$treatment, levels=c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Germfree', 'Conventional'))
+toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
 cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
 strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
 clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
-toxin_medians <- c(cef, strep, clinda, gf, conv)
+toxin_medians <- c(strep, cef, clinda, gf, conv)
 rm(cef, strep, clinda, gf, conv)
+toxin$titer[toxin$titer <= 2.0] <- 1.9
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5])
+select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'black', 'black')
+pch_palette <- c(19,19,19,19,1)
 pdf(file=plot_file, width=12, height=6)
 layout(matrix(c(1,2,
                 3,4), 
@@ -76,7 +79,7 @@ par(mar=c(1,2,1,1))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4.8,4), ylim=c(-2,5))
 
 # Abx in drinking water timeline
-rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='dodgerblue1', border='black')
+rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='darkorchid3', border='black')
 Arrows(x0=-4, y0=3, x1=3.5, y1=3, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,0,2,2.75), y0=c(3.5,3.5,3.5,3.5), x1=c(-4,0,2,2.75), y1=c(2.5,2.5,2.5,2.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(3.25,3.25,3.25,3.25,3.25), x1=c(-4,-3,-2,-1,1), y1=c(2.75,2.75,2.75,2.75,2.75), lwd=2)
@@ -89,13 +92,13 @@ text(x=-4.6, y=2.7, 'Streptomycin', cex=0.7)
 # IP injection abx timeline
 Arrows(x0=-4, y0=0, x1=-1.5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,-3,-2.25), y0=c(-0.5,-0.5,-0.5), x1=c(-4,-3,-2.25), y1=c(0.5,0.5,0.5), lwd=4)
-points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c('firebrick','white','black'), col='black', cex=2.5)
+points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c(wes_palette('Rushmore')[3],'white','black'), col='black', cex=2.5)
 text(x=c(-4,-3,-2.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=0.9)
 text(x=-4.6, y=0, 'Clindamycin', cex=0.7)
 
 # Legend
-legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic',paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 
-       pt.bg=c('dodgerblue1','firebrick','white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
+legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic', paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 
+       pt.bg=c('darkorchid3',wes_palette('Rushmore')[3],'white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 
 # Plot label
 mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
@@ -104,10 +107,10 @@ mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
 
 # B.  Toxin data
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE, yaxs='i')
-stripchart(titer~treatment, data=toxin, vertical=T, pch=20, 
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', 
-           cex=2, col='black', ylab='Toxin Titer (log10)', method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick=FALSE)
+stripchart(titer~treatment, data=toxin, vertical=T, pch=pch_palette, 
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', col=select_palette,
+           cex=1.5, ylab=expression(paste('Toxin Titer (',Log[10],')')), method='jitter', jitter=0.25)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick=FALSE)
 
 # Draw limit of detection
 abline(h=2, lty=2, lwd=1.5)
@@ -129,10 +132,10 @@ mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)
 
 # C.  Vegetative cell CFU
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=20, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
-           ylab='Vegetative CFU/g Cecal Content (Log10)', method='jitter', jitter=0.25, cex.lab=0.9)
-axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=pch_palette, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylab=expression(paste('Vegetative CFU/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25, cex.lab=0.9)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 
@@ -150,10 +153,10 @@ mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
 
 # D.  Spore CFU
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=20, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col='black', 
-           ylab='Spore CFU/g Cecal Content (Log10)', method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), c('Cefoperazone', 'Streptomycin', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=pch_palette, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylab=expression(paste('Spore CFU/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'Conventional'), tick = FALSE)
 labelsY <- parse(text=paste(rep(10,9), '^', seq(1,9,1), sep=''))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 
@@ -172,6 +175,6 @@ mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
 #Clean up
 dev.off()
-rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu)
+rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette)
 
 

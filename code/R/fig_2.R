@@ -35,8 +35,8 @@ colnames(germfree) <- c('gene', 'Germfree')
 rm(cefoperazone_file, clindamycin_file, streptomycin_file, germfree_file)
 
 # Merge tables
-combined_mapping <- merge(cefoperazone, clindamycin, by='gene')
-combined_mapping <- merge(combined_mapping, streptomycin, by='gene')
+combined_mapping <- merge(streptomycin, cefoperazone, by='gene')
+combined_mapping <- merge(combined_mapping, clindamycin, by='gene')
 combined_mapping$gene <- gsub("Clostridium_difficile_630\\|","", combined_mapping$gene)
 combined_mapping$gene <- gsub('ENA\\|CDT20869\\|CDT20869.1\\|Clostridium_difficile_putative_phage_replication_protein_','', combined_mapping$gene)
 combined_mapping$gene <- gsub('_',' ', combined_mapping$gene)
@@ -210,14 +210,14 @@ x_coords <- barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside
 box()
 axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
 abline(h=c(1:4), lty=2)
-legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pt.cex=2.3, bty='n', cex=1.2,
+legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,83.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(sigma_medians), srt=45, adj=1, xpd=TRUE, cex=1.2)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Cefoperazone', 'Clindamycin', 'Streptomycin')
+colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
 segments(x0=x_coords$Cefoperazone, y0=c(sigma_medians$Cefoperazone+sigma_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(sigma_medians$Cefoperazone-sigma_sds$Cefoperazone), lwd=1.2)
 segments(x0=x_coords$Clindamycin, y0=c(sigma_medians$Clindamycin+sigma_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sigma_medians$Clindamycin-sigma_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(sigma_medians$Streptomycin+sigma_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sigma_medians$Streptomycin-sigma_sds$Streptomycin), lwd=1.2)
@@ -231,14 +231,14 @@ x_coords <- barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5), 
 box()
 axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
 abline(h=c(1:4), lty=2)
-legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pt.cex=2.3, bty='n', cex=1.2,
+legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,205.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(sporulation_medians), srt=45, adj=1, xpd=TRUE, cex=0.8)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Cefoperazone', 'Clindamycin', 'Streptomycin')
+colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
 segments(x0=x_coords$Cefoperazone, y0=c(sporulation_medians$Cefoperazone+sporulation_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(sporulation_medians$Cefoperazone-sporulation_sds$Cefoperazone), lwd=1.2)
 segments(x0=x_coords$Clindamycin, y0=c(sporulation_medians$Clindamycin+sporulation_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sporulation_medians$Clindamycin-sporulation_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(sporulation_medians$Streptomycin+sporulation_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sporulation_medians$Streptomycin-sporulation_sds$Streptomycin), lwd=1.2)
@@ -252,14 +252,14 @@ x_coords <- barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  besid
 box()
 axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
 abline(h=c(1:4), lty=2)
-legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pt.cex=2.3, bty='n', cex=1.2,
+legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(paloc_medians), srt=45, adj=1, xpd=TRUE, cex=1.4)
-legend('topright', legend='Pathogenicity locus', pt.cex=0, bty='n', cex=1.8)
+legend('topright', legend='Pathogenicity loci', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Cefoperazone', 'Clindamycin', 'Streptomycin')
+colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
 segments(x0=x_coords$Cefoperazone, y0=c(paloc_medians$Cefoperazone+paloc_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(paloc_medians$Cefoperazone-paloc_sds$Cefoperazone), lwd=1.2)
 segments(x0=x_coords$Clindamycin, y0=c(paloc_medians$Clindamycin+paloc_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(paloc_medians$Clindamycin-paloc_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(paloc_medians$Streptomycin+paloc_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(paloc_medians$Streptomycin-paloc_sds$Streptomycin), lwd=1.2)
@@ -273,14 +273,14 @@ x_coords <- barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n'
 box()
 axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
 abline(h=c(1:4), lty=2)
-legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin'), pt.cex=2.3, bty='n', cex=1.2,
+legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(quorum_medians), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Cefoperazone', 'Clindamycin', 'Streptomycin')
+colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
 segments(x0=x_coords$Cefoperazone, y0=c(quorum_medians$Cefoperazone+quorum_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(quorum_medians$Cefoperazone-quorum_sds$Cefoperazone), lwd=1.2)
 segments(x0=x_coords$Clindamycin, y0=c(quorum_medians$Clindamycin+quorum_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(quorum_medians$Clindamycin-quorum_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(quorum_medians$Streptomycin+quorum_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(quorum_medians$Streptomycin-quorum_sds$Streptomycin), lwd=1.2)

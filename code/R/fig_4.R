@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'igraph', 'ggplot2', 'shape');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -138,13 +138,13 @@ strep_only_importance <- strep_only_importance[order(strep_only_importance$Metab
 gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
 
 cef_only_importance$abx <- 'Cefoperazone'
-cef_only_importance$color <- 'dodgerblue3'
+cef_only_importance$color <- wes_palette("FantasticFox")[3]
 clinda_only_importance$abx <- 'Clindamycin'
-clinda_only_importance$color <- 'chartreuse4'
+clinda_only_importance$color <- wes_palette("FantasticFox")[5]
 strep_only_importance$abx <- 'Streptomycin'
-strep_only_importance$color <- 'darkorange3'
+strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'Gnotobiotic'
-gf_only_importance$color <- 'darkorchid4'
+gf_only_importance$color <- 'black'
 
 top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
                          strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
@@ -267,10 +267,10 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
 segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
 
 # Add simulated means
-points(x=top_importances[c(14:7),3], y=c(1:8), cex=1.6, col='darkorchid4', pch=4) # Gnotobiotic
-points(x=top_importances[2,3], y=11, cex=1.6, col='chartreuse4', pch=4) # Clindamycin
-points(x=top_importances[1,3], y=14, cex=1.6, col='dodgerblue3', pch=4) # Cefoperazone
-points(x=top_importances[c(3:6),3], y=c(17:20), cex=1.6, col='darkorange3', pch=4) # Streptomycin
+points(x=top_importances[c(14:7),3], y=c(1:8), cex=2, col='black', pch='|') # Gnotobiotic
+points(x=top_importances[2,3], y=11, cex=2, col='chartreuse4', pch='|') # Clindamycin
+points(x=top_importances[1,3], y=14, cex=2, col='dodgerblue3', pch='|') # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col='darkorange3', pch='|') # Streptomycin
 
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
