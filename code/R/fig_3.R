@@ -49,12 +49,19 @@ combined_mapping$Row.names <- NULL
 
 # Rarefy mappings to be equal within sequencing type
 sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
-combined_mapping$Cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
-combined_mapping$Clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
-combined_mapping$Streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
-
-# Calculate the factors to scale points size by
-averages <- log10(rowSums(combined_mapping[, 1:3]) / 3) * 2.5
+cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
+clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
+streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
+for (index in 1:999) {
+  cefoperazone <- cbind(cefoperazone, t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size)))
+  clindamycin <- cbind(clindamycin, t(rrarefy(combined_mapping$Clindamycin, sample=sub_size)))
+  streptomycin <- cbind(streptomycin, t(rrarefy(combined_mapping$Streptomycin, sample=sub_size)))
+}
+# Medians
+combined_mapping$Cefoperazone <- rowMedians(cefoperazone)
+combined_mapping$Clindamycin <- rowMedians(clindamycin)
+combined_mapping$Streptomycin <- rowMedians(streptomycin)
+rm(cefoperazone, clindamycin, streptomycin)
 
 # Convert each gene into the fraction of the transcription for that gene across treatments
 combined_mapping[combined_mapping == 0] <- 1
@@ -367,5 +374,5 @@ dev.off()
 rm(abfD, ABC, acd, acetate, adh, amino_sugars, anm, arg, buk, cat, cel, combined_mapping, eno, fdh, fermentation, fructose,
    galactose, glycolysis, gne, gpmI, grd, had, hbd, kamA, ldhA, ldt, maltose, mannose, monosaccharides, mtl, mur, nag, nan,
    panB, pep, pfk, pgm, polysaccharides, prd, ptb, PTS, pyk, sdaB, serA, srl, srlE, stickland, sucD, sucrose, sugar_alcohols,
-   tagatose, tdcB, tpi, tre, valerate, xylose, averages, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,
+   tagatose, tdcB, tpi, tre, valerate, xylose, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,
    glm, glucosidase)
