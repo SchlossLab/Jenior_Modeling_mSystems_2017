@@ -61,7 +61,7 @@ for (index in 1:999) {
 combined_mapping$Cefoperazone <- rowMedians(cefoperazone)
 combined_mapping$Clindamycin <- rowMedians(clindamycin)
 combined_mapping$Streptomycin <- rowMedians(streptomycin)
-rm(cefoperazone, clindamycin, streptomycin)
+rm(cefoperazone, clindamycin, streptomycin, index)
 
 # Convert each gene into the fraction of the transcription for that gene across treatments
 combined_mapping[combined_mapping == 0] <- 1
