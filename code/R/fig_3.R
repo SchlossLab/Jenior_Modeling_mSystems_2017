@@ -6,7 +6,6 @@ for (dep in deps){
   }
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
 
 # Define and check color palette
 palette_plot <- function(col, border = "light gray", ...){
@@ -376,3 +375,10 @@ rm(abfD, ABC, acd, acetate, adh, amino_sugars, anm, arg, buk, cat, cel, combined
    panB, pep, pfk, pgm, polysaccharides, prd, ptb, PTS, pyk, sdaB, serA, srl, srlE, stickland, sucD, sucrose, sugar_alcohols,
    tagatose, tdcB, tpi, tre, valerate, xylose, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,
    glm, glucosidase)
+for (dep in deps){
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()
+

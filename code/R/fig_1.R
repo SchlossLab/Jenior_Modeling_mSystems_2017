@@ -6,7 +6,6 @@ for (dep in deps){
   } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
 
 # Select files
 cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
@@ -176,5 +175,10 @@ mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 #Clean up
 dev.off()
 rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette, pch_palette)
-
+for (dep in deps){
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()
 

@@ -6,7 +6,6 @@ for (dep in deps){
   }
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
 
 #--------------------------------------------------------------------------------------------------------------#
 
@@ -290,5 +289,10 @@ segments(x0=x_coords$Streptomycin, y0=c(quorum_medians$Streptomycin+quorum_sds$S
 # Clean up
 dev.off()
 rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, paloc_medians, paloc_sds, plot_file, select_palette, x_coords)
-
+for (dep in deps){
+  pkg <- paste('package:', dep,sep='')
+   detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()
 

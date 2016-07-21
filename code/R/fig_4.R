@@ -6,7 +6,6 @@ for (dep in deps){
   } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -301,5 +300,10 @@ mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 dev.off()
 rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
 rm(galactitol, starch, fructose, mannitol, salicin, sorbitol, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, y_glucose_n_MTV, n_glucose_n_MTV)
-
+for (dep in deps){
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()
 

@@ -6,7 +6,6 @@ for (dep in deps){
   } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
 
 # Select files
 
@@ -44,5 +43,10 @@ layout(matrix(c(1,1,
 #Clean up
 dev.off()
 rm()
-
+for (dep in deps){
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()
 
