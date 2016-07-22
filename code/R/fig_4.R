@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -168,41 +168,49 @@ rm(growth_file)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format growth curves
-# Average treatement groups
-galactitol <- rowMeans(cbind(growth$E2, growth$F2, growth$G2), na.rm=TRUE)
-starch <-  rowMeans(cbind(growth$E3, growth$F3, growth$G3), na.rm=TRUE)
-fructose <-  rowMeans(cbind(growth$E4, growth$F4, growth$G4), na.rm=TRUE)
-mannitol <- rowMeans(cbind(growth$E6, growth$F6, growth$G6), na.rm=TRUE)
-salicin <- rowMeans(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE)
-sorbitol <- rowMeans(cbind(growth$E8, growth$F8, growth$G8), na.rm=TRUE)
+# Find medians of treatement groups and subtract blanks
+sorbitol_median <- rowMedians(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
+sorbitol_median[sorbitol_median < 0] <- 0
+galactitol_median <- rowMedians(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
+galactitol_median[galactitol_median < 0] <- 0
+starch_median <- rowMedians(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
+starch_median[starch_median < 0] <- 0
+fructose_median <-  rowMedians(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
+fructose_median[fructose_median < 0] <- 0
+combination_median <- rowMedians(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
+combination_median[combination_median < 0] <- 0
+mannitol_median <- rowMedians(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
+mannitol_median[mannitol_median < 0] <- 0
+salicin_median <- rowMedians(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
+salicin_median[salicin_median < 0] <- 0
+y_glucose_y_aa_median <- rowMedians(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
+y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
+n_glucose_y_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
+n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
 
-y_glucose_y_aa <- rowMeans(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE)
-n_glucose_y_aa <- rowMeans(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE)
-y_glucose_n_aa <- rowMeans(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE)
-n_glucose_n_aa <- rowMeans(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE)
 
-y_glucose_n_MTV <- rowMeans(cbind(growth$B6, growth$C6, growth$D6), na.rm=TRUE) 
-n_glucose_n_MTV <- rowMeans(cbind(growth$B7, growth$C7, growth$D7), na.rm=TRUE) 
 
-blank <- rowMeans(cbind(growth$B9, growth$C9, growth$D9, growth$B10, growth$C10, growth$D10, growth$B11, growth$C11, growth$D11), na.rm=TRUE)
+
+
+# fix the rest of these
+y_glucose_n_aa_median <- rowMedians(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE) - growth$D2
+y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
+n_glucose_n_aa_median <- rowMedians(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
+
+sorbitol_sd <- rowSds(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
+galactitol_sd <- rowSds(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
+starch_sd <-  rowSds(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
+fructose_sd <-  rowSds(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
+combination_sd <-  rowSds(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
+mannitol_sd <- rowSds(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
+salicin_sd <- rowSds(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE) - growth$G7
+y_glucose_y_aa_sd <- rowSds(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE) - growth$B2
+n_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE) - growth$C2
+y_glucose_n_aa_sd <- rowSds(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE) - growth$D2
+n_glucose_n_aa_sd <- rowSds(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE) - growth$E2
+
 rm(growth)
-
-# Subtract blank means
-galactitol <- galactitol - blank
-starch <- starch - blank
-fructose <- fructose - blank
-mannitol <- mannitol - blank
-salicin <- salicin - blank
-sorbitol <- sorbitol - blank
-
-y_glucose_y_aa <- y_glucose_y_aa - blank
-n_glucose_y_aa <- n_glucose_y_aa - blank
-y_glucose_n_aa <- y_glucose_n_aa - blank
-n_glucose_n_aa <- n_glucose_n_aa - blank
-
-y_glucose_n_MTV <- y_glucose_n_MTV - blank
-n_glucose_n_MTV <- n_glucose_n_MTV - blank
-rm(blank)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
