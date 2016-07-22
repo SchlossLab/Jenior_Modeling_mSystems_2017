@@ -248,14 +248,14 @@ text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
 text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
 mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
 
-Arrows(x0=0.7, y0=-0.9, x1=0.11, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
-Arrows(x0=0.7, y0=-0.9, x1=1.2, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
-segments(x0=0.61, y0=-0.85, x1=0.61, y1=-0.95, lwd=3)
-text(x=0.61, y=-1.03, '0', cex=1.6) 
-text(x=0.11, y=-1, expression(- infinity), cex=1.6)
-text(x=1.11, y=-1, expression(+ infinity), cex=1.6)
-text(x=1.1, y=-0.8, 'More likely taken from environment')
-text(x=0.15, y=-0.8, 'More likely added to environment')
+Arrows(x0=0.63, y0=-0.9, x1=0.12, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+Arrows(x0=0.63, y0=-0.9, x1=1.14, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+segments(x0=0.63, y0=-0.85, x1=0.63, y1=-0.95, lwd=3)
+text(x=0.63, y=-1.03, '0', cex=1.6) 
+text(x=0.12, y=-1, expression(- infinity), cex=1.6)
+text(x=1.14, y=-1, expression(+ infinity), cex=1.6)
+text(x=1.15, y=-0.8, 'More likely taken from environment')
+text(x=0.14, y=-0.8, 'More likely added to environment')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
