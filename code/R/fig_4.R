@@ -267,9 +267,9 @@ segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11,
 
 # Add simulated means
 points(x=top_importances[c(14:7),3], y=c(1:8), cex=2, col='black', pch='|') # Gnotobiotic
-points(x=top_importances[2,3], y=11, cex=2, col='chartreuse4', pch='|') # Clindamycin
-points(x=top_importances[1,3], y=14, cex=2, col='dodgerblue3', pch='|') # Cefoperazone
-points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col='darkorange3', pch='|') # Streptomycin
+points(x=top_importances[2,3], y=11, cex=2, col=wes_palette("FantasticFox")[5], pch='|') # Clindamycin
+points(x=top_importances[1,3], y=14, cex=2, col=wes_palette("FantasticFox")[3], pch='|') # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col=wes_palette("FantasticFox")[1], pch='|') # Streptomycin
 
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
