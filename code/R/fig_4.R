@@ -187,17 +187,16 @@ y_glucose_y_aa_median <- rowMedians(cbind(growth$B3, growth$B4, growth$B5), na.r
 y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
 n_glucose_y_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
 n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
-
-
-
-
-
-# fix the rest of these
-y_glucose_n_aa_median <- rowMedians(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE) - growth$D2
+y_glucose_n_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
 y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
-n_glucose_n_aa_median <- rowMedians(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
 n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
 
+
+
+
+
+# fix coordinates for these
 sorbitol_sd <- rowSds(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
 galactitol_sd <- rowSds(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
 starch_sd <-  rowSds(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
