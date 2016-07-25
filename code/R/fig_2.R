@@ -79,7 +79,11 @@ sigma_medians <- sigma
 sigma$Cefoperazone <- rowSds(cefoperazone)
 sigma$Clindamycin <- rowSds(clindamycin)
 sigma$Streptomycin <- rowSds(streptomycin)
+<<<<<<< Updated upstream
 sigma_sds <- sigma * 1.95
+=======
+sigma_sds <- sigma * 2
+>>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sigma, index)
 
@@ -112,7 +116,11 @@ paloc_medians <- paloc
 paloc$Cefoperazone <- rowSds(cefoperazone)
 paloc$Clindamycin <- rowSds(clindamycin)
 paloc$Streptomycin <- rowSds(streptomycin)
+<<<<<<< Updated upstream
 paloc_sds <- paloc * 1.95
+=======
+paloc_sds <- paloc * 2
+>>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, paloc, index)
 
@@ -149,7 +157,11 @@ sporulation_medians <- sporulation
 sporulation$Cefoperazone <- rowSds(cefoperazone)
 sporulation$Clindamycin <- rowSds(clindamycin)
 sporulation$Streptomycin <- rowSds(streptomycin)
+<<<<<<< Updated upstream
 sporulation_sds <- sporulation * 1.95
+=======
+sporulation_sds <- sporulation * 2
+>>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sporulation, index)
 
@@ -182,7 +194,11 @@ quorum_medians <- quorum
 quorum$Cefoperazone <- rowSds(cefoperazone)
 quorum$Clindamycin <- rowSds(clindamycin)
 quorum$Streptomycin <- rowSds(streptomycin)
+<<<<<<< Updated upstream
 quorum_sds <- quorum * 1.95
+=======
+quorum_sds <- quorum * 2
+>>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, quorum, index)
 

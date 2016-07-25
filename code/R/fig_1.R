@@ -132,7 +132,7 @@ segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
 segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
-text(4, toxin_medians[4] + 0.2, labels='**', cex=2, font=2)
+text(4, toxin_medians[4] + 0.2, labels='***', cex=2, font=2)
 
 # Plot label
 mtext('B', side=2, line=2, las=2, adj=2, padj=-6.2, cex=1.5)
@@ -177,7 +177,7 @@ segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
 segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 
 abline(h=2, col="black", lty=2, lwd=1.5)
-text(4, 6.9, '*', cex=2, font=2)
+text(4, 6.9, '**', cex=2, font=2)
 mtext('D', side=2, line=2, las=2, adj=1.2, padj=-6.7, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
