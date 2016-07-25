@@ -13,7 +13,9 @@ toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_as
 
 # Read in data
 cfu <- read.delim(cfu_file, sep='\t', header=T)
+cfu_raw <- cfu
 toxin <- read.delim(toxin_file, sep='\t', header=T)
+toxin_raw <- toxin
 rm(cfu_file, toxin_file)
 
 # Format CFU data and collect summary statistics
@@ -57,6 +59,14 @@ conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(strep, cef, clinda, gf, conv)
 rm(cef, strep, clinda, gf, conv)
 toxin$titer[toxin$titer <= 2.0] <- 1.9
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Calculate significant differences
+
+wilcox.test()
+cfu_raw
+toxin_raw
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

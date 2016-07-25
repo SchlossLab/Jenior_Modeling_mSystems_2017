@@ -51,16 +51,20 @@ sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
 cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
 clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
 streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
-for (index in 1:999) {
-  cefoperazone <- cbind(cefoperazone, t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size)))
-  clindamycin <- cbind(clindamycin, t(rrarefy(combined_mapping$Clindamycin, sample=sub_size)))
-  streptomycin <- cbind(streptomycin, t(rrarefy(combined_mapping$Streptomycin, sample=sub_size)))
-}
+#for (index in 1:999) {
+#  cefoperazone <- cbind(cefoperazone, t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size)))
+#  clindamycin <- cbind(clindamycin, t(rrarefy(combined_mapping$Clindamycin, sample=sub_size)))
+#  streptomycin <- cbind(streptomycin, t(rrarefy(combined_mapping$Streptomycin, sample=sub_size)))
+#}
 # Medians
-combined_mapping$Cefoperazone <- rowMedians(cefoperazone)
-combined_mapping$Clindamycin <- rowMedians(clindamycin)
-combined_mapping$Streptomycin <- rowMedians(streptomycin)
-rm(cefoperazone, clindamycin, streptomycin, index)
+#combined_mapping$Cefoperazone <- rowMedians(cefoperazone)
+#combined_mapping$Clindamycin <- rowMedians(clindamycin)
+#combined_mapping$Streptomycin <- rowMedians(streptomycin)
+#rm(cefoperazone, clindamycin, streptomycin, index)
+combined_mapping$Cefoperazone <- cefoperazone
+combined_mapping$Clindamycin <- clindamycin
+combined_mapping$Streptomycin <- streptomycin
+rm(cefoperazone, clindamycin, streptomycin)
 
 # Convert each gene into the fraction of the transcription for that gene across treatments
 combined_mapping[combined_mapping == 0] <- 1

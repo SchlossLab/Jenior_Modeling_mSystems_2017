@@ -168,6 +168,7 @@ rm(growth_file)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format growth curves
+
 # Find medians of treatement groups and subtract blanks
 sorbitol_median <- rowMedians(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
 sorbitol_median[sorbitol_median < 0] <- 0
@@ -191,24 +192,23 @@ y_glucose_n_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.r
 y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
 n_glucose_n_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
 n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
+growth_medians <- rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
+rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
 
-
-
-
-
-# fix coordinates for these
+# Standard deviations
 sorbitol_sd <- rowSds(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
 galactitol_sd <- rowSds(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
 starch_sd <-  rowSds(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
 fructose_sd <-  rowSds(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
 combination_sd <-  rowSds(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
 mannitol_sd <- rowSds(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
-salicin_sd <- rowSds(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE) - growth$G7
-y_glucose_y_aa_sd <- rowSds(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE) - growth$B2
-n_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE) - growth$C2
-y_glucose_n_aa_sd <- rowSds(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE) - growth$D2
-n_glucose_n_aa_sd <- rowSds(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE) - growth$E2
-
+salicin_sd <- rowSds(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
+y_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
+n_glucose_y_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
+y_glucose_n_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
+n_glucose_n_aa_sd <- rowSds(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
+growth_sds <- rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
+rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
 rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -284,30 +284,23 @@ mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D - Growth on important compounds
-par(mar=c(2,3,1,1), xaxs='i')
+par(mar=c(4,4,1,1), xaxs='i', yaxs='i')
 
 
+plot(growth_medians)
+segments(x0=growth_medians, y0=growth_medians+growth_sds, x1=growth_medians, y1=growth_medians-growth_sds)
 
-
-
-
-plot(0, type='o')
-
-abline(h=c(), lty=2)
+#anova()
+#https://www.researchgate.net/post/How_can_growth_curves_be_compared
 
 legend('topleft', legend=c(), col=c())
-
-
-
-
 mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
-rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
-rm(galactitol, starch, fructose, mannitol, salicin, sorbitol, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, y_glucose_n_MTV, n_glucose_n_MTV)
+rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file, growth_sds, growth_medians)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
