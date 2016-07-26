@@ -158,7 +158,7 @@ top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')
 
 # Read in growth rate data
 # Define variables
-growth_file <- '/home/mjenior/Desktop/growth_curve/formatted_wells.tsv'
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/formatted_growth.tsv'
 
 # Read in data
 growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
@@ -192,7 +192,7 @@ y_glucose_n_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.r
 y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
 n_glucose_n_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
 n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
-growth_medians <- rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
+growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median))
 rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
 
 # Standard deviations
@@ -207,7 +207,7 @@ y_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) 
 n_glucose_y_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
 y_glucose_n_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
 n_glucose_n_aa_sd <- rowSds(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
-growth_sds <- rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
+growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd))
 rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
 rm(growth)
 
