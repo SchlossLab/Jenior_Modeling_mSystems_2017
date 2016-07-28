@@ -91,7 +91,7 @@ wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.001764 **
 wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
 wilcox.test(streptomycin, cefoperazone, exact=F) # n.s.
 wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
-rm(germfree, cefoperazone_, clindamycin, streptomycin)
+rm(germfree, cefoperazone, clindamycin, streptomycin)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -135,7 +135,7 @@ legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injecti
        pt.bg=c('darkorchid3',wes_palette('Rushmore')[3],'white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 
 # Plot label
-mtext('A', side=2, line=2, las=2, adj=-0.3, padj=-6.5, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=-0.4, padj=-6.5, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
