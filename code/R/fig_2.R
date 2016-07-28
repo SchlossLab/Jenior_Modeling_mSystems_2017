@@ -1,5 +1,5 @@
 
-deps <- c('wesanderson','vegan', 'matrixStats');
+deps <- c('wesanderson','vegan', 'matrixStats', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -79,11 +79,7 @@ sigma_medians <- sigma
 sigma$Cefoperazone <- rowSds(cefoperazone)
 sigma$Clindamycin <- rowSds(clindamycin)
 sigma$Streptomycin <- rowSds(streptomycin)
-<<<<<<< Updated upstream
 sigma_sds <- sigma * 1.95
-=======
-sigma_sds <- sigma * 2
->>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sigma, index)
 
@@ -116,11 +112,7 @@ paloc_medians <- paloc
 paloc$Cefoperazone <- rowSds(cefoperazone)
 paloc$Clindamycin <- rowSds(clindamycin)
 paloc$Streptomycin <- rowSds(streptomycin)
-<<<<<<< Updated upstream
 paloc_sds <- paloc * 1.95
-=======
-paloc_sds <- paloc * 2
->>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, paloc, index)
 
@@ -157,11 +149,7 @@ sporulation_medians <- sporulation
 sporulation$Cefoperazone <- rowSds(cefoperazone)
 sporulation$Clindamycin <- rowSds(clindamycin)
 sporulation$Streptomycin <- rowSds(streptomycin)
-<<<<<<< Updated upstream
 sporulation_sds <- sporulation * 1.95
-=======
-sporulation_sds <- sporulation * 2
->>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sporulation, index)
 
@@ -194,11 +182,7 @@ quorum_medians <- quorum
 quorum$Cefoperazone <- rowSds(cefoperazone)
 quorum$Clindamycin <- rowSds(clindamycin)
 quorum$Streptomycin <- rowSds(streptomycin)
-<<<<<<< Updated upstream
 quorum_sds <- quorum * 1.95
-=======
-quorum_sds <- quorum * 2
->>>>>>> Stashed changes
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, quorum, index)
 
@@ -219,12 +203,13 @@ layout(matrix(c(1,1,
 #--------------------------------------------------------------------------------------------------------------#
 
 # A - Sigma factors
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5, 1, 0))
+par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
 box()
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
-abline(h=c(1:4), lty=2)
+labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
+axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
+abline(h=c(1:2), lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,83.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -237,15 +222,18 @@ segments(x0=x_coords$Cefoperazone, y0=c(sigma_medians$Cefoperazone+sigma_sds$Cef
 segments(x0=x_coords$Clindamycin, y0=c(sigma_medians$Clindamycin+sigma_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sigma_medians$Clindamycin-sigma_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(sigma_medians$Streptomycin+sigma_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sigma_medians$Streptomycin-sigma_sds$Streptomycin), lwd=1.2)
 
+mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+
 #--------------------------------------------------------------------------------------------------------------#
 
 # B - Sporulation
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5, 1, 0))
+par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
 box()
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
-abline(h=c(1:4), lty=2)
+labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
+axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
+abline(h=c(1:2), lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,205.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -258,15 +246,18 @@ segments(x0=x_coords$Cefoperazone, y0=c(sporulation_medians$Cefoperazone+sporula
 segments(x0=x_coords$Clindamycin, y0=c(sporulation_medians$Clindamycin+sporulation_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sporulation_medians$Clindamycin-sporulation_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(sporulation_medians$Streptomycin+sporulation_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sporulation_medians$Streptomycin-sporulation_sds$Streptomycin), lwd=1.2)
 
+mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+
 #--------------------------------------------------------------------------------------------------------------#
 
 # C - PaLoc
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5, 1, 0))
+par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
 box()
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
-abline(h=c(1:4), lty=2)
+labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
+axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
+abline(h=1, lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -279,15 +270,18 @@ segments(x0=x_coords$Cefoperazone, y0=c(paloc_medians$Cefoperazone+paloc_sds$Cef
 segments(x0=x_coords$Clindamycin, y0=c(paloc_medians$Clindamycin+paloc_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(paloc_medians$Clindamycin-paloc_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(paloc_medians$Streptomycin+paloc_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(paloc_medians$Streptomycin-paloc_sds$Streptomycin), lwd=1.2)
 
+mtext('C', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+
 #--------------------------------------------------------------------------------------------------------------#
 
 # D - Quorum sensing
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5, 1, 0))
+par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
 box()
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1, cex=1.5)
-abline(h=c(1:4), lty=2)
+labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
+axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
+abline(h=1, lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -299,6 +293,8 @@ colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
 segments(x0=x_coords$Cefoperazone, y0=c(quorum_medians$Cefoperazone+quorum_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(quorum_medians$Cefoperazone-quorum_sds$Cefoperazone), lwd=1.2)
 segments(x0=x_coords$Clindamycin, y0=c(quorum_medians$Clindamycin+quorum_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(quorum_medians$Clindamycin-quorum_sds$Clindamycin), lwd=1.2)
 segments(x0=x_coords$Streptomycin, y0=c(quorum_medians$Streptomycin+quorum_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(quorum_medians$Streptomycin-quorum_sds$Streptomycin), lwd=1.2)
+
+mtext('D', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 
 #--------------------------------------------------------------------------------------------------------------#
 
