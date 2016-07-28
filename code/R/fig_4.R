@@ -1,5 +1,5 @@
 
-deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -158,7 +158,7 @@ top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')
 
 # Read in growth rate data
 # Define variables
-growth_file <- '/home/mjenior/Desktop/growth_curve/formatted_wells.tsv'
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/formatted_growth.tsv'
 
 # Read in data
 growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
@@ -168,41 +168,48 @@ rm(growth_file)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format growth curves
-# Average treatement groups
-galactitol <- rowMeans(cbind(growth$E2, growth$F2, growth$G2), na.rm=TRUE)
-starch <-  rowMeans(cbind(growth$E3, growth$F3, growth$G3), na.rm=TRUE)
-fructose <-  rowMeans(cbind(growth$E4, growth$F4, growth$G4), na.rm=TRUE)
-mannitol <- rowMeans(cbind(growth$E6, growth$F6, growth$G6), na.rm=TRUE)
-salicin <- rowMeans(cbind(growth$E7, growth$F7, growth$G7), na.rm=TRUE)
-sorbitol <- rowMeans(cbind(growth$E8, growth$F8, growth$G8), na.rm=TRUE)
 
-y_glucose_y_aa <- rowMeans(cbind(growth$B2, growth$C2, growth$D2), na.rm=TRUE)
-n_glucose_y_aa <- rowMeans(cbind(growth$B3, growth$C3, growth$D3), na.rm=TRUE)
-y_glucose_n_aa <- rowMeans(cbind(growth$B4, growth$C4, growth$D4), na.rm=TRUE)
-n_glucose_n_aa <- rowMeans(cbind(growth$B5, growth$C5, growth$D5), na.rm=TRUE)
+# Find medians of treatement groups and subtract blanks
+sorbitol_median <- rowMedians(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
+sorbitol_median[sorbitol_median < 0] <- 0
+galactitol_median <- rowMedians(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
+galactitol_median[galactitol_median < 0] <- 0
+starch_median <- rowMedians(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
+starch_median[starch_median < 0] <- 0
+fructose_median <-  rowMedians(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
+fructose_median[fructose_median < 0] <- 0
+combination_median <- rowMedians(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
+combination_median[combination_median < 0] <- 0
+mannitol_median <- rowMedians(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
+mannitol_median[mannitol_median < 0] <- 0
+salicin_median <- rowMedians(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
+salicin_median[salicin_median < 0] <- 0
+y_glucose_y_aa_median <- rowMedians(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
+y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
+n_glucose_y_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
+n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
+y_glucose_n_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
+y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
+n_glucose_n_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
+growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median))
+rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
 
-y_glucose_n_MTV <- rowMeans(cbind(growth$B6, growth$C6, growth$D6), na.rm=TRUE) 
-n_glucose_n_MTV <- rowMeans(cbind(growth$B7, growth$C7, growth$D7), na.rm=TRUE) 
-
-blank <- rowMeans(cbind(growth$B9, growth$C9, growth$D9, growth$B10, growth$C10, growth$D10, growth$B11, growth$C11, growth$D11), na.rm=TRUE)
+# Standard deviations
+sorbitol_sd <- rowSds(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
+galactitol_sd <- rowSds(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
+starch_sd <-  rowSds(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
+fructose_sd <-  rowSds(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
+combination_sd <-  rowSds(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
+mannitol_sd <- rowSds(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
+salicin_sd <- rowSds(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
+y_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
+n_glucose_y_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
+y_glucose_n_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
+n_glucose_n_aa_sd <- rowSds(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
+growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd))
+rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
 rm(growth)
-
-# Subtract blank means
-galactitol <- galactitol - blank
-starch <- starch - blank
-fructose <- fructose - blank
-mannitol <- mannitol - blank
-salicin <- salicin - blank
-sorbitol <- sorbitol - blank
-
-y_glucose_y_aa <- y_glucose_y_aa - blank
-n_glucose_y_aa <- n_glucose_y_aa - blank
-y_glucose_n_aa <- y_glucose_n_aa - blank
-n_glucose_n_aa <- n_glucose_n_aa - blank
-
-y_glucose_n_MTV <- y_glucose_n_MTV - blank
-n_glucose_n_MTV <- n_glucose_n_MTV - blank
-rm(blank)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -247,14 +254,15 @@ text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.4) # labeled indegree
 text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
 text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
 mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
-Arrows(x0=0.7, y0=-0.9, x1=0.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
-Arrows(x0=0.7, y0=-0.9, x1=1.1, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
-segments(x0=0.6, y0=-0.85, x1=0.6, y1=-0.95, lwd=3)
-text(x=0.6, y=-1.03, '0', cex=1.6) 
-text(x=0.1, y=-1, expression(- infinity), cex=1.6)
-text(x=1.1, y=-1, expression(+ infinity), cex=1.6)
-text(x=1.1, y=-0.8, 'More likely taken from environment')
-text(x=0.15, y=-0.8, 'More likely added to environment')
+
+Arrows(x0=0.63, y0=-0.9, x1=0.12, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+Arrows(x0=0.63, y0=-0.9, x1=1.14, y1=-0.9, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+segments(x0=0.63, y0=-0.85, x1=0.63, y1=-0.95, lwd=3)
+text(x=0.63, y=-1.03, '0', cex=1.6) 
+text(x=0.12, y=-1, expression(- infinity), cex=1.6)
+text(x=1.14, y=-1, expression(+ infinity), cex=1.6)
+text(x=1.15, y=-0.8, 'More likely taken from environment')
+text(x=0.14, y=-0.8, 'More likely added to environment')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -267,39 +275,32 @@ segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11,
 
 # Add simulated means
 points(x=top_importances[c(14:7),3], y=c(1:8), cex=2, col='black', pch='|') # Gnotobiotic
-points(x=top_importances[2,3], y=11, cex=2, col='chartreuse4', pch='|') # Clindamycin
-points(x=top_importances[1,3], y=14, cex=2, col='dodgerblue3', pch='|') # Cefoperazone
-points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col='darkorange3', pch='|') # Streptomycin
+points(x=top_importances[2,3], y=11, cex=2, col=wes_palette("FantasticFox")[5], pch='|') # Clindamycin
+points(x=top_importances[1,3], y=14, cex=2, col=wes_palette("FantasticFox")[3], pch='|') # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col=wes_palette("FantasticFox")[1], pch='|') # Streptomycin
 
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D - Growth on important compounds
-par(mar=c(2,3,1,1), xaxs='i')
+par(mar=c(4,4,1,1), xaxs='i', yaxs='i')
 
 
+plot(growth_medians)
+segments(x0=growth_medians, y0=growth_medians+growth_sds, x1=growth_medians, y1=growth_medians-growth_sds)
 
-
-
-
-plot(0, type='o')
-
-abline(h=c(), lty=2)
+#anova()
+#https://www.researchgate.net/post/How_can_growth_curves_be_compared
 
 legend('topleft', legend=c(), col=c())
-
-
-
-
 mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
-rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file)
-rm(galactitol, starch, fructose, mannitol, salicin, sorbitol, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, y_glucose_n_MTV, n_glucose_n_MTV)
+rm(optimal_layout1, optimal_layout2, top_importances, largest_simple_graph, network, plot_file, growth_sds, growth_medians)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
