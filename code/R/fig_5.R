@@ -1,5 +1,5 @@
 
-deps <- c('shape', 'wesanderson', 'dplyr', 'NMF');
+deps <- c('shape', 'wesanderson', 'dplyr', 'NMF', 'gplots');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -8,14 +8,32 @@ for (dep in deps){
 }
 
 # Select files
-
+metabolites_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
 
 # Read in data
-
+metabolites <- read.delim(metabolites_file, sep='\t', header=TRUE)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format the data
+
+
+  
+  
+#-------------------------------------------------------------------------------------------------------------------------------------#
+  
+# Subset groups of interest
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Calculate significance
+
+
+
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -32,17 +50,26 @@ layout(matrix(c(1,1,
 
 # A - Heatmap of metabolites
 
+heatmap.2()
+
+
+mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # B - Bar chart comparison of specific compounds
 
 
+
+
+
+mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
 dev.off()
-rm()
+rm(metabolites)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
