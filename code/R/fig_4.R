@@ -170,46 +170,55 @@ rm(growth_file)
 # Format growth curves
 
 # Find medians of treatement groups and subtract blanks
-sorbitol_median <- rowMedians(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
+sorbitol_median <- rowMedians(cbind(growth$B9, growth$B10, growth$B11), na.rm=TRUE) - growth$B7
 sorbitol_median[sorbitol_median < 0] <- 0
-galactitol_median <- rowMedians(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
+galactitol_median <- rowMedians(cbind(growth$C9, growth$C10, growth$C11), na.rm=TRUE) - growth$C7
 galactitol_median[galactitol_median < 0] <- 0
-starch_median <- rowMedians(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
+starch_median <- rowMedians(cbind(growth$D9, growth$D10, growth$D11), na.rm=TRUE) - growth$D7
 starch_median[starch_median < 0] <- 0
-fructose_median <-  rowMedians(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
+fructose_median <-  rowMedians(cbind(growth$E9, growth$E10, growth$E11), na.rm=TRUE) - growth$E7
 fructose_median[fructose_median < 0] <- 0
-combination_median <- rowMedians(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
+combination_median <- rowMedians(cbind(growth$G3, growth$G4, growth$G5), na.rm=TRUE) - growth$B11
 combination_median[combination_median < 0] <- 0
-mannitol_median <- rowMedians(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
+mannitol_median <- rowMedians(cbind(growth$F9, growth$F10, growth$F11), na.rm=TRUE) - growth$F7
 mannitol_median[mannitol_median < 0] <- 0
-salicin_median <- rowMedians(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
+salicin_median <- rowMedians(cbind(growth$G9, growth$G10, growth$G11), na.rm=TRUE) - growth$G7
 salicin_median[salicin_median < 0] <- 0
 y_glucose_y_aa_median <- rowMedians(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
 y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
-n_glucose_y_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
+n_glucose_y_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$C2
 n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
 y_glucose_n_aa_median <- rowMedians(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
 y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
-n_glucose_n_aa_median <- rowMedians(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median <- rowMedians(cbind(growth$E3, growth$E4, growth$E5), na.rm=TRUE) - growth$E2
 n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
-growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median))
-rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median)
+bhi_median <- rowMedians(cbind(growth$F3, growth$F4, growth$F5), na.rm=TRUE) - growth$E2
+bhi_median[bhi_median < 0] <- 0
+growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median))
+colnames(growth_medians) <- rownames(growth)
+rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
 
 # Standard deviations
-sorbitol_sd <- rowSds(cbind(growth$B8, growth$B9, growth$B10), na.rm=TRUE) - growth$B7
-galactitol_sd <- rowSds(cbind(growth$C8, growth$C9, growth$C10), na.rm=TRUE) - growth$C7
-starch_sd <-  rowSds(cbind(growth$D8, growth$D9, growth$D10), na.rm=TRUE) - growth$D7
-fructose_sd <-  rowSds(cbind(growth$E8, growth$E9, growth$E10), na.rm=TRUE) - growth$E7
-combination_sd <-  rowSds(cbind(growth$C11, growth$D11, growth$E11), na.rm=TRUE) - growth$B11
-mannitol_sd <- rowSds(cbind(growth$F8, growth$F9, growth$F10), na.rm=TRUE) - growth$F7
-salicin_sd <- rowSds(cbind(growth$E8, growth$F9, growth$G10), na.rm=TRUE) - growth$G7
-y_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE) - growth$B2
-n_glucose_y_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$C2
-y_glucose_n_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE) - growth$D2
-n_glucose_n_aa_sd <- rowSds(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE) - growth$E2
-growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd))
-rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd)
+sorbitol_sd <- rowSds(cbind(growth$B9, growth$B10, growth$B11), na.rm=TRUE)
+galactitol_sd <- rowSds(cbind(growth$C9, growth$C10, growth$C11), na.rm=TRUE)
+starch_sd <-  rowSds(cbind(growth$D9, growth$D10, growth$D11), na.rm=TRUE)
+fructose_sd <-  rowSds(cbind(growth$E9, growth$E10, growth$E11), na.rm=TRUE)
+combination_sd <-  rowSds(cbind(growth$G3, growth$G4, growth$G5), na.rm=TRUE)
+mannitol_sd <- rowSds(cbind(growth$F9, growth$F10, growth$F11), na.rm=TRUE)
+salicin_sd <- rowSds(cbind(growth$E9, growth$F10, growth$G11), na.rm=TRUE)
+y_glucose_y_aa_sd <- rowSds(cbind(growth$B3, growth$B4, growth$B5), na.rm=TRUE)
+n_glucose_y_aa_sd <- rowSds(cbind(growth$D3, growth$D4, growth$D5), na.rm=TRUE)
+y_glucose_n_aa_sd <- rowSds(cbind(growth$C3, growth$C4, growth$C5), na.rm=TRUE)
+n_glucose_n_aa_sd <- rowSds(cbind(growth$E3, growth$E4, growth$E5), na.rm=TRUE)
+bhi_sd <- rowSds(cbind(growth$F3, growth$F4, growth$F5), na.rm=TRUE)
+growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd))
+colnames(growth_sds) <- rownames(growth)
+rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
 rm(growth)
+
+# Subset for first 12 hours of assay
+growth_medians <- as.data.frame(t(growth_medians[,1:25]))
+growth_sds <- as.data.frame(t(growth_sds[,1:25]))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -275,25 +284,72 @@ segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11,
 
 # Add simulated means
 points(x=top_importances[c(14:7),3], y=c(1:8), cex=2, col='black', pch='|') # Gnotobiotic
-points(x=top_importances[2,3], y=11, cex=2, col=wes_palette("FantasticFox")[5], pch='|') # Clindamycin
-points(x=top_importances[1,3], y=14, cex=2, col=wes_palette("FantasticFox")[3], pch='|') # Cefoperazone
-points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col=wes_palette("FantasticFox")[1], pch='|') # Streptomycin
+points(x=top_importances[2,3], y=11, cex=2, col='black', pch='|') # Clindamycin
+points(x=top_importances[1,3], y=14, cex=2, col='black', pch='|') # Cefoperazone
+points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col='black', pch='|') # Streptomycin
 
 mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D - Growth on important compounds
-par(mar=c(4,4,1,1), xaxs='i', yaxs='i')
+par(mar=c(4,4,1,1), xaxs='i')
+
+plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', yaxt='n', xlim=c(0,26), ylim=c(0,0.6), lwd=2, pch=15, xlab='', ylab='')
+segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
+lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=16)
+segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2)
+lines(growth_medians$y_glucose_n_aa_median, type='o', lwd=2, pch=17)
+segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2)
+lines(growth_medians$n_glucose_n_aa_median, type='o', lwd=2, pch=18, cex=1.5)
+segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2)
+
+color_palette <- c('firebrick3', 'dodgerblue2', 'darkgoldenrod2', 'darkorange3', 'darkorchid3', 'blue3', 'chartreuse4')
+lines(growth_medians$sorbitol_median, type='o', col='firebrick3', lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$sorbitol_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2)
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2)
+lines(growth_medians$galactitol_median, type='o', col=color_palette[1], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1), y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2, col=color_palette[1])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$galactitol_median+growth_sds$galactitol_sd, lwd=2, col=color_palette[1])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$galactitol_median-growth_sds$galactitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2, col=color_palette[1])
+lines(growth_medians$starch_median, type='o', col=color_palette[2], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2, col=color_palette[2])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$starch_median+growth_sds$starch_sd, lwd=2, col=color_palette[2])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$starch_median-growth_sds$starch_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2, col=color_palette[2])
+lines(growth_medians$fructose_median, type='o', col=color_palette[3], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2, col=color_palette[3])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2, col=color_palette[3])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2, col=color_palette[3])
+lines(growth_medians$combination_median, type='o', col=color_palette[4], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$combination_median+growth_sds$combination_sd, x1=seq(1,25,1), y1=growth_medians$combination_median-growth_sds$combination_sd, lwd=2, col=color_palette[4])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$combination_median+growth_sds$combination_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$combination_median+growth_sds$combination_sd, lwd=2, col=color_palette[4])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$combination_median-growth_sds$combination_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$combination_median-growth_sds$combination_sd, lwd=2, col=color_palette[4])
+lines(growth_medians$mannitol_median, type='o', col=color_palette[5], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2, col=color_palette[5])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2, col=color_palette[5])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2, col=color_palette[5])
+lines(growth_medians$salicin_median, type='o', col=color_palette[6], lwd=2, pch=19)
+segments(x0=seq(1,25,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2, col=color_palette[6])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2, col=color_palette[6])
+segments(x0=seq(1,25,1)-0.1, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,25,1)+0.1, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2, col=color_palette[6])
 
 
-plot(growth_medians)
-segments(x0=growth_medians, y0=growth_medians+growth_sds, x1=growth_medians, y1=growth_medians-growth_sds)
+
 
 #anova()
 #https://www.researchgate.net/post/How_can_growth_curves_be_compared
 
-legend('topleft', legend=c(), col=c())
+legend('topleft', legend=c('+Glucose +AA','+Glucose -AA','-Glucose +AA','-Glucose -AA','Sorbitol','Galactitol','Starch','Fructose','Combination','Mannitol','Salicin'), 
+       col=c('black','black','black','black',color_palette), pch=c(15,16,17,18,19,19,19,19,19,19,19))
 mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

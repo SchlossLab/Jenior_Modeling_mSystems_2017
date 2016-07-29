@@ -60,7 +60,7 @@ mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 # B - Bar chart comparison of specific compounds
 
 
-
+barplot()
 
 
 mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)

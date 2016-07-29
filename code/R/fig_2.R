@@ -308,7 +308,7 @@ mtext('D', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 
 # Clean up
 dev.off()
-rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, paloc_medians, paloc_sds, plot_file, select_palette, x_coords)
+rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, paloc_medians, paloc_sds, plot_file, select_palette, x_coords, labelsY)
 for (dep in deps){
   pkg <- paste('package:', dep,sep='')
    detach(pkg, character.only = TRUE)
