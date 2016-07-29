@@ -206,10 +206,12 @@ layout(matrix(c(1,1,
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
+abline(h=c(1:2), lty=2)
+barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
+        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3), add=TRUE)
 box()
 labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
-abline(h=c(1:2), lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,83.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -230,10 +232,12 @@ mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
+abline(h=c(1:2), lty=2)
+barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3), add=TRUE)
 box()
 labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
-abline(h=c(1:2), lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,205.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -254,10 +258,12 @@ mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
+abline(h=1, lty=2)
+barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2), add=TRUE)
 box()
 labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
 axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
-abline(h=1, lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -278,10 +284,12 @@ mtext('C', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
         ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
+abline(h=1, lty=2)
+barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2), add=TRUE)
 box()
 labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
 axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
-abline(h=1, lty=2)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
