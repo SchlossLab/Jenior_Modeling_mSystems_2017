@@ -1,4 +1,5 @@
 
+# Load dependencies
 deps <- c('shape', 'wesanderson', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
