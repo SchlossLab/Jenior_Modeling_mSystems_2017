@@ -232,53 +232,69 @@ growth_sds <- as.data.frame(t(growth_sds[,1:25]))
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
 pdf(file=plot_file, width=17, height=16)
-layout(matrix(c(1,2,
-                3,4), nrow=2, ncol=2, byrow=TRUE))
+layout(matrix(c(1,2,3,3,3,4,
+                5,6,3,3,3,7,
+                8,9,3,3,3,10,
+                11,11,11,12,12,12,
+                11,11,11,12,12,12,
+                11,11,11,12,12,12), nrow=6, ncol=6, byrow=TRUE))
+
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# A - Large component of graph
-par(mar=c(1,3,1,1))
-plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
-     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
-legend(x=0.4, y=1.1, legend=c('KEGG ortholog', 'Reaction substrate'), 
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-legend(x=-1.2, y=-0.75, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
-       pt.cex=0, text.font=c(2,1,1), bty='n')
-mtext('A', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# B - Example network and importance calculation
+# A - Example network and importance calculation
 par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(-1, 0, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.5) # Importance algorithm
-text(x=-1, y=1.1, labels='Tetrathionate reductase', font=2) # Enzyme 1 name
-text(x=-1, y=1, labels='5', col='white') # Enzyme 1 transcription
-text(x=-0.5, y=-1.3, labels='Sulfane reductase', font=2) # Enzyme 2 name
-text(x=-0.5, y=-1, labels='97', col='white', cex=2) # Enzyme 2 transcription
-text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2) # Enzyme 3
-text(x=0.99, y=0.44, labels='115', col='white', cex=2.1) # Enzyme 3 transcription
-text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.3, font=c(2,1)) # Compound & calculated importance
+text(-0.9, 0, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.9) # Importance algorithm
+text(x=-1, y=1.13, labels='Tetrathionate reductase', font=2, cex=1.6) # Enzyme 1 name
+text(x=-1, y=1, labels='5', col='white', cex=1.2) # Enzyme 1 transcription
+text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.6) # Enzyme 2 name
+text(x=-0.5, y=-1, labels='97', col='white', cex=2.3) # Enzyme 2 transcription
+text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2, cex=1.6) # Enzyme 3
+text(x=0.99, y=0.44, labels='115', col='white', cex=2.5) # Enzyme 3 transcription
+text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.7, font=c(2,1)) # Compound & calculated importance
 segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
 legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
-text(x=-0.5, y=-1.1, expression(t[i]), col='white', cex=1.4) # labeled transcription for input reactions
-text(x=0.99, y=0.34, expression(t[i]), col='white', cex=1.4)
-text(x=-1, y=0.9, expression(t[o]), col='black', cex=1.4) # labeled transcription for output reactions
-text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.4) # labeled indegree
-text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.4) # labeled outdegree
-text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.4)
-mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
-
-Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=2, bty='n')
+text(x=-0.5, y=-1.1, expression(t[i]), col='white', cex=1.9) # labeled transcription for input reactions
+text(x=0.99, y=0.34, expression(t[i]), col='white', cex=1.9)
+text(x=-1, y=0.9, expression(t[o]), col='black', cex=1.9) # labeled transcription for output reactions
+text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.9) # labeled indegree
+text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.9) # labeled outdegree
+text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.9)
+#mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
+Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3) # Score explanation line
 Arrows(x0=0.63, y0=-0.7, x1=1.14, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
 segments(x0=0.63, y0=-0.65, x1=0.63, y1=-0.75, lwd=3)
-text(x=0.63, y=-0.83, '0', cex=1.6) 
-text(x=0.12, y=-0.8, expression(- infinity), cex=1.8)
-text(x=1.14, y=-0.8, expression(+ infinity), cex=1.8)
-text(x=1.15, y=-0.6, 'More likely taken from environment')
-text(x=0.14, y=-0.6, 'More likely added to environment')
+text(x=0.63, y=-0.83, '0', cex=2.1) 
+text(x=0.12, y=-0.8, expression(- infinity), cex=2.3)
+text(x=1.14, y=-0.8, expression(+ infinity), cex=2.3)
+text(x=1.15, y=-0.6, 'More likely consumed', cex=1.6)
+text(x=0.14, y=-0.6, 'More likely released', cex=1.6)
+text(x=0.63, y=-0.95, 'Importance Score', cex=2.3, font=2) 
+
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+
+# Large component of C. difficile 630 graph
+par(mar=c(1,3,1,1))
+plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
+     edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
+#legend(x=0.4, y=1.1, legend=c('KEGG ortholog', 'Reaction substrate'), 
+#       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.3)
+#legend(x=-1.2, y=-0.75, legend=c('Total nodes: 1070', 'Enzyme nodes: 404', 'Substrate nodes: 666'), 
+#       pt.cex=0, text.font=c(2,1,1), bty='n')
+mtext('A', side=2, line=2, las=2, adj=-2, padj=-10, cex=1.8)
+
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+
+
+# Boxes in A are drawn in seperate software (Gimp)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -295,66 +311,66 @@ points(x=top_importances[2,3], y=11, cex=2, col='black', pch='|') # Clindamycin
 points(x=top_importances[1,3], y=14, cex=2, col='black', pch='|') # Cefoperazone
 points(x=top_importances[c(3:6),3], y=c(17:20), cex=2, col='black', pch='|') # Streptomycin
 
-mtext('C', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
+mtext('B', side=2, line=2, las=2, adj=0.5, padj=-14.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # D - Growth on important compounds
 par(mar=c(5,5,1,1), las=1, cex.lab=2, cex.axis=1.8)
 
-plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', xlim=c(0,26), ylim=c(-0.03,0.65), lwd=2, pch=15, xlab='Hour', ylab=expression(OD[600]), cex=2)
+plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', xlim=c(0,26), ylim=c(-0.03,0.65), lwd=2, pch=15, xlab='Hour', ylab=expression(OD[600]), cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
-lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=16, cex=2)
+lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=16, cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2)
-lines(growth_medians$y_glucose_n_aa_median, type='o', lwd=2, pch=17, cex=2)
+lines(growth_medians$y_glucose_n_aa_median, type='o', lwd=2, pch=17, cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2)
-lines(growth_medians$n_glucose_n_aa_median, type='o', lwd=2, pch=18, cex=2.2)
+lines(growth_medians$n_glucose_n_aa_median, type='o', lwd=2, pch=18, cex=2.6)
 segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2)
 
-color_palette <- c('firebrick2', 'dodgerblue2', 'darkgoldenrod2', 'darkorange3', 'darkorchid3', 'chartreuse4')
-lines(growth_medians$sorbitol_median, type='o', col=color_palette[1], lwd=2, pch=19, cex=1.5)
-segments(x0=seq(1,25,1), y0=growth_medians$sorbitol_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=color_palette[1])
+color_palette <- c('darkorchid4', 'chartreuse4','cyan1')
+lines(growth_medians$sorbitol_median, type='o', col=color_palette[1], lwd=2, pch=19, cex=1.7)
+segments(x0=seq(1,25,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,25,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=color_palette[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=color_palette[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=color_palette[1])
-lines(growth_medians$galactitol_median, type='o', col=color_palette[2], lwd=2, pch=19, cex=1.5)
+lines(growth_medians$galactitol_median, type='o', col=color_palette[2], lwd=2, pch=19, cex=1.7)
 segments(x0=seq(1,25,1), y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1), y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2.5, col=color_palette[2])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$galactitol_median+growth_sds$galactitol_sd, lwd=2.5, col=color_palette[2])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$galactitol_median-growth_sds$galactitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2.5, col=color_palette[2])
-lines(growth_medians$starch_median, type='o', col=color_palette[3], lwd=2, pch=19, cex=1.5)
+lines(growth_medians$starch_median, type='o', col=color_palette[3], lwd=2, pch=19, cex=1.7)
 segments(x0=seq(1,25,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=color_palette[3])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$starch_median+growth_sds$starch_sd, lwd=2.5, col=color_palette[3])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$starch_median-growth_sds$starch_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=color_palette[3])
-lines(growth_medians$fructose_median, type='o', col=color_palette[4], lwd=2, pch=19, cex=1.5)
-segments(x0=seq(1,25,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=color_palette[4])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2.5, col=color_palette[4])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=color_palette[4])
+lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=19, cex=1.7)
+segments(x0=seq(1,25,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 #lines(growth_medians$combination_median, type='o', col=color_palette[5], lwd=2, pch=19, cex=1.5)
 #segments(x0=seq(1,25,1), y0=growth_medians$combination_median+growth_sds$combination_sd, x1=seq(1,25,1), y1=growth_medians$combination_median-growth_sds$combination_sd, lwd=2.5, col=color_palette[5])
 #segments(x0=seq(1,25,1)-0.2, y0=growth_medians$combination_median+growth_sds$combination_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$combination_median+growth_sds$combination_sd, lwd=2.5, col=color_palette[5])
 #segments(x0=seq(1,25,1)-0.2, y0=growth_medians$combination_median-growth_sds$combination_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$combination_median-growth_sds$combination_sd, lwd=2.5, col=color_palette[5])
-lines(growth_medians$mannitol_median, type='o', col=color_palette[5], lwd=2, pch=19, cex=1.5)
-segments(x0=seq(1,25,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=color_palette[5])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=color_palette[5])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=color_palette[5])
-lines(growth_medians$salicin_median, type='o', col=color_palette[6], lwd=2.5, pch=19, cex=1.5)
-segments(x0=seq(1,25,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=color_palette[6])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=color_palette[6])
-segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=color_palette[6])
+lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2, pch=19, cex=1.7)
+segments(x0=seq(1,25,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=19, cex=1.7)
+segments(x0=seq(1,25,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 
 axis(1, at=seq(1,26,4), labels=seq(0,12,2))
 
-legend('topleft', legend=c('+Glucose +AA','+Glucose -AA','-Glucose +AA','-Glucose -AA','D-Sorbitol','Galactitol','Starch','D-Fructose','Mannitol','Salicin'), 
-       col=c('black','black','black','black',color_palette), pch=c(15,16,17,18,19,19,19,19,19,19), cex=2, pt.cex=2.3)
+legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Sorbitol','Galactitol','Starch','D-Fructose','Mannitol','Salicin'), 
+       col=c('black','black','black','black',color_palette,wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5]), pch=c(15,16,17,18,19,19,19,19,19,19), cex=2, pt.cex=2.3)
 
-mtext('D', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
+mtext('C', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
