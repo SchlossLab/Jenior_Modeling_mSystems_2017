@@ -251,17 +251,20 @@ rm(temp, control_test)
 
 # Calculate differences
 fructose_sig <- aov(formula=od ~ substrate * time, data=fructose_test)
-summary(fructose_sig) # 
+summary(fructose_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
-summary(sorbitol_sig) # 
+summary(sorbitol_sig) # p = 0.02474 *, corrected =  4.948e-02 *
 galactitol_sig <- aov(formula=od ~ substrate * time, data=galactitol_test)
-summary(galactitol_sig) # 
+summary(galactitol_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 starch_sig <- aov(formula=od ~ substrate * time, data=starch_test)
-summary(starch_sig) # 
+summary(starch_sig) # n.s.
 mannitol_sig <- aov(formula=od ~ substrate * time, data=mannitol_test)
-summary(mannitol_sig) # 
+summary(mannitol_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 salicin_sig <- aov(formula=od ~ substrate * time, data=salicin_test)
-summary(salicin_sig) # 
+summary(salicin_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
+
+p_values <- c(2e-16,0.02474,2e-16,0.663,2e-16,2e-16)
+corrected_p_values <- p.adjust(p_values, method='holm')
 
 # Clean up
 rm(fructose_test, sorbitol_test, galactitol_test, starch_test, mannitol_test, salicin_test)
