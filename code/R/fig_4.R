@@ -250,16 +250,22 @@ salicin_test$od <- as.numeric(as.character(salicin_test$od))
 rm(temp, control_test)
 
 # Calculate differences
-aov(formula=substrate ~ od * time, data=fructose_test) # 
-aov(formula=substrate ~ od * time, data=sorbitol_test) # 
-aov(formula=substrate ~ od * time, data=galactitol_test) # 
-aov(formula=substrate ~ od * time, data=starch_test) # 
-aov(formula=substrate ~ od * time, data=mannitol_test) # 
-aov(formula=substrate ~ od * time, data=salicin_test) # 
-
+fructose_sig <- aov(formula=od ~ substrate * time, data=fructose_test)
+summary(fructose_sig) # 
+sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
+summary(sorbitol_sig) # 
+galactitol_sig <- aov(formula=od ~ substrate * time, data=galactitol_test)
+summary(galactitol_sig) # 
+starch_sig <- aov(formula=od ~ substrate * time, data=starch_test)
+summary(starch_sig) # 
+mannitol_sig <- aov(formula=od ~ substrate * time, data=mannitol_test)
+summary(mannitol_sig) # 
+salicin_sig <- aov(formula=od ~ substrate * time, data=salicin_test)
+summary(salicin_sig) # 
 
 # Clean up
 rm(fructose_test, sorbitol_test, galactitol_test, starch_test, mannitol_test, salicin_test)
+rm(fructose_sig, sorbitol_sig, galactitol_sig, starch_sig, mannitol_sig, salicin_sig)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
