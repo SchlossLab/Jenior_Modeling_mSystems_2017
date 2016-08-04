@@ -170,35 +170,96 @@ growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
 growth <- as.data.frame(t(growth))
 rm(growth_file)
 
-# Seperate to groups of each growth substrate
-sorbitol <- cbind(growth$B9, growth$B10, growth$B11)
-galactitol <- cbind(growth$C9, growth$C10, growth$C11)
-starch <- cbind(growth$D9, growth$D10, growth$D11)
-fructose <- cbind(growth$E9, growth$E10, growth$E11)
-combination <- cbind(growth$G3, growth$G4, growth$G5)
-mannitol <- cbind(growth$F9, growth$F10, growth$F11)
-salicin <- cbind(growth$G9, growth$G10, growth$G11)
-y_glucose_y_aa <- cbind(growth$B3, growth$B4, growth$B5)
-n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5)
-y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5)
-n_glucose_n_aa <- cbind(growth$E3, growth$E4, growth$E5)
-bhi <- cbind(growth$F3, growth$F4, growth$F5)
+# Seperate to groups of each growth substrate and subset to the first 12 hours
+sorbitol <- cbind(growth$B9, growth$B10, growth$B11)[1:25,]
+galactitol <- cbind(growth$C9, growth$C10, growth$C11)[1:25,]
+starch <- cbind(growth$D9, growth$D10, growth$D11)[1:25,]
+fructose <- cbind(growth$E9, growth$E10, growth$E11)[1:25,]
+combination <- cbind(growth$G3, growth$G4, growth$G5)[1:25,]
+mannitol <- cbind(growth$F9, growth$F10, growth$F11)[1:25,]
+salicin <- cbind(growth$G9, growth$G10, growth$G11)[1:25,]
+y_glucose_y_aa <- cbind(growth$B3, growth$B4, growth$B5)[1:25,]
+n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5)[1:25,]
+y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5)[1:25,]
+n_glucose_n_aa <- cbind(growth$E3, growth$E4, growth$E5)[1:25,]
+bhi <- cbind(growth$F3, growth$F4, growth$F5)[1:25,]
+rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Prepare data for statistical tests
+control_test <- c()
+for (time in 1:25){
+  temp <- cbind('control', time, n_glucose_y_aa[time,])
+  control_test <- rbind(control_test, temp)
+}
 
-#test_1 <- as.data.frame(cbind(sorbitol, galactitol))
+fructose_test <- c()
+for (time in 1:25){
+  temp <- cbind('fructose', time, fructose[time,])
+  fructose_test <- rbind(fructose_test, temp)
+}
+fructose_test <- as.data.frame(rbind(control_test, fructose_test))
+colnames(fructose_test) <- c('substrate','time','od')
+fructose_test$od <- as.numeric(as.character(fructose_test$od))
+
+sorbitol_test <- c()
+for (time in 1:25){
+  temp <- cbind('sorbitol', time, sorbitol[time,])
+  sorbitol_test <- rbind(sorbitol_test, temp)
+}
+sorbitol_test <- as.data.frame(rbind(control_test, sorbitol_test))
+colnames(sorbitol_test) <- c('substrate','time','od')
+sorbitol_test$od <- as.numeric(as.character(sorbitol_test$od))
+
+galactitol_test <- c()
+for (time in 1:25){
+  temp <- cbind('galactitol', time, galactitol[time,])
+  galactitol_test <- rbind(galactitol_test, temp)
+}
+galactitol_test <- as.data.frame(rbind(control_test, galactitol_test))
+colnames(galactitol_test) <- c('substrate','time','od')
+galactitol_test$od <- as.numeric(as.character(galactitol_test$od))
+
+starch_test <- c()
+for (time in 1:25){
+  temp <- cbind('starch', time, starch[time,])
+  starch_test <- rbind(starch_test, temp)
+}
+starch_test <- as.data.frame(rbind(control_test, starch_test))
+colnames(starch_test) <- c('substrate','time','od')
+starch_test$od <- as.numeric(as.character(starch_test$od))
+
+mannitol_test <- c()
+for (time in 1:25){
+  temp <- cbind('mannitol', time, mannitol[time,])
+  mannitol_test <- rbind(mannitol_test, temp)
+}
+mannitol_test <- as.data.frame(rbind(control_test, mannitol_test))
+colnames(mannitol_test) <- c('substrate','time','od')
+mannitol_test$od <- as.numeric(as.character(mannitol_test$od))
+
+salicin_test <- c()
+for (time in 1:25){
+  temp <- cbind('salicin', time, salicin[time,])
+  salicin_test <- rbind(salicin_test, temp)
+}
+salicin_test <- as.data.frame(rbind(control_test, salicin_test))
+colnames(salicin_test) <- c('substrate','time','od')
+salicin_test$od <- as.numeric(as.character(salicin_test$od))
+rm(temp, control_test)
 
 # Calculate differences
-#sorbitol_ <- adonis(n_glucose_y_aa ~ sorbitol, permutations=1000, method='bray')
+aov(formula=substrate ~ od * time, data=fructose_test) # 
+aov(formula=substrate ~ od * time, data=sorbitol_test) # 
+aov(formula=substrate ~ od * time, data=galactitol_test) # 
+aov(formula=substrate ~ od * time, data=starch_test) # 
+aov(formula=substrate ~ od * time, data=mannitol_test) # 
+aov(formula=substrate ~ od * time, data=salicin_test) # 
 
-#test <- adonis(sorbitol ~ sorbitol, permutations=1000, method='bray')
 
-# Correct p-values
-#p_values <- p.adjust(p_values, 'holm')
-
-#rm()
+# Clean up
+rm(fructose_test, sorbitol_test, galactitol_test, starch_test, mannitol_test, salicin_test)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
