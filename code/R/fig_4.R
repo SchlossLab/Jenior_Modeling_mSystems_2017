@@ -332,7 +332,8 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(4,3,1,1), xaxs='i')
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color='black', 
-         xlab='Metabolite Importance Score', xlim=c(-2,10), gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'black'), pch=19)
+         xlab='Metabolite Importance Score', xlim=c(-2,10), 
+         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'black'), pch=19)
 segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
 
 # Add simulated means
@@ -397,7 +398,8 @@ segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin
 axis(1, at=seq(1,26,4), labels=seq(0,12,2))
 
 legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Sorbitol','Galactitol','Starch','D-Fructose','Mannitol','Salicin'), 
-       col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5]), pch=c(15,16,18,17,15,16,18,17,19,19), cex=2, pt.cex=3.1)
+       col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5]), 
+       pch=c(15,16,18,17,15,16,18,17,19,19), cex=2, pt.cex=3.1)
 
 segments(x0=c(26,27,28), y0=c(0.556,0.549,0.430), x1=c(26,27,28), y1=c(0.211,0.211,0.211), lwd=2.5)
 text(x=c(26.3,27.3,28.3), y=c(0.384,0.38,0.321), labels=c('***','***','***'), cex=2.3, srt = 90)
