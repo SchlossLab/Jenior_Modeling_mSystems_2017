@@ -1,4 +1,5 @@
 
+# Load dependencies
 deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
@@ -347,7 +348,7 @@ mtext('B', side=2, line=2, las=2, adj=0.5, padj=-15.5, cex=1.8)
 # C - Growth on important compounds
 par(mar=c(5,5,1,1), las=1, cex.lab=2, cex.axis=1.8)
 
-plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', xlim=c(0,26), ylim=c(-0.03,0.65), lwd=2, pch=15, xlab='Hour', ylab=expression(OD[600]), cex=2.3)
+plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', xlim=c(0,29), ylim=c(-0.03,0.65), lwd=2, pch=15, xlab='Hours Postinoculation', ylab=expression(OD[600]), cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
@@ -364,7 +365,7 @@ segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_gl
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2)
 
-lines(growth_medians$sorbitol_median, type='o', wes_palette('FantasticFox')[1], lwd=2, pch=15, cex=2.3)
+lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=15, cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,25,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
@@ -372,7 +373,7 @@ lines(growth_medians$galactitol_median, type='o', col=wes_palette('FantasticFox'
 segments(x0=seq(1,25,1), y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1), y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$galactitol_median+growth_sds$galactitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$galactitol_median+growth_sds$galactitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$galactitol_median-growth_sds$galactitol_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$galactitol_median-growth_sds$galactitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-lines(growth_medians$starch_median, type='o', col=color_palette[3], lwd=2, pch=18, cex=2.3)
+lines(growth_medians$starch_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=18, cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$starch_median+growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$starch_median-growth_sds$starch_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
@@ -397,6 +398,9 @@ axis(1, at=seq(1,26,4), labels=seq(0,12,2))
 
 legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Sorbitol','Galactitol','Starch','D-Fructose','Mannitol','Salicin'), 
        col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5]), pch=c(15,16,18,17,15,16,18,17,19,19), cex=2, pt.cex=3.1)
+
+segments(x0=c(26,27,28), y0=c(0.556,0.549,0.430), x1=c(26,27,28), y1=c(0.211,0.211,0.211), lwd=2.5)
+text(x=c(26.3,27.3,28.3), y=c(0.384,0.38,0.321), labels=c('***','***','***'), cex=2.3, srt = 90)
 
 mtext('C', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
 
