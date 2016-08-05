@@ -183,7 +183,6 @@ n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5)[1:25,]
 y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5)[1:25,]
 n_glucose_n_aa <- cbind(growth$E3, growth$E4, growth$E5)[1:25,]
 bhi <- cbind(growth$F3, growth$F4, growth$F5)[1:25,]
-rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -247,13 +246,13 @@ for (time in 1:25){
 salicin_test <- as.data.frame(rbind(control_test, salicin_test))
 colnames(salicin_test) <- c('substrate','time','od')
 salicin_test$od <- as.numeric(as.character(salicin_test$od))
-rm(temp, control_test)
+rm(temp, time, control_test)
 
 # Calculate differences
 fructose_sig <- aov(formula=od ~ substrate * time, data=fructose_test)
 summary(fructose_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
-summary(sorbitol_sig) # p = 0.02474 *, corrected =  4.948e-02 *
+summary(sorbitol_sig) # p = 0.02474 *, corrected =  0.148 n.s.
 galactitol_sig <- aov(formula=od ~ substrate * time, data=galactitol_test)
 summary(galactitol_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 starch_sig <- aov(formula=od ~ substrate * time, data=starch_test)
@@ -264,9 +263,10 @@ salicin_sig <- aov(formula=od ~ substrate * time, data=salicin_test)
 summary(salicin_sig) # p < 2e-16 ***, corrected = 1.2e-15 ***
 
 p_values <- c(2e-16,0.02474,2e-16,0.663,2e-16,2e-16)
-corrected_p_values <- p.adjust(p_values, method='holm')
+corrected_p_values <- p.adjust(p_values, method='bonferroni')
 
 # Clean up
+rm(p_values, corrected_p_values)
 rm(fructose_test, sorbitol_test, galactitol_test, starch_test, mannitol_test, salicin_test)
 rm(fructose_sig, sorbitol_sig, galactitol_sig, starch_sig, mannitol_sig, salicin_sig)
 
@@ -275,32 +275,31 @@ rm(fructose_sig, sorbitol_sig, galactitol_sig, starch_sig, mannitol_sig, salicin
 # Format growth curves
 
 # Find medians of treatement groups and subtract blanks
-sorbitol_median <- rowMedians(sorbitol, na.rm=TRUE) - growth$B8
+sorbitol_median <- rowMedians(sorbitol, na.rm=TRUE) - growth$B8[1:25]
 sorbitol_median[sorbitol_median < 0] <- 0
-galactitol_median <- rowMedians(galactitol, na.rm=TRUE) - growth$C8
+galactitol_median <- rowMedians(galactitol, na.rm=TRUE) - growth$C8[1:25]
 galactitol_median[galactitol_median < 0] <- 0
-starch_median <- rowMedians(starch, na.rm=TRUE) - growth$D8
+starch_median <- rowMedians(starch, na.rm=TRUE) - growth$D8[1:25]
 starch_median[starch_median < 0] <- 0
-fructose_median <-  rowMedians(fructose, na.rm=TRUE) - growth$E8
+fructose_median <-  rowMedians(fructose, na.rm=TRUE) - growth$E8[1:25]
 fructose_median[fructose_median < 0] <- 0
-combination_median <- rowMedians(combination, na.rm=TRUE) - growth$G2
+combination_median <- rowMedians(combination, na.rm=TRUE) - growth$G2[1:25]
 combination_median[combination_median < 0] <- 0
-mannitol_median <- rowMedians(mannitol, na.rm=TRUE) - growth$F8
+mannitol_median <- rowMedians(mannitol, na.rm=TRUE) - growth$F8[1:25]
 mannitol_median[mannitol_median < 0] <- 0
-salicin_median <- rowMedians(salicin, na.rm=TRUE) - growth$G7
+salicin_median <- rowMedians(salicin, na.rm=TRUE) - growth$G7[1:25]
 salicin_median[salicin_median < 0] <- 0
-y_glucose_y_aa_median <- rowMedians(y_glucose_y_aa, na.rm=TRUE) - growth$B2
+y_glucose_y_aa_median <- rowMedians(y_glucose_y_aa, na.rm=TRUE) - growth$B2[1:25]
 y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
-n_glucose_y_aa_median <- rowMedians(n_glucose_y_aa, na.rm=TRUE) - growth$D2
+n_glucose_y_aa_median <- rowMedians(n_glucose_y_aa, na.rm=TRUE) - growth$D2[1:25]
 n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
-y_glucose_n_aa_median <- rowMedians(y_glucose_n_aa, na.rm=TRUE) - growth$C2
+y_glucose_n_aa_median <- rowMedians(y_glucose_n_aa, na.rm=TRUE) - growth$C2[1:25]
 y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
-n_glucose_n_aa_median <- rowMedians(n_glucose_n_aa, na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median <- rowMedians(n_glucose_n_aa, na.rm=TRUE) - growth$E2[1:25]
 n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
-bhi_median <- rowMedians(bhi, na.rm=TRUE) - growth$F2
+bhi_median <- rowMedians(bhi, na.rm=TRUE) - growth$F2[1:25]
 bhi_median[bhi_median < 0] <- 0
 growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median))
-colnames(growth_medians) <- rownames(growth)
 rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
 
 # Standard deviations
@@ -317,7 +316,6 @@ y_glucose_n_aa_sd <- rowSds(y_glucose_n_aa, na.rm=TRUE)
 n_glucose_n_aa_sd <- rowSds(n_glucose_n_aa, na.rm=TRUE)
 bhi_sd <- rowSds(bhi, na.rm=TRUE)
 growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd))
-colnames(growth_sds) <- rownames(growth)
 rm(sorbitol, galactitol, starch, fructose, combination, mannitol, salicin, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, bhi)
 rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
 rm(growth)
@@ -472,6 +470,9 @@ legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucos
        pch=c(15,16,18,17,15,16,18,17,19,19), cex=2, pt.cex=3.1)
 
 segments(x0=c(26,27,28), y0=c(0.556,0.549,0.430), x1=c(26,27,28), y1=c(0.211,0.211,0.211), lwd=2.5)
+
+segments(x0=c(25.7,26.7,27.7), y0=c(0.556,0.549,0.430), x1=c(26.3,27.3,28.3), y1=c(0.556,0.549,0.430), lwd=2.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3]))
+segments(x0=c(25.7,26.7,27.7), y0=c(0.211,0.211,0.211), x1=c(26.3,27.3,28.3), y1=c(0.211,0.211,0.211), lwd=2.5, col='black')
 text(x=c(26.3,27.3,28.3), y=c(0.384,0.38,0.321), labels=c('***','***','***'), cex=2.3, srt = 90)
 
 mtext('C', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
