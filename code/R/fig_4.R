@@ -471,8 +471,8 @@ legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucos
 
 segments(x0=c(26,27,28), y0=c(0.556,0.549,0.430), x1=c(26,27,28), y1=c(0.211,0.211,0.211), lwd=2.5)
 
-segments(x0=c(25.7,26.7,27.7), y0=c(0.556,0.549,0.430), x1=c(26.3,27.3,28.3), y1=c(0.556,0.549,0.430), lwd=2.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3]))
-segments(x0=c(25.7,26.7,27.7), y0=c(0.211,0.211,0.211), x1=c(26.3,27.3,28.3), y1=c(0.211,0.211,0.211), lwd=2.5, col='black')
+segments(x0=c(25.7,26.7,27.7), y0=c(0.556,0.549,0.430), x1=c(26.3,27.3,28.3), y1=c(0.556,0.549,0.430), lwd=3.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3]))
+segments(x0=c(25.7,26.7,27.7), y0=c(0.211,0.211,0.211), x1=c(26.3,27.3,28.3), y1=c(0.211,0.211,0.211), lwd=3.5, col='black')
 text(x=c(26.3,27.3,28.3), y=c(0.384,0.38,0.321), labels=c('***','***','***'), cex=2.3, srt = 90)
 
 mtext('C', side=2, line=2, las=2, adj=1, padj=-16, cex=1.8)
