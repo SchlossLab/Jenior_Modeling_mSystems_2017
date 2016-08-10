@@ -310,7 +310,49 @@ n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
 bhi_median <- rowMedians(bhi, na.rm=TRUE) - growth$F2[1:25]
 bhi_median[bhi_median < 0] <- 0
 growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median))
-rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
+
+# Determine some features of the 12 hour growth curves
+# Maximum growth rate
+diff(sorbitol_median)[which.max(abs(diff(sorbitol_median)))] # 0.022
+diff(galactitol_median)[which.max(abs(diff(galactitol_median)))] # 0.02
+diff(starch_median)[which.max(abs(diff(starch_median)))] # 0.025
+diff(fructose_median)[which.max(abs(diff(fructose_median)))] # 0.089
+diff(combination_median)[which.max(abs(diff(combination_median)))] # 0.095
+diff(mannitol_median)[which.max(abs(diff(mannitol_median)))] # 0.044
+diff(salicin_median)[which.max(abs(diff(salicin_median)))] # 0.049
+diff(y_glucose_y_aa_median)[which.max(abs(diff(y_glucose_y_aa_median)))] # 0.085
+diff(n_glucose_y_aa_median)[which.max(abs(diff(n_glucose_y_aa_median)))] # 0.028
+diff(y_glucose_n_aa_median)[which.max(abs(diff(y_glucose_n_aa_median)))] # 0.006
+diff(n_glucose_n_aa_median)[which.max(abs(diff(n_glucose_n_aa_median)))] # -0.003
+diff(bhi_median)[which.max(abs(diff(bhi_median)))] # 0.057
+
+# Time of maximum growth rate
+which.max(abs(diff(sorbitol_median))) * 0.5 # 7.5 hours
+which.max(abs(diff(galactitol_median))) * 0.5 # 8 hours
+which.max(abs(diff(starch_median))) * 0.5 # 9 hours
+which.max(abs(diff(fructose_median))) * 0.5 # 6.5 hours
+which.max(abs(diff(combination_median))) * 0.5 # 7 hours
+which.max(abs(diff(mannitol_median))) * 0.5 # 7.5 hours
+which.max(abs(diff(salicin_median))) * 0.5 # 8.5 hours
+which.max(abs(diff(y_glucose_y_aa_median))) * 0.5 # 7.5 hours
+which.max(abs(diff(n_glucose_y_aa_median))) * 0.5 # 7.5 hours
+which.max(abs(diff(y_glucose_n_aa_median))) * 0.5 # 0.5 hours
+which.max(abs(diff(n_glucose_n_aa_median))) * 0.5 # 0.5 hours
+which.max(abs(diff(bhi_median))) * 0.5 # 8.5 hours
+
+# Maximum OD
+max(sorbitol_median) # 0.199
+max(galactitol_median) # 0.202
+max(starch_median) # 0.204
+max(fructose_median) # 0.556
+max(combination_median) # 0.505
+max(mannitol_median) # 0.43
+max(salicin_median) # 0.549
+max(y_glucose_y_aa_median) # 0.575
+max(n_glucose_y_aa_median) # 0.211
+max(y_glucose_n_aa_median) # 0.008
+max(n_glucose_n_aa_median) # 0.005
+max(bhi_median) # 0.662
 
 # Standard deviations
 sorbitol_sd <- rowSds(sorbitol, na.rm=TRUE)
@@ -326,6 +368,7 @@ y_glucose_n_aa_sd <- rowSds(y_glucose_n_aa, na.rm=TRUE)
 n_glucose_n_aa_sd <- rowSds(n_glucose_n_aa, na.rm=TRUE)
 bhi_sd <- rowSds(bhi, na.rm=TRUE)
 growth_sds <- as.data.frame(rbind(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd))
+rm(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
 rm(sorbitol, galactitol, starch, fructose, combination, mannitol, salicin, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, bhi)
 rm(sorbitol_sd, galactitol_sd, starch_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
 rm(growth)
