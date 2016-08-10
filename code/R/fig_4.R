@@ -29,6 +29,11 @@ rm(network)
 simple_graph <- simplify(raw_graph)
 rm(raw_graph)
 
+# Print a summary of nodes and edges for entire graph
+summary(simple_graph)
+print(length(as.vector(grep('K', V(simple_graph)$name, value=TRUE))))
+print(length(as.vector(grep('C', V(simple_graph)$name, value=TRUE))))
+
 # Decompose graph
 decomp_simple_graph <- decompose.graph(simple_graph)
 rm(simple_graph)
@@ -36,7 +41,15 @@ rm(simple_graph)
 # Get largest component
 largest_component <- which.max(sapply(decomp_simple_graph, vcount))
 largest_simple_graph <- decomp_simple_graph[[largest_component]]
+ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
+substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
+nodes <- c(ko_simp, substrate_simp)
 rm(decomp_simple_graph, largest_component)
+
+# Print a summary of nodes and edges for large component
+summary(largest_simple_graph)
+print(length(ko_simp))
+print(length(substrate_simp))
 
 # Remove zeroes so transformation doesn't return negative infinity
 ko[,2][ko[,2] == 0] <- 1
@@ -44,9 +57,6 @@ ko[,2] <- log10(ko[,2])
 ko[,2][ko[,2] < 0.4] <- 0.4
 
 # Scale points by number of transcripts mapped
-ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
-substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
-nodes <- c(ko_simp, substrate_simp)
 ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
 ko <- ko[match(ko_simp, ko$KO_code),]
 mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
@@ -369,8 +379,10 @@ Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=4, arr.type='triangle', arr.lengt
 Arrows(x0=0.63, y0=-0.7, x1=1.14, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
 segments(x0=0.63, y0=-0.65, x1=0.63, y1=-0.75, lwd=3)
 text(x=0.63, y=-0.83, '0', cex=2.1) 
-text(x=0.12, y=-0.8, expression(- infinity), cex=2.3)
-text(x=1.14, y=-0.8, expression(+ infinity), cex=2.3)
+#text(x=0.12, y=-0.8, expression(- infinity), cex=2.3)
+#text(x=1.14, y=-0.8, expression(+ infinity), cex=2.3)
+text(x=0.12, y=-0.9, '-', cex=2.6)
+text(x=1.14, y=-0.9, '+', cex=2.6)
 text(x=1.15, y=-0.6, 'More likely consumed', cex=1.6)
 text(x=0.14, y=-0.6, 'More likely released', cex=1.6)
 text(x=0.63, y=-0.95, 'Importance Score', cex=2.3, font=2) 
