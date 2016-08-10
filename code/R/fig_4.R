@@ -431,12 +431,13 @@ par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 text(-0.9, 0, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.9) # Importance algorithm
 text(x=-1, y=1.13, labels='Tetrathionate reductase', font=2, cex=1.6) # Enzyme 1 name
-text(x=-1, y=1, labels='5', col='white', cex=1.2) # Enzyme 1 transcription
+text(x=-1, y=1, labels='7', col='white', cex=1.25) # Enzyme 1 transcription
 text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.6) # Enzyme 2 name
-text(x=-0.5, y=-1, labels='97', col='white', cex=2.3) # Enzyme 2 transcription
+text(x=-0.5, y=-1, labels='94', col='white', cex=2.3) # Enzyme 2 transcription
 text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2, cex=1.6) # Enzyme 3
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.5) # Enzyme 3 transcription
-text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.658'), cex=1.7, font=c(2,1)) # Compound & calculated importance
+text(x=-0.17, y=0.14, 's', col='white', cex=2) # Substrate node label
+text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.7, font=c(2,1)) # Compound & calculated importance
 segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
 legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=2, bty='n')
