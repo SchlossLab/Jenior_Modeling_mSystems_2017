@@ -348,11 +348,40 @@ max(fructose_median) # 0.556
 max(combination_median) # 0.505
 max(mannitol_median) # 0.43
 max(salicin_median) # 0.549
+max(salicin_median) # 0.575
 max(y_glucose_y_aa_median) # 0.575
 max(n_glucose_y_aa_median) # 0.211
 max(y_glucose_n_aa_median) # 0.008
 max(n_glucose_n_aa_median) # 0.005
 max(bhi_median) # 0.662
+
+# Growth rate at 12 hours
+diff(sorbitol_median)[length(diff(sorbitol_median))] # 0.002
+diff(galactitol_median)[length(diff(galactitol_median))] # 0.005
+diff(starch_median)[length(diff(starch_median))] # 0.001
+diff(fructose_median)[length(diff(fructose_median))] # 0.003
+diff(combination_median)[length(diff(combination_median))] # 0.002
+diff(mannitol_median)[length(diff(mannitol_median))] # 0.006
+diff(salicin_median)[length(diff(salicin_median))] # 0.048
+diff(y_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.008
+diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
+diff(y_glucose_n_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
+diff(n_glucose_n_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
+diff(bhi_median)[length(diff(bhi_median))] # 0.002
+
+# Mean growth rate
+mean(diff(sorbitol_median)) # 0.008291667
+mean(diff(galactitol_median)) # 0.008333333
+mean(diff(starch_median)) # 0.00825
+mean(diff(fructose_median)) # 0.02304167
+mean(diff(combination_median)) # 0.02091667
+mean(diff(mannitol_median)) # 0.01775
+mean(diff(salicin_median)) # 0.022125
+mean(diff(n_glucose_y_aa_median)) # 0.02391667
+mean(diff(y_glucose_y_aa_median)) # 0.008666667
+mean(diff(y_glucose_n_aa_median)) # 0.0003333333
+mean(diff(n_glucose_n_aa_median)) # -0.0002083333
+mean(diff(bhi_median)) # 0.02758333
 
 # Standard deviations
 sorbitol_sd <- rowSds(sorbitol, na.rm=TRUE)
