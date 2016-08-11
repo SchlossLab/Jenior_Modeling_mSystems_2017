@@ -83,22 +83,22 @@ rm(cefoperazone, clindamycin, streptomycin)
 
 # Amino sugar catabolism
 mur <- rbind(subset(combined_mapping, grepl('mur.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # 
+             subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # Muramidase
 nag <- rbind(subset(combined_mapping, grepl('nag.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('nag;', combined_mapping$gene))) # 
+             subset(combined_mapping, grepl('nag;', combined_mapping$gene))) # Acetylglucosaminidase
 acd <- rbind(subset(combined_mapping, grepl('acd.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('acd;', combined_mapping$gene))) # 
+             subset(combined_mapping, grepl('acd;', combined_mapping$gene))) # Peptidoglycan hydrolase 
 ldt <- rbind(subset(combined_mapping, grepl('ldt.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('ldt;', combined_mapping$gene))) # 
+             subset(combined_mapping, grepl('ldt;', combined_mapping$gene))) # l,d-transpeptidase 
 gne <- rbind(subset(combined_mapping, grepl('gne.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('gne;', combined_mapping$gene))) # 
-anm <- rbind(subset(combined_mapping, grepl('anm.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('anm;', combined_mapping$gene))) # 
+             subset(combined_mapping, grepl('gne;', combined_mapping$gene))) # Glucosamine (UDP-N-Acetyl)-2-Epimerase/N-Acetylmannosamine Kinase
+#anm <- rbind(subset(combined_mapping, grepl('anm.;', combined_mapping$gene)), 
+#             subset(combined_mapping, grepl('anm;', combined_mapping$gene))) # 
 nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('nan;', combined_mapping$gene))) #
+             subset(combined_mapping, grepl('nan;', combined_mapping$gene))) # Sialidase
 glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('glm;', combined_mapping$gene)))
-amino_sugars <- rbind(mur, nag, acd, ldt, gne, anm, nan, glm)
+             subset(combined_mapping, grepl('glm;', combined_mapping$gene))) # Glutamate mutase
+amino_sugars <- rbind(mur, nag, acd, ldt, gne, nan, glm)
 amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
 
 # Stickland fermentation
@@ -197,9 +197,13 @@ gene_table$Cefoperazone <- NULL
 gene_table$Clindamycin <- NULL
 gene_table$Streptomycin <- NULL
 
+
+# Need to add column for citations
+
 # Write table
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S2.tsv'
-write.table(gene_table, file=table_file, sep='\t', row.names=TRUE, col.names=TRUE, quote=FALSE)
+gene_table$KEGG_code <- row.names(gene_table)
+write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)
 
 #-------------------------------------------------------------------------------------------------------------------------#
@@ -374,7 +378,7 @@ text(x=0, y=-0.43, labels='ABC sugar transporters', cex=1.3)
 
 # Clean up
 dev.off()
-rm(abfD, ABC, acd, acetate, adh, amino_sugars, anm, arg, buk, cat, cel, combined_mapping, eno, fdh, fermentation, fructose,
+rm(abfD, ABC, acd, acetate, adh, amino_sugars, arg, buk, cat, cel, combined_mapping, eno, fdh, fermentation, fructose,
    galactose, glycolysis, gne, gpmI, grd, had, hbd, kamA, ldhA, ldt, maltose, mannose, monosaccharides, mtl, mur, nag, nan,
    panB, pep, pfk, pgm, polysaccharides, prd, ptb, PTS, pyk, sdaB, serA, srl, srlE, stickland, sucD, sucrose, sugar_alcohols,
    tagatose, tdcB, tpi, tre, valerate, xylose, fox, plot_file, rainbow, sub_size, tick_labels, palette_plot, gap,

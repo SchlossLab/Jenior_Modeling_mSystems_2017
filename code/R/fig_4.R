@@ -123,6 +123,19 @@ clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score
 strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
 gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
+cef_importance <- cef_importance[c(1:100),]
+clinda_importance <- clinda_importance[c(1:100),]
+strep_importance <- strep_importance[c(1:100),]
+gf_importance <- gf_importance[c(1:100),]
+
+shared_importance <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% clinda_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% clinda_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% strep_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
+
+shared_importance$KEGG_code <- rownames(shared_importance)
+write.table(shared_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S3.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+
 cef_importance <- cef_importance[c(1:25),]
 clinda_importance <- clinda_importance[c(1:25),]
 strep_importance <- strep_importance[c(1:25),]
@@ -161,7 +174,7 @@ top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_impor
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('beta\\-','',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('beta','b',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('\\-phosphate','',top_importances$Compound_name)
 top_importances$Compound_name <- gsub(' 6','',top_importances$Compound_name)
 top_importances$Compound_name <- gsub(' 5','',top_importances$Compound_name)
