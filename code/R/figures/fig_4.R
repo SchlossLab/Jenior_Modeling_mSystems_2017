@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats', 'flux');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -134,7 +134,9 @@ shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
 
 shared_importance$KEGG_code <- rownames(shared_importance)
-write.table(shared_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S3.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3.tsv'
+write.table(shared_importance, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, shared_importance)
 
 cef_importance <- cef_importance[c(1:25),]
 clinda_importance <- clinda_importance[c(1:25),]
@@ -174,11 +176,12 @@ top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_impor
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('beta','b',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('\\-phosphate','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub(' 6','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub(' 5','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub(' 3','',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('beta', '   ', top_importances$Compound_name)
+top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
+#top_importances$Compound_name <- gsub('\\-phosphate','',top_importances$Compound_name)
+#top_importances$Compound_name <- gsub(' 6','',top_importances$Compound_name)
+#top_importances$Compound_name <- gsub(' 5','',top_importances$Compound_name)
+#top_importances$Compound_name <- gsub(' 3','',top_importances$Compound_name)
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances <- top_importances[ !(rownames(top_importances) %in% c('C11436')), ]
 
@@ -325,76 +328,54 @@ bhi_median[bhi_median < 0] <- 0
 growth_medians <- as.data.frame(rbind(sorbitol_median, galactitol_median, starch_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median))
 
 # Determine some features of the 12 hour growth curves
+substrates <- c('sorbitol','galactitol','starch','fructose', 'mannitol','salicin','y_glucose_y_aa','n_glucose_y_aa','y_glucose_n_aa','n_glucose_n_aa','bhi')
 # Maximum growth rate
-diff(sorbitol_median)[which.max(abs(diff(sorbitol_median)))] # 0.022
-diff(galactitol_median)[which.max(abs(diff(galactitol_median)))] # 0.02
-diff(starch_median)[which.max(abs(diff(starch_median)))] # 0.025
-diff(fructose_median)[which.max(abs(diff(fructose_median)))] # 0.089
 diff(combination_median)[which.max(abs(diff(combination_median)))] # 0.095
-diff(mannitol_median)[which.max(abs(diff(mannitol_median)))] # 0.044
-diff(salicin_median)[which.max(abs(diff(salicin_median)))] # 0.049
-diff(y_glucose_y_aa_median)[which.max(abs(diff(y_glucose_y_aa_median)))] # 0.085
-diff(n_glucose_y_aa_median)[which.max(abs(diff(n_glucose_y_aa_median)))] # 0.028
-diff(y_glucose_n_aa_median)[which.max(abs(diff(y_glucose_n_aa_median)))] # 0.006
-diff(n_glucose_n_aa_median)[which.max(abs(diff(n_glucose_n_aa_median)))] # -0.003
-diff(bhi_median)[which.max(abs(diff(bhi_median)))] # 0.057
+max_rate <- round(c(diff(sorbitol_median)[which.max(abs(diff(sorbitol_median)))], diff(galactitol_median)[which.max(abs(diff(galactitol_median)))], diff(starch_median)[which.max(abs(diff(starch_median)))],
+              diff(fructose_median)[which.max(abs(diff(fructose_median)))], diff(mannitol_median)[which.max(abs(diff(mannitol_median)))], diff(salicin_median)[which.max(abs(diff(salicin_median)))],
+              diff(y_glucose_y_aa_median)[which.max(abs(diff(y_glucose_y_aa_median)))], diff(n_glucose_y_aa_median)[which.max(abs(diff(n_glucose_y_aa_median)))], diff(y_glucose_n_aa_median)[which.max(abs(diff(y_glucose_n_aa_median)))],
+              diff(n_glucose_n_aa_median)[which.max(abs(diff(n_glucose_n_aa_median)))], diff(bhi_median)[which.max(abs(diff(bhi_median)))]), digits=3)
 
 # Time of maximum growth rate
-which.max(abs(diff(sorbitol_median))) * 0.5 # 7.5 hours
-which.max(abs(diff(galactitol_median))) * 0.5 # 8 hours
-which.max(abs(diff(starch_median))) * 0.5 # 9 hours
-which.max(abs(diff(fructose_median))) * 0.5 # 6.5 hours
 which.max(abs(diff(combination_median))) * 0.5 # 7 hours
-which.max(abs(diff(mannitol_median))) * 0.5 # 7.5 hours
-which.max(abs(diff(salicin_median))) * 0.5 # 8.5 hours
-which.max(abs(diff(y_glucose_y_aa_median))) * 0.5 # 7.5 hours
-which.max(abs(diff(n_glucose_y_aa_median))) * 0.5 # 7.5 hours
-which.max(abs(diff(y_glucose_n_aa_median))) * 0.5 # 0.5 hours
-which.max(abs(diff(n_glucose_n_aa_median))) * 0.5 # 0.5 hours
-which.max(abs(diff(bhi_median))) * 0.5 # 8.5 hours
+time_max_rate <- round(c((which.max(abs(diff(sorbitol_median))) * 0.5), (which.max(abs(diff(galactitol_median))) * 0.5), (which.max(abs(diff(starch_median))) * 0.5),
+                  (which.max(abs(diff(fructose_median))) * 0.5), (which.max(abs(diff(mannitol_median))) * 0.5), (which.max(abs(diff(salicin_median))) * 0.5),
+                  (which.max(abs(diff(y_glucose_y_aa_median))) * 0.5), (which.max(abs(diff(n_glucose_y_aa_median))) * 0.5), (which.max(abs(diff(y_glucose_n_aa_median))) * 0.5),
+                  (which.max(abs(diff(n_glucose_n_aa_median))) * 0.5), (which.max(abs(diff(bhi_median))) * 0.5)), digits=3)
 
 # Maximum OD
-max(sorbitol_median) # 0.199
-max(galactitol_median) # 0.202
-max(starch_median) # 0.204
-max(fructose_median) # 0.556
 max(combination_median) # 0.505
-max(mannitol_median) # 0.43
-max(salicin_median) # 0.549
-max(salicin_median) # 0.575
-max(y_glucose_y_aa_median) # 0.575
-max(n_glucose_y_aa_median) # 0.211
-max(y_glucose_n_aa_median) # 0.008
-max(n_glucose_n_aa_median) # 0.005
-max(bhi_median) # 0.662
+max_od <- round(c(max(sorbitol_median), max(galactitol_median), max(starch_median), max(fructose_median), max(mannitol_median), max(salicin_median), 
+            max(y_glucose_y_aa_median), max(n_glucose_y_aa_median), max(y_glucose_n_aa_median), max(n_glucose_n_aa_median), max(bhi_median)), digits=3)
 
 # Growth rate at 12 hours
-diff(sorbitol_median)[length(diff(sorbitol_median))] # 0.002
-diff(galactitol_median)[length(diff(galactitol_median))] # 0.005
-diff(starch_median)[length(diff(starch_median))] # 0.001
-diff(fructose_median)[length(diff(fructose_median))] # 0.003
 diff(combination_median)[length(diff(combination_median))] # 0.002
-diff(mannitol_median)[length(diff(mannitol_median))] # 0.006
-diff(salicin_median)[length(diff(salicin_median))] # 0.048
-diff(y_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.008
-diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
-diff(y_glucose_n_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
-diff(n_glucose_n_aa_median)[length(diff(n_glucose_y_aa_median))] # 0.0
-diff(bhi_median)[length(diff(bhi_median))] # 0.002
+rate_12_hrs <- round(c(diff(sorbitol_median)[length(diff(sorbitol_median))], diff(galactitol_median)[length(diff(galactitol_median))], diff(starch_median)[length(diff(starch_median))],
+                 diff(fructose_median)[length(diff(fructose_median))], diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))],
+                 diff(y_glucose_y_aa_median)[length(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[length(diff(y_glucose_n_aa_median))],
+                 diff(n_glucose_n_aa_median)[length(diff(n_glucose_n_aa_median))], diff(bhi_median)[length(diff(bhi_median))]), digits=3)
 
 # Mean growth rate
-mean(diff(sorbitol_median)) # 0.008291667
-mean(diff(galactitol_median)) # 0.008333333
-mean(diff(starch_median)) # 0.00825
-mean(diff(fructose_median)) # 0.02304167
-mean(diff(combination_median)) # 0.02091667
-mean(diff(mannitol_median)) # 0.01775
-mean(diff(salicin_median)) # 0.022125
-mean(diff(n_glucose_y_aa_median)) # 0.02391667
-mean(diff(y_glucose_y_aa_median)) # 0.008666667
-mean(diff(y_glucose_n_aa_median)) # 0.0003333333
-mean(diff(n_glucose_n_aa_median)) # -0.0002083333
-mean(diff(bhi_median)) # 0.02758333
+round(mean(diff(combination_median)), digits=3) # 0.021
+mean_rate <- round(c(mean(diff(sorbitol_median)), mean(diff(galactitol_median)), mean(diff(starch_median)), mean(diff(fructose_median)), mean(diff(mannitol_median)),
+               mean(diff(salicin_median)), mean(diff(n_glucose_y_aa_median)), mean(diff(y_glucose_y_aa_median)), mean(diff(y_glucose_n_aa_median)), 
+               mean(diff(n_glucose_n_aa_median)), mean(diff(bhi_median))), digits=3)
+
+# Area under curve
+area_under <- round(c(auc(sorbitol_median, seq(1,25,1)), auc(galactitol_median, seq(1,25,1)), auc(starch_median, seq(1,25,1)),
+                      auc(fructose_median, seq(1,25,1)), auc(mannitol_median, seq(1,25,1)), auc(salicin_median, seq(1,25,1)),
+                      auc(y_glucose_y_aa_median, seq(1,25,1)), auc(n_glucose_y_aa_median, seq(1,25,1)), auc(y_glucose_n_aa_median, seq(1,25,1)), 
+                      auc(n_glucose_n_aa_median, seq(1,25,1)), auc(bhi_median, seq(1,25,1)), digits=3))
+
+# Assemble the table
+growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under)
+colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_Of_Max_Rate_in_Hours', 'Max_OD', 'Rate_at_12_hours', 'Mean_Rate', 'AUC')
+rm(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under)
+
+# Write growth summary data to supplementary table
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S4.tsv'
+write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, growth_summary)
 
 # Standard deviations
 sorbitol_sd <- rowSds(sorbitol, na.rm=TRUE)
@@ -495,12 +476,13 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # B - Top compound importances
-par(mar=c(4,3,1,1), xaxs='i')
+par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE)
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-2,10), 
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'black'), pch=19)
 segments(x0=rep(-2, 14), y0=c(1:8, 11, 14, 17:20), x1=rep(10, 14), y1=c(1:8, 11, 14, 17:20), lty=2)
+abline(v=0, lty=3, lwd=1.4)
 
 # Add simulated means
 points(x=top_importances[c(14:7),3], y=c(1:8), cex=2, col='black', pch='|') # Gnotobiotic
@@ -519,8 +501,8 @@ plot(growth_medians$y_glucose_y_aa_median, type='o', xaxt='n', xlim=c(0,29), yli
 segments(x0=seq(1,25,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
-abline(h=seq(0,0.6,0.1), lty=3, col='gray48') # adding gridlines
-abline(v=seq(1,26,2), lty=3, col='gray48') # adding gridlines
+abline(h=seq(0,0.6,0.1), lty=3, col='gray75') # adding gridlines
+abline(v=seq(1,26,2), lty=3, col='gray75') # adding gridlines
 lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=16, cex=2.3)
 segments(x0=seq(1,25,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2)
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2)

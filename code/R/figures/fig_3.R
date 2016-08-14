@@ -201,7 +201,7 @@ gene_table$Streptomycin <- NULL
 # Need to add column for citations
 
 # Write table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/table_S2.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S2.tsv'
 gene_table$KEGG_code <- row.names(gene_table)
 write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)

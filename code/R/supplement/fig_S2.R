@@ -10,7 +10,7 @@ for (dep in deps){
 rm(dep, deps)
 
 read_file <- '~/Desktop/48670_AGGCAGAA-TATCCTCT_L001_R1_001.fastq.gz'
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figure_S1.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S2.pdf'
 
 # Read in data
 reads <- readSeqFile(read_file, type='fastq', quality='sanger')

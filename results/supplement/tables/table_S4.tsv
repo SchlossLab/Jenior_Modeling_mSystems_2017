@@ -1,0 +1,12 @@
+Substrate	Max_Growth_Rate	Time_Of_Max_Rate_in_Hours	Max_OD	Rate_at_12_hours	Mean_Rate
+sorbitol	0.022	7.5	0.199	0.002	0.008
+galactitol	0.02	8	0.202	0.005	0.008
+starch	0.025	9	0.204	0.001	0.008
+fructose	0.089	6.5	0.556	0.003	0.023
+mannitol	0.044	7.5	0.43	0.006	0.018
+salicin	0.049	8.5	0.549	0.048	0.022
+y_glucose_y_aa	0.085	7.5	0.575	0.008	0.009
+n_glucose_y_aa	0.028	7.5	0.211	0	0.024
+y_glucose_n_aa	0.006	0.5	0.008	0	0
+n_glucose_n_aa	-0.003	0.5	0.005	0	0
+bhi	0.057	8.5	0.662	0.002	0.028

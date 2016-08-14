@@ -201,7 +201,7 @@ rm(pooled_amino_acid)
 
 # Set the color palette and output file name
 darjeeling <- wes_palette("Darjeeling")
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figure_S2.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figure_S3.pdf'
 
 # Generate figure
 pdf(file=plot_file, width=12, height=10)
