@@ -414,7 +414,7 @@ colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_Of_Max_Rate_
 rm(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under, corrected_p_values)
 
 # Write growth summary data to supplementary table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S4.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S5.tsv'
 write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, growth_summary)
 

@@ -51,7 +51,7 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 sigma_keep <- c('CodY','CcpA','CdtR','SigH','SigB','SigA1','SigA2','SigE','SigF','SigG','SigK','SigV','FliA',
                 'TetR_family|1','TetR_family|2','TetR_family|3','TetR_family|4','TetR_family|5','TetR_family|6',
                 'TetR_family|7','TetR_family|8','TetR_family|9','TetR_family|10','TetR_family|11','TetR_family|12',
-                'TetR_family|13','TetR_family|14','TetR_family|15','TetR_family|16','Rex','PrdR','Spo0A','RstA','DpaA')
+                'TetR_family|13','TetR_family|14','TetR_family|15','TetR_family|16','Rex','PrdR','Spo0A','DpaA')
 sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
 # Iteratively rarefy mappings
 sub_size <- round(min(colSums(sigma[,1:3])) * 0.9)
@@ -214,7 +214,7 @@ labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,83.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+text(x=seq(3.7,79.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(sigma_medians), srt=45, adj=1, xpd=TRUE, cex=1.2)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 

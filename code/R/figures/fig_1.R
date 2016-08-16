@@ -98,10 +98,8 @@ wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
 rm(germfree, cefoperazone, clindamycin, streptomycin)
 
 p_values <- c(0.02341, 0.0005699, 0.001764, 0.1, 0.1, 0.1)
-corrected_p_values <- p.adjust(p_values, method='bonferroni')
-
-# Clean up
-rm(p_values, corrected_p_values)
+p.adjust(p_values, method='bonferroni')
+rm(p_values)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
