@@ -169,7 +169,7 @@ clinda_only_importance$color <- wes_palette("FantasticFox")[5]
 strep_only_importance$abx <- 'Streptomycin'
 strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'Gnotobiotic'
-gf_only_importance$color <- wes_palette('Cavalcanti')[2]
+gf_only_importance$color <- 'forestgreen'
 
 top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
                          strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
@@ -518,7 +518,7 @@ par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE)
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-2,10), 
-         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],wes_palette('Cavalcanti')[2]), pch=19)
+         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), pch=19)
 
 segments(x0=rep(-2, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
 abline(v=0, col='gray68', lwd=1.7)

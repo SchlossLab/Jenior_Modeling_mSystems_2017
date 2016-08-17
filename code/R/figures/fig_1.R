@@ -105,7 +105,7 @@ rm(p_values)
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'black', 'black')
+select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
 pch_palette <- c(19,19,19,19,1)
 pdf(file=plot_file, width=12, height=6)
 layout(matrix(c(1,2,
