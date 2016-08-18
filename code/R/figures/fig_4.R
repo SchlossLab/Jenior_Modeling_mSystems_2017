@@ -69,7 +69,7 @@ enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_code))
 enzyme_topology <- enzyme_topology[order(-enzyme_topology$betweenness),]
 rm(graph_topology)
 
-# Write tables to files, ordered by betweenness
+# Write tables to files, ranked by betweenness
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/substrate_topology.tsv'
 write.table(substrate_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, substrate_topology)
@@ -185,7 +185,7 @@ shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
 
 shared_importance$KEGG_code <- rownames(shared_importance)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S4.tsv'
 write.table(shared_importance, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, shared_importance)
 
@@ -462,7 +462,7 @@ colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_Of_Max_Rate_
 rm(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under, corrected_p_values)
 
 # Write growth summary data to supplementary table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S5.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S6.tsv'
 write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, growth_summary)
 
