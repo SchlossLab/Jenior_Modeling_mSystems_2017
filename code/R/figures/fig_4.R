@@ -16,23 +16,74 @@ ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_mo
 layout_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/optimal_layout.tsv'
 
 # Read in metabolic network data
-network <- read.table(network_file, header=FALSE, sep='\t')
-ko <- read.table(ko_file, header=TRUE, sep='\t')
-optimal_layout1 <- as.matrix(read.table(layout_file, header=TRUE, sep='\t', row.names=1))
+network <- read.delim(network_file, header=FALSE, sep='\t')
+ko <- read.delim(ko_file, header=TRUE, sep='\t')
+optimal_layout1 <- as.matrix(read.delim(layout_file, header=TRUE, sep='\t', row.names=1))
 rm(network_file, ko_file, layout_file)
 
 # Format directed graph
 raw_graph <- graph.data.frame(network, directed=TRUE)
 rm(network)
 
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Determine some statistics about graph
+
+# Print a summary of nodes and edges for entire graph
+summary(raw_graph)
+print(length(as.vector(grep('K', V(raw_graph)$name, value=TRUE))))
+print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
+
+# Find degrees of nodes
+graph_indegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='in'))
+graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
+graph_alldegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
+
+# Calculate Eigen centrality
+graph_centrality <- as.data.frame(eigen_centrality(raw_graph, directed=TRUE, scale=FALSE)[1])
+
+# Calculate betweensness
+graph_betweenness <- as.data.frame(betweenness(raw_graph))
+
+# Merge characteristic tables
+graph_topology <- merge(graph_indegree, graph_outdegree, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_alldegree, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_centrality, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_betweenness, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- cbind(rownames(graph_topology), graph_topology)
+colnames(graph_topology) <- c('KEGG_code','indegree','outdegree','alldegree','centrality','betweenness')
+rm(graph_indegree, graph_outdegree, graph_alldegree, graph_centrality, graph_betweenness)
+
+# Subset for Enzymes and Substrates
+substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_code))
+substrate_topology <- substrate_topology[order(-substrate_topology$betweenness),]
+enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_code))
+enzyme_topology <- enzyme_topology[order(-enzyme_topology$betweenness),]
+rm(graph_topology)
+
+# Write tables to files, ordered by betweenness
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/substrate_topology.tsv'
+write.table(substrate_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, substrate_topology)
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/enzyme_topology.tsv'
+write.table(enzyme_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, enzyme_topology)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format large component for plotting
+
 # Remove loops and multiple edges to make visualzation easier
 simple_graph <- simplify(raw_graph)
 rm(raw_graph)
-
-# Print a summary of nodes and edges for entire graph
-summary(simple_graph)
-print(length(as.vector(grep('K', V(simple_graph)$name, value=TRUE))))
-print(length(as.vector(grep('C', V(simple_graph)$name, value=TRUE))))
 
 # Decompose graph
 decomp_simple_graph <- decompose.graph(simple_graph)
