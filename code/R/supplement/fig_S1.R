@@ -48,31 +48,47 @@ all_data$color <- as.character(all_data$color)
 #---------------------------------------------------------------------------------------------------------------#
 
 # Set up the plot area
-pdf(file=figure_file, width=14, height=7)
-layout(matrix(c(1,2), nrow=1, ncol=2, byrow=TRUE))
+pdf(file=figure_file, width=21, height=7)
+layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow=TRUE))
 
 #---------------------------------------------------------------------------------------------------------------#
 
 # A
+
+
+
+
+
+
+
+
+
+
+
+mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
+
+#---------------------------------------------------------------------------------------------------------------#
+
+# B
 # Remove gnotobiotic
-part_A <- subset(all_data, treatment != 'Germfree')
+part_B <- subset(all_data, treatment != 'Germfree')
 
 # Calculate strength of correlation
 cor.test(part_A$toxin, part_A$cfu, method='spearman')
 
 # Plot it
 par(las=1, mar=c(4,5,1,1))
-plot(jitter(part_A$toxin, factor=0.75), log10(part_A$cfu), 
+plot(jitter(part_B$toxin, factor=0.75), log10(part_B$cfu), 
      xlim=c(1.75,3.25), ylim=c(1, 7), yaxt='n', pch=21, cex=1.8, cex.lab=1.2,
-     xlab='Toxin Titer (Log10)', ylab='CFU Spores per gram ceal content', bg=part_A$color)
+     xlab='Toxin Titer (Log10)', ylab='CFU Spores per gram ceal content', bg=part_B$color)
 labelsY <- parse(text=paste(rep(10,7), '^', seq(1,7,1), sep=''))
 axis(side=2, at=c(1:7), labelsY, tick=TRUE, cex.axis=1.2, las=1)
 legend('bottomright', legend=c('Streptomycin', 'Cefoperzone', 'Clindamycin'), 
        pt.bg=c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5]), 
        pch=21, cex=1.5, pt.cex=2.5, bty='n')
 legend('topleft', legend=c('rho = 0.07755254', 'p-value = 0.7006'), bty='n', cex=1.5)
-abline(lm(log10(part_A$cfu)~part_A$toxin))
-mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
+abline(lm(log10(part_B$cfu)~part_A$toxin))
+mtext('B', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
 
 #---------------------------------------------------------------------------------------------------------------#
 
@@ -92,7 +108,7 @@ legend('bottomright', legend=c('Streptomycin', 'Cefoperzone', 'Clindamycin', 'Gn
        pch=21, cex=1.5, pt.cex=2.5, bty='n')
 legend('topleft', legend=c('rho = 0.539309 ', 'p-value = 0.0006885'), bty='n', cex=1.5)
 abline(lm(log10(all_data$cfu)~all_data$toxin))
-mtext('B', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
+mtext('C', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
 
 #---------------------------------------------------------------------------------------------------------------#
 

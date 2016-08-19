@@ -46,7 +46,7 @@ graph_centrality <- as.data.frame(eigen_centrality(raw_graph, directed=TRUE, sca
 graph_betweenness <- as.data.frame(betweenness(raw_graph))
 
 # Merge characteristic tables
-graph_topology <- merge(graph_indegree, graph_outdegree, by='row.names')
+graph_topology <- merge(graph_outdegree, graph_indegree, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
 graph_topology <- merge(graph_topology, graph_alldegree, by='row.names')
@@ -59,15 +59,28 @@ graph_topology <- merge(graph_topology, graph_betweenness, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
 graph_topology <- cbind(rownames(graph_topology), graph_topology)
-colnames(graph_topology) <- c('KEGG_code','indegree','outdegree','alldegree','centrality','betweenness')
+colnames(graph_topology) <- c('KEGG_ID','Outdegree','Indegree','All_degree','Eigenvector_centrality','Betweenness')
 rm(graph_indegree, graph_outdegree, graph_alldegree, graph_centrality, graph_betweenness)
+
+# Read in KEGG code translation files
+kegg_substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/compound_names.tsv'
+kegg_enzyme_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/ko_names.tsv'
+kegg_substrate <- read.delim(kegg_substrate_file, header=FALSE, sep='\t', row.names=1)
+kegg_enzyme <- read.delim(kegg_enzyme_file, header=FALSE, sep='\t', quote='', row.names=1)
+rm(kegg_substrate_file, kegg_enzyme_file)
 
 # Subset for Enzymes and Substrates
 substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_code))
 substrate_topology <- substrate_topology[order(-substrate_topology$betweenness),]
+substrate_topology <- merge(substrate_topology, kegg_substrate, by='row.names')
+substrate_topology$Row.names <- NULL
+colnames(substrate_topology)[7] <- 'Common_name'
 enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_code))
 enzyme_topology <- enzyme_topology[order(-enzyme_topology$betweenness),]
-rm(graph_topology)
+enzyme_topology <- merge(enzyme_topology, kegg_enzyme, by='row.names')
+enzyme_topology$Row.names <- NULL
+colnames(enzyme_topology)[7] <- 'name'
+rm(graph_topology, kegg_substrate, kegg_enzyme)
 
 # Write tables to files, ranked by betweenness
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/substrate_topology.tsv'
@@ -252,6 +265,7 @@ fructose <- cbind(growth$E9, growth$E10, growth$E11)[1:25,]
 combination <- cbind(growth$G3, growth$G4, growth$G5)[1:25,]
 mannitol <- cbind(growth$F9, growth$F10, growth$F11)[1:25,]
 salicin <- cbind(growth$G9, growth$G10, growth$G11)[1:25,]
+#acetylneuraminate <- cbind(growth$I9, growth$I10, growthI11)[1:25,]
 y_glucose_y_aa <- cbind(growth$B3, growth$B4, growth$B5)[1:25,]
 n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5)[1:25,]
 y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5)[1:25,]
@@ -321,6 +335,15 @@ salicin_test <- as.data.frame(rbind(control_test, salicin_test))
 colnames(salicin_test) <- c('substrate','time','od')
 salicin_test$od <- as.numeric(as.character(salicin_test$od))
 
+#acetylneuraminate_test <- c()
+#for (time in 1:25){
+#  temp <- cbind('acetylneuraminate', time, acetylneuraminate[time,])
+#  acetylneuraminate_test <- rbind(acetylneuraminate_test, temp)
+#}
+#acetylneuraminate_test <- as.data.frame(rbind(control_test, acetylneuraminate_test))
+#colnames(acetylneuraminate_test) <- c('substrate','time','od')
+#acetylneuraminate_test$od <- as.numeric(as.character(acetylneuraminate_test$od))
+
 y_glucose_y_aa_test <- c()
 for (time in 1:25){
   temp <- cbind('y_glucose_y_aa', time, y_glucose_y_aa[time,])
@@ -371,6 +394,8 @@ mannitol_sig <- aov(formula=od ~ substrate * time, data=mannitol_test)
 summary(mannitol_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
 salicin_sig <- aov(formula=od ~ substrate * time, data=salicin_test)
 summary(salicin_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+#acetylneuraminate_sig <- aov(formula=od ~ substrate * time, data=acetylneuraminate_test)
+#summary(acetylneuraminate_sig)
 y_glucose_y_aa_sig <- aov(formula=od ~ substrate * time, data=y_glucose_y_aa_test)
 summary(y_glucose_y_aa_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
 y_glucose_n_aa_sig <- aov(formula=od ~ substrate * time, data=y_glucose_y_aa_test)
@@ -408,6 +433,8 @@ mannitol_median <- rowMedians(mannitol, na.rm=TRUE) - growth$F8[1:25]
 mannitol_median[mannitol_median < 0] <- 0
 salicin_median <- rowMedians(salicin, na.rm=TRUE) - growth$G7[1:25]
 salicin_median[salicin_median < 0] <- 0
+#acetylneuraminate_median <- rowMedians(acetylneuraminate, na.rm=TRUE) - growth$I7[1:25]
+#acetylneuraminate_median[acetylneuraminate_median < 0] <- 0
 y_glucose_y_aa_median <- rowMedians(y_glucose_y_aa, na.rm=TRUE) - growth$B2[1:25]
 y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
 n_glucose_y_aa_median <- rowMedians(n_glucose_y_aa, na.rm=TRUE) - growth$D2[1:25]
@@ -627,9 +654,14 @@ segments(x0=seq(1,25,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd,
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 segments(x0=seq(1,25,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 
-legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Fructose','D-Sorbitol','Mannitol','Salicin'), 
-       col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5]), 
-       pch=c(19,17,15,18,19,17,19,19), cex=2, pt.cex=c(3,3,3,3.5,3,3,3,3), bg='white')
+#lines(growth_mediansacetylneuraminate_median, type='o', col='forestgreen', lwd=2.5, pch=19, cex=2)
+#segments(x0=seq(1,25,1), y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,25,1), y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+#segments(x0=seq(1,25,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+#segments(x0=seq(1,25,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,25,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+
+legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuraminate'), 
+       col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(19,17,15,18,19,17,19,19,19), cex=2, pt.cex=c(3,3,3,3.5,3,3,3,3,3), bg='white')
 
 segments(x0=c(26,27,28), y0=c(0.556,0.549,0.430), x1=c(26,27,28), y1=c(0.211,0.211,0.211), lwd=2.5)
 
