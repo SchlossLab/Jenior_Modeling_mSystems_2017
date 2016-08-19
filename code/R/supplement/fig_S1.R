@@ -16,11 +16,11 @@ cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assa
 # Read in the data
 toxin <- read.delim(toxin_file, sep='\t', header=T)
 cfu <- read.delim(cfu_file, sep='\t', header=T)
-cfu$treatment <- gsub('cefoperazone','Cefoperazone',cfu$treatment)
-cfu$treatment <- gsub('streptomycin','Streptomycin',cfu$treatment)
-cfu$treatment <- gsub('clindamycin','Clindamycin',cfu$treatment)
-cfu$treatment <- gsub('conventional','Conventional',cfu$treatment)
-cfu$treatment <- gsub('germfree','Germfree',cfu$treatment)
+cfu$treatment <- gsub('cefoperazone', 'Cefoperazone', cfu$treatment)
+cfu$treatment <- gsub('streptomycin', 'Streptomycin', cfu$treatment)
+cfu$treatment <- gsub('clindamycin', 'Clindamycin', cfu$treatment)
+cfu$treatment <- gsub('conventional', 'Conventional', cfu$treatment)
+cfu$treatment <- gsub('germfree', 'Germfree', cfu$treatment)
 
 # Format datasets separately
 toxin$mouse <- NULL
@@ -32,9 +32,16 @@ cfu <- subset(cfu, treatment != 'Conventional')
 cfu <- subset(cfu, cage < 4)
 cfu$mouse <- NULL
 cfu$cage <- NULL
+cfu <- cfu[order(cfu$treatment), ]
+
+cfu_percent <- (cfu$cfu_spore / cfu$cfu_vegetative) * 100
+cfu_percent <- as.data.frame(cbind(cfu$treatment, cfu_percent))
+colnames(cfu_percent) <- c('treatment', 'percent')
+cfu_percent$treatment <- as.character(cfu_percent$treatment)
+cfu_percent$percent <- as.numeric(as.character(cfu_percent$percent))
+
 cfu[cfu == 0] <- 100
 cfu$cfu_vegetative <- NULL
-cfu <- cfu[order(cfu$treatment), ]
 color_palette <-c(rep(wes_palette("FantasticFox")[3],9),rep(wes_palette("FantasticFox")[5],9),rep('black',9),rep(wes_palette("FantasticFox")[1],9))
 
 all_data <- as.data.frame(cbind(toxin$titer, cfu$cfu_spore, color_palette))
@@ -55,17 +62,38 @@ layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow=TRUE))
 
 # A
 
+# Plot it
+par(las=1, mar=c(2,4,1,1))
+stripchart(percent~treatment, data=cfu_percent, vertical=T, pch=19, 
+           ylim=c(0,8), xaxt='n', cex=1.5, 
+           ylab='% Spores of Total CFU', method='jitter', jitter=0.25)
+axis(side=1, at=c(1:4), c('Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'Streptomycin'), tick=FALSE)
 
+cef <- as.numeric(median(cfu_percent[cfu_percent$treatment == 'Cefoperazone', 2]))
+clinda <- as.numeric(median(cfu_percent[cfu_percent$treatment == 'Clindamycin', 2]))
+gnoto <- as.numeric(median(cfu_percent[cfu_percent$treatment == 'Germfree', 2]))
+strep <- as.numeric(median(cfu_percent[cfu_percent$treatment == 'Streptomycin', 2]))
 
+wilcox.test(as.numeric(cfu_percent[cfu_percent$treatment == 'Germfree', 2]), 
+            as.numeric(cfu_percent[cfu_percent$treatment == 'Cefoperazone', 2]), exact=F) # p-value = 0.01294
+wilcox.test(as.numeric(cfu_percent[cfu_percent$treatment == 'Germfree', 2]), 
+            as.numeric(cfu_percent[cfu_percent$treatment == 'Clindamycin', 2]), exact=F) # p-value = 0.004718
+wilcox.test(as.numeric(cfu_percent[cfu_percent$treatment == 'Germfree', 2]), 
+            as.numeric(cfu_percent[cfu_percent$treatment == 'Streptomycin', 2]), exact=F) # p-value = 0.008071
 
+p_values <- c(0.01294, 0.004718, 0.008071)
+p.adjust(p_values, method='bonferroni')
 
+segments(0.6, cef, 1.4, cef, lwd=3)
+segments(1.6, clinda, 2.4, clinda, lwd=3)
+segments(2.6, gnoto, 3.4, gnoto, lwd=3)
+segments(3.6, strep, 4.4, strep, lwd=3)
 
+text(x=3, y=4.3, labels='**', cex=4, col='red')
 
+abline(h=c(0,2,4,6), lty=2)
 
-
-
-
-mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
+mtext('A', side=2, line=2, las=2, adj=1, padj=-12.5, cex=2)
 
 #---------------------------------------------------------------------------------------------------------------#
 
@@ -74,7 +102,7 @@ mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=2)
 part_B <- subset(all_data, treatment != 'Germfree')
 
 # Calculate strength of correlation
-cor.test(part_A$toxin, part_A$cfu, method='spearman')
+cor.test(part_B$toxin, part_B$cfu, method='spearman')
 
 # Plot it
 par(las=1, mar=c(4,5,1,1))
