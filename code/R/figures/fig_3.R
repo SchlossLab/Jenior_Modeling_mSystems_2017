@@ -269,14 +269,14 @@ carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FA
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
 # R = 0.07121 
 # p-value = 0.052947 
-rm(carb_type)
+rm(carb_type, carb_type_dis)
 
 ferm_type <- rbind(stickland, fermentation)
 ferm_type_dis <- vegdist(x=ferm_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(ferm_type_dis, grouping=ferm_type$grouping, permutations=1000, distance='bray')
 # R = 0.3446 
 # p-value = 0.000999
-rm(ferm_type)
+rm(ferm_type, ferm_type_dis)
 
 # Correct p-values
 p_values <- c(0.00019998, 0.001998, 0.000999, 0.002997, 0.052947, 0.000999)
@@ -288,6 +288,7 @@ p_table <- cbind(c('ABC_transporters','Sugar_alcohol_Strep','Polysaccharide_Clin
                  c('PTS_transporters','Sugar_alcohol_Cef','Polysaccharide_Cef','SCFA_production','SCFA_production','SCFA_production'), 
                  corrected_p_values)
 colnames(p_table) <- c('Group_1', 'Group_2', 'Corrected_p_value')
+rm(corrected_p_values)
 
 # Write table
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/pvalues.tsv'
