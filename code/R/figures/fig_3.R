@@ -1,4 +1,5 @@
 
+# Load dependencies
 deps <- c('vegan', 'klaR', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
@@ -84,9 +85,6 @@ rm(mur, nag, acd, ldt, gne, nan, glm)
 amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
 amino_sugars_abund <- amino_sugars
 amino_sugars[,1:3] <- amino_sugars[, 1:3] / rowSums(amino_sugars[,1:3])
-amino_sugars$ko <- NULL
-amino_sugars$gene <- NULL
-amino_sugars$pathway <- NULL
 
 # Stickland fermentation (amino acid catabolism)
 pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
@@ -109,9 +107,6 @@ rm(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
 stickland$grouping <- rep('Stickland reactions', nrow(stickland))
 stickland_abund <- stickland
 stickland[,1:3] <- stickland[, 1:3] / rowSums(stickland[,1:3])
-stickland$ko <- NULL
-stickland$gene <- NULL
-stickland$pathway <- NULL
 
 # Monosaccharide catabolism
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
@@ -140,9 +135,6 @@ rm(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, x
 monosaccharides$grouping <- rep('Monosaccharide catabolism', nrow(monosaccharides))
 monosaccharides_abund <- monosaccharides
 monosaccharides[,1:3] <- monosaccharides[, 1:3] / rowSums(monosaccharides[,1:3])
-monosaccharides$ko <- NULL
-monosaccharides$gene <- NULL
-monosaccharides$pathway <- NULL
 
 # Polysaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -159,9 +151,6 @@ rm(sucrose, maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
 polysaccharides_abund <- polysaccharides
 polysaccharides[,1:3] <- polysaccharides[, 1:3] / rowSums(polysaccharides[,1:3])
-polysaccharides$ko <- NULL
-polysaccharides$gene <- NULL
-polysaccharides$pathway <- NULL
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
@@ -169,18 +158,12 @@ PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)
 PTS$grouping <- rep('PEP group translocators', nrow(PTS))
 PTS_abund <- PTS
 PTS[,1:3] <- PTS[, 1:3] / rowSums(PTS[,1:3])
-PTS$ko <- NULL
-PTS$gene <- NULL
-PTS$pathway <- NULL
 
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
 ABC$grouping <- rep('ABC sugar transporters', nrow(ABC))
 ABC_abund <- ABC
 ABC[,1:3] <- ABC[, 1:3] / rowSums(ABC[,1:3])
-ABC$ko <- NULL
-ABC$gene <- NULL
-ABC$pathway <- NULL
 
 # sugar alcohols
 srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
@@ -191,9 +174,6 @@ rm(srl, srlE, mtl)
 sugar_alcohols$grouping <- rep('Sugar alcohol catabolism', nrow(sugar_alcohols))
 sugar_alcohols_abund <- sugar_alcohols
 sugar_alcohols[,1:3] <- sugar_alcohols[, 1:3] / rowSums(sugar_alcohols[,1:3])
-sugar_alcohols$ko <- NULL
-sugar_alcohols$gene <- NULL
-sugar_alcohols$pathway <- NULL
 
 # Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
@@ -212,13 +192,9 @@ rm(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 fermentation$grouping <- rep('Fermentation end steps', nrow(fermentation))
 fermentation_abund <- fermentation
 fermentation[,1:3] <- fermentation[, 1:3] / rowSums(fermentation[,1:3])
-fermentation$ko <- NULL
-fermentation$gene <- NULL
-fermentation$pathway <- NULL
 
 # Combine genes to for supplementary table
 gene_table <- rbind(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
-rm(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
 gene_table$KEGG_code <- rownames(gene_table)
 
 # Write table
@@ -229,57 +205,86 @@ rm(table_file, gene_table)
 # Calculate rleative abundance for the rest of the genes
 combined_mapping[,1:3] <- combined_mapping[, 1:3] / rowSums(combined_mapping[,1:3])
 
+# Remove unneeded groups for statistical analysis
+amino_sugars_abund$ko <- NULL
+amino_sugars_abund$gene <- NULL
+amino_sugars_abund$pathway <- NULL
+stickland_abund$ko <- NULL
+stickland_abund$gene <- NULL
+stickland_abund$pathway <- NULL
+monosaccharides_abund$ko <- NULL
+monosaccharides_abund$gene <- NULL
+monosaccharides_abund$pathway <- NULL
+polysaccharides_abund$ko <- NULL
+polysaccharides_abund$gene <- NULL
+polysaccharides_abund$pathway <- NULL
+PTS_abund$ko <- NULL
+PTS_abund$gene <- NULL
+PTS_abund$pathway <- NULL
+ABC_abund$ko <- NULL
+ABC_abund$gene <- NULL
+ABC_abund$pathway <- NULL
+sugar_alcohols_abund$ko <- NULL
+sugar_alcohols_abund$gene <- NULL
+sugar_alcohols_abund$pathway <- NULL
+fermentation_abund$ko <- NULL
+fermentation_abund$gene <- NULL
+fermentation_abund$pathway <- NULL
+
 #----------------------------------------------------------------------------------------------------------------------------#
 
 # Calculate Bray Curtis dissimilarities and significant differences in similarity matricies
 
 # Combine correct groups for comparison
-transport <- rbind(ABC, PTS)
+transport <- rbind(ABC_abund, PTS_abund)
 transport_dis <- vegdist(x=transport[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(transport_dis, grouping=transport$grouping, permutations=1000, distance='bray')
-# R = 0.311
-# p-value = 0.00019998 
+# R = 0.1582
+# p-value = 0.00999
 rm(transport, transport_dis)
 
-sugar_alcohols$association <- ifelse(sugar_alcohols$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
-sugar_alcohols_dis <- vegdist(x=sugar_alcohols[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(sugar_alcohols_dis, grouping=sugar_alcohols$association, permutations=1000, distance='bray')
+sugar_alcohols_abund$association <- ifelse(sugar_alcohols$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
+sugar_alcohols_dis <- vegdist(x=sugar_alcohols_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(sugar_alcohols_dis, grouping=sugar_alcohols_abund$association, permutations=1000, distance='bray')
 # R = 1
-# p-value = 0.001998 
+# p-value = 0.004995
 rm(sugar_alcohols_dis)
-sugar_alcohols$association <- NULL
+sugar_alcohols_abund$association <- NULL
 
-polysaccharides$association <- ifelse(polysaccharides$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
-polysaccharides_dis <- vegdist(x=polysaccharides[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(polysaccharides_dis, grouping=polysaccharides$association, permutations=1000, distance='bray')
-# R = 0.9381 
-# p-value = 0.000999 
+polysaccharides_abund$association <- ifelse(polysaccharides$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
+polysaccharides_dis <- vegdist(x=polysaccharides_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(polysaccharides_dis, grouping=polysaccharides_abund$association, permutations=1000, distance='bray')
+# R = 0.1494 
+# p-value = 0.12488 
 rm(polysaccharides_dis)
-polysaccharides$association <- NULL
+polysaccharides_abund$association <- NULL
 
-carb_type <- rbind(monosaccharides, fermentation)
+carb_type <- rbind(monosaccharides_abund, fermentation_abund)
 carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
-# R = 0.2222 
-# p-value = 0.002997 
+# R = 0.1132 
+# p-value = 0.025974
 rm(carb_type)
 
-carb_type <- rbind(polysaccharides, fermentation)
+carb_type <- rbind(polysaccharides_abund, fermentation_abund)
 carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
-# R = 0.07121 
-# p-value = 0.052947 
+# R = 0.3028 
+# p-value = 0.000999
 rm(carb_type, carb_type_dis)
 
-ferm_type <- rbind(stickland, fermentation)
+ferm_type <- rbind(stickland_abund, fermentation_abund)
 ferm_type_dis <- vegdist(x=ferm_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(ferm_type_dis, grouping=ferm_type$grouping, permutations=1000, distance='bray')
-# R = 0.3446 
-# p-value = 0.000999
+# R = 0.02785 
+# p-value = 0.2008
 rm(ferm_type, ferm_type_dis)
 
+# Delete abundances
+rm(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
+
 # Correct p-values
-p_values <- c(0.00019998, 0.001998, 0.000999, 0.002997, 0.052947, 0.000999)
+p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008)
 corrected_p_values <- p.adjust(p_values, method='bonferroni')
 rm(p_values)
 

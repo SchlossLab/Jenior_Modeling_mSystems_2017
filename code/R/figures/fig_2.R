@@ -1,4 +1,5 @@
 
+# Load dependencies
 deps <- c('wesanderson','vegan', 'matrixStats', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){

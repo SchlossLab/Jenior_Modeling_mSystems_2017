@@ -1,0 +1,7 @@
+Group_1	Group_2	Corrected_p_value
+ABC_transporters	PTS_transporters	0.05994
+Sugar_alcohol_Strep	Sugar_alcohol_Cef	0.02997
+Polysaccharide_Clinda	Polysaccharide_Cef	0.74928
+Monosaccharide	SCFA_production	0.155844
+Polysaccharide	SCFA_production	0.005994
+Amino_acid	SCFA_production	1
