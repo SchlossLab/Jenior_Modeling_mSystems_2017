@@ -241,6 +241,7 @@ transport_dis <- vegdist(x=transport[,1:3], method='bray', binary=FALSE, diag=FA
 anosim(transport_dis, grouping=transport$grouping, permutations=1000, distance='bray')
 # R = 0.1582
 # p-value = 0.00999
+# adjusted p-value = 0.039960 *
 rm(transport, transport_dis)
 
 sugar_alcohols_abund$association <- ifelse(sugar_alcohols$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
@@ -248,6 +249,7 @@ sugar_alcohols_dis <- vegdist(x=sugar_alcohols_abund[,1:3], method='bray', binar
 anosim(sugar_alcohols_dis, grouping=sugar_alcohols_abund$association, permutations=1000, distance='bray')
 # R = 1
 # p-value = 0.004995
+# adjusted p-value = 0.024975 *
 rm(sugar_alcohols_dis)
 sugar_alcohols_abund$association <- NULL
 
@@ -256,6 +258,7 @@ polysaccharides_dis <- vegdist(x=polysaccharides_abund[,1:3], method='bray', bin
 anosim(polysaccharides_dis, grouping=polysaccharides_abund$association, permutations=1000, distance='bray')
 # R = 0.1494 
 # p-value = 0.12488 
+# adjusted p-value = 0.249760 n.s.
 rm(polysaccharides_dis)
 polysaccharides_abund$association <- NULL
 
@@ -264,6 +267,7 @@ carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FA
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
 # R = 0.1132 
 # p-value = 0.025974
+# adjusted p-value = 0.077922 n.s.
 rm(carb_type)
 
 carb_type <- rbind(polysaccharides_abund, fermentation_abund)
@@ -271,6 +275,7 @@ carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FA
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
 # R = 0.3028 
 # p-value = 0.000999
+# adjusted p-value = 0.005994 **
 rm(carb_type, carb_type_dis)
 
 ferm_type <- rbind(stickland_abund, fermentation_abund)
@@ -278,6 +283,7 @@ ferm_type_dis <- vegdist(x=ferm_type[,1:3], method='bray', binary=FALSE, diag=FA
 anosim(ferm_type_dis, grouping=ferm_type$grouping, permutations=1000, distance='bray')
 # R = 0.02785 
 # p-value = 0.2008
+# adjusted p-value = 0.249760 n.s.
 rm(ferm_type, ferm_type_dis)
 
 # Delete abundances
@@ -285,14 +291,14 @@ rm(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_a
 
 # Correct p-values
 p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008)
-corrected_p_values <- p.adjust(p_values, method='bonferroni')
+corrected_p_values <- p.adjust(p_values, method='holm')
 rm(p_values)
 
 # Create supplementary table for corrected p-values
 p_table <- cbind(c('ABC_transporters','Sugar_alcohol_Strep','Polysaccharide_Clinda','Monosaccharide','Polysaccharide','Amino_acid'), 
                  c('PTS_transporters','Sugar_alcohol_Cef','Polysaccharide_Cef','SCFA_production','SCFA_production','SCFA_production'), 
                  corrected_p_values)
-colnames(p_table) <- c('Group_1', 'Group_2', 'Corrected_p_value')
+colnames(p_table) <- c('Group_1', 'Group_2', 'Corrected_p_value_HOLM')
 rm(corrected_p_values)
 
 # Write table
