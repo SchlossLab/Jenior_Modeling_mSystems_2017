@@ -80,7 +80,7 @@ wilcox.test(cefoperazone, streptomycin, exact=F) # n.s.
 wilcox.test(clindamycin, streptomycin, exact=F) # n.s.
 
 p_values <- c(0.001533, 0.0001881, 0.05, 0.1, 0.1, 0.1)
-corrected_p_values <- p.adjust(p_values, method='bonferroni')
+corrected_p_values <- p.adjust(p_values, method='holm')
 
 cfu_raw[cfu_raw == 0.0] <- NA
 cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
@@ -98,7 +98,7 @@ wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
 rm(germfree, cefoperazone, clindamycin, streptomycin)
 
 p_values <- c(0.02341, 0.0005699, 0.001764, 0.1, 0.1, 0.1)
-p.adjust(p_values, method='bonferroni')
+p.adjust(p_values, method='holm')
 rm(p_values)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

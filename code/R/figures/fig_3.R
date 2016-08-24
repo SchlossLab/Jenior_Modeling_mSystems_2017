@@ -94,16 +94,14 @@ prd <- rbind(subset(combined_mapping, grepl('prd.;', combined_mapping$gene)),
 grd <- rbind(subset(combined_mapping, grepl('grd.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('grd;', combined_mapping$gene))) # glycine fermentation
 kamA <- subset(combined_mapping, grepl('kam.;', combined_mapping$gene)) # lycine fermentation
-ldhA <- subset(combined_mapping, grepl('ldhA;', combined_mapping$gene)) # (R)-2-hydroxyisocaproate dehydrogenase (leucine degradation)
 had <- subset(combined_mapping, grepl('had.;', combined_mapping$gene)) # Leucine fermentation
 tdcB <- subset(combined_mapping, grepl('tdcB;', combined_mapping$gene)) # threonine dehydratase
 fdh <- subset(combined_mapping, grepl('fdh.;', combined_mapping$gene)) # Formate dehydrogenase
 panB  <- subset(combined_mapping, grepl('panB;', combined_mapping$gene)) # Butanoate formation
 arg <- subset(combined_mapping, grepl('arg.;', combined_mapping$gene)) # arginine deaminase operon
-serA <- subset(combined_mapping, grepl('serA;', combined_mapping$gene)) # D-3-phosphoglycerate dehydrogenase (serine catabolism)
 sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-serine dehydratase (serine catabolism)
-stickland <- rbind(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
-rm(pep, prd, grd, ldhA, had, tdcB, fdh, panB, arg, serA, sdaB, kamA)
+stickland <- rbind(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
+rm(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
 stickland$grouping <- rep('Stickland reactions', nrow(stickland))
 stickland_abund <- stickland
 stickland[,1:3] <- stickland[, 1:3] / rowSums(stickland[,1:3])
@@ -286,11 +284,41 @@ anosim(ferm_type_dis, grouping=ferm_type$grouping, permutations=1000, distance='
 # adjusted p-value = 0.249760 n.s.
 rm(ferm_type, ferm_type_dis)
 
+
+
+stickland_abund$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
+stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+# R =  
+# p-value = 
+# adjusted p-value = 
+rm(stickland_dis)
+stickland_abund$association <- NULL
+stickland_abund$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Streptomycin')
+stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+# R =  
+# p-value = 
+# adjusted p-value = 
+rm(stickland_dis)
+stickland_abund$association <- NULL
+stickland_abund$association <- ifelse(stickland$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
+stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+# R =  
+# p-value = 
+# adjusted p-value = 
+rm(stickland_dis)
+stickland_abund$association <- NULL
+
+
+
+
 # Delete abundances
 rm(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
 
 # Correct p-values
-p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008)
+p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008, , , )
 corrected_p_values <- p.adjust(p_values, method='holm')
 rm(p_values)
 
