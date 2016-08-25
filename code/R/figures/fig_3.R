@@ -84,6 +84,8 @@ amino_sugars <- rbind(mur, nag, acd, ldt, gne, nan, glm)
 rm(mur, nag, acd, ldt, gne, nan, glm)
 amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
 amino_sugars_abund <- amino_sugars
+amino_sugars_abund[amino_sugars_abund == 0] <- 1
+amino_sugars_abund[,1:3] <- log10(amino_sugars_abund)
 amino_sugars[,1:3] <- amino_sugars[, 1:3] / rowSums(amino_sugars[,1:3])
 
 # Stickland fermentation (amino acid catabolism)
@@ -104,6 +106,8 @@ stickland <- rbind(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
 rm(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
 stickland$grouping <- rep('Stickland reactions', nrow(stickland))
 stickland_abund <- stickland
+stickland_abund[stickland_abund == 0] <- 1
+stickland_abund[,1:3] <- log10(stickland_abund)
 stickland[,1:3] <- stickland[, 1:3] / rowSums(stickland[,1:3])
 
 # Monosaccharide catabolism
@@ -132,6 +136,8 @@ monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose,
 rm(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 monosaccharides$grouping <- rep('Monosaccharide catabolism', nrow(monosaccharides))
 monosaccharides_abund <- monosaccharides
+monosaccharides_abund[monosaccharides_abund == 0] <- 1
+monosaccharides_abund[,1:3] <- log10(monosaccharides_abund)
 monosaccharides[,1:3] <- monosaccharides[, 1:3] / rowSums(monosaccharides[,1:3])
 
 # Polysaccharide catabolism
@@ -148,6 +154,8 @@ polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
 rm(sucrose, maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
 polysaccharides_abund <- polysaccharides
+polysaccharides_abund[polysaccharides_abund == 0] <- 1
+polysaccharides_abund[,1:3] <- log10(polysaccharides_abund)
 polysaccharides[,1:3] <- polysaccharides[, 1:3] / rowSums(polysaccharides[,1:3])
 
 # PTS systems
@@ -155,12 +163,16 @@ PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)
              subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
 PTS$grouping <- rep('PEP group translocators', nrow(PTS))
 PTS_abund <- PTS
+PTS_abund[PTS_abund == 0] <- 1
+PTS_abund[,1:3] <- log10(PTS_abund)
 PTS[,1:3] <- PTS[, 1:3] / rowSums(PTS[,1:3])
 
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
 ABC$grouping <- rep('ABC sugar transporters', nrow(ABC))
 ABC_abund <- ABC
+ABC_abund[ABC_abund == 0] <- 1
+ABC_abund[,1:3] <- log10(ABC_abund)
 ABC[,1:3] <- ABC[, 1:3] / rowSums(ABC[,1:3])
 
 # sugar alcohols
@@ -171,6 +183,8 @@ sugar_alcohols <- rbind(srl, srlE, mtl)
 rm(srl, srlE, mtl)
 sugar_alcohols$grouping <- rep('Sugar alcohol catabolism', nrow(sugar_alcohols))
 sugar_alcohols_abund <- sugar_alcohols
+sugar_alcohols_abund[sugar_alcohols_abund == 0] <- 1
+sugar_alcohols_abund[,1:3] <- log10(sugar_alcohols_abund)
 sugar_alcohols[,1:3] <- sugar_alcohols[, 1:3] / rowSums(sugar_alcohols[,1:3])
 
 # Fermentation genes
@@ -189,6 +203,8 @@ fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 rm(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 fermentation$grouping <- rep('Fermentation end steps', nrow(fermentation))
 fermentation_abund <- fermentation
+fermentation_abund[fermentation_abund == 0] <- 1
+fermentation_abund[,1:3] <- log10(fermentation_abund)
 fermentation[,1:3] <- fermentation[, 1:3] / rowSums(fermentation[,1:3])
 
 # Combine genes to for supplementary table
