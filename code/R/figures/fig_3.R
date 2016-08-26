@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('vegan', 'klaR', 'wesanderson');
+deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -20,6 +20,7 @@ clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE, row.names=1)
 colnames(clindamycin) <- c('Clindamycin', 'ko', 'gene', 'pathway')
 streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE, row.names=1)
 colnames(streptomycin) <- c('Streptomycin', 'ko', 'gene', 'pathway')
+rm(cefoperazone_file, clindamycin_file, streptomycin_file)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -58,8 +59,8 @@ rm(index, sub_size, cefoperazone_sub, clindamycin_sub, streptomycin_sub)
 # Eliminate genes with no transcripts mapping
 combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) != 0.0, ] 
 
-# Free up memory
-rm(cefoperazone_file, clindamycin_file, streptomycin_file)
+# Transform the data for comparison
+combined_mapping[,1:3] <- log10(combined_mapping[,1:3] + 1)
 
 #----------------------------------------------------------------------------------------------------------------------------#
 
@@ -83,12 +84,13 @@ glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)),
 amino_sugars <- rbind(mur, nag, acd, ldt, gne, nan, glm)
 rm(mur, nag, acd, ldt, gne, nan, glm)
 amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
-amino_sugars_abund <- amino_sugars
-amino_sugars_abund[amino_sugars_abund == 0] <- 1
-amino_sugars_abund[,1:3] <- log10(amino_sugars_abund)
-amino_sugars[,1:3] <- amino_sugars[, 1:3] / rowSums(amino_sugars[,1:3])
+amino_sugars_relabund <- amino_sugars[,1:3] / rowSums(amino_sugars[,1:3])
+gene_table <- amino_sugars
+amino_sugars$ko <- NULL
+amino_sugars$gene <- NULL
+amino_sugars$pathway <- NULL
 
-# Stickland fermentation (amino acid catabolism)
+# Amino acid catabolism (including Stickland fermentation)
 pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('pep;', combined_mapping$gene))) # general peptidases
 prd <- rbind(subset(combined_mapping, grepl('prd.;', combined_mapping$gene)), 
@@ -105,10 +107,11 @@ sdaB <- subset(combined_mapping, grepl('sdaB;', combined_mapping$gene)) # L-seri
 stickland <- rbind(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
 rm(pep, prd, grd, had, tdcB, fdh, panB, arg, sdaB, kamA)
 stickland$grouping <- rep('Stickland reactions', nrow(stickland))
-stickland_abund <- stickland
-stickland_abund[stickland_abund == 0] <- 1
-stickland_abund[,1:3] <- log10(stickland_abund)
-stickland[,1:3] <- stickland[, 1:3] / rowSums(stickland[,1:3])
+stickland_relabund <- stickland[,1:3] / rowSums(stickland[,1:3])
+gene_table <- rbind(gene_table, stickland)
+stickland$ko <- NULL
+stickland$gene <- NULL
+stickland$pathway <- NULL
 
 # Monosaccharide catabolism
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
@@ -135,10 +138,11 @@ xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pen
 monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 rm(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
 monosaccharides$grouping <- rep('Monosaccharide catabolism', nrow(monosaccharides))
-monosaccharides_abund <- monosaccharides
-monosaccharides_abund[monosaccharides_abund == 0] <- 1
-monosaccharides_abund[,1:3] <- log10(monosaccharides_abund)
-monosaccharides[,1:3] <- monosaccharides[, 1:3] / rowSums(monosaccharides[,1:3])
+monosaccharides_relabund <- monosaccharides[,1:3] / rowSums(monosaccharides[,1:3])
+gene_table <- rbind(gene_table, monosaccharides)
+monosaccharides$ko <- NULL
+monosaccharides$gene <- NULL
+monosaccharides$pathway <- NULL
 
 # Polysaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -153,39 +157,43 @@ cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
 polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
 rm(sucrose, maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
-polysaccharides_abund <- polysaccharides
-polysaccharides_abund[polysaccharides_abund == 0] <- 1
-polysaccharides_abund[,1:3] <- log10(polysaccharides_abund)
-polysaccharides[,1:3] <- polysaccharides[, 1:3] / rowSums(polysaccharides[,1:3])
+polysaccharides_relabund <- polysaccharides[,1:3] / rowSums(polysaccharides[,1:3])
+gene_table <- rbind(gene_table, polysaccharides)
+polysaccharides$ko <- NULL
+polysaccharides$gene <- NULL
+polysaccharides$pathway <- NULL
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
              subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
 PTS$grouping <- rep('PEP group translocators', nrow(PTS))
-PTS_abund <- PTS
-PTS_abund[PTS_abund == 0] <- 1
-PTS_abund[,1:3] <- log10(PTS_abund)
-PTS[,1:3] <- PTS[, 1:3] / rowSums(PTS[,1:3])
+PTS_relabund <- PTS[,1:3] / rowSums(PTS[,1:3])
+gene_table <- rbind(gene_table, PTS)
+PTS$ko <- NULL
+PTS$gene <- NULL
+PTS$pathway <- NULL
 
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
 ABC$grouping <- rep('ABC sugar transporters', nrow(ABC))
-ABC_abund <- ABC
-ABC_abund[ABC_abund == 0] <- 1
-ABC_abund[,1:3] <- log10(ABC_abund)
-ABC[,1:3] <- ABC[, 1:3] / rowSums(ABC[,1:3])
+ABC[,1:3] <- ABC[,1:3] / rowSums(ABC[,1:3])
+gene_table <- rbind(gene_table, ABC)
+ABC$ko <- NULL
+ABC$gene <- NULL
+ABC$pathway <- NULL
 
-# sugar alcohols
+# Sugar alcohols
 srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
 srlE <- subset(combined_mapping, grepl('srlE.;', combined_mapping$gene)) # sorbitol import
 mtl <- subset(combined_mapping, grepl('mtl.;', combined_mapping$gene)) # mannitol utilization locus
 sugar_alcohols <- rbind(srl, srlE, mtl)
 rm(srl, srlE, mtl)
 sugar_alcohols$grouping <- rep('Sugar alcohol catabolism', nrow(sugar_alcohols))
-sugar_alcohols_abund <- sugar_alcohols
-sugar_alcohols_abund[sugar_alcohols_abund == 0] <- 1
-sugar_alcohols_abund[,1:3] <- log10(sugar_alcohols_abund)
-sugar_alcohols[,1:3] <- sugar_alcohols[, 1:3] / rowSums(sugar_alcohols[,1:3])
+sugar_alcohols_relabund <- sugar_alcohols[,1:3] / rowSums(sugar_alcohols[,1:3])
+gene_table <- rbind(gene_table, sugar_alcohols)
+sugar_alcohols$ko <- NULL
+sugar_alcohols$gene <- NULL
+sugar_alcohols$pathway <- NULL
 
 # Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
@@ -202,55 +210,44 @@ hbd <- subset(combined_mapping, grepl('hbd;', combined_mapping$gene)) # 3-hydrox
 fermentation <- rbind(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 rm(buk, ptb, acetate, valerate, sucD, adh, cat, abfD, hbd)
 fermentation$grouping <- rep('Fermentation end steps', nrow(fermentation))
-fermentation_abund <- fermentation
-fermentation_abund[fermentation_abund == 0] <- 1
-fermentation_abund[,1:3] <- log10(fermentation_abund)
-fermentation[,1:3] <- fermentation[, 1:3] / rowSums(fermentation[,1:3])
+fermentation_relabund <- fermentation[,1:3] / rowSums(fermentation[,1:3])
+gene_table <- rbind(gene_table, fermentation)
+fermentation$ko <- NULL
+fermentation$gene <- NULL
+fermentation$pathway <- NULL
 
-# Combine genes to for supplementary table
-gene_table <- rbind(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
+# Prep the data from and write it to a file
 gene_table$KEGG_code <- rownames(gene_table)
-
-# Write table
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S2.tsv'
 write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)
 
 # Calculate rleative abundance for the rest of the genes
-combined_mapping[,1:3] <- combined_mapping[, 1:3] / rowSums(combined_mapping[,1:3])
+combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3])
 
-# Remove unneeded groups for statistical analysis
-amino_sugars_abund$ko <- NULL
-amino_sugars_abund$gene <- NULL
-amino_sugars_abund$pathway <- NULL
-stickland_abund$ko <- NULL
-stickland_abund$gene <- NULL
-stickland_abund$pathway <- NULL
-monosaccharides_abund$ko <- NULL
-monosaccharides_abund$gene <- NULL
-monosaccharides_abund$pathway <- NULL
-polysaccharides_abund$ko <- NULL
-polysaccharides_abund$gene <- NULL
-polysaccharides_abund$pathway <- NULL
-PTS_abund$ko <- NULL
-PTS_abund$gene <- NULL
-PTS_abund$pathway <- NULL
-ABC_abund$ko <- NULL
-ABC_abund$gene <- NULL
-ABC_abund$pathway <- NULL
-sugar_alcohols_abund$ko <- NULL
-sugar_alcohols_abund$gene <- NULL
-sugar_alcohols_abund$pathway <- NULL
-fermentation_abund$ko <- NULL
-fermentation_abund$gene <- NULL
-fermentation_abund$pathway <- NULL
+#----------------------------------------------------------------------------------------------------------------------------#
+
+# Create supplementary 3D scatterplots
+
+
+
+scatterplot3d(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
+              xlim=c(0,1), ylim=c(0,1), zlim=c(0,1), 
+              highlight.3d=TRUE, col.grid="gray68", pch=19)
+
+
+
+
+
+
+
 
 #----------------------------------------------------------------------------------------------------------------------------#
 
 # Calculate Bray Curtis dissimilarities and significant differences in similarity matricies
 
 # Combine correct groups for comparison
-transport <- rbind(ABC_abund, PTS_abund)
+transport <- rbind(ABC, PTS)
 transport_dis <- vegdist(x=transport[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(transport_dis, grouping=transport$grouping, permutations=1000, distance='bray')
 # R = 0.1582
@@ -258,25 +255,25 @@ anosim(transport_dis, grouping=transport$grouping, permutations=1000, distance='
 # adjusted p-value = 0.039960 *
 rm(transport, transport_dis)
 
-sugar_alcohols_abund$association <- ifelse(sugar_alcohols$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
-sugar_alcohols_dis <- vegdist(x=sugar_alcohols_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(sugar_alcohols_dis, grouping=sugar_alcohols_abund$association, permutations=1000, distance='bray')
+sugar_alcohols$association <- ifelse(sugar_alcohols$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
+sugar_alcohols_dis <- vegdist(x=sugar_alcohols[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(sugar_alcohols_dis, grouping=sugar_alcohols$association, permutations=1000, distance='bray')
 # R = 1
 # p-value = 0.004995
 # adjusted p-value = 0.024975 *
 rm(sugar_alcohols_dis)
-sugar_alcohols_abund$association <- NULL
+sugar_alcohols$association <- NULL
 
-polysaccharides_abund$association <- ifelse(polysaccharides$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
-polysaccharides_dis <- vegdist(x=polysaccharides_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(polysaccharides_dis, grouping=polysaccharides_abund$association, permutations=1000, distance='bray')
+polysaccharides$association <- ifelse(polysaccharides$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
+polysaccharides_dis <- vegdist(x=polysaccharides[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(polysaccharides_dis, grouping=polysaccharides$association, permutations=1000, distance='bray')
 # R = 0.1494 
 # p-value = 0.12488 
 # adjusted p-value = 0.249760 n.s.
 rm(polysaccharides_dis)
-polysaccharides_abund$association <- NULL
+polysaccharides$association <- NULL
 
-carb_type <- rbind(monosaccharides_abund, fermentation_abund)
+carb_type <- rbind(monosaccharides, fermentation)
 carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
 # R = 0.1132 
@@ -284,7 +281,7 @@ anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='
 # adjusted p-value = 0.077922 n.s.
 rm(carb_type)
 
-carb_type <- rbind(polysaccharides_abund, fermentation_abund)
+carb_type <- rbind(polysaccharides, fermentation)
 carb_type_dis <- vegdist(x=carb_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='bray')
 # R = 0.3028 
@@ -292,7 +289,7 @@ anosim(carb_type_dis, grouping=carb_type$grouping, permutations=1000, distance='
 # adjusted p-value = 0.005994 **
 rm(carb_type, carb_type_dis)
 
-ferm_type <- rbind(stickland_abund, fermentation_abund)
+ferm_type <- rbind(stickland, fermentation)
 ferm_type_dis <- vegdist(x=ferm_type[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
 anosim(ferm_type_dis, grouping=ferm_type$grouping, permutations=1000, distance='bray')
 # R = 0.02785 
@@ -302,39 +299,39 @@ rm(ferm_type, ferm_type_dis)
 
 
 
-stickland_abund$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
-stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+stickland$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Cefoperazone')
+stickland_dis <- vegdist(x=stickland[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland$association, permutations=1000, distance='bray')
 # R =  
 # p-value = 
 # adjusted p-value = 
 rm(stickland_dis)
-stickland_abund$association <- NULL
-stickland_abund$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Streptomycin')
-stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+stickland$association <- NULL
+stickland$association <- ifelse(stickland$Clindamycin >= 0.5, 'Clindamycin', 'Streptomycin')
+stickland_dis <- vegdist(x=stickland[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland$association, permutations=1000, distance='bray')
 # R =  
 # p-value = 
 # adjusted p-value = 
 rm(stickland_dis)
-stickland_abund$association <- NULL
-stickland_abund$association <- ifelse(stickland$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
-stickland_dis <- vegdist(x=stickland_abund[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
-anosim(stickland_dis, grouping=stickland_abund$association, permutations=1000, distance='bray')
+stickland$association <- NULL
+stickland$association <- ifelse(stickland$Streptomycin >= 0.5, 'Streptomycin', 'Cefoperazone')
+stickland_dis <- vegdist(x=stickland[,1:3], method='bray', binary=FALSE, diag=FALSE, upper=FALSE)
+anosim(stickland_dis, grouping=stickland$association, permutations=1000, distance='bray')
 # R =  
 # p-value = 
 # adjusted p-value = 
 rm(stickland_dis)
-stickland_abund$association <- NULL
+stickland$association <- NULL
 
 
 
 
 # Delete abundances
-rm(amino_sugars_abund, stickland_abund, monosaccharides_abund, polysaccharides_abund, ABC_abund, PTS_abund, sugar_alcohols_abund, fermentation_abund)
+rm(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation)
 
 # Correct p-values
-p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008, , , )
+p_values <- c(0.00999, 0.004995, 0.12488, 0.025974, 0.000999, 0.2008,)
 corrected_p_values <- p.adjust(p_values, method='holm')
 rm(p_values)
 
