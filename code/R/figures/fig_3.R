@@ -384,7 +384,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=2, bg='blue3')
 text(x=0, y=-0.48, labels='Polysaccharide catabolism', cex=1.3)
 
-# sugar_alcohols alone
+# sugar alcohols alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
@@ -398,7 +398,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=2, bg='darkorchid3')
 text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
 
-# stickland alone
+# amino acid (stickland) alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
@@ -412,7 +412,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2, bg=fox[2])
 text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
 
-# fermentation
+# scfa alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
