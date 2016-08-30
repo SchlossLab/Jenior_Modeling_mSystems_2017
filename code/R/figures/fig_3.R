@@ -57,10 +57,7 @@ combined_mapping$Streptomycin <- round(rowMeans(streptomycin_sub), digits=0)
 rm(index, sub_size, cefoperazone_sub, clindamycin_sub, streptomycin_sub)
 
 # Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) > 10, ] 
-
-# Transform the data for comparison
-#combined_mapping[,1:3] <- log10(combined_mapping[,1:3] + 1)
+combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) > 5, ] 
 
 #----------------------------------------------------------------------------------------------------------------------------#
 
@@ -330,16 +327,16 @@ tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, ce
 tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=apply(ABC, 1, max)*3.5, bg=alpha(rainbow[7],0.7))
 tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=apply(monosaccharides, 1, max)*3.5, bg=alpha(fox[1],0.7))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=apply(stickland, 1, max)*3.5, bg=alpha(fox[2],0.7))
-tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=apply(sugar_alcohols, 1, max)*3.5, bg=alpha('darkorchid3',0.7))
 tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=apply(fermentation, 1, max)*3.5, bg=alpha(fox[5],0.7))
 tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=apply(polysaccharides, 1, max)*3.5, bg=alpha('blue3',0.7))
+tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 
 # Add the legend
-legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All other genes'), 
+legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All genes'), 
     ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
 # Size legend
-legend(x=-0.6, y=0.41, legend=c('     ~500 transcripts','','','  ~50 transcripts','','~5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(10,0,0,5,0,1), cex=1.4, bty='n')
+legend(x=-0.6, y=0.41, legend=c('    ~500 transcripts','','','  ~50 transcripts','','~5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9,0,0,6,0,2), cex=1.4, bty='n')
 
 # Add figure label
 legend(x=-0.6, y=0.63, legend='A', cex=2, bty='n')
