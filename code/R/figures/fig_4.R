@@ -581,7 +581,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.5, groups=top_importances$abx, color='black', 
-         xlab='Metabolite Importance Score', xlim=c(-2,10), 
+         xlab='Substrate Importance Score', xlim=c(-2,10), 
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), pch=19)
 
 segments(x0=rep(-2, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
