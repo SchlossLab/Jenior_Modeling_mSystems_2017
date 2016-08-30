@@ -133,7 +133,6 @@ tagatose <- subset(combined_mapping, grepl('tagatose', combined_mapping$gene)) #
 fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fru;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fru.;', combined_mapping$gene)),
-                  subset(combined_mapping, grepl('fru...;', combined_mapping$gene)),
                   subset(combined_mapping, grepl('fba;', combined_mapping$gene))) # hexose
 xylose <- subset(combined_mapping, grepl('xylose', combined_mapping$gene)) # pentose
 monosaccharides <- rbind(gap, gpmI, pfk, tpi, pyk, eno, pgm, galactose, mannose, tagatose, fructose, xylose)
@@ -170,7 +169,8 @@ polysaccharides[,1:3] <- log10(polysaccharides[,1:3] + 1)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
-             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
+             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)), 
+             subset(combined_mapping, grepl('fruABC;', combined_mapping$gene)))
 PTS$grouping <- rep('PEP group translocators', nrow(PTS))
 PTS_relabund <- PTS[,1:3] / rowSums(PTS[,1:3])
 gene_table <- rbind(gene_table, PTS)
