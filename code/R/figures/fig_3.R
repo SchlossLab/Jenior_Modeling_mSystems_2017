@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d');
+deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d', 'scales');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -57,7 +57,7 @@ combined_mapping$Streptomycin <- round(rowMeans(streptomycin_sub), digits=0)
 rm(index, sub_size, cefoperazone_sub, clindamycin_sub, streptomycin_sub)
 
 # Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) != 0.0, ] 
+combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) > 10, ] 
 
 # Transform the data for comparison
 #combined_mapping[,1:3] <- log10(combined_mapping[,1:3] + 1)
@@ -89,6 +89,8 @@ gene_table <- amino_sugars
 amino_sugars$ko <- NULL
 amino_sugars$gene <- NULL
 amino_sugars$pathway <- NULL
+amino_sugars$grouping <- NULL
+amino_sugars[,1:3] <- log10(amino_sugars[,1:3] + 1)
 
 # Amino acid catabolism (including Stickland fermentation)
 pep <- rbind(subset(combined_mapping, grepl('pep.;', combined_mapping$gene)), 
@@ -112,6 +114,8 @@ gene_table <- rbind(gene_table, stickland)
 stickland$ko <- NULL
 stickland$gene <- NULL
 stickland$pathway <- NULL
+stickland$grouping <- NULL
+stickland[,1:3] <- log10(stickland[,1:3] + 1)
 
 # Monosaccharide catabolism
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
@@ -143,6 +147,8 @@ gene_table <- rbind(gene_table, monosaccharides)
 monosaccharides$ko <- NULL
 monosaccharides$gene <- NULL
 monosaccharides$pathway <- NULL
+monosaccharides$grouping <- NULL
+monosaccharides[,1:3] <- log10(monosaccharides[,1:3] + 1)
 
 # Polysaccharide catabolism
 sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
@@ -162,6 +168,8 @@ gene_table <- rbind(gene_table, polysaccharides)
 polysaccharides$ko <- NULL
 polysaccharides$gene <- NULL
 polysaccharides$pathway <- NULL
+polysaccharides$grouping <- NULL
+polysaccharides[,1:3] <- log10(polysaccharides[,1:3] + 1)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
@@ -172,6 +180,8 @@ gene_table <- rbind(gene_table, PTS)
 PTS$ko <- NULL
 PTS$gene <- NULL
 PTS$pathway <- NULL
+PTS$grouping <- NULL
+PTS[,1:3] <- log10(PTS[,1:3] + 1)
 
 # ABC transporters
 ABC <- subset(combined_mapping, grepl('ABC_transporter_sugar', combined_mapping$gene))
@@ -181,6 +191,8 @@ gene_table <- rbind(gene_table, ABC)
 ABC$ko <- NULL
 ABC$gene <- NULL
 ABC$pathway <- NULL
+ABC$grouping <- NULL
+ABC[,1:3] <- log10(ABC[,1:3] + 1)
 
 # Sugar alcohols
 srl <- subset(combined_mapping, grepl('srl.;', combined_mapping$gene)) # sorbitol utilization locus
@@ -194,6 +206,8 @@ gene_table <- rbind(gene_table, sugar_alcohols)
 sugar_alcohols$ko <- NULL
 sugar_alcohols$gene <- NULL
 sugar_alcohols$pathway <- NULL
+sugar_alcohols$grouping <- NULL
+sugar_alcohols[,1:3] <- log10(sugar_alcohols[,1:3] + 1)
 
 # Fermentation genes
 buk <- rbind(subset(combined_mapping, grepl('buk;', combined_mapping$gene)), 
@@ -215,6 +229,8 @@ gene_table <- rbind(gene_table, fermentation)
 fermentation$ko <- NULL
 fermentation$gene <- NULL
 fermentation$pathway <- NULL
+fermentation$grouping <- NULL
+fermentation[,1:3] <- log10(fermentation[,1:3] + 1)
 
 # Prep the data from and write it to a file
 gene_table$KEGG_code <- rownames(gene_table)
@@ -224,23 +240,6 @@ rm(table_file, gene_table)
 
 # Calculate rleative abundance for the rest of the genes
 combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3])
-
-#----------------------------------------------------------------------------------------------------------------------------#
-
-# Create supplementary 3D scatterplots
-
-#scatterplot3d(x=monosaccharides[,1], y=monosaccharides[,2], z=monosaccharides[,3], 
-#              xlim=c(0,1), ylim=c(0,1), zlim=c(0,1), 
-#              highlight.3d=TRUE, col.grid="gray68", pch=19)
-
-
-#----------------------------------------------------------------------------------------------------------------------------#
-
-# Calculate significant differences between groups of interest
-
-
-# Delete abundances
-rm(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -277,7 +276,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
 # Add points
-tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8)
+tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8, col='gray65', pch=19)
 
 # Axis labels
 text(x=-0.35, y=-0.41, labels='Cefoperazone', cex=1.4)
@@ -327,20 +326,27 @@ text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463),
      labels=rev(tick_labels), cex=0.9)
 
 # Color points by substrate
-tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=2.3, bg='firebrick1')
-tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=2.3, bg=fox[3])
-tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=2.3, bg=rainbow[7])
-tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=2.3, bg=fox[1])
-tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2.3, bg=fox[2])
-tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=2.3, bg='darkorchid3')
-tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=2.3, bg=fox[5])
-tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=2.3, bg='blue3')
+tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=apply(PTS, 1, max)*3.5, bg=alpha(fox[3],0.7))
+tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=apply(ABC, 1, max)*3.5, bg=alpha(rainbow[7],0.7))
+tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=apply(monosaccharides, 1, max)*3.5, bg=alpha(fox[1],0.7))
+tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=apply(stickland, 1, max)*3.5, bg=alpha(fox[2],0.7))
+tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
+tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=apply(sugar_alcohols, 1, max)*3.5, bg=alpha('darkorchid3',0.7))
+tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=apply(fermentation, 1, max)*3.5, bg=alpha(fox[5],0.7))
+tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=apply(polysaccharides, 1, max)*3.5, bg=alpha('blue3',0.7))
 
 # Add the legend
-legend(x=0.26, y=0.7, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All other genes'), 
-    ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col='black', pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7], 'white'), bty='n')
+legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All other genes'), 
+    ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
+# Size legend
+legend(x=-0.6, y=0.41, legend=c('     ~500 transcripts','','','  ~50 transcripts','','~5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(10,0,0,5,0,1), cex=1.4, bty='n')
+
 # Add figure label
-legend(x=-0.6, y=0.6, legend='A', cex=2, bty='n')
+legend(x=-0.6, y=0.63, legend='A', cex=2, bty='n')
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
+# Individual plots
 
 # amino sugars alone
 par(mar=c(1,0,0,0))
@@ -353,7 +359,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=2, bg='firebrick1')
+tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], 
+          pch=21, cex=2, bg='firebrick1')
 text(x=0, y=-0.48, labels='Amino sugar catabolism', cex=1.3)
 
 # monosaccharides alone
@@ -367,7 +374,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=2, bg=fox[1])
+tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], 
+          pch=21, cex=2, bg=fox[1])
 text(x=0, y=-0.48, labels='Monosaccharide catabolism', cex=1.3)
 
 # polysaccharides alone
@@ -381,7 +389,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=2, bg='blue3')
+tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], 
+          pch=21, cex=2, bg='blue3')
 text(x=0, y=-0.48, labels='Polysaccharide catabolism', cex=1.3)
 
 # sugar alcohols alone
@@ -395,7 +404,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=2, bg='darkorchid3')
+tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], 
+          pch=21, cex=2, bg='darkorchid3')
 text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
 
 # amino acid (stickland) alone
@@ -423,7 +433,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=2, bg=fox[5])
+tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
+          pch=21, cex=2, bg=fox[5])
 text(x=0, y=-0.48, labels='SCFA production', cex=1.3)
 
 # PTS alone
@@ -437,7 +448,8 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=2, bg=fox[3])
+tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], 
+          pch=21, cex=2, bg=fox[3])
 text(x=0, y=-0.48, labels='PEP group translocators', cex=1.3)
 
 # ABC alone
@@ -451,16 +463,19 @@ lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=2, bg=rainbow[7])
+tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], 
+          pch=21, cex=2, bg=rainbow[7])
 text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
-rm(ABC_relabund, amino_sugars_relabund, combined_mapping, fermentation_relabund, monosaccharides_relabund, 
+rm(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation, 
+   ABC_relabund, amino_sugars_relabund, combined_mapping, fermentation_relabund, monosaccharides_relabund, 
    polysaccharides_relabund, PTS_relabund, stickland_relabund, sugar_alcohols_relabund, plot_file, 
    rainbow, tick_labels, fox)
+
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
