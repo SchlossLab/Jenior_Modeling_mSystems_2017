@@ -79,88 +79,13 @@ rm(growth)
 
 # Set up plot file
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
-pdf(file=plot_file, width=35, height=14)
-layout(matrix(c(1,2,3), nrow=1, ncol=3, byrow = TRUE))
+pdf(file=plot_file, width=14, height=14)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Plot the 24 curves
+# Plot combination and BHI curves
 par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE)
-plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1), lwd=2, pch=19, xlab='Hours Postinoculation', ylab=expression(OD[600]), cex=2.3)
-axis(1, at=seq(1,50,4), labels=seq(0,24,2))
-abline(h=seq(0,1,0.1), lty=3, col='gray68')
-abline(v=seq(1,50,2), lty=3, col='gray68')
-
-lines(growth_medians$y_glucose_y_aa_median, type='o', lwd=2, pch=19, cex=2.7, col='black')
-segments(x0=seq(1,49,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2.5, cex=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2, col='black')
-
-lines(growth_medians$bhi_median, type='o', lwd=2, pch=19, cex=2.7, col=wes_palette('Darjeeling2')[2])
-segments(x0=seq(1,49,1), y0=growth_medians$bhi_median+growth_sds$bhi_sd, x1=seq(1,49,1), y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2.5, cex=2, col=wes_palette('Darjeeling2')[2])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median+growth_sds$bhi_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median+growth_sds$bhi_sd, lwd=2, col=wes_palette('Darjeeling2')[2])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median-growth_sds$bhi_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2, col=wes_palette('Darjeeling2')[2])
-
-lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=19, cex=2.7)
-segments(x0=seq(1,49,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-
-legend('topleft', legend=c('+Glucose +AA','Salicin','BHI'), pch=19, cex=2.5, pt.cex=3.5, bg='white',
-       col=c('black',wes_palette('FantasticFox')[5],wes_palette('Darjeeling2')[2]))
-
-mtext('A', side=2, line=2, las=2, adj=2, padj=-26.5, cex=2)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Plot the stationary curves
-par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE)
-plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1), lwd=2, pch=19, xlab='Hours Postinoculation', ylab=expression(OD[600]), cex=2.3)
-axis(1, at=seq(1,50,4), labels=seq(0,24,2))
-abline(h=seq(0,1,0.1), lty=3, col='gray68')
-abline(v=seq(1,50,2), lty=3, col='gray68')
-
-lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=17, cex=2.7, col='black')
-segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2, col='black')
-
-lines(growth_medians$y_glucose_n_aa_median, type='o', lwd=2, pch=15, cex=2.7, col='black')
-segments(x0=seq(1,49,1), y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2.5, cex=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, lwd=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2, col='black')
-
-lines(growth_medians$n_glucose_n_aa_median, type='o', lwd=2, pch=18, cex=2.7, col='black')
-segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2.5, cex=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, lwd=2, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2, col='black')
-
-lines(growth_medians$fructose_median, type='o', lwd=2, pch=19, cex=2.7, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, cex=2, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2, col=wes_palette('FantasticFox')[1])
-
-lines(growth_medians$sorbitol_median, type='o', lwd=2, pch=17, cex=2.7, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, cex=2, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2, col=wes_palette('FantasticFox')[1])
-
-lines(growth_medians$mannitol_median, type='o', lwd=2, pch=19, cex=2.7, col=wes_palette('FantasticFox')[3])
-segments(x0=seq(1,49,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, cex=2, col=wes_palette('FantasticFox')[3])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2, col=wes_palette('FantasticFox')[3])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2, col=wes_palette('FantasticFox')[3])
-
-legend('topleft', legend=c('-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Fructose','D-Sorbitol','Mannitol'), 
-       col=c('black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3]), 
-       pch=c(17,15,18,19,17,19), cex=2.5, pt.cex=3.5, bg='white')
-
-mtext('B', side=2, line=2, las=2, adj=2, padj=-26.5, cex=2)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Plot the stationary curves
-par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE)
-plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1), lwd=2, pch=19, xlab='Hours Postinoculation', ylab=expression(OD[600]), cex=2.3)
+plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1), lwd=2, pch=19, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
 axis(1, at=seq(1,50,4), labels=seq(0,24,2))
 abline(h=seq(0,1,0.1), lty=3, col='gray68')
 abline(v=seq(1,50,2), lty=3, col='gray68')
@@ -180,9 +105,12 @@ segments(x0=seq(1,49,1), y0=growth_medians$combination_median+growth_sds$combina
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$combination_median+growth_sds$combination_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$combination_median+growth_sds$combination_sd, lwd=2, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$combination_median-growth_sds$combination_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$combination_median-growth_sds$combination_sd, lwd=2, col=wes_palette('FantasticFox')[1])
 
-legend('topleft', legend=c('D-Fructose','D-Sorbitol','Equal concentrations of D-Fructose and D-Sorbitol'), pch=c(19,17,15), cex=2.5, pt.cex=3.5, bg='white', col=wes_palette('FantasticFox')[1])
+lines(growth_medians$bhi_median, type='o', lwd=2, pch=19, cex=2.7, col=wes_palette('Darjeeling2')[2])
+segments(x0=seq(1,49,1), y0=growth_medians$bhi_median+growth_sds$bhi_sd, x1=seq(1,49,1), y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2.5, cex=2, col=wes_palette('Darjeeling2')[2])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median+growth_sds$bhi_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median+growth_sds$bhi_sd, lwd=2, col=wes_palette('Darjeeling2')[2])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median-growth_sds$bhi_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2, col=wes_palette('Darjeeling2')[2])
 
-mtext('C', side=2, line=2, las=2, adj=2, padj=-26.5, cex=2)
+legend('topleft', legend=c('D-Fructose','D-Sorbitol','Equal concentrations of D-Fructose and D-Sorbitol','BHI'), pch=c(19,17,15,19), cex=2.5, pt.cex=3.5, bg='white', col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('Darjeeling2')[2]))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
