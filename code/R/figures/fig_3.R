@@ -336,7 +336,7 @@ tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_suga
 legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All genes'), 
     ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
 # Size legend
-legend(x=-0.6, y=0.41, legend=c('    ~500 transcripts','','','  ~50 transcripts','','~5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9,0,0,6,0,2), cex=1.4, bty='n')
+legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
 
 # Add figure label
 legend(x=-0.6, y=0.63, legend='A', cex=2, bty='n')
