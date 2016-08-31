@@ -76,11 +76,15 @@ sigma$Cefoperazone <- rowMedians(cefoperazone)
 sigma$Clindamycin <- rowMedians(clindamycin)
 sigma$Streptomycin <- rowMedians(streptomycin)
 sigma_medians <- sigma
+rownames(sigma_medians) <- c("ccpA", "cdtR",  "codY",  "dpaA",  "fliA",  "prdR", "rex", "sigA1", 
+                             "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
 # SDs
 sigma$Cefoperazone <- rowSds(cefoperazone)
 sigma$Clindamycin <- rowSds(clindamycin)
 sigma$Streptomycin <- rowSds(streptomycin)
 sigma_sds <- sigma * 1.95
+rownames(sigma_sds) <- c("ccpA", "cdtR",  "codY",  "dpaA",  "fliA",  "prdR", "rex", "sigA1", 
+                             "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sigma, index)
 
@@ -109,20 +113,22 @@ paloc$Cefoperazone <- rowMedians(cefoperazone)
 paloc$Clindamycin <- rowMedians(clindamycin)
 paloc$Streptomycin <- rowMedians(streptomycin)
 paloc_medians <- paloc
+rownames(paloc_medians) <- c("cdtR", "tcdA", "tcdB", "tcdC", "tcdE", "tcdR")
 # SDs
 paloc$Cefoperazone <- rowSds(cefoperazone)
 paloc$Clindamycin <- rowSds(clindamycin)
 paloc$Streptomycin <- rowSds(streptomycin)
 paloc_sds <- paloc * 1.95
+rownames(paloc_sds) <- c("cdtR", "tcdA", "tcdB", "tcdC", "tcdE", "tcdR")
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, paloc, index)
 
 # Sporulation
 sporulation_keep <- c('SpoIID','SpoIIID','SpoIIAA','SpoIIAB','SpoIIIAA','SpoIIIAB','SpoIIIAC','SpoIIIAD',
                       'SpoIIIAE','SpoIIIAG','SpoIIIAH','SpoIIP','SpoIIGA','SpoIIE','SpoIIR','SpoVAC','SpoVAD',
-                      'SpoVAE','SpoIVB2','SpoIVB','SpoVS','SpoIV','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB',
-                      'SpoVT','SpoVG','CD1579','CD1492','CD2492','CotF','CotCB','CdeC','CotA','SodA','CotJB2','CotD',
-                      'Gpr','SspA','BclA2','SspB','BclA3')
+                      'SpoVAE','SpoIVB2','SpoVS','SpoIV','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB',
+                      'SpoVT','SpoVG','CD1492','CD2492','CdeC','CotA','SodA','CotJB2','CotD',
+                      'Gpr','SspA','SspB','BclA3')
 sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulation_keep)
 # Iteratively rarefy mappings
 sub_size <- round(min(colSums(sporulation[,1:3])) * 0.9)
@@ -146,11 +152,23 @@ sporulation$Cefoperazone <- rowMedians(cefoperazone)
 sporulation$Clindamycin <- rowMedians(clindamycin)
 sporulation$Streptomycin <- rowMedians(streptomycin)
 sporulation_medians <- sporulation
+rownames(sporulation_medians) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
+                                   'cotD', 'cotJB2', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
+                                   'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
+                                   'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
+                                   'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
+                                   'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
 # SDs
 sporulation$Cefoperazone <- rowSds(cefoperazone)
 sporulation$Clindamycin <- rowSds(clindamycin)
 sporulation$Streptomycin <- rowSds(streptomycin)
 sporulation_sds <- sporulation * 1.95
+rownames(sporulation_sds) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
+                               'cotD', 'cotJB2', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
+                               'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
+                               'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
+                               'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
+                               'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sporulation, index)
 
@@ -174,16 +192,19 @@ clindamycin[clindamycin == 0] <- 1
 clindamycin <- log10(clindamycin)
 streptomycin[streptomycin == 0] <- 1
 streptomycin <- log10(streptomycin)
+
 # Medians
 quorum$Cefoperazone <- rowMedians(cefoperazone)
 quorum$Clindamycin <- rowMedians(clindamycin)
 quorum$Streptomycin <- rowMedians(streptomycin)
 quorum_medians <- quorum
+rownames(quorum_medians) <- c('agrB', 'agrD', 'luxS')
 # SDs
 quorum$Cefoperazone <- rowSds(cefoperazone)
 quorum$Clindamycin <- rowSds(clindamycin)
 quorum$Streptomycin <- rowSds(streptomycin)
 quorum_sds <- quorum * 1.95
+rownames(quorum_sds) <- c('agrB', 'agrD', 'luxS')
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, quorum, index)
 
@@ -195,6 +216,7 @@ rm(combined_mapping, sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
 # Set the color palette and plotting environment
 select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5])
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
+make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
 pdf(file=plot_file, width=12, height=14)
 layout(matrix(c(1,1,
                 2,2,
@@ -215,8 +237,8 @@ labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,79.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(sigma_medians), srt=45, adj=1, xpd=TRUE, cex=1.2)
+text(x=seq(3.7,79.2,4.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(sigma_medians)), srt=45, adj=1, xpd=TRUE, cex=1.2)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
@@ -241,8 +263,8 @@ labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,205.2,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(sporulation_medians), srt=45, adj=1, xpd=TRUE, cex=0.8)
+text(x=seq(3.7,180.8,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(sporulation_medians)), srt=45, adj=1, xpd=TRUE, cex=0.8)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
@@ -267,8 +289,8 @@ labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
 axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(paloc_medians), srt=45, adj=1, xpd=TRUE, cex=1.4)
+text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(paloc_medians)), srt=45, adj=1, xpd=TRUE, cex=1.4)
 legend('topright', legend='Pathogenicity loci', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
@@ -293,8 +315,8 @@ labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
 axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(quorum_medians), srt=45, adj=1, xpd=TRUE, cex=1.6)
+text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(quorum_medians)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
@@ -309,7 +331,8 @@ mtext('D', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
 
 # Clean up
 dev.off()
-rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, paloc_medians, paloc_sds, plot_file, select_palette, x_coords, labelsY)
+rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, 
+   paloc_medians, paloc_sds, plot_file, select_palette, x_coords, labelsY, make.italic)
 for (dep in deps){
   pkg <- paste('package:', dep,sep='')
    detach(pkg, character.only = TRUE)

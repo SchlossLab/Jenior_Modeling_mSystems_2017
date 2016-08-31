@@ -72,14 +72,15 @@ acd <- rbind(subset(combined_mapping, grepl('acd.;', combined_mapping$gene)),
              subset(combined_mapping, grepl('acd;', combined_mapping$gene))) # Peptidoglycan hydrolase 
 ldt <- rbind(subset(combined_mapping, grepl('ldt.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('ldt;', combined_mapping$gene))) # l,d-transpeptidase 
-gne <- rbind(subset(combined_mapping, grepl('gne.;', combined_mapping$gene)), 
+gne <- rbind(subset(combined_mapping, grepl('GNE;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('gne;', combined_mapping$gene))) # Glucosamine (UDP-N-Acetyl)-2-Epimerase/N-Acetylmannosamine Kinase
 nan <- rbind(subset(combined_mapping, grepl('nan.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('nan;', combined_mapping$gene))) # Sialidase
 glm <- rbind(subset(combined_mapping, grepl('glm.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('glm;', combined_mapping$gene))) # Glutamate mutase
-amino_sugars <- rbind(mur, nag, acd, ldt, gne, nan, glm)
-rm(mur, nag, acd, ldt, gne, nan, glm)
+glucosamine <- rbind(subset(combined_mapping, grepl('^N-acetylglucosamine-6-phosphate_deacetylase', combined_mapping$gene)))
+amino_sugars <- rbind(mur, nag, acd, ldt, gne, nan, glm, glucosamine)
+rm(mur, nag, acd, ldt, gne, nan, glm, glucosamine)
 amino_sugars$grouping <- rep('Amino sugar catabolism', nrow(amino_sugars))
 amino_sugars_relabund <- amino_sugars[,1:3] / rowSums(amino_sugars[,1:3])
 gene_table <- amino_sugars
@@ -154,8 +155,7 @@ maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosida
                  subset(combined_mapping, grepl('maltose_O-acetyltransferase', combined_mapping$gene)))
 tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalose utilization operon
 glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
-cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)),
-             subset(combined_mapping, grepl('celC;', combined_mapping$gene)))
+cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)))
 polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
 rm(sucrose, maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
@@ -169,8 +169,7 @@ polysaccharides[,1:3] <- log10(polysaccharides[,1:3] + 1)
 
 # PTS systems
 PTS <- rbind(subset(combined_mapping, grepl('PTS_system', combined_mapping$gene)),
-             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('fruABC;', combined_mapping$gene)))
+             subset(combined_mapping, grepl('pyridoxal_phosphate-dependent_transferase', combined_mapping$gene)))
 PTS$grouping <- rep('PEP group translocators', nrow(PTS))
 PTS_relabund <- PTS[,1:3] / rowSums(PTS[,1:3])
 gene_table <- rbind(gene_table, PTS)
