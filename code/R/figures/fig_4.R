@@ -259,7 +259,6 @@ rm(growth_file)
 
 # Seperate to groups of each growth substrate and subset to the first 12 hours
 sorbitol <- cbind(growth$B9, growth$B10, growth$B11)
-#starch <- cbind(growth$D9, growth$D10, growth$D11)[1:25,]
 fructose <- cbind(growth$E9, growth$E10, growth$E11)
 combination <- cbind(growth$G3, growth$G4, growth$G5)
 mannitol <- cbind(growth$F9, growth$F10, growth$F11)
@@ -297,15 +296,6 @@ for (time in 1:49){
 sorbitol_test <- as.data.frame(rbind(control_test, sorbitol_test))
 colnames(sorbitol_test) <- c('substrate','time','od')
 sorbitol_test$od <- as.numeric(as.character(sorbitol_test$od))
-
-#starch_test <- c()
-#for (time in 1:49){
-#  temp <- cbind('starch', time, starch[time,])
-#  starch_test <- rbind(starch_test, temp)
-#}
-#starch_test <- as.data.frame(rbind(control_test, starch_test))
-#colnames(starch_test) <- c('substrate','time','od')
-#starch_test$od <- as.numeric(as.character(starch_test$od))
 
 mannitol_test <- c()
 for (time in 1:49){
@@ -374,8 +364,6 @@ rm(temp, time, control_test)
 # Calculate differences
 sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
 summary(sorbitol_sig) # p = 0.02474 *, corrected = 2.474e-01 n.s.
-#starch_sig <- aov(formula=od ~ substrate * time, data=starch_test)
-#summary(starch_sig) # p = 0.663 n.s., corrected = 1 n.s.
 fructose_sig <- aov(formula=od ~ substrate * time, data=fructose_test)
 summary(fructose_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
 mannitol_sig <- aov(formula=od ~ substrate * time, data=mannitol_test)
@@ -393,7 +381,7 @@ summary(n_glucose_n_aa_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
 bhi_sig <- aov(formula=od ~ substrate * time, data=bhi_test)
 summary(bhi_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
 
-p_values <- c(2e-16, 2e-16, 0.663, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16)
+p_values <- c(2e-16, 0.663, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16)
 corrected_p_values <- as.character(p.adjust(p_values, method='bonferroni'))
 corrected_p_values <- append(corrected_p_values, 'NA', after=5) 
 
@@ -409,8 +397,6 @@ rm(fructose_sig, sorbitol_sig, mannitol_sig, salicin_sig, y_glucose_y_aa_sig, y_
 # Find medians of treatement groups and subtract blanks
 sorbitol_median <- rowMedians(sorbitol, na.rm=TRUE) - growth$B8
 sorbitol_median[sorbitol_median < 0] <- 0
-#starch_median <- rowMedians(starch, na.rm=TRUE) - growth$D8[1:25]
-#starch_median[starch_median < 0] <- 0
 fructose_median <-  rowMedians(fructose, na.rm=TRUE) - growth$E8
 fructose_median[fructose_median < 0] <- 0
 combination_median <- rowMedians(combination, na.rm=TRUE) - growth$G2
@@ -437,23 +423,28 @@ growth_medians <- as.data.frame(rbind(acetylneuraminate_median, sorbitol_median,
 substrates <- c('acetylneuraminate','sorbitol', 'fructose', 'mannitol','salicin','y_glucose_y_aa','n_glucose_y_aa','y_glucose_n_aa','n_glucose_n_aa','bhi', 'combination')
 
 # Maximum growth rate
-max_rate <- round(c(diff(acetylneuraminate_median)[which.max(abs(diff(acetylneuraminate_median)))],diff(sorbitol_median)[which.max(abs(diff(sorbitol_median)))], 
-              diff(fructose_median)[which.max(abs(diff(fructose_median)))], diff(mannitol_median)[which.max(abs(diff(mannitol_median)))], diff(salicin_median)[which.max(abs(diff(salicin_median)))],
-              diff(y_glucose_y_aa_median)[which.max(abs(diff(y_glucose_y_aa_median)))], diff(n_glucose_y_aa_median)[which.max(abs(diff(n_glucose_y_aa_median)))], diff(y_glucose_n_aa_median)[which.max(abs(diff(y_glucose_n_aa_median)))],
-              diff(n_glucose_n_aa_median)[which.max(abs(diff(n_glucose_n_aa_median)))], diff(bhi_median)[which.max(abs(diff(bhi_median)))], diff(combination_median)[which.max(abs(diff(combination_median)))]), digits=3)
+max_rate <- round(c(diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))],diff(sorbitol_median)[which.max(diff(sorbitol_median))], 
+                    diff(fructose_median)[which.max(diff(fructose_median))], diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))],
+                    diff(y_glucose_y_aa_median)[which.max(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[which.max(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[which.max(diff(y_glucose_n_aa_median))],
+                    diff(n_glucose_n_aa_median)[which.max(diff(n_glucose_n_aa_median))], diff(bhi_median)[which.max(diff(bhi_median))], diff(combination_median)[which.max(diff(combination_median))]), digits=3)
 
 # Time of maximum growth rate
-time_max_rate <- round(c((which.max(abs(diff(acetylneuraminate_median))) * 0.5), (which.max(abs(diff(sorbitol_median))) * 0.5), 
-                  (which.max(abs(diff(fructose_median))) * 0.5), (which.max(abs(diff(mannitol_median))) * 0.5), (which.max(abs(diff(salicin_median))) * 0.5),
-                  (which.max(abs(diff(y_glucose_y_aa_median))) * 0.5), (which.max(abs(diff(n_glucose_y_aa_median))) * 0.5), (which.max(abs(diff(y_glucose_n_aa_median))) * 0.5),
-                  (which.max(abs(diff(n_glucose_n_aa_median))) * 0.5), (which.max(abs(diff(bhi_median))) * 0.5), (which.max(abs(diff(combination_median))) * 0.5)), digits=3)
-
+time_max_rate <- round(c((which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5), 
+                         (which.max(diff(fructose_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5),
+                         (which.max(diff(y_glucose_y_aa_median)) * 0.5), (which.max(diff(n_glucose_y_aa_median)) * 0.5), (which.max(diff(y_glucose_n_aa_median)) * 0.5),
+                         (which.max(diff(n_glucose_n_aa_median)) * 0.5), (which.max(diff(bhi_median)) * 0.5), (which.max(diff(combination_median)) * 0.5)), digits=3) - 0.5
 # Maximum OD
 max_od <- round(c(max(acetylneuraminate_median), max(sorbitol_median), max(fructose_median), max(mannitol_median), max(salicin_median), 
             max(y_glucose_y_aa_median), max(n_glucose_y_aa_median), max(y_glucose_n_aa_median), max(n_glucose_n_aa_median), max(bhi_median), max(combination_median)), digits=3)
 
-# Growth rate at 12 hours
-rate_12_hrs <- round(c(diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], diff(sorbitol_median)[length(diff(sorbitol_median))], 
+# Time of max OD
+time_max_od <- round(c((which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5), 
+        (which.max(fructose_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5),
+        (which.max(y_glucose_y_aa_median) * 0.5), (which.max(n_glucose_y_aa_median) * 0.5), (which.max(y_glucose_n_aa_median) * 0.5),
+        (which.max(n_glucose_n_aa_median) * 0.5), (which.max(bhi_median) * 0.5), (which.max(combination_median) * 0.5)), digits=3) - 0.5
+
+# Growth rate at 24 hours
+rate_24_hrs <- round(c(diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], diff(sorbitol_median)[length(diff(sorbitol_median))], 
                  diff(fructose_median)[length(diff(fructose_median))], diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))],
                  diff(y_glucose_y_aa_median)[length(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[length(diff(y_glucose_n_aa_median))],
                  diff(n_glucose_n_aa_median)[length(diff(n_glucose_n_aa_median))], diff(bhi_median)[length(diff(bhi_median))], diff(combination_median)[length(diff(combination_median))]), digits=3)
@@ -470,9 +461,9 @@ area_under <- round(c(auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_m
                       auc(n_glucose_n_aa_median, seq(1,49,1)), auc(bhi_median, seq(1,49,1), auc(combination_median, seq(1,49,1))), digits=3))
 
 # Assemble the table
-growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under, corrected_p_values)
-colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_Of_Max_Rate_in_Hours', 'Max_OD', 'Rate_at_12_hours', 'Mean_Rate', 'AUC', 'Corrected_AoV_pvalue')
-rm(substrates, max_rate, time_max_rate, max_od, rate_12_hrs, mean_rate, area_under, corrected_p_values)
+growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
+colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_of_Max_Rate_in_Hours', 'Max_OD', 'Time_of_Max_OD_in_Hours', 'Rate_at_24_hours', 'Mean_Rate', 'AUC', 'Corrected_AoV_pvalue')
+rm(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
 
 # Write growth summary data to supplementary table
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S6.tsv'
@@ -482,7 +473,6 @@ rm(table_file, growth_summary)
 # Standard deviations
 sorbitol_sd <- rowSds(sorbitol, na.rm=TRUE)
 acetylneuraminate_sd <- rowSds(acetylneuraminate, na.rm=TRUE)
-#starch_sd <-  rowSds(starch, na.rm=TRUE)
 fructose_sd <-  rowSds(fructose, na.rm=TRUE)
 combination_sd <-  rowSds(combination, na.rm=TRUE)
 mannitol_sd <- rowSds(mannitol, na.rm=TRUE)

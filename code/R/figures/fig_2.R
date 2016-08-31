@@ -264,7 +264,7 @@ axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,180.8,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(sporulation_medians)), srt=45, adj=1, xpd=TRUE, cex=0.8)
+     labels=make.italic(rownames(sporulation_medians)), srt=45, adj=1, xpd=TRUE, cex=0.9)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 
 x_coords <- as.data.frame(t(x_coords))
