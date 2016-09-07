@@ -52,7 +52,7 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 sigma_keep <- c('CodY','CcpA','CdtR','SigH','SigB','SigA1','SigA2','SigE','SigF','SigG','SigK','SigV','FliA',
                 'TetR_family|1','TetR_family|2','TetR_family|3','TetR_family|4','TetR_family|5','TetR_family|6',
                 'TetR_family|7','TetR_family|8','TetR_family|9','TetR_family|10','TetR_family|11','TetR_family|12',
-                'TetR_family|13','TetR_family|14','TetR_family|15','TetR_family|16','Rex','PrdR','Spo0A','DpaA')
+                'TetR_family|13','TetR_family|14','TetR_family|15','TetR_family|16','Rex','PrdR','Spo0A')
 sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
 # Iteratively rarefy mappings
 sub_size <- round(min(colSums(sigma[,1:3])) * 0.9)
@@ -65,25 +65,22 @@ for (index in 1:999) {
   streptomycin <- cbind(streptomycin, t(rrarefy(sigma$Streptomycin, sample=sub_size)))
 }
 # Log transform data
-cefoperazone[cefoperazone == 0] <- 1
-cefoperazone <- log10(cefoperazone)
-clindamycin[clindamycin == 0] <- 1
-clindamycin <- log10(clindamycin)
-streptomycin[streptomycin == 0] <- 1
-streptomycin <- log10(streptomycin)
+cefoperazone <- log10(cefoperazone + 1)
+clindamycin <- log10(clindamycin + 1)
+streptomycin <- log10(streptomycin + 1)
 # Medians
 sigma$Cefoperazone <- rowMedians(cefoperazone)
 sigma$Clindamycin <- rowMedians(clindamycin)
 sigma$Streptomycin <- rowMedians(streptomycin)
 sigma_medians <- sigma
-rownames(sigma_medians) <- c("ccpA", "cdtR",  "codY",  "dpaA",  "fliA",  "prdR", "rex", "sigA1", 
+rownames(sigma_medians) <- c("ccpA", "cdtR",  "codY",  "fliA",  "prdR", "rex", "sigA1", 
                              "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
 # SDs
 sigma$Cefoperazone <- rowSds(cefoperazone)
 sigma$Clindamycin <- rowSds(clindamycin)
 sigma$Streptomycin <- rowSds(streptomycin)
 sigma_sds <- sigma * 1.95
-rownames(sigma_sds) <- c("ccpA", "cdtR",  "codY",  "dpaA",  "fliA",  "prdR", "rex", "sigA1", 
+rownames(sigma_sds) <- c("ccpA", "cdtR",  "codY",  "fliA",  "prdR", "rex", "sigA1", 
                              "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
 # Clean up
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sigma, index)
@@ -102,12 +99,9 @@ for (index in 1:999) {
   streptomycin <- cbind(streptomycin, t(rrarefy(paloc$Streptomycin, sample=sub_size)))
 }
 # Log transform data
-cefoperazone[cefoperazone == 0] <- 1
-cefoperazone <- log10(cefoperazone)
-clindamycin[clindamycin == 0] <- 1
-clindamycin <- log10(clindamycin)
-streptomycin[streptomycin == 0] <- 1
-streptomycin <- log10(streptomycin)
+cefoperazone <- log10(cefoperazone + 1)
+clindamycin <- log10(clindamycin + 1)
+streptomycin <- log10(streptomycin + 1)
 # Medians
 paloc$Cefoperazone <- rowMedians(cefoperazone)
 paloc$Clindamycin <- rowMedians(clindamycin)
@@ -124,7 +118,7 @@ rownames(paloc_sds) <- c("cdtR", "tcdA", "tcdB", "tcdC", "tcdE", "tcdR")
 rm(sub_size, cefoperazone, clindamycin, streptomycin, paloc, index)
 
 # Sporulation
-sporulation_keep <- c('SpoIID','SpoIIID','SpoIIAA','SpoIIAB','SpoIIIAA','SpoIIIAB','SpoIIIAC','SpoIIIAD',
+sporulation_keep <- c('DpaA', 'SpoIID','SpoIIID','SpoIIAA','SpoIIAB','SpoIIIAA','SpoIIIAB','SpoIIIAC','SpoIIIAD',
                       'SpoIIIAE','SpoIIIAG','SpoIIIAH','SpoIIP','SpoIIGA','SpoIIE','SpoIIR','SpoVAC','SpoVAD',
                       'SpoVAE','SpoIVB2','SpoVS','SpoIV','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB',
                       'SpoVT','SpoVG','CD1492','CD2492','CdeC','CotA','SodA','CotJB2','CotD',
@@ -141,19 +135,16 @@ for (index in 1:999) {
   streptomycin <- cbind(streptomycin, t(rrarefy(sporulation$Streptomycin, sample=sub_size)))
 }
 # Log transform data
-cefoperazone[cefoperazone == 0] <- 1
-cefoperazone <- log10(cefoperazone)
-clindamycin[clindamycin == 0] <- 1
-clindamycin <- log10(clindamycin)
-streptomycin[streptomycin == 0] <- 1
-streptomycin <- log10(streptomycin)
+cefoperazone <- log10(cefoperazone + 1)
+clindamycin <- log10(clindamycin + 1)
+streptomycin <- log10(streptomycin + 1)
 # Medians
 sporulation$Cefoperazone <- rowMedians(cefoperazone)
 sporulation$Clindamycin <- rowMedians(clindamycin)
 sporulation$Streptomycin <- rowMedians(streptomycin)
 sporulation_medians <- sporulation
 rownames(sporulation_medians) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
-                                   'cotD', 'cotJB2', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
+                                   'cotD', 'cotJB2', 'dpaA', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
                                    'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
                                    'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
                                    'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
@@ -164,7 +155,7 @@ sporulation$Clindamycin <- rowSds(clindamycin)
 sporulation$Streptomycin <- rowSds(streptomycin)
 sporulation_sds <- sporulation * 1.95
 rownames(sporulation_sds) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
-                               'cotD', 'cotJB2', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
+                               'cotD', 'cotJB2', 'dpaA', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
                                'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
                                'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
                                'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
@@ -173,7 +164,7 @@ rownames(sporulation_sds) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA',
 rm(sub_size, cefoperazone, clindamycin, streptomycin, sporulation, index)
 
 # Quorum sensing
-quorum_keep <- c('LuxS','AgrD','AgrB')
+quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
 quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
 # Iteratively rarefy mappings
 sub_size <- round(min(colSums(quorum[,1:3])) * 0.9)
@@ -186,12 +177,9 @@ for (index in 1:999) {
   streptomycin <- cbind(streptomycin, t(rrarefy(quorum$Streptomycin, sample=sub_size)))
 }
 # Log transform data
-cefoperazone[cefoperazone == 0] <- 1
-cefoperazone <- log10(cefoperazone)
-clindamycin[clindamycin == 0] <- 1
-clindamycin <- log10(clindamycin)
-streptomycin[streptomycin == 0] <- 1
-streptomycin <- log10(streptomycin)
+cefoperazone <- log10(cefoperazone + 1)
+clindamycin <- log10(clindamycin + 1)
+streptomycin <- log10(streptomycin + 1)
 
 # Medians
 quorum$Cefoperazone <- rowMedians(cefoperazone)
@@ -237,7 +225,7 @@ labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,79.2,4.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+text(x=seq(3.7,74.7,4.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(rownames(sigma_medians)), srt=45, adj=1, xpd=TRUE, cex=1.2)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 
@@ -263,7 +251,7 @@ labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
 axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,180.8,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+text(x=seq(3.7,185.3,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(rownames(sporulation_medians)), srt=45, adj=1, xpd=TRUE, cex=0.9)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 
