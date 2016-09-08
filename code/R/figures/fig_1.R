@@ -146,7 +146,58 @@ mtext('A', side=2, line=2, las=2, adj=-0.4, padj=-7.1, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# B.  Toxin data
+# B.  Vegetative cell CFU
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=0.9)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
+labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
+
+# Draw axis break
+axis.break(2, 1.5, style='slash')
+
+# Draw median
+segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
+segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
+segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
+segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
+segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
+
+mtext('B', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# C.  Spore CFU
+par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
+
+# Draw axis break
+axis.break(2, 1.5, style='slash') 
+
+# Draw median
+segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
+segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
+segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
+segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
+segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
+
+# Adding significance to plot
+segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
+text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=1.5)
+
+mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# D.  Toxin data
 par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
@@ -169,61 +220,10 @@ segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
 segments(x0=c(1,2,3), y0=c(3.2,3.3,3.4), x1=c(4,4,4), y1=c(3.2,3.3,3.4), lwd=2)
-text(c(2.5,3,3.5), c(3.25,3.35,3.45), labels=c('*','***','***'), cex=1.4)
+text(c(2.5,3,3.5), c(3.25,3.35,3.45), labels=c('*','*','*'), cex=1.5)
 
 # Plot label
-mtext('B', side=2, line=2, las=2, adj=2, padj=-6.7, cex=1.5)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# C.  Vegetative cell CFU
-par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2,
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
-           ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=0.9)
-axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
-labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
-abline(h=2, col="black", lty=2, lwd=1.5)
-
-# Draw axis break
-axis.break(2, 1.5, style='slash')
-
-# Draw median
-segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
-segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
-segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
-segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
-segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
-
-mtext('C', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# D.  Spore CFU
-par(las=1, mar=c(2,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
-           ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
-abline(h=2, col="black", lty=2, lwd=1.5)
-
-# Draw axis break
-axis.break(2, 1.5, style='slash') 
-
-# Draw median
-segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
-segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
-segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
-segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
-segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
-
-# Adding significance to plot
-segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
-text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('**','*','***'), cex=1.4)
-
-mtext('D', side=2, line=2, las=2, adj=1.5, padj=-6.7, cex=1.5)
+mtext('D', side=2, line=2, las=2, adj=2, padj=-6.7, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
