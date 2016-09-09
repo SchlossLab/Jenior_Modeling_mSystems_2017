@@ -332,7 +332,7 @@ tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=poly
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 
 # Add the legend
-legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PEP group translocators', 'ABC sugar transporters', 'All genes'), 
+legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PTS transporters', 'ABC sugar transporters', 'All genes'), 
     ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
 # Size legend
 legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
@@ -446,7 +446,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], 
           pch=21, cex=2, bg=fox[3])
-text(x=0, y=-0.48, labels='PEP group translocators', cex=1.3)
+text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
 
 # ABC alone
 par(mar=c(1,0,0,0))
