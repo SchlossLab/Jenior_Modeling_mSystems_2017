@@ -16,11 +16,6 @@ clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/map
 streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.txt'
 germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.txt'
 
-#cefoperazone_file <- '/media/mjenior/Jenior\ HD/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.txt'
-#clindamycin_file <- '/media/mjenior/Jenior\ HD/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.txt'
-#streptomycin_file <- '/media/mjenior/Jenior\ HD/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.txt'
-#germfree_file <- '/media/mjenior/Jenior\ HD/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.txt'
-
 # Open files
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE)
 colnames(cefoperazone) <- c('gene', 'Cefoperazone')
