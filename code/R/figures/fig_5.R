@@ -1,5 +1,6 @@
 
-deps <- c('shape', 'wesanderson', 'dplyr', 'NMF', 'gplots');
+# Load dependencies
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats', 'flux');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -7,69 +8,649 @@ for (dep in deps){
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 
-# Select files
-metabolites_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/'
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Define file variables for network plot
+network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.txt'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.mapping.txt'
+layout_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/optimal_layout.tsv'
+
+# Read in metabolic network data
+network <- read.delim(network_file, header=FALSE, sep='\t')
+ko <- read.delim(ko_file, header=TRUE, sep='\t')
+optimal_layout1 <- as.matrix(read.delim(layout_file, header=TRUE, sep='\t', row.names=1))
+rm(network_file, ko_file, layout_file)
+
+# Format directed graph
+raw_graph <- graph.data.frame(network, directed=TRUE)
+rm(network)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Determine some statistics about graph
+
+# Print a summary of nodes and edges for entire graph
+summary(raw_graph)
+print(length(as.vector(grep('K', V(raw_graph)$name, value=TRUE))))
+print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
+
+# Find degrees of nodes
+graph_indegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='in'))
+graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
+graph_alldegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
+
+# Calculate Eigen centrality
+graph_centrality <- as.data.frame(eigen_centrality(raw_graph, directed=TRUE, scale=FALSE)[1])
+
+# Calculate betweensness
+graph_betweenness <- as.data.frame(betweenness(raw_graph))
+
+# Merge characteristic tables
+graph_topology <- merge(graph_outdegree, graph_indegree, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_alldegree, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_centrality, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, graph_betweenness, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- cbind(rownames(graph_topology), graph_topology)
+colnames(graph_topology) <- c('KEGG_ID','Outdegree','Indegree','All_degree','Eigenvector_centrality','Betweenness')
+rm(graph_indegree, graph_outdegree, graph_alldegree, graph_centrality, graph_betweenness)
+
+# Read in KEGG code translation files
+kegg_substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/compound_names.tsv'
+kegg_enzyme_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/ko_names.tsv'
+kegg_substrate <- read.delim(kegg_substrate_file, header=FALSE, sep='\t', row.names=1)
+kegg_enzyme <- read.delim(kegg_enzyme_file, header=FALSE, sep='\t', quote='', row.names=1)
+rm(kegg_substrate_file, kegg_enzyme_file)
+
+# Subset for Enzymes and Substrates
+substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_code))
+substrate_topology <- substrate_topology[order(-substrate_topology$betweenness),]
+substrate_topology <- merge(substrate_topology, kegg_substrate, by='row.names')
+substrate_topology$Row.names <- NULL
+colnames(substrate_topology)[7] <- 'Common_name'
+enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_code))
+enzyme_topology <- enzyme_topology[order(-enzyme_topology$betweenness),]
+enzyme_topology <- merge(enzyme_topology, kegg_enzyme, by='row.names')
+enzyme_topology$Row.names <- NULL
+colnames(enzyme_topology)[7] <- 'name'
+rm(graph_topology, kegg_substrate, kegg_enzyme)
+
+# Write tables to files, ranked by betweenness
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/substrate_topology.tsv'
+write.table(substrate_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, substrate_topology)
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/enzyme_topology.tsv'
+write.table(enzyme_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, enzyme_topology)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format large component for plotting
+
+# Remove loops and multiple edges to make visualzation easier
+simple_graph <- simplify(raw_graph)
+rm(raw_graph)
+
+# Decompose graph
+decomp_simple_graph <- decompose.graph(simple_graph)
+rm(simple_graph)
+
+# Get largest component
+largest_component <- which.max(sapply(decomp_simple_graph, vcount))
+largest_simple_graph <- decomp_simple_graph[[largest_component]]
+ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
+substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
+nodes <- c(ko_simp, substrate_simp)
+rm(decomp_simple_graph, largest_component)
+
+# Print a summary of nodes and edges for large component
+summary(largest_simple_graph)
+print(length(ko_simp))
+print(length(substrate_simp))
+
+# Remove zeroes so transformation doesn't return negative infinity
+ko[,2][ko[,2] == 0] <- 1
+ko[,2] <- log10(ko[,2])
+ko[,2][ko[,2] < 0.4] <- 0.4
+
+# Scale points by number of transcripts mapped
+ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
+ko <- ko[match(ko_simp, ko$KO_code),]
+mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
+node_size <- cbind.data.frame(nodes, mappings)
+node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
+node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
+V(largest_simple_graph)$size <- as.matrix(node_size)
+rm(ko, ko_simp, substrate_simp, node_size, mappings, nodes)
+#V(largest_simple_graph)$size <- degree(largest_simple_graph) * 5 # Scale by degree!
+
+# Color graph
+V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
+E(largest_simple_graph)$color <- 'gray15' # Color edges
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Set up example network
+
+# Define file variables for network plot and layout
+network <- matrix(c('K01', 'C01',
+                    'C01', 'K02',
+                    'C01', 'K03'), nrow=3, ncol=2, byrow=TRUE)
+node_size <- matrix(c('K01', '10',
+                      'K02', '45',
+                      'K03', '50',
+                      'C01', '20'), nrow=4, ncol=2, byrow=TRUE)
+optimal_layout2 <- matrix(c(-21.09826017, 22.1407060,
+                           0.09077637, 0.2154631,
+                           -8.32243732, -29.0949351,
+                           29.67130628, 7.6231375), nrow=4, ncol=2, byrow=TRUE)
+
+# Format directed graph
+network <- graph.data.frame(network, directed=TRUE)
+
+# Assign nodes sizes
+node_size <- node_size[match(V(network)$name, node_size[,1]),]
+node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
+V(network)$size <- as.matrix(node_size)
+rm(node_size)
+
+# Color graph
+V(network)$color <- ifelse(grepl('K', V(network)$name), 'firebrick3', 'blue3') # Color nodes
+E(network)$color <- 'gray15' # Color edges
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Read in substrate importance data
+cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.monte_carlo.score.txt'
+clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/clindamycin_630.monte_carlo.score.txt'
+strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/streptomycin_630.monte_carlo.score.txt'
+gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree.bipartite.files/germfree.monte_carlo.score.txt'
+
+cef_importance <- read.delim(cef_importance_file, header=TRUE, sep='\t', row.names=1)
+clinda_importance <- read.delim(clinda_importance_file, header=TRUE, sep='\t', row.names=1)
+strep_importance <- read.delim(strep_importance_file, header=TRUE, sep='\t', row.names=1)
+gf_importance <- read.delim(gf_importance_file, header=TRUE, sep='\t', row.names=1)
+rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_importance_file)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format metabolite importance scores
+cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
+clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
+strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
+gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
+
+cef_importance <- cef_importance[c(1:100),]
+clinda_importance <- clinda_importance[c(1:100),]
+strep_importance <- strep_importance[c(1:100),]
+gf_importance <- gf_importance[c(1:100),]
+
+shared_importance <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% clinda_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% clinda_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% strep_importance[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
+
+shared_importance$KEGG_code <- rownames(shared_importance)
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S4.tsv'
+write.table(shared_importance, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, shared_importance)
+
+cef_importance <- cef_importance[c(1:25),]
+clinda_importance <- clinda_importance[c(1:25),]
+strep_importance <- strep_importance[c(1:25),]
+gf_importance <- gf_importance[c(1:25),]
+
+cef_only_importance <- as.data.frame(subset(cef_importance, !(cef_importance[,1] %in% clinda_importance[,1])))
+cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance[,1])))
+cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_importance, !(clinda_importance[,1] %in% cef_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance[,1])))
+clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_importance, !(strep_importance[,1] %in% clinda_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance[,1])))
+strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %in% clinda_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
+gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
+rm(cef_importance, clinda_importance, strep_importance, gf_importance)
+
+cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
+clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Metabolite_score),]
+strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
+gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
+
+cef_only_importance$abx <- 'Cefoperazone'
+cef_only_importance$color <- wes_palette("FantasticFox")[3]
+clinda_only_importance$abx <- 'Clindamycin'
+clinda_only_importance$color <- wes_palette("FantasticFox")[5]
+strep_only_importance$abx <- 'Streptomycin'
+strep_only_importance$color <- wes_palette("FantasticFox")[1]
+gf_only_importance$abx <- 'Gnotobiotic'
+gf_only_importance$color <- 'forestgreen'
+
+top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
+                         strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
+top_importances$abx <- as.factor(top_importances$abx)
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
+top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
+top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
+rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
+top_importances <- subset(top_importances, rownames(top_importances) != 'C04823')
+top_importances <- subset(top_importances, rownames(top_importances) != 'C00012')
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Read in growth rate data
+# Define variables
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/formatted_growth.tsv'
 
 # Read in data
-metabolites <- read.delim(metabolites_file, sep='\t', header=TRUE)
+growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
+growth <- as.data.frame(t(growth))
+rm(growth_file)
+
+# Seperate to groups of each growth substrate and subset to the first 12 hours
+sorbitol <- cbind(growth$B9, growth$B10, growth$B11)
+fructose <- cbind(growth$E9, growth$E10, growth$E11)
+combination <- cbind(growth$G3, growth$G4, growth$G5)
+mannitol <- cbind(growth$F9, growth$F10, growth$F11)
+salicin <- cbind(growth$G9, growth$G10, growth$G11)
+acetylneuraminate <- cbind(growth$C9, growth$C10, growth$C11)
+y_glucose_y_aa <- cbind(growth$B3, growth$B4, growth$B5)
+n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5)
+y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5)
+n_glucose_n_aa <- cbind(growth$E3, growth$E4, growth$E5)
+bhi <- cbind(growth$F3, growth$F4, growth$F5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Format the data
+# Prepare data for statistical tests
+control_test <- c()
+for (time in 1:49){
+  temp <- cbind('control', time, n_glucose_y_aa[time,])
+  control_test <- rbind(control_test, temp)
+}
 
+fructose_test <- c()
+for (time in 1:49){
+  temp <- cbind('fructose', time, fructose[time,])
+  fructose_test <- rbind(fructose_test, temp)
+}
+fructose_test <- as.data.frame(rbind(control_test, fructose_test))
+colnames(fructose_test) <- c('substrate','time','od')
+fructose_test$od <- as.numeric(as.character(fructose_test$od))
 
-  
-  
+sorbitol_test <- c()
+for (time in 1:49){
+  temp <- cbind('sorbitol', time, sorbitol[time,])
+  sorbitol_test <- rbind(sorbitol_test, temp)
+}
+sorbitol_test <- as.data.frame(rbind(control_test, sorbitol_test))
+colnames(sorbitol_test) <- c('substrate','time','od')
+sorbitol_test$od <- as.numeric(as.character(sorbitol_test$od))
+
+mannitol_test <- c()
+for (time in 1:49){
+  temp <- cbind('mannitol', time, mannitol[time,])
+  mannitol_test <- rbind(mannitol_test, temp)
+}
+mannitol_test <- as.data.frame(rbind(control_test, mannitol_test))
+colnames(mannitol_test) <- c('substrate','time','od')
+mannitol_test$od <- as.numeric(as.character(mannitol_test$od))
+
+salicin_test <- c()
+for (time in 1:49){
+  temp <- cbind('salicin', time, salicin[time,])
+  salicin_test <- rbind(salicin_test, temp)
+}
+salicin_test <- as.data.frame(rbind(control_test, salicin_test))
+colnames(salicin_test) <- c('substrate','time','od')
+salicin_test$od <- as.numeric(as.character(salicin_test$od))
+
+acetylneuraminate_test <- c()
+for (time in 1:49){
+  temp <- cbind('acetylneuraminate', time, acetylneuraminate[time,])
+  acetylneuraminate_test <- rbind(acetylneuraminate_test, temp)
+}
+acetylneuraminate_test <- as.data.frame(rbind(control_test, acetylneuraminate_test))
+colnames(acetylneuraminate_test) <- c('substrate','time','od')
+acetylneuraminate_test$od <- as.numeric(as.character(acetylneuraminate_test$od))
+
+y_glucose_y_aa_test <- c()
+for (time in 1:49){
+  temp <- cbind('y_glucose_y_aa', time, y_glucose_y_aa[time,])
+  y_glucose_y_aa_test <- rbind(y_glucose_y_aa_test, temp)
+}
+y_glucose_y_aa_test <- as.data.frame(rbind(control_test, y_glucose_y_aa_test))
+colnames(y_glucose_y_aa_test) <- c('substrate','time','od')
+y_glucose_y_aa_test$od <- as.numeric(as.character(y_glucose_y_aa_test$od))
+
+y_glucose_n_aa_test <- c()
+for (time in 1:49){
+  temp <- cbind('y_glucose_n_aa', time, y_glucose_n_aa[time,])
+  y_glucose_n_aa_test <- rbind(y_glucose_n_aa_test, temp)
+}
+y_glucose_n_aa_test <- as.data.frame(rbind(control_test, y_glucose_n_aa_test))
+colnames(y_glucose_n_aa_test) <- c('substrate','time','od')
+y_glucose_n_aa_test$od <- as.numeric(as.character(y_glucose_n_aa_test$od))
+
+n_glucose_n_aa_test <- c()
+for (time in 1:49){
+  temp <- cbind('n_glucose_n_aa', time, n_glucose_n_aa[time,])
+  n_glucose_n_aa_test <- rbind(n_glucose_n_aa_test, temp)
+}
+n_glucose_n_aa_test <- as.data.frame(rbind(control_test, n_glucose_n_aa_test))
+colnames(n_glucose_n_aa_test) <- c('substrate','time','od')
+n_glucose_n_aa_test$od <- as.numeric(as.character(n_glucose_n_aa_test$od))
+
+bhi_test <- c()
+for (time in 1:49){
+  temp <- cbind('bhi', time, bhi[time,])
+  bhi_test <- rbind(bhi_test, temp)
+}
+bhi_test <- as.data.frame(rbind(control_test, bhi_test))
+colnames(bhi_test) <- c('substrate','time','od')
+bhi_test$od <- as.numeric(as.character(bhi_test$od))
+rm(temp, time, control_test)
+
+# Calculate differences
+sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
+summary(sorbitol_sig) # p = 0.02474 *, corrected = 2.474e-01 n.s.
+fructose_sig <- aov(formula=od ~ substrate * time, data=fructose_test)
+summary(fructose_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+mannitol_sig <- aov(formula=od ~ substrate * time, data=mannitol_test)
+summary(mannitol_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+salicin_sig <- aov(formula=od ~ substrate * time, data=salicin_test)
+summary(salicin_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+acetylneuraminate_sig <- aov(formula=od ~ substrate * time, data=acetylneuraminate_test)
+summary(acetylneuraminate_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+y_glucose_y_aa_sig <- aov(formula=od ~ substrate * time, data=y_glucose_y_aa_test)
+summary(y_glucose_y_aa_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+y_glucose_n_aa_sig <- aov(formula=od ~ substrate * time, data=y_glucose_y_aa_test)
+summary(y_glucose_n_aa_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+n_glucose_n_aa_sig <- aov(formula=od ~ substrate * time, data=y_glucose_y_aa_test)
+summary(n_glucose_n_aa_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+bhi_sig <- aov(formula=od ~ substrate * time, data=bhi_test)
+summary(bhi_sig) # p < 2e-16 ***, corrected = 2.000e-15 ***
+
+p_values <- c(2e-16, 0.663, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16)
+corrected_p_values <- as.character(p.adjust(p_values, method='bonferroni'))
+corrected_p_values <- append(corrected_p_values, 'NA', after=5) 
+
+# Clean up
+rm(p_values)
+rm(fructose_test, sorbitol_test, mannitol_test, salicin_test, y_glucose_y_aa_test, y_glucose_n_aa_test, n_glucose_n_aa_test, bhi_test, acetylneuraminate_test)
+rm(fructose_sig, sorbitol_sig, mannitol_sig, salicin_sig, y_glucose_y_aa_sig, y_glucose_n_aa_sig, n_glucose_n_aa_sig, bhi_sig, acetylneuraminate_sig)
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
-  
-# Subset groups of interest
 
+# Format growth curves
 
+# Find medians of treatement groups and subtract blanks
+sorbitol_median <- rowMedians(sorbitol, na.rm=TRUE) - growth$B8
+sorbitol_median[sorbitol_median < 0] <- 0
+fructose_median <-  rowMedians(fructose, na.rm=TRUE) - growth$E8
+fructose_median[fructose_median < 0] <- 0
+combination_median <- rowMedians(combination, na.rm=TRUE) - growth$G2
+combination_median[combination_median < 0] <- 0
+mannitol_median <- rowMedians(mannitol, na.rm=TRUE) - growth$F8
+mannitol_median[mannitol_median < 0] <- 0
+salicin_median <- rowMedians(salicin, na.rm=TRUE) - growth$G7
+salicin_median[salicin_median < 0] <- 0
+acetylneuraminate_median <- rowMedians(acetylneuraminate, na.rm=TRUE) - growth$C8
+acetylneuraminate_median[acetylneuraminate_median < 0] <- 0
+y_glucose_y_aa_median <- rowMedians(y_glucose_y_aa, na.rm=TRUE) - growth$B2
+y_glucose_y_aa_median[y_glucose_y_aa_median < 0] <- 0
+n_glucose_y_aa_median <- rowMedians(n_glucose_y_aa, na.rm=TRUE) - growth$D2
+n_glucose_y_aa_median[n_glucose_y_aa_median < 0] <- 0
+y_glucose_n_aa_median <- rowMedians(y_glucose_n_aa, na.rm=TRUE) - growth$C2
+y_glucose_n_aa_median[y_glucose_n_aa_median < 0] <- 0
+n_glucose_n_aa_median <- rowMedians(n_glucose_n_aa, na.rm=TRUE) - growth$E2
+n_glucose_n_aa_median[n_glucose_n_aa_median < 0] <- 0
+bhi_median <- rowMedians(bhi, na.rm=TRUE) - growth$F2
+bhi_median[bhi_median < 0] <- 0
+growth_medians <- as.data.frame(rbind(acetylneuraminate_median, sorbitol_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median))
 
+# Determine some features of the 12 hour growth curves
+substrates <- c('acetylneuraminate','sorbitol', 'fructose', 'mannitol','salicin','y_glucose_y_aa','n_glucose_y_aa','y_glucose_n_aa','n_glucose_n_aa','bhi', 'combination')
 
+# Maximum growth rate
+max_rate <- round(c(diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))],diff(sorbitol_median)[which.max(diff(sorbitol_median))], 
+                    diff(fructose_median)[which.max(diff(fructose_median))], diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))],
+                    diff(y_glucose_y_aa_median)[which.max(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[which.max(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[which.max(diff(y_glucose_n_aa_median))],
+                    diff(n_glucose_n_aa_median)[which.max(diff(n_glucose_n_aa_median))], diff(bhi_median)[which.max(diff(bhi_median))], diff(combination_median)[which.max(diff(combination_median))]), digits=3)
+
+# Time of maximum growth rate
+time_max_rate <- round(c((which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5), 
+                         (which.max(diff(fructose_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5),
+                         (which.max(diff(y_glucose_y_aa_median)) * 0.5), (which.max(diff(n_glucose_y_aa_median)) * 0.5), (which.max(diff(y_glucose_n_aa_median)) * 0.5),
+                         (which.max(diff(n_glucose_n_aa_median)) * 0.5), (which.max(diff(bhi_median)) * 0.5), (which.max(diff(combination_median)) * 0.5)), digits=3) - 0.5
+# Maximum OD
+max_od <- round(c(max(acetylneuraminate_median), max(sorbitol_median), max(fructose_median), max(mannitol_median), max(salicin_median), 
+            max(y_glucose_y_aa_median), max(n_glucose_y_aa_median), max(y_glucose_n_aa_median), max(n_glucose_n_aa_median), max(bhi_median), max(combination_median)), digits=3)
+
+# Time of max OD
+time_max_od <- round(c((which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5), 
+        (which.max(fructose_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5),
+        (which.max(y_glucose_y_aa_median) * 0.5), (which.max(n_glucose_y_aa_median) * 0.5), (which.max(y_glucose_n_aa_median) * 0.5),
+        (which.max(n_glucose_n_aa_median) * 0.5), (which.max(bhi_median) * 0.5), (which.max(combination_median) * 0.5)), digits=3) - 0.5
+
+# Growth rate at 24 hours
+rate_24_hrs <- round(c(diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], diff(sorbitol_median)[length(diff(sorbitol_median))], 
+                 diff(fructose_median)[length(diff(fructose_median))], diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))],
+                 diff(y_glucose_y_aa_median)[length(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[length(diff(y_glucose_n_aa_median))],
+                 diff(n_glucose_n_aa_median)[length(diff(n_glucose_n_aa_median))], diff(bhi_median)[length(diff(bhi_median))], diff(combination_median)[length(diff(combination_median))]), digits=3)
+
+# Mean growth rate
+mean_rate <- round(c(mean(diff(acetylneuraminate_median)), mean(diff(sorbitol_median)), mean(diff(fructose_median)), mean(diff(mannitol_median)),
+               mean(diff(salicin_median)), mean(diff(n_glucose_y_aa_median)), mean(diff(y_glucose_y_aa_median)), mean(diff(y_glucose_n_aa_median)), 
+               mean(diff(n_glucose_n_aa_median)), mean(diff(bhi_median)), round(mean(diff(combination_median)), digits=3)), digits=3)
+
+# Area under curve
+area_under <- round(c(auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)), 
+                      auc(fructose_median, seq(1,49,1)), auc(mannitol_median, seq(1,49,1)), auc(salicin_median, seq(1,49,1)),
+                      auc(y_glucose_y_aa_median, seq(1,49,1)), auc(n_glucose_y_aa_median, seq(1,49,1)), auc(y_glucose_n_aa_median, seq(1,49,1)), 
+                      auc(n_glucose_n_aa_median, seq(1,49,1)), auc(bhi_median, seq(1,49,1), auc(combination_median, seq(1,49,1))), digits=3))
+
+# Assemble the table
+growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
+colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_of_Max_Rate_in_Hours', 'Max_OD', 'Time_of_Max_OD_in_Hours', 'Rate_at_24_hours', 'Mean_Rate', 'AUC', 'Corrected_AoV_pvalue')
+rm(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
+
+# Write growth summary data to supplementary table
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S6.tsv'
+write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
+rm(table_file, growth_summary)
+
+# Standard deviations
+sorbitol_sd <- rowSds(sorbitol, na.rm=TRUE)
+acetylneuraminate_sd <- rowSds(acetylneuraminate, na.rm=TRUE)
+fructose_sd <-  rowSds(fructose, na.rm=TRUE)
+combination_sd <-  rowSds(combination, na.rm=TRUE)
+mannitol_sd <- rowSds(mannitol, na.rm=TRUE)
+salicin_sd <- rowSds(salicin, na.rm=TRUE)
+y_glucose_y_aa_sd <- rowSds(y_glucose_y_aa, na.rm=TRUE)
+n_glucose_y_aa_sd <- rowSds(n_glucose_y_aa, na.rm=TRUE)
+y_glucose_n_aa_sd <- rowSds(y_glucose_n_aa, na.rm=TRUE)
+n_glucose_n_aa_sd <- rowSds(n_glucose_n_aa, na.rm=TRUE)
+bhi_sd <- rowSds(bhi, na.rm=TRUE)
+growth_sds <- as.data.frame(rbind(acetylneuraminate_sd, sorbitol_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd))
+rm(acetylneuraminate_median, sorbitol_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
+rm(acetylneuraminate, sorbitol, fructose, combination, mannitol, salicin, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, bhi)
+rm(acetylneuraminate_sd, sorbitol_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
+rm(growth)
+
+# Subset for first 12 hours of assay
+growth_medians <- as.data.frame(t(growth_medians[,1:49]))
+growth_sds <- as.data.frame(t(growth_sds[,1:49]))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Calculate significance
-
-
-
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Set up multi-panel figure
+# Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=12, height=14)
-layout(matrix(c(1,1,
-                1,1,
-                2,2),
-              nrow=3, ncol=2, byrow = TRUE))
+pdf(file=plot_file, width=17, height=16)
+layout(matrix(c(1,2,3,4,4,4,4,5,
+                6,7,7,4,4,4,4,8,
+                9,7,7,4,4,4,4,10,
+                11,12,13,4,4,4,4,14,
+                15,15,15,15,16,16,16,16,
+                15,15,15,15,16,16,16,16,
+                15,15,15,15,16,16,16,16,
+                15,15,15,15,16,16,16,16), nrow=8, ncol=8, byrow=TRUE))
+
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# A - Heatmap of metabolites
+# A - Example network and importance calculation
+par(mar=c(0,1,0,0))
+plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
+text(-0.9, 0, expression(Importance == paste(log[2],'( ',frac(Sigma * t[i], e[o]),' ','-',' ',frac(Sigma * t[o], e[i]),' )')), cex = 1.9) # Importance algorithm
+text(x=-1, y=1.13, labels='Tetrathionate reductase', font=2, cex=1.6) # Enzyme 1 name
+text(x=-1, y=1, labels='7', col='white', cex=1.25) # Enzyme 1 transcription
+text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.6) # Enzyme 2 name
+text(x=-0.5, y=-1, labels='94', col='white', cex=2.3) # Enzyme 2 transcription
+text(x=1, y=0.75, labels='Thiosulfate Oxidase', font=2, cex=1.6) # Enzyme 3
+text(x=0.99, y=0.44, labels='115', col='white', cex=2.5) # Enzyme 3 transcription
+text(x=-0.17, y=0.14, 's', col='white', cex=2) # Substrate node label
+text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.7, font=c(2,1)) # Compound & calculated importance
+segments(x0=-0.05, y0=-0.17, x1=0.25, y1=-0.17, lwd=2)
+legend(x=0.4, y=1.2, legend=c('KEGG ortholog', 'Reaction substrate'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=2, bty='n')
+text(x=-0.5, y=-1.1, expression(t[i]), col='white', cex=1.9) # labeled transcription for input reactions
+text(x=0.99, y=0.34, expression(t[i]), col='white', cex=1.9)
+text(x=-1, y=0.9, expression(t[o]), col='black', cex=1.9) # labeled transcription for output reactions
+text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.9) # labeled indegree
+text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.9) # labeled outdegree
+text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.9)
+#mtext('B', side=2, line=2, las=2, adj=-2, padj=-16.5, cex=1.8)
+Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3) # Score explanation line
+Arrows(x0=0.63, y0=-0.7, x1=1.14, y1=-0.7, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.3)
+segments(x0=0.63, y0=-0.65, x1=0.63, y1=-0.75, lwd=3)
+text(x=0.63, y=-0.83, '0', cex=2.1) 
+#text(x=0.12, y=-0.8, expression(- infinity), cex=2.3)
+#text(x=1.14, y=-0.8, expression(+ infinity), cex=2.3)
+text(x=0.12, y=-0.81, '-', cex=2.6)
+text(x=1.14, y=-0.81, '+', cex=2.6)
+text(x=1.15, y=-0.6, 'More likely consumed', cex=1.6)
+text(x=0.14, y=-0.6, 'More likely released', cex=1.6)
+text(x=0.63, y=-0.95, 'Importance Score', cex=2.3, font=2) 
 
-heatmap.2()
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
+# Large component of C. difficile 630 graph
+par(mar=c(1,3,1,1))
+plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
+     edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
+mtext('A', side=2, line=2, las=2, adj=-2, padj=-10, cex=1.8)
 
-mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+
+# Boxes in A are drawn in seperate software (Gimp)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# B - Bar chart comparison of specific compounds
+# B - Top compound importances
+par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
+         lcolor=NA, cex=1.5, groups=top_importances$abx, color='black', 
+         xlab='Substrate Importance Score', xlim=c(-2,10), 
+         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), pch=19)
 
+segments(x0=rep(-2, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
+abline(v=0, col='gray68', lwd=1.7)
 
-barplot()
+# Add simulated means
+points(x=top_importances[c(19:7),3], y=c(1:13), cex=2.7, col='black', pch='|') # Gnotobiotic
+points(x=top_importances[c(2:3),3], y=c(16:17), cex=2.7, col='black', pch='|') # Clindamycin
+points(x=top_importances[1,3], y=20, cex=2.7, col='black', pch='|') # Cefoperazone
+points(x=top_importances[c(4:6),3], y=c(23:25), cex=2.7, col='black', pch='|') # Streptomycin
 
-
-mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=0.5, padj=-15.5, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-#Clean up
+# C - Growth on important compounds
+par(mar=c(5,5,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(3,1,0))
+plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
+abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
+axis(1, at=seq(1,49,4), labels=seq(0,24,2))
+
+lines(growth_medians$y_glucose_y_aa_median, type='o', col='black', lwd=2, pch=19, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2.5, cex=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_y_aa_median+growth_sds$y_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_y_aa_median-growth_sds$y_glucose_y_aa_sd, lwd=2)
+lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=17, cex=2.5)
+segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2)
+lines(growth_medians$y_glucose_n_aa_median, type='o', lwd=2, pch=15, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2.5, cex=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2)
+lines(growth_medians$n_glucose_n_aa_median, type='o', lwd=2, pch=18, cex=2.5)
+segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2.5, cex=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_n_aa_median+growth_sds$n_glucose_n_aa_sd, lwd=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_n_aa_median-growth_sds$n_glucose_n_aa_sd, lwd=2)
+
+lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=0, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=1, cex=2.5)
+segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+
+lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2, pch=2, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+
+lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=5, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+
+lines(growth_medians$acetylneuraminate_median, type='o', col='forestgreen', lwd=2.5, pch=6, cex=2)
+segments(x0=seq(1,49,1), y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1), y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+
+legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuraminate'), 
+       col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(19,17,15,18,0,1,2,5,6), cex=2, pt.cex=c(3,3,3,3.5,3,3,3,3,3), bg='white', lwd=2)
+
+#segments(x0=c(26,27,28,29), y0=c(0.556,0.549,0.430,0.239), x1=c(26,27,28,29), y1=c(0.211,0.211,0.211,0.211), lwd=2.5)
+#segments(x0=c(25.7,26.7,27.7,28.7), y0=c(0.556,0.549,0.430,0.239), x1=c(26.3,27.3,28.3,29.3), y1=c(0.556,0.549,0.430,0.239), lwd=3.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3],'forestgreen'))
+#segments(x0=c(25.7,26.7,27.7,28.7), y0=c(0.211,0.211,0.211,0.211), x1=c(26.3,27.3,28.3,29.3), y1=c(0.211,0.211,0.211,0.211), lwd=3.5, col='black')
+#text(x=c(26.3,27.3,28.3,29.3), y=c(0.384,0.38,0.321,0.225), labels=c('***','***','***','***'), cex=c(2.3,2.3,2.3,1.5), srt = 90)
+
+mtext('C', side=2, line=2, las=2, adj=2, padj=-16, cex=1.8)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Clean up
 dev.off()
-rm(metabolites)
+rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, growth_sds, growth_medians, top_importances)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)

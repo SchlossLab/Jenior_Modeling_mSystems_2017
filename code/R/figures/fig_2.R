@@ -1,324 +1,206 @@
 
 # Load dependencies
-deps <- c('wesanderson','vegan', 'matrixStats', 'plotrix');
+deps <- c('shape', 'wesanderson', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  }
+  } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 
-#--------------------------------------------------------------------------------------------------------------#
+# Select files
+cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
+toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
 
-# Define variables
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.txt'
+# Read in data
+cfu <- read.delim(cfu_file, sep='\t', header=T)
+cfu_raw <- cfu
+toxin <- read.delim(toxin_file, sep='\t', header=T)
+toxin_raw <- toxin
+rm(cfu_file, toxin_file)
 
-# Open files
-cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE)
-colnames(cefoperazone) <- c('gene', 'Cefoperazone')
-clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE)
-colnames(clindamycin) <- c('gene', 'Clindamycin')
-streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE)
-colnames(streptomycin) <- c('gene', 'Streptomycin')
-germfree <- read.delim(germfree_file, sep='\t', header=FALSE)
-colnames(germfree) <- c('gene', 'Germfree')
+# Format CFU data and collect summary statistics
+cfu[cfu == 0] <- 100
+cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
+cfu$cfu_spore <- log10(cfu$cfu_spore)
+cfu$mouse <- NULL
+cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
+cfu$cage <- NULL
+cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
+vegetative_cfu <- cfu
+vegetative_cfu$cfu_spore <- NULL
+spore_cfu <- cfu
+spore_cfu$cfu_vegetative <- NULL
+cef <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2]))
+strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2]))
+clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
+gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
+conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
+vege_medians <- c(strep, cef, clinda, gf, conv)
+cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
+strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
+clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
+gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
+conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
+spore_medians <- c(strep, cef, clinda, gf, conv)
+rm(cfu, cef, strep, clinda, gf, conv)
+vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
+vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
+spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
 
-# Clean up
-rm(cefoperazone_file, clindamycin_file, streptomycin_file, germfree_file)
+# Format toxin data and find summary statistics
+toxin$mouse <- NULL
+toxin$cage <- NULL
+toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
+cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
+strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
+clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
+gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
+conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
+toxin_medians <- c(strep, cef, clinda, gf, conv)
+rm(cef, strep, clinda, gf, conv)
+toxin$titer[toxin$titer <= 2.0] <- 1.9
 
-# Merge tables
-combined_mapping <- merge(streptomycin, cefoperazone, by='gene')
-combined_mapping <- merge(combined_mapping, clindamycin, by='gene')
-combined_mapping$gene <- gsub("Clostridium_difficile_630\\|","", combined_mapping$gene)
-combined_mapping$gene <- gsub('ENA\\|CDT20869\\|CDT20869.1\\|Clostridium_difficile_putative_phage_replication_protein_','', combined_mapping$gene)
-combined_mapping$gene <- gsub('_',' ', combined_mapping$gene)
-rownames(combined_mapping) <- combined_mapping$gene
-combined_mapping$gene <- NULL
-rm(cefoperazone, clindamycin, streptomycin, germfree)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-#--------------------------------------------------------------------------------------------------------------#
+# Calculate significant differences
 
-# Break up the data and calculate stats
+toxin_raw$titer[toxin_raw$titer < 2.0] <- NA
+cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
+clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
+streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
+germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
+rm(toxin_raw)
 
-# Sigma factors
-sigma_keep <- c('CodY','CcpA','CdtR','SigH','SigB','SigA1','SigA2','SigE','SigF','SigG','SigK','SigV','FliA',
-                'TetR_family|1','TetR_family|2','TetR_family|3','TetR_family|4','TetR_family|5','TetR_family|6',
-                'TetR_family|7','TetR_family|8','TetR_family|9','TetR_family|10','TetR_family|11','TetR_family|12',
-                'TetR_family|13','TetR_family|14','TetR_family|15','TetR_family|16','Rex','PrdR','Spo0A')
-sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
-# Iteratively rarefy mappings
-sub_size <- round(min(colSums(sigma[,1:3])) * 0.9)
-cefoperazone <- t(rrarefy(sigma$Cefoperazone, sample=sub_size))
-clindamycin <- t(rrarefy(sigma$Clindamycin, sample=sub_size))
-streptomycin <- t(rrarefy(sigma$Streptomycin, sample=sub_size))
-for (index in 1:999) {
-  cefoperazone <- cbind(cefoperazone, t(rrarefy(sigma$Cefoperazone, sample=sub_size)))
-  clindamycin <- cbind(clindamycin, t(rrarefy(sigma$Clindamycin, sample=sub_size)))
-  streptomycin <- cbind(streptomycin, t(rrarefy(sigma$Streptomycin, sample=sub_size)))
-}
-# Log transform data
-cefoperazone <- log10(cefoperazone + 1)
-clindamycin <- log10(clindamycin + 1)
-streptomycin <- log10(streptomycin + 1)
-# Medians
-sigma$Cefoperazone <- rowMedians(cefoperazone)
-sigma$Clindamycin <- rowMedians(clindamycin)
-sigma$Streptomycin <- rowMedians(streptomycin)
-sigma_medians <- sigma
-rownames(sigma_medians) <- c("ccpA", "cdtR",  "codY",  "fliA",  "prdR", "rex", "sigA1", 
-                             "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
-# SDs
-sigma$Cefoperazone <- rowSds(cefoperazone)
-sigma$Clindamycin <- rowSds(clindamycin)
-sigma$Streptomycin <- rowSds(streptomycin)
-sigma_sds <- sigma * 1.95
-rownames(sigma_sds) <- c("ccpA", "cdtR",  "codY",  "fliA",  "prdR", "rex", "sigA1", 
-                             "sigA2", "sigB", "sigE", "sigF", "sigG", "sigH",  "sigK",  "sigV",  "spo0A")
-# Clean up
-rm(sub_size, cefoperazone, clindamycin, streptomycin, sigma, index)
+wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.001533 ***
+wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0001881 ***
+wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.05 *
+wilcox.test(cefoperazone, clindamycin, exact=F) # n.s.
+wilcox.test(cefoperazone, streptomycin, exact=F) # n.s.
+wilcox.test(clindamycin, streptomycin, exact=F) # n.s.
 
-# PaLoc
-paloc_keep <- c('TcdR','TcdC','TcdE','CdtR','TcdA','TcdB')
-paloc <- subset(combined_mapping, rownames(combined_mapping) %in% paloc_keep)
-# Iteratively rarefy mappings
-sub_size <- round(min(colSums(paloc[,1:3])) * 0.9)
-cefoperazone <- t(rrarefy(paloc$Cefoperazone, sample=sub_size))
-clindamycin <- t(rrarefy(paloc$Clindamycin, sample=sub_size))
-streptomycin <- t(rrarefy(paloc$Streptomycin, sample=sub_size))
-for (index in 1:999) {
-  cefoperazone <- cbind(cefoperazone, t(rrarefy(paloc$Cefoperazone, sample=sub_size)))
-  clindamycin <- cbind(clindamycin, t(rrarefy(paloc$Clindamycin, sample=sub_size)))
-  streptomycin <- cbind(streptomycin, t(rrarefy(paloc$Streptomycin, sample=sub_size)))
-}
-# Log transform data
-cefoperazone <- log10(cefoperazone + 1)
-clindamycin <- log10(clindamycin + 1)
-streptomycin <- log10(streptomycin + 1)
-# Medians
-paloc$Cefoperazone <- rowMedians(cefoperazone)
-paloc$Clindamycin <- rowMedians(clindamycin)
-paloc$Streptomycin <- rowMedians(streptomycin)
-paloc_medians <- paloc
-rownames(paloc_medians) <- c("cdtR", "tcdA", "tcdB", "tcdC", "tcdE", "tcdR")
-# SDs
-paloc$Cefoperazone <- rowSds(cefoperazone)
-paloc$Clindamycin <- rowSds(clindamycin)
-paloc$Streptomycin <- rowSds(streptomycin)
-paloc_sds <- paloc * 1.95
-rownames(paloc_sds) <- c("cdtR", "tcdA", "tcdB", "tcdC", "tcdE", "tcdR")
-# Clean up
-rm(sub_size, cefoperazone, clindamycin, streptomycin, paloc, index)
+p_values <- c(0.001533, 0.0001881, 0.05, 0.1, 0.1, 0.1)
+corrected_p_values <- p.adjust(p_values, method='holm')
 
-# Sporulation
-sporulation_keep <- c('DpaA', 'SpoIID','SpoIIID','SpoIIAA','SpoIIAB','SpoIIIAA','SpoIIIAB','SpoIIIAC','SpoIIIAD',
-                      'SpoIIIAE','SpoIIIAG','SpoIIIAH','SpoIIP','SpoIIGA','SpoIIE','SpoIIR','SpoVAC','SpoVAD',
-                      'SpoVAE','SpoIVB2','SpoVS','SpoIV','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB',
-                      'SpoVT','SpoVG','CD1492','CD2492','CdeC','CotA','SodA','CotJB2','CotD',
-                      'Gpr','SspA','SspB','BclA3')
-sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulation_keep)
-# Iteratively rarefy mappings
-sub_size <- round(min(colSums(sporulation[,1:3])) * 0.9)
-cefoperazone <- t(rrarefy(sporulation$Cefoperazone, sample=sub_size))
-clindamycin <- t(rrarefy(sporulation$Clindamycin, sample=sub_size))
-streptomycin <- t(rrarefy(sporulation$Streptomycin, sample=sub_size))
-for (index in 1:999) {
-  cefoperazone <- cbind(cefoperazone, t(rrarefy(sporulation$Cefoperazone, sample=sub_size)))
-  clindamycin <- cbind(clindamycin, t(rrarefy(sporulation$Clindamycin, sample=sub_size)))
-  streptomycin <- cbind(streptomycin, t(rrarefy(sporulation$Streptomycin, sample=sub_size)))
-}
-# Log transform data
-cefoperazone <- log10(cefoperazone + 1)
-clindamycin <- log10(clindamycin + 1)
-streptomycin <- log10(streptomycin + 1)
-# Medians
-sporulation$Cefoperazone <- rowMedians(cefoperazone)
-sporulation$Clindamycin <- rowMedians(clindamycin)
-sporulation$Streptomycin <- rowMedians(streptomycin)
-sporulation_medians <- sporulation
-rownames(sporulation_medians) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
-                                   'cotD', 'cotJB2', 'dpaA', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
-                                   'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
-                                   'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
-                                   'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
-                                   'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
-# SDs
-sporulation$Cefoperazone <- rowSds(cefoperazone)
-sporulation$Clindamycin <- rowSds(clindamycin)
-sporulation$Streptomycin <- rowSds(streptomycin)
-sporulation_sds <- sporulation * 1.95
-rownames(sporulation_sds) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
-                               'cotD', 'cotJB2', 'dpaA', 'gpr', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
-                               'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
-                               'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
-                               'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
-                               'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
-# Clean up
-rm(sub_size, cefoperazone, clindamycin, streptomycin, sporulation, index)
+cfu_raw[cfu_raw == 0.0] <- NA
+cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
+clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
+streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
+germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
+rm(cfu_raw)
 
-# Quorum sensing
-quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
-quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
-# Iteratively rarefy mappings
-sub_size <- round(min(colSums(quorum[,1:3])) * 0.9)
-cefoperazone <- t(rrarefy(quorum$Cefoperazone, sample=sub_size))
-clindamycin <- t(rrarefy(quorum$Clindamycin, sample=sub_size))
-streptomycin <- t(rrarefy(quorum$Streptomycin, sample=sub_size))
-for (index in 1:999) {
-  cefoperazone <- cbind(cefoperazone, t(rrarefy(quorum$Cefoperazone, sample=sub_size)))
-  clindamycin <- cbind(clindamycin, t(rrarefy(quorum$Clindamycin, sample=sub_size)))
-  streptomycin <- cbind(streptomycin, t(rrarefy(quorum$Streptomycin, sample=sub_size)))
-}
-# Log transform data
-cefoperazone <- log10(cefoperazone + 1)
-clindamycin <- log10(clindamycin + 1)
-streptomycin <- log10(streptomycin + 1)
+wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.02341 *
+wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0005699 ***
+wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.001764 **
+wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
+wilcox.test(streptomycin, cefoperazone, exact=F) # n.s.
+wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
+rm(germfree, cefoperazone, clindamycin, streptomycin)
 
-# Medians
-quorum$Cefoperazone <- rowMedians(cefoperazone)
-quorum$Clindamycin <- rowMedians(clindamycin)
-quorum$Streptomycin <- rowMedians(streptomycin)
-quorum_medians <- quorum
-rownames(quorum_medians) <- c('agrB', 'agrD', 'luxS')
-# SDs
-quorum$Cefoperazone <- rowSds(cefoperazone)
-quorum$Clindamycin <- rowSds(clindamycin)
-quorum$Streptomycin <- rowSds(streptomycin)
-quorum_sds <- quorum * 1.95
-rownames(quorum_sds) <- c('agrB', 'agrD', 'luxS')
-# Clean up
-rm(sub_size, cefoperazone, clindamycin, streptomycin, quorum, index)
+p_values <- c(0.02341, 0.0005699, 0.001764, 0.1, 0.1, 0.1)
+p.adjust(p_values, method='holm')
+rm(p_values)
 
-# Clean up
-rm(combined_mapping, sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-#--------------------------------------------------------------------------------------------------------------#
-
-# Set the color palette and plotting environment
-select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5])
+# Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
-make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
-pdf(file=plot_file, width=12, height=14)
-layout(matrix(c(1,1,
-                2,2,
-                3,4),
-              nrow=3, ncol=2, byrow = TRUE))
+select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
+pdf(file=plot_file, width=6.4, height=9)
+layout(matrix(c(1,
+                2,
+                3), 
+              nrow=3, ncol=1, byrow = TRUE))
 
-#--------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# A - Sigma factors
-par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
-x_coords <- barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
-abline(h=c(1:2), lty=2)
-barplot(t(sigma_medians), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3), add=TRUE)
-box()
-labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
-axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
-legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,74.7,4.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(sigma_medians)), srt=45, adj=1, xpd=TRUE, cex=1.2)
-legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
+# A.  Vegetative cell CFU
+par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.8, col=select_palette,
+           ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
+#axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
+labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
 
-x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
-segments(x0=x_coords$Cefoperazone, y0=c(sigma_medians$Cefoperazone+sigma_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(sigma_medians$Cefoperazone-sigma_sds$Cefoperazone), lwd=1.2)
-segments(x0=x_coords$Clindamycin, y0=c(sigma_medians$Clindamycin+sigma_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sigma_medians$Clindamycin-sigma_sds$Clindamycin), lwd=1.2)
-segments(x0=x_coords$Streptomycin, y0=c(sigma_medians$Streptomycin+sigma_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sigma_medians$Streptomycin-sigma_sds$Streptomycin), lwd=1.2)
+# Draw axis break
+axis.break(2, 1.5, style='slash')
 
-mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+# Draw median
+segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
+segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
+segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
+segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
+#segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
-#--------------------------------------------------------------------------------------------------------------#
+mtext('A', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
 
-# B - Sporulation
-par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
-x_coords <- barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
-abline(h=c(1:2), lty=2)
-barplot(t(sporulation_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3), add=TRUE)
-box()
-labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
-axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
-legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,185.3,4.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(sporulation_medians)), srt=45, adj=1, xpd=TRUE, cex=0.9)
-legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
-segments(x0=x_coords$Cefoperazone, y0=c(sporulation_medians$Cefoperazone+sporulation_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(sporulation_medians$Cefoperazone-sporulation_sds$Cefoperazone), lwd=1.2)
-segments(x0=x_coords$Clindamycin, y0=c(sporulation_medians$Clindamycin+sporulation_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(sporulation_medians$Clindamycin-sporulation_sds$Clindamycin), lwd=1.2)
-segments(x0=x_coords$Streptomycin, y0=c(sporulation_medians$Streptomycin+sporulation_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(sporulation_medians$Streptomycin-sporulation_sds$Streptomycin), lwd=1.2)
+# B.  Spore CFU
+par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.8, col=select_palette,
+           ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
+#axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic', 'No Antibiotics'), tick = FALSE)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
 
-mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+# Draw axis break
+axis.break(2, 1.5, style='slash') 
 
-#--------------------------------------------------------------------------------------------------------------#
+# Draw median
+segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
+segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
+segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
+segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
+#segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 
-# C - PaLoc
-par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
-x_coords <- barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
-abline(h=1, lty=2)
-barplot(t(paloc_medians), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2), add=TRUE)
-box()
-labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
-axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
-legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,29.7,4.5), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(paloc_medians)), srt=45, adj=1, xpd=TRUE, cex=1.4)
-legend('topright', legend='Pathogenicity loci', pt.cex=0, bty='n', cex=1.8)
+# Adding significance to plot
+segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
+text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2)
 
-x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
-segments(x0=x_coords$Cefoperazone, y0=c(paloc_medians$Cefoperazone+paloc_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(paloc_medians$Cefoperazone-paloc_sds$Cefoperazone), lwd=1.2)
-segments(x0=x_coords$Clindamycin, y0=c(paloc_medians$Clindamycin+paloc_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(paloc_medians$Clindamycin-paloc_sds$Clindamycin), lwd=1.2)
-segments(x0=x_coords$Streptomycin, y0=c(paloc_medians$Streptomycin+paloc_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(paloc_medians$Streptomycin-paloc_sds$Streptomycin), lwd=1.2)
+mtext('B', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
 
-mtext('C', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-#--------------------------------------------------------------------------------------------------------------#
+# C.  Toxin data
+par(las=1, mar=c(2,4,0.7,1), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
+stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2,
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.1,
+           cex=1.8, ylab=expression(paste('Toxin Titer/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free', 'No Antibiotics'), tick=FALSE, font=2, cex.axis=1.3)
+axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
-# D - Quorum sensing
-par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
-x_coords <- barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
-abline(h=1, lty=2)
-barplot(t(quorum_medians), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2), add=TRUE)
-box()
-labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
-axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
-legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin'), pt.cex=2.3, bty='n', cex=1.2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=c(2.7,6.7,10.7), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(quorum_medians)), srt=45, adj=1, xpd=TRUE, cex=1.6)
-legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
+# Draw axis break
+axis.break(2, 1.75, style='slash') 
 
-x_coords <- as.data.frame(t(x_coords))
-colnames(x_coords) <- c('Streptomycin', 'Cefoperazone', 'Clindamycin')
-segments(x0=x_coords$Cefoperazone, y0=c(quorum_medians$Cefoperazone+quorum_sds$Cefoperazone), x1=x_coords$Cefoperazone, y1=c(quorum_medians$Cefoperazone-quorum_sds$Cefoperazone), lwd=1.2)
-segments(x0=x_coords$Clindamycin, y0=c(quorum_medians$Clindamycin+quorum_sds$Clindamycin), x1=x_coords$Clindamycin, y1=c(quorum_medians$Clindamycin-quorum_sds$Clindamycin), lwd=1.2)
-segments(x0=x_coords$Streptomycin, y0=c(quorum_medians$Streptomycin+quorum_sds$Streptomycin), x1=x_coords$Streptomycin, y1=c(quorum_medians$Streptomycin-quorum_sds$Streptomycin), lwd=1.2)
+# Draw limit of detection
+abline(h=2, lty=2, lwd=1.5)
 
-mtext('D', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+# Draw median
+#segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
+#segments(1.6, toxin_medians[2], 2.4, toxin_medians[2], lwd=3) # streptomycin
+#segments(2.6, toxin_medians[3], 3.4, toxin_medians[3], lwd=3) # clindamycin
+#segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
+#segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
-#--------------------------------------------------------------------------------------------------------------#
+# Adding significance to plot
+segments(x0=c(1,2,3), y0=c(3.2,3.3,3.4), x1=c(4,4,4), y1=c(3.2,3.3,3.4), lwd=2)
+text(c(2.5,3,3.5), c(3.25,3.35,3.45), labels=c('*','*','*'), cex=2)
 
-# Clean up
+# Plot label
+mtext('C', side=2, line=2, las=2, adj=1.2, padj=-6.5, cex=1.5)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+#Clean up
 dev.off()
-rm(quorum_medians, quorum_sds, sigma_medians, sigma_sds, sporulation_medians, sporulation_sds, 
-   paloc_medians, paloc_sds, plot_file, select_palette, x_coords, labelsY, make.italic)
+rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette)
 for (dep in deps){
-  pkg <- paste('package:', dep,sep='')
-   detach(pkg, character.only = TRUE)
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
 }
 rm(dep, deps, pkg)
 gc()
