@@ -35,8 +35,7 @@ par(mar=c(0,3,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-4.8,4), ylim=c(-2,5))
 
 # Abx in drinking water timeline
-#rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='darkorchid2', border='black')
-rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='gray60', border='black')
+rect(xleft=-4, ybottom=2.8, xright=0, ytop=3.2, col='darkorchid2', border='black')
 Arrows(x0=-4, y0=3, x1=3.5, y1=3, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,0,2,2.75), y0=c(3.5,3.5,3.5,3.5), x1=c(-4,0,2,2.75), y1=c(2.5,2.5,2.5,2.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(3.25,3.25,3.25,3.25,3.25), x1=c(-4,-3,-2,-1,1), y1=c(2.75,2.75,2.75,2.75,2.75), lwd=2)
@@ -50,16 +49,14 @@ text(x=-4.6, y=2.95, 'A', font=2, cex=2)
 # IP injection abx timeline
 Arrows(x0=-4, y0=0, x1=-1.5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,-3,-2.25), y0=c(-0.5,-0.5,-0.5), x1=c(-4,-3,-2.25), y1=c(0.5,0.5,0.5), lwd=4)
-points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c('gray60','white','black'), col='black', cex=2.5)
+points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c('chartreuse3','white','black'), col='black', cex=2.5)
 text(x=c(-4,-3,-2.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=0.9)
 #text(x=-4.6, y=0, 'Clindamycin', cex=0.7)
 text(x=-4.6, y=0, 'B', cex=2)
 
 # Legend
-#legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic', paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 
-#       pt.bg=c('darkorchid2','gray60','white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 legend(x=0, y=1.3, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic', paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 
-       pt.bg=c('gray60','gray60','white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
+       pt.bg=c('darkorchid2','chartreuse3','white','black'), pch=c(22,25,25,25), pt.cex=c(2.5,2,2,2), bty='n')
 
 dev.off()
 
