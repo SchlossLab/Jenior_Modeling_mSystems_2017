@@ -240,7 +240,8 @@ combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Define plot details
-rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
+rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", 
+             "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
 fox <- wes_palette("FantasticFox")
 tick_labels <- c('10%','','30%','','50%','','70%','','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
