@@ -40,6 +40,14 @@ rownames(combined_mapping) <- combined_mapping$gene
 combined_mapping$gene <- NULL
 rm(cefoperazone, clindamycin, streptomycin, germfree)
 
+# Convert to relative abundances
+totals <- colSums(combined_mapping)
+combined_mapping$Streptomycin <- combined_mapping$Streptomycin / totals[1]
+combined_mapping$Cefoperazone <- combined_mapping$Cefoperazone / totals[2]
+combined_mapping$Clindamycin <- combined_mapping$Clindamycin / totals[3]
+combined_mapping$Germfree <- combined_mapping$Germfree / totals[4]
+rm(totals)
+
 #--------------------------------------------------------------------------------------------------------------#
 
 # Break up the data and calculate stats
@@ -53,8 +61,6 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 sigma_keep <- c('CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex')
 sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
 rownames(sigma) <- c('ccpA', 'codY', 'prdR', 'rex', 'sigH', 'spo0A')
-colSums(sigma)
-sigma <- log10(sigma + 1)
 
 # Iteratively rarefy mappings
 #sub_size <- round(min(colSums(sigma[,1:4])) * 0.9)
@@ -94,8 +100,6 @@ sigma <- log10(sigma + 1)
 paloc_keep <- c('TcdR','TcdC','TcdE','CdtR','TcdA','TcdB')
 paloc <- subset(combined_mapping, rownames(combined_mapping) %in% paloc_keep)
 rownames(paloc) <- c('cdtR', 'tcdA', 'tcdB', 'tcdC', 'tcdE', 'tcdR')
-colSums(paloc)
-paloc <- log10(paloc + 1)
 
 # Iteratively rarefy mappings
 #sub_size <- round(min(colSums(paloc[,1:4])) * 0.9)
@@ -146,8 +150,6 @@ rownames(sporulation) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA',
                                    'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
                                    'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
                                    'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
-colSums(sporulation)
-sporulation <- log10(sporulation + 1)
 
 # Iteratively rarefy mappings
 #sub_size <- round(min(colSums(sporulation[,1:4])) * 0.9)
@@ -198,8 +200,6 @@ sporulation <- log10(sporulation + 1)
 quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
 quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
 rownames(quorum) <- c('agrB', 'agrD', 'luxS')
-colSums(quorum)
-quorum <- log10(quorum + 1)
 
 # Iteratively rarefy mappings
 #sub_size <- round(min(colSums(quorum[,1:4])) * 0.9)
