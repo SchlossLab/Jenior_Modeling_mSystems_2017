@@ -48,6 +48,8 @@ combined_mapping$Clindamycin <- combined_mapping$Clindamycin / totals[3]
 combined_mapping$Germfree <- combined_mapping$Germfree / totals[4]
 rm(totals)
 
+combined_mapping <- combined_mapping * 10
+
 #--------------------------------------------------------------------------------------------------------------#
 
 # Break up the data and calculate stats
@@ -254,16 +256,20 @@ layout(matrix(c(1,1,2,2,
 
 #--------------------------------------------------------------------------------------------------------------#
 
+# expression(paste('Transcript Abundance (',Log[10],')'))
+
 # A - Sigma factors
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sigma), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,4))
-abline(h=c(1:3), lty=2)
+        ylab='Relative Transcript Abundance', ylim=c(0,10))
+#abline(h=c(1:3), lty=2)
+abline(h=c(1:9), lty=2)
 barplot(t(sigma), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,4), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,10), add=TRUE)
 box()
-labelsY <- c(0, parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')))
-axis(side=2, at=c(0:4), labelsY, tick=TRUE, las=1, cex=1.7)
+#labelsY <- c(0, parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')))
+#axis(side=2, at=c(0:4), labelsY, tick=TRUE, las=1, cex=1.7)
+axis(side=2, at=c(1:9), c('10%','20%','30%','40%','50%','60%','70%','80%','90%'), tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,36.7,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
@@ -279,20 +285,22 @@ legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 #segments(x0=x_coords$Streptomycin, y0=c(sigma_medians$Streptomycin+sigma_sds$Streptomycin), 
 #         x1=x_coords$Streptomycin, y1=c(sigma_medians$Streptomycin-sigma_sds$Streptomycin), lwd=1.2)
 
-mtext('A', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=1.6, padj=-13, cex=1.5)
 
 ################
 
 # B - PaLoc
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(paloc), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                    ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3))
-abline(h=c(1:2), lty=2)
+                    ylab='Relative Transcript Abundance', ylim=c(0,10))
+abline(h=c(1:9), lty=2)
+#abline(h=c(1:2), lty=2)
 barplot(t(paloc), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,3), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,10), add=TRUE)
 box()
-labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
-axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
+#labelsY <- c(0, parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')))
+#axis(side=2, at=c(0:3), labelsY, tick=TRUE, las=1, cex=1.7)
+axis(side=2, at=c(1:9), c('10%','20%','30%','40%','50%','60%','70%','80%','90%'), tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,36.7,5.5), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
@@ -308,20 +316,22 @@ legend('topright', legend='Pathogenicity loci', pt.cex=0, bty='n', cex=1.8)
 #segments(x0=x_coords$Streptomycin, y0=c(paloc_medians$Streptomycin+paloc_sds$Streptomycin), 
 #         x1=x_coords$Streptomycin, y1=c(paloc_medians$Streptomycin-paloc_sds$Streptomycin), lwd=1.2)
 
-mtext('B', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=1.6, padj=-13, cex=1.5)
 
 ################
 
 # C - Sporulation
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,4))
-abline(h=c(1:3), lty=2)
+        ylab='Relative Transcript Abundance', ylim=c(0,10))
+abline(h=c(1:9), lty=2)
+#abline(h=c(1:3), lty=2)
 barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,4), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,10), add=TRUE)
 box()
-labelsY <- c(0, parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')))
-axis(side=2, at=c(0:4), labelsY, tick=TRUE, las=1, cex=1.7)
+#labelsY <- c(0, parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')))
+#axis(side=2, at=c(0:4), labelsY, tick=TRUE, las=1, cex=1.7)
+axis(side=2, at=c(1:9), c('10%','20%','30%','40%','50%','60%','70%','80%','90%'), tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=seq(3.7,251.2,5.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
@@ -337,7 +347,7 @@ legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 #segments(x0=x_coords$Streptomycin, y0=c(sporulation_medians$Streptomycin+sporulation_sds$Streptomycin), 
 #         x1=x_coords$Streptomycin, y1=c(sporulation_medians$Streptomycin-sporulation_sds$Streptomycin), lwd=1.2)
 
-mtext('C', side=2, line=2, las=2, adj=1.6, padj=-10, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=1.6, padj=-13, cex=1.5)
 
 dev.off()
 
@@ -349,13 +359,15 @@ pdf(file=plot_file, width=7, height=7)
 # Quorum sensing
 par(las=1, mar=c(4,5,1,1), mgp=c(2.5, 1, 0))
 x_coords <- barplot(t(quorum), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2))
-abline(h=1, lty=2)
+        ylab='Relative Transcript Abundance', ylim=c(0,10))
+abline(h=c(1:9), lty=2)
+#abline(h=1, lty=2)
 barplot(t(quorum), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab=expression(paste('Transcript Abundance (',Log[10],')')), ylim=c(0,2), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,10), add=TRUE)
 box()
-labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
-axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
+#labelsY <- c(0, parse(text=paste(rep(10,2), '^', seq(1,2,1), sep='')))
+#axis(side=2, at=c(0:2), labelsY, tick=TRUE, las=1, cex=1.7)
+axis(side=2, at=c(1:9), c('10%','20%','30%','40%','50%','60%','70%','80%','90%'), tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, bty='n', cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
