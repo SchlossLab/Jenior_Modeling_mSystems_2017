@@ -648,6 +648,12 @@ mtext('C', side=2, line=2, las=2, adj=2, padj=-16, cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
+# 2 more panels
+# top shared importances
+# new growth curves combining carbohydrates
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
 # Clean up
 dev.off()
 rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, growth_sds, growth_medians, top_importances)
