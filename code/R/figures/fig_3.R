@@ -43,11 +43,9 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 # Define subsets of interest
 sigma_keep <- c('CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex')
 paloc_keep <- c('TcdR','TcdC','TcdE','CdtR','TcdA','TcdB')
-sporulation_keep <- c('DpaA', 'SpoIID','SpoIIID','SpoIIAA','SpoIIAB','SpoIIIAA','SpoIIIAB','SpoIIIAC','SpoIIIAD',
-                      'SpoIIIAE','SpoIIIAG','SpoIIIAH','SpoIIP','SpoIIGA','SpoIIE','SpoIIR','SpoVAC','SpoVAD',
-                      'SpoVAE','SpoIVB2','SpoVS','SpoIV','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB',
-                      'SpoVT','SpoVG','CD1492','CD2492','CdeC','CotA','SodA','CotJB2','CotD',
-                      'Gpr','SspA','SspB','BclA3', 'SigA2','SigK','SigE','SigF','SigG')
+sporulation_keep <- c('DpaA', 'SpoIID','SpoIIID','SpoIIAB','SpoIIIAG','SpoIIIAH','SpoIIE',
+                      'SpoVS','SpoIVA','SpoVE','SpoVD','SpoVFB','SpoVFA','SpoVB','SpoVT','SpoVG','CdeC',
+                      'CotJB2','CotD','SspA','SspB','BclA3','SigA2','SigK','SigE','SigF','SigG','SspB')
 quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
 
 # Pull of the genes of interest
@@ -85,12 +83,9 @@ rownames(paloc) <- c('cdtR', 'tcdA', 'tcdB', 'tcdC', 'tcdE', 'tcdR')
 # Sporulation
 # citation for genes
 sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulation_keep)
-rownames(sporulation) <- c('bclA3', 'CD1492', 'CD2492', 'cdeC', 'cotA', 
-                                   'cotD', 'cotJB2', 'dpaA', 'gpr', 'sigA2','sigK','sigE','sigF','sigG', 'sodA', 'spoIIAA', 'spoIIAB', 'spoIID', 
-                                   'spoIIE', 'spoIIGA', 'spoIIIAA', 'spoIIIAB', 'spoIIIAC', 'spoIIIAD', 'spoIIIAE', 
-                                   'spoIIIAG', 'spoIIIAH', 'spoIIID', 'spoIIP', 'spoIIR', 'spoIV', 'spoIVA',  
-                                   'spoIVB2', 'spoVAC', 'spoVAD', 'spoVAE', 'spoVB', 'spoVD', 'spoVE', 'spoVFA', 
-                                   'spoVFB', 'spoVG', 'spoVS', 'spoVT', 'sspA', 'sspB')
+rownames(sporulation) <- c('bclA3','cdeC','cotD','cotJB2','dpaA','sigA2','sigE','sigF','sigG','sigK',
+                           'spoIIAB','spoIID','spoIIE','spoIIIAG','spoIIIAH','spoIIID','spoIVA',
+                           'spoVB','spoVD','spoVE','spoVFA','spoVFB','spoVG','spoVS','spoVT','sspA','sspB')
 
 # Quorum sensing
 quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
@@ -106,91 +101,84 @@ select_palette <- c(wes_palette('FantasticFox')[1], wes_palette('FantasticFox')[
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
 make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
 pdf(file=plot_file, width=14, height=10)
-layout(matrix(c(1,1,2,2,
-                1,1,2,2,
-                3,3,3,3,
-                3,3,3,3),
-              nrow=4, ncol=4, byrow = TRUE))
+layout(matrix(c(1,1,2,2,3,3,
+                1,1,2,2,3,3,
+                4,4,4,4,4,4,
+                4,4,4,4,4,4),
+              nrow=4, ncol=6, byrow = TRUE))
 
 #--------------------------------------------------------------------------------------------------------------#
 
 # Sigma factors
-par(las=1, mar=c(4,5.4,1,1), mgp=c(3.2, 1, 0))
-x_coords <- barplot(t(sigma), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,2.5))
+par(las=1, mar=c(4,5.4,1,1), mgp=c(3.5, 1, 0))
+barplot(t(sigma), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,2.5), cex.lab=1.2)
 abline(h=1.25, lty=2)
 barplot(t(sigma), col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,2.5), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,2.5), add=TRUE, cex.lab=1.2)
 box()
-axis(side=2, at=c(0,1.25,2.5), c('','',''), tick=TRUE, las=1)
-mtext(text=c('0.0%','12.5%','25.0%'), side=2, at=c(0,1.25,2.5), cex=c(0.7,0.6,0.7), adj=c(1.8,1.4,1.5))
+axis(side=2, at=c(0,1.25,2.5), c('0.0%','12.5%','25.0%'), tick=TRUE, las=1)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,36.7,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(sigma)), srt=45, adj=1, xpd=TRUE, cex=1.2)
+text(x=seq(3.7,33,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(sigma)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 mtext('A', side=2, line=2, las=2, adj=2.3, padj=-11, cex=1.5)
 
 # Pathogenicity
-par(las=1, mar=c(4,5,1,1), mgp=c(3.2, 1, 0))
-x_coords <- barplot(t(paloc), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                    ylab='Relative Transcript Abundance', ylim=c(0,0.2))
+par(las=1, mar=c(4,5,1,1), mgp=c(3.5, 1, 0))
+barplot(t(paloc), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+                    ylab='Relative Transcript Abundance', ylim=c(0,0.2), cex.lab=1.2)
 abline(h=0.1, lty=2)
 barplot(t(paloc), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,0.2), add=TRUE)
+        ylab='Relative Transcript Abundance', ylim=c(0,0.2), add=TRUE, cex.lab=1.2)
 box()
 axis(side=2, at=c(0,0.1,0.2), c('0.0%','1.0%','2.0%'), tick=TRUE, las=1)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,36.7,5.5), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(paloc)), srt=45, adj=1, xpd=TRUE, cex=1.4)
+text(x=seq(3.7,33,5.5), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(paloc)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
 mtext('B', side=2, line=2, las=2, adj=1.9, padj=-11, cex=1.5)
 
-# Sporulation
-par(las=1, mar=c(4,5.4,1,1), mgp=c(3.5, 1, 0))
-x_coords <- barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,3))
-abline(h=c(1:3), lty=2)
-barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,3), add=TRUE)
-box()
-axis(side=2, at=c(0:3), c('0.0%','10.0%','20.0%','30.0%'), tick=TRUE, las=1)
-legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, cex=1.2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
-text(x=seq(3.7,251.2,5.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(rownames(sporulation)), srt=45, adj=1, xpd=TRUE, cex=0.9)
-legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
-mtext('C', side=2, line=2, las=2, adj=2.2, padj=-11, cex=1.5)
-
-dev.off()
-
-#--------------------------------------------------------------------------------------------------------------#
-
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_quorum.pdf'
-pdf(file=plot_file, width=7, height=7)
-
 # Quorum sensing
-par(las=1, mar=c(4,5,1,1), mgp=c(3, 1, 0))
-x_coords <- barplot(t(quorum), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,1))
-abline(h=0.5, lty=2)
+par(las=1, mar=c(4,5,1,1), mgp=c(3.5, 1, 0))
 barplot(t(quorum), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,1), add=TRUE)
+                    ylab='Relative Transcript Abundance', ylim=c(0,0.2), cex.lab=1.2)
+abline(h=0.1, lty=2)
+barplot(t(quorum), col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,0.2), add=TRUE, cex.lab=1.2)
 box()
-axis(side=2, at=c(0:1), c('0.0%','10.0%'), tick=TRUE, las=1, cex=1.7)
+axis(side=2, at=c(0,0.1,0.2), c('0.0%','1.0%','2.0%'), tick=TRUE, las=1, cex=1.7)
 legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, cex=1.2,
        pch=22, col='black', pt.bg=select_palette, ncol=1)
 text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(rownames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
+mtext('C', side=2, line=2, las=2, adj=1.9, padj=-11, cex=1.5)
+
+# Sporulation
+par(las=1, mar=c(4.5,5.4,1,1), mgp=c(3.5, 1, 0))
+barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,3), cex.lab=1.2)
+abline(h=c(1:3), lty=2)
+barplot(t(sporulation), col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,3), add=TRUE, cex.lab=1.2)
+box()
+axis(side=2, at=c(0:3), c('0.0%','10.0%','20.0%','30.0%'), tick=TRUE, las=1)
+legend('topleft', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'), pt.cex=2.3, cex=1.2,
+       pch=22, col='black', pt.bg=select_palette, ncol=1)
+text(x=seq(3.7,146.7,5.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(rownames(sporulation)), srt=45, adj=1, xpd=TRUE, cex=1.3)
+legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
+mtext('D', side=2, line=2, las=2, adj=2.2, padj=-11, cex=1.5)
 
 dev.off()
 
 #--------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(quorum, sigma, sporulation, paloc, plot_file, select_palette, x_coords, make.italic)
+rm(quorum, sigma, sporulation, paloc, plot_file, select_palette, make.italic)
 for (dep in deps){
   pkg <- paste('package:', dep,sep='')
    detach(pkg, character.only = TRUE)
