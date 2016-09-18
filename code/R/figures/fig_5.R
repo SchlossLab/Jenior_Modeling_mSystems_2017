@@ -687,9 +687,9 @@ segments(x0=seq(1,49,1), y0=growth_medians$acetylneuraminate_median+growth_sds$a
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 
-legend('topleft', legend=c('+Glucose +AA','-Glucose +AA','+Glucose -AA','-Glucose -AA','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuraminate'), 
+legend('topleft', legend=c('+Glucose +Amino acids','-Glucose +Amino acids','+Glucose -Amino acids','-Glucose -Amino acids','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuraminate'), 
        col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(19,17,15,18,0,1,2,5,6), cex=1.5, pt.cex=2, bg='white', lwd=2)
+       pch=c(19,17,15,18,0,1,2,5,6), cex=1.2, pt.cex=1.7, bg='white', lwd=2)
 
 #segments(x0=c(26,27,28,29), y0=c(0.556,0.549,0.430,0.239), x1=c(26,27,28,29), y1=c(0.211,0.211,0.211,0.211), lwd=2.5)
 #segments(x0=c(25.7,26.7,27.7,28.7), y0=c(0.556,0.549,0.430,0.239), x1=c(26.3,27.3,28.3,29.3), y1=c(0.556,0.549,0.430,0.239), lwd=3.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3],'forestgreen'))
