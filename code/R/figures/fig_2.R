@@ -133,7 +133,7 @@ segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
 segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
 
 # Conventional significance
-text(4, 2.2, labels='*', col='red', font=2, cex=2)
+text(4, 2.2, labels='*', col='gray50', font=2, cex=2)
 
 mtext('A', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
 
@@ -161,7 +161,7 @@ segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2)
 
 # Conventional significance
-text(4, 2.2, labels='*', col='red', font=2, cex=2)
+text(4, 2.2, labels='*', col='gray50', font=2, cex=2)
 
 mtext('B', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
 
@@ -186,7 +186,7 @@ segments(x0=c(1,2,3), y0=c(3.2,3.3,3.4), x1=c(4,4,4), y1=c(3.2,3.3,3.4), lwd=2)
 text(c(2.5,3,3.5), c(3.25,3.35,3.45), labels=c('*','*','*'), cex=2)
 
 # Conventional significance
-text(4, 2.3, labels='*', col='red', font=2, cex=2)
+text(4, 2.3, labels='*', col='gray50', font=2, cex=2)
 
 # Plot label
 mtext('C', side=2, line=2, las=2, adj=1.2, padj=-6.5, cex=1.5)
