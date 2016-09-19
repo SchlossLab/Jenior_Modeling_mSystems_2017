@@ -219,13 +219,10 @@ shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_scor
 rownames(shared_score) <- shared_cef$Compound_name
 shared_sim <- cbind(shared_cef$Sim_Mean, shared_clinda$Sim_Mean, shared_strep$Sim_Mean, shared_gf$Sim_Mean)
 rownames(shared_sim) <- shared_cef$Compound_name
-
 shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median) , apply(shared_sim, 1, median)))
 colnames(shared_importance) <- c('Metabolite_score', 'Sim_Mean')
 shared_importance$Compound_name <- rownames(shared_importance)
-shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
-shared_importance <- shared_importance[order(shared_importance$Metabolite_score),] 
+shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
@@ -236,15 +233,19 @@ gf_importance <- gf_importance[c(1:25),]
 cef_only_importance <- as.data.frame(subset(cef_importance, !(cef_importance[,1] %in% clinda_importance[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance[,1])))
+#cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% shared_importance$Compound_name)))
 clinda_only_importance <- as.data.frame(subset(clinda_importance, !(clinda_importance[,1] %in% cef_importance[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance[,1])))
+#clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% shared_importance$Compound_name)))
 strep_only_importance <- as.data.frame(subset(strep_importance, !(strep_importance[,1] %in% clinda_importance[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance[,1])))
+#strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% shared_importance$Compound_name)))
 gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %in% clinda_importance[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
+#gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% shared_importance$Compound_name)))
 rm(cef_importance, clinda_importance, strep_importance, gf_importance)
 
 cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
@@ -271,6 +272,8 @@ top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_n
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances <- subset(top_importances, rownames(top_importances) != 'C04823')
 top_importances <- subset(top_importances, rownames(top_importances) != 'C00012')
+shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -559,18 +562,22 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 # A - Example network and importance calculation
 par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(-0.96, 0.1, expression(Importance(S) == paste(log[2],'( ',frac(Sigma * t[i], Sigma * e[o]),' ','-',' ',frac(Sigma * t[o], Sigma * e[i]),' )')), cex = 1.5) # Importance algorithm
+
+text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
+                                                   bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
+                                                   bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.5) # Importance algorithm
+
 text(x=-0.95, y=1.14, labels='Tetrathionate reductase', font=2, cex=1.4) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.25) # Enzyme 1 transcription
 text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.4) # Enzyme 2 name
 text(x=-0.5, y=-1, labels='94', col='white', cex=2.3) # Enzyme 2 transcription
 text(x=1, y=0.77, labels='Thiosulfate Oxidase', font=2, cex=1.4) # Enzyme 3
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.5) # Enzyme 3 transcription
-text(x=-0.165, y=0.145, 'S', col='white', cex=2) # Substrate node label
+text(x=-0.165, y=0.145, 'm', col='white', cex=2) # Substrate node label
 text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
 segments(x0=-0.05, y0=-0.18, x1=0.25, y1=-0.18, lwd=2)
-legend(x=0.4, y=1.25, legend=c('KEGG ortholog', 'Reaction substrate'), 
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=2.5, cex=1.5, bty='n')
+legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'), 
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.5)
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=1.9) # labeled transcription for input reactions
 text(x=0.99, y=0.32, expression(t[i]), col='white', cex=1.9)
 text(x=-1, y=0.87, expression(t[o]), col='black', cex=1.9) # labeled transcription for output reactions
@@ -610,7 +617,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 # Top metabolite importances (shared)
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1, color='black', 
+dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.1, color='black', 
          xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
 segments(x0=rep(-2, 16), y0=c(1:16), x1=rep(12, 16), y1=c(1:16), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
@@ -691,11 +698,6 @@ legend('topleft', legend=c('+Glucose +Amino acids','-Glucose +Amino acids','+Glu
        col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
        pch=c(19,17,15,18,0,1,2,5,6), cex=1.2, pt.cex=1.7, bg='white', lwd=2)
 
-#segments(x0=c(26,27,28,29), y0=c(0.556,0.549,0.430,0.239), x1=c(26,27,28,29), y1=c(0.211,0.211,0.211,0.211), lwd=2.5)
-#segments(x0=c(25.7,26.7,27.7,28.7), y0=c(0.556,0.549,0.430,0.239), x1=c(26.3,27.3,28.3,29.3), y1=c(0.556,0.549,0.430,0.239), lwd=3.5, col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[3],'forestgreen'))
-#segments(x0=c(25.7,26.7,27.7,28.7), y0=c(0.211,0.211,0.211,0.211), x1=c(26.3,27.3,28.3,29.3), y1=c(0.211,0.211,0.211,0.211), lwd=3.5, col='black')
-#text(x=c(26.3,27.3,28.3,29.3), y=c(0.384,0.38,0.321,0.225), labels=c('***','***','***','***'), cex=c(2.3,2.3,2.3,1.5), srt = 90)
-
 mtext('D', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.6)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -708,15 +710,25 @@ abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2))
 
 
+lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2, pch=17, cex=2.5)
+segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2)
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2)
+
+
+
+
+
+# Use wes_palette("Cavalcanti") for colors
 
 
 
 
 
 
-
-
-
+legend('topleft', legend=c('-Glucose +Amino acids'), 
+       col=c('black'), 
+       pch=c(17), cex=1.2, pt.cex=1.7, bg='white', lwd=2)
 
 
 mtext('E', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.6)

@@ -1,4 +1,3 @@
-
 # Load dependencies
 deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d', 'scales');
 for (dep in deps){
@@ -46,7 +45,7 @@ sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
 cefoperazone_sub <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
 clindamycin_sub <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
 streptomycin_sub <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
-for (index in 1:999) {
+for (index in 1:499) {
   cefoperazone_sub <- cbind(cefoperazone_sub, t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size)))
   clindamycin_sub <- cbind(clindamycin_sub, t(rrarefy(combined_mapping$Clindamycin, sample=sub_size)))
   streptomycin_sub <- cbind(streptomycin_sub, t(rrarefy(combined_mapping$Streptomycin, sample=sub_size)))
@@ -119,7 +118,7 @@ stickland[,1:3] <- log10(stickland[,1:3] + 1)
 gap <- subset(combined_mapping, grepl('gap.;', combined_mapping$gene)) # Glyceraldehyde 3-phosphate dehydrogenase (Glycolysis)
 gpmI <- subset(combined_mapping, grepl('gpmI;', combined_mapping$gene)) # Phosphoglyceromutase (Glycolysis)
 pfk <- rbind(subset(combined_mapping, grepl('pfkA;', combined_mapping$gene)),
-              subset(combined_mapping, grepl('phosphofructokinase', combined_mapping$gene)))# Phosphofructokinase (Glycolysis)
+             subset(combined_mapping, grepl('phosphofructokinase', combined_mapping$gene)))# Phosphofructokinase (Glycolysis)
 tpi <- subset(combined_mapping, grepl('tpi;', combined_mapping$gene)) # Triosephosphate isomerase (Glycolysis)
 pyk <- subset(combined_mapping, grepl('pyk;', combined_mapping$gene)) # Pyruvate kinase (Glycolysis)
 eno <- subset(combined_mapping, grepl('eno;', combined_mapping$gene)) # Enolase (Glycolysis)
@@ -334,7 +333,7 @@ tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_suga
 
 # Add the legend
 legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PTS transporters', 'ABC sugar transporters', 'All genes'), 
-    ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
+       ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
 # Size legend
 legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
 
@@ -479,4 +478,3 @@ for (dep in deps){
 }
 rm(dep, deps, pkg)
 gc()
-
