@@ -172,7 +172,7 @@ par(las=1, mar=c(2,4,0.7,1), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.1,
            cex=1.8, ylab=expression(paste('Toxin Titer/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free', 'No Antibiotics'), tick=FALSE, font=2, cex.axis=1.3)
+axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free', 'No Antibiotics'), tick=FALSE, cex.axis=1.4)
 axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
 # Draw axis break

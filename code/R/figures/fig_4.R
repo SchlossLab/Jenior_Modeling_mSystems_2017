@@ -45,7 +45,7 @@ sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
 cefoperazone_sub <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
 clindamycin_sub <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
 streptomycin_sub <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
-for (index in 1:499) {
+for (index in 1:999) {
   cefoperazone_sub <- cbind(cefoperazone_sub, t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size)))
   clindamycin_sub <- cbind(clindamycin_sub, t(rrarefy(combined_mapping$Clindamycin, sample=sub_size)))
   streptomycin_sub <- cbind(streptomycin_sub, t(rrarefy(combined_mapping$Streptomycin, sample=sub_size)))
