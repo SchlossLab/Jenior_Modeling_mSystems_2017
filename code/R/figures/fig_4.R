@@ -1,3 +1,4 @@
+
 # Load dependencies
 deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d', 'scales');
 for (dep in deps){
@@ -126,8 +127,7 @@ pgm <- rbind(subset(combined_mapping, grepl('pgm;', combined_mapping$gene)),
              subset(combined_mapping, grepl('phosphoglycerate_mutase', combined_mapping$gene))) # Phosphoglycerate mutase (Glycolysis)
 galactose <- rbind(subset(combined_mapping, grepl('galE;', combined_mapping$gene)), 
                    subset(combined_mapping, grepl('galactose-1-phosphate_uridylyltransferase', combined_mapping$gene))) # hexose
-mannose <- rbind(subset(combined_mapping, grepl('mng.;', combined_mapping$gene)),
-                 subset(combined_mapping, grepl('man.;', combined_mapping$gene)),
+mannose <- rbind(subset(combined_mapping, grepl('man.;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('pmi;', combined_mapping$gene)))# hexose
 tagatose <- subset(combined_mapping, grepl('tagatose', combined_mapping$gene)) # hexose 
 fructose <- rbind(subset(combined_mapping, grepl('fbp;', combined_mapping$gene)),
@@ -332,8 +332,10 @@ tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=poly
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 
 # Add the legend
-legend(x=0.34, y=0.51, legend=c('Amino sugar catabolism','Monosaccharide catabolism', 'Polysaccharide catabolism', 'Sugar alcohol catabolism', 'Amino acid catabolism', 'SCFA production', 'PTS transporters', 'ABC sugar transporters', 'All genes'), 
-       ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), pt.bg=c('firebrick1',fox[1],'blue3','darkorchid3',fox[2],fox[5],fox[3],rainbow[7],'gray65'), bty='n')
+legend(x=0.3, y=0.51, legend=c('PTS transporters', 'ABC sugar transporters', 'Sugar alcohol catabolism', 'Monosaccharide catabolism', 'Fermentation product synthesis', 
+                               'Polysaccharide catabolism', 'Amino acid catabolism', 'Amino sugar catabolism', 'All genes'), 
+       ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
+       pt.bg=c(fox[3], rainbow[7], 'darkorchid3', fox[1], fox[5], 'blue3', fox[2], 'firebrick1', 'gray65'), bty='n')
 # Size legend
 legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
 
@@ -344,26 +346,55 @@ legend(x=-0.6, y=0.63, legend='A', cex=2, bty='n')
 
 # Individual plots
 
-# amino sugars alone
+# PTS alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
-legend('topleft', legend='B', cex=2, bty='n')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], 
-          pch=21, cex=2, bg='firebrick1')
-text(x=0, y=-0.48, labels='Amino sugar catabolism', cex=1.3)
+tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], 
+          pch=21, cex=2, bg=fox[3])
+text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
+legend('topleft', legend='A', cex=2, bty='n')
+
+# ABC alone
+par(mar=c(1,0,0,0))
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
+lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
+lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], 
+          pch=21, cex=2, bg=rainbow[7])
+text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
+legend('topleft', legend='B', cex=2, bty='n')
+
+# sugar alcohols alone
+par(mar=c(1,0,0,0))
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
+lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
+lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], 
+          pch=21, cex=2, bg='darkorchid3')
+text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
+legend('topleft', legend='C', cex=2, bty='n')
 
 # monosaccharides alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
-legend('topleft', legend='C', cex=2, bty='n')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -373,6 +404,22 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], 
           pch=21, cex=2, bg=fox[1])
 text(x=0, y=-0.48, labels='Monosaccharide catabolism', cex=1.3)
+legend('topleft', legend='D', cex=2, bty='n')
+
+# fermentation alone
+par(mar=c(1,0,0,0))
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
+lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
+lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
+lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
+lines(x=c(0,0), y=c(-0.333,0.665))
+lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
+tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
+          pch=21, cex=2, bg=fox[5])
+text(x=0, y=-0.48, labels='Fermentation product synthesis', cex=1.3)
+legend('topleft', legend='E', cex=2, bty='n')
 
 # polysaccharides alone
 par(mar=c(1,0,0,0))
@@ -388,27 +435,12 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], 
           pch=21, cex=2, bg='blue3')
 text(x=0, y=-0.48, labels='Polysaccharide catabolism', cex=1.3)
-
-# sugar alcohols alone
-par(mar=c(1,0,0,0))
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
-legend('topleft', legend='E', cex=2, bty='n')
-lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
-lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
-lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], 
-          pch=21, cex=2, bg='darkorchid3')
-text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
+legend('topleft', legend='F', cex=2, bty='n')
 
 # amino acid (stickland) alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
-legend('topleft', legend='F', cex=2, bty='n')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -417,51 +449,22 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2, bg=fox[2])
 text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
-
-# scfa alone
-par(mar=c(1,0,0,0))
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
 legend('topleft', legend='G', cex=2, bty='n')
+
+# amino sugars alone
+par(mar=c(1,0,0,0))
+triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
 lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
-          pch=21, cex=2, bg=fox[5])
-text(x=0, y=-0.48, labels='SCFA production', cex=1.3)
-
-# PTS alone
-par(mar=c(1,0,0,0))
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], 
+          pch=21, cex=2, bg='firebrick1')
+text(x=0, y=-0.48, labels='Amino sugar catabolism', cex=1.3)
 legend('topleft', legend='H', cex=2, bty='n')
-lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
-lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
-lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], 
-          pch=21, cex=2, bg=fox[3])
-text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
-
-# ABC alone
-par(mar=c(1,0,0,0))
-triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
-legend('topleft', legend='I', cex=2, bty='n')
-lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
-lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
-lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
-lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
-lines(x=c(0,0), y=c(-0.333,0.665))
-lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
-tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], 
-          pch=21, cex=2, bg=rainbow[7])
-text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
