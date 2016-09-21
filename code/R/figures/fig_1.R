@@ -29,7 +29,7 @@ text(x=c(-4,0,2,2.75), y=c(2.2,2.2,2.2,2.2), c('Day -7', 'Day -2', 'Day 0', '18 
 #text(x=-4.6, y=3.2, 'Cefoperazone', cex=0.7)
 #text(x=-4.6, y=2.95, 'or', font=2, cex=0.8)
 #text(x=-4.6, y=2.7, 'Streptomycin', cex=0.7)
-text(x=-4.6, y=2.95, 'A', cex=2.5)
+text(x=-4.6, y=2.95, 'a', cex=2)
 
 # IP injection abx timeline
 Arrows(x0=-4, y0=0, x1=-1.5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
@@ -37,7 +37,7 @@ segments(x0=c(-4,-3,-2.25), y0=c(-0.5,-0.5,-0.5), x1=c(-4,-3,-2.25), y1=c(0.5,0.
 points(x=c(-4,-3,-2.25), y=c(1,1,1), pch=c(25,25,25), bg=c('chocolate1','white','black'), col='black', cex=2.5)
 text(x=c(-4,-3,-2.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=0.9)
 #text(x=-4.6, y=0, 'Clindamycin', cex=0.7)
-text(x=-4.6, y=0, 'B', cex=2.5)
+text(x=-4.6, y=0, 'b', cex=2)
 
 # Legend
 legend(x=0, y=1.1, legend=expression('Antibiotic in Drinking Water', 'IP Injection of Antibiotic', paste(italic('C. difficile'), ' Spore Gavage'), 'Euthanize & Necropsy'), 

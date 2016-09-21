@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('shape', 'wesanderson', 'plotrix');
+deps <- c('shape', 'wesanderson', 'plotrix', 'extrafont');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -37,12 +37,14 @@ clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamy
 gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
 vege_medians <- c(strep, cef, clinda, gf, conv)
+vege_medians[vege_medians == 2.0] <- 1.6
 cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
 strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
 clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
 spore_medians <- c(strep, cef, clinda, gf, conv)
+spore_medians[spore_medians == 2.0] <- 1.6
 rm(cfu, cef, strep, clinda, gf, conv)
 vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
 vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
@@ -58,6 +60,7 @@ clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(strep, cef, clinda, gf, conv)
+toxin_medians[toxin_medians <= 2.0] <- 1.9
 rm(cef, strep, clinda, gf, conv)
 toxin$titer[toxin$titer <= 2.0] <- 1.9
 
@@ -115,7 +118,7 @@ layout(matrix(c(1,
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # A.  Vegetative cell CFU
-par(las=1, mar=c(0.7,4,1,3), mgp=c(2.5,0.7,0), yaxs='i')
+par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=1.8, col=select_palette,
            ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
@@ -123,8 +126,8 @@ labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 
 abline(h=2, col="black", lty=2, lwd=1.5) # LOD
-arrows(x0=5.87, y0=2, x1=5.73, y1=2, lwd=2, length=0.1, angle=15, xpd=TRUE)
-mtext('Limit of Detection', at=2, padj=2.5, side=4, cex=0.55, las=0)
+#arrows(x0=5.87, y0=2, x1=5.73, y1=2, lwd=2, length=0.1, angle=15, xpd=TRUE)
+#mtext('Limit of Detection', at=2, padj=2.5, side=4, cex=0.55, las=0)
 
 # Draw axis break
 axis.break(2, 1.5, style='slash')
@@ -134,16 +137,17 @@ segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
 segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
 segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
 segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
+segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
 # Conventional significance
 text(5, 2.4, labels='*', col='gray40', font=2, cex=2.2)
 
-mtext('A', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
+mtext('a', side=2, line=2, las=2, adj=1.7, padj=-10, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # B.  Spore CFU
-par(las=1, mar=c(0.7,4,0.7,3), mgp=c(2.5,0.7,0), yaxs='i')
+par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=1.8, col=select_palette,
            ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
@@ -158,6 +162,7 @@ segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
 segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
 segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
 segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
+segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
 segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
@@ -166,12 +171,12 @@ text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 # Conventional significance
 text(5, 2.4, labels='*', col='gray40', font=2, cex=2.2)
 
-mtext('B', side=2, line=2, las=2, adj=1.3, padj=-6.8, cex=1.5)
+mtext('b', side=2, line=2, las=2, adj=1.7, padj=-10, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Toxin data
-par(las=1, mar=c(2,4,0.7,3), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
+par(las=1, mar=c(2,4,0.7,1), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.1,
            cex=1.8, ylab=expression(paste('Toxin Titer/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25)
@@ -184,15 +189,22 @@ axis.break(2, 1.75, style='slash')
 # Draw limit of detection
 abline(h=2, lty=2, lwd=1.5)
 
+# Draw median
+segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
+segments(1.6, toxin_medians[2], 2.4, toxin_medians[2], lwd=3) # streptomycin
+segments(2.6, toxin_medians[3], 3.4, toxin_medians[3], lwd=3) # clindamycin
+segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
+segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
+
 # Adding significance to plot
-segments(x0=c(1,2,3), y0=c(3.2,3.3,3.4), x1=c(4,4,4), y1=c(3.2,3.3,3.4), lwd=2)
-text(c(2.5,3,3.5), c(3.25,3.35,3.45), labels=c('*','*','*'), cex=2.2)
+segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
+text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
 
 # Conventional significance
 text(5, 2.1, labels='*', col='gray40', font=2, cex=2.2)
 
 # Plot label
-mtext('C', side=2, line=2, las=2, adj=1.2, padj=-6.5, cex=1.5)
+mtext('c', side=2, line=2, las=2, adj=1.6, padj=-9.4, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
