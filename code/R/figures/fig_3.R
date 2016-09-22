@@ -143,10 +143,10 @@ select_palette <- c(wes_palette('FantasticFox')[1], wes_palette('FantasticFox')[
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
 make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
 pdf(file=plot_file, width=14, height=10)
-layout(matrix(c(1,1,2,2,3,3,
-                1,1,2,2,3,3,
-                4,4,4,4,4,4,
-                4,4,4,4,4,4),
+layout(matrix(c(1,1,1,2,2,2,
+                1,1,1,2,2,2,
+                3,3,4,4,4,4,
+                3,3,4,4,4,4),
               nrow=4, ncol=6, byrow = TRUE))
 
 #--------------------------------------------------------------------------------------------------------------#
