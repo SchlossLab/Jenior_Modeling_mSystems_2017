@@ -123,14 +123,19 @@ select_palette <- c(wes_palette('FantasticFox')[1], wes_palette('FantasticFox')[
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_3.pdf'
 make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
 pdf(file=plot_file, width=14, height=10)
-layout(matrix(c(1,1,2,2,3,
-                1,1,2,2,3,
+layout(matrix(c(1,2,2,3,3,
+                1,2,2,3,3,
                 4,5,5,5,5,
                 4,5,5,5,5),
               nrow=4, ncol=5, byrow = TRUE))
 
 #--------------------------------------------------------------------------------------------------------------#
 
+# Legend plot
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.8, cex=2.4,
+       pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n)
+       
 # Sigma factors
 par(las=1, mar=c(4,5.4,1,1), mgp=c(3.9, 1, 0))
 barplot(cbind(sigma[,1], sigma[,2], sigma[,6], sigma[,3], sigma[,4], sigma[,5]), 
@@ -182,11 +187,6 @@ text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.04*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
 mtext('c', side=2, line=2, las=2, adj=3.3, padj=-16, cex=1.1, font=2)
-
-# Legend plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.6, cex=2,
-       pch=22, col='black', pt.bg=select_palette, ncol=1)
 
 # Sporulation
 # Reordered by stage of sporulation
