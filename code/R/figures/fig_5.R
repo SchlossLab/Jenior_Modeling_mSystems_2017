@@ -415,7 +415,7 @@ p_values <- c(2e-16, 0.02474, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16)
 corrected_p_values <- as.character(p.adjust(p_values, method='bonferroni'))
 corrected_p_values <- append(corrected_p_values, 'NA', after=5) 
 
-f_values <- c(, , , , , , , , , )
+#f_values <- c(, , , , , , , , , )
 df <- c(48, 48, 48, 48, 48, 'NA', 48, 48, 48)
 
 # Clean up
