@@ -135,16 +135,16 @@ sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulat
 rownames(sporulation) <- c('cdeC','cotD','cotJB2','spoIIAB','spoIIE',
                            'spoIVA','spoVB','spoVFB','spoVG','spoVS','sspA','sspB')
 sporulation <- t(sporulation)
-sporulation <- cbind(sporulation[,4], sporulation[,5], rep(NA,4),
+sporulation <- cbind(sporulation[,4], sporulation[,5], sporulation[,10], rep(NA,4),
       sporulation[,6], sporulation[,7], sporulation[,11], sporulation[,12], rep(NA,4),
-      sporulation[,1], sporulation[,2], sporulation[,3], sporulation[,8], sporulation[,8], sporulation[,10])
-colnames(sporulation) <- c('spoIIAB', 'spoIIE', '', 'spoIVA', 'spoVB', 'sspA', 'sspB', '', 'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG', 'spoVS')
+      sporulation[,1], sporulation[,2], sporulation[,3], sporulation[,8], sporulation[,8])
+colnames(sporulation) <- c('spoIIAB', 'spoIIE', 'spoVS', '', 'spoIVA', 'spoVB', 'sspA', 'sspB', '', 'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG')
 sporulation_sd <- subset(combined_mapping_sd, rownames(combined_mapping_sd) %in% sporulation_keep)
 sporulation_sd <- t(sporulation_sd)
-sporulation_sd <- cbind(sporulation_sd[,4], sporulation_sd[,5], rep(NA,4),
+sporulation_sd <- cbind(sporulation_sd[,4], sporulation_sd[,5], sporulation_sd[,10], rep(NA,4),
                         sporulation_sd[,6], sporulation_sd[,7], sporulation_sd[,11], sporulation_sd[,12], rep(NA,4),
-                        sporulation_sd[,1], sporulation_sd[,2], sporulation_sd[,3], sporulation_sd[,8], sporulation_sd[,8], sporulation_sd[,10])
-colnames(sporulation_sd) <- c('spoIIAB', 'spoIIE', '', 'spoIVA', 'spoVB', 'sspA', 'sspB', '', 'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG', 'spoVS')
+                        sporulation_sd[,1], sporulation_sd[,2], sporulation_sd[,3], sporulation_sd[,8], sporulation_sd[,8])
+colnames(sporulation_sd) <- c('spoIIAB', 'spoIIE', 'spoVS', '', 'spoIVA', 'spoVB', 'sspA', 'sspB', '', 'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG')
 
 # Clean up
 rm(combined_mapping, combined_mapping_sd, sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
@@ -166,7 +166,7 @@ layout(matrix(c(1,2,2,2,3,
 
 # Legend plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.8, cex=2.3,
+legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.6, cex=2.1,
        pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
       
 # Sporulation
@@ -179,17 +179,17 @@ barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n',
 box()
 axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.1)
 text(x=seq(3.7,77,5.5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(c('spoIIAB', 'spoIIE', '',
+     labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVS', '',
                           'spoIVA', 'spoVB', 'sspA', 'sspB', '',
-                          'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG', 'spoVS')), 
+                          'cdeC', 'cotD', 'cotJB2', 'spoVFB', 'spoVG')), 
      srt=45, adj=1, xpd=TRUE, cex=1.5)
 segments(x0=x_coords, y0=sporulation+sporulation_sd, x1=x_coords, y1=sporulation-sporulation_sd, lwd=1.5)
 segments(x0=x_coords-0.2, y0=sporulation+sporulation_sd, x1=x_coords+0.2, y1=sporulation+sporulation_sd, lwd=1.5)
 segments(x0=x_coords-0.2, y0=sporulation-sporulation_sd, x1=x_coords+0.2, y1=sporulation-sporulation_sd, lwd=1.5)
 legend('topright', legend='Sporulation effectors', pt.cex=0, bty='n', cex=1.8)
-segments(x0=c(1.5,18,45.5), y0=par()$usr[3]-0.155*(par()$usr[4]-par()$usr[3]), 
-         x1=c(11,38.5,77), y1=par()$usr[3]-0.155*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
-text(x=c(16.5,53,69.5), y=par()$usr[3]-0.185*(par()$usr[4]-par()$usr[3]), 
+segments(x0=c(1.5,23.5,51), y0=par()$usr[3]-0.155*(par()$usr[4]-par()$usr[3]), 
+         x1=c(16,43,75.5), y1=par()$usr[3]-0.155*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
+text(x=c(19,58,71.5), y=par()$usr[3]-0.185*(par()$usr[4]-par()$usr[3]), 
      labels=c('Early','Intermediate','Late'), adj=3, xpd=TRUE, cex=1.5)
 mtext('a', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
 
