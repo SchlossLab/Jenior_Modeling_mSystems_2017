@@ -109,7 +109,7 @@ rm(p_values)
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
 select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
-pdf(file=plot_file, width=6.4, height=9)
+pdf(file=plot_file, width=5.5, height=8.5)
 layout(matrix(c(1,
                 2,
                 3), 
@@ -121,7 +121,7 @@ layout(matrix(c(1,
 par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.5,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Vegetative CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
+           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.25, cex.lab=1.2)
 labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 
@@ -142,7 +142,7 @@ segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 # Conventional significance
 text(5, 2.4, labels='*', col='gray40', font=2, cex=2.2)
 
-mtext('a', side=2, line=2, las=2, adj=1.7, padj=-10, cex=1.1, font=2)
+mtext('a', side=2, line=2, las=2, adj=1.7, padj=-9.5, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -150,7 +150,7 @@ mtext('a', side=2, line=2, las=2, adj=1.7, padj=-10, cex=1.1, font=2)
 par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.5, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Spore CFU/g Cecal Content', method='jitter', jitter=0.25, cex.lab=1.1)
+           ylab='Spore CFU/g Content', method='jitter', jitter=0.25, cex.lab=1.2)
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 abline(h=2, col="black", lty=2, lwd=1.5)
 
@@ -171,16 +171,17 @@ text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 # Conventional significance
 text(5, 2.4, labels='*', col='gray40', font=2, cex=2.2)
 
-mtext('b', side=2, line=2, las=2, adj=1.7, padj=-10, cex=1.1, font=2)
+mtext('b', side=2, line=2, las=2, adj=1.7, padj=-9.5, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Toxin data
-par(las=1, mar=c(2,4,0.7,1), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
+par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.1,
-           cex=2, ylab=expression(paste('Toxin Titer/g Cecal Content (',Log[10],')')), method='jitter', jitter=0.25)
-axis(side=1, at=c(1:5), c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free', 'No Antibiotics'), tick=FALSE, cex.axis=1.4)
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.2,
+           ylab=expression(paste('Toxin Titer/g Content (',Log[10],')')), xlab='Treatment Group',
+           method='jitter', jitter=0.25, cex=2)
+axis(side=1, at=c(1:5), labels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free', 'No Antibiotics'), tick=FALSE, cex.axis=1.1)
 axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
 # Draw axis break
@@ -204,7 +205,7 @@ text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
 text(5, 2.1, labels='*', col='gray40', font=2, cex=2.2)
 
 # Plot label
-mtext('c', side=2, line=2, las=2, adj=1.6, padj=-9.4, cex=1.1, font=2)
+mtext('c', side=2, line=2, las=2, adj=1.6, padj=-8, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

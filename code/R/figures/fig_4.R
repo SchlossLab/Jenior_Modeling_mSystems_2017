@@ -340,7 +340,7 @@ legend(x=0.3, y=0.51, legend=c('PTS transporters', 'ABC sugar transporters', 'Su
 legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
 
 # Add figure label
-legend(x=-0.6, y=0.63, legend='a', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='a', font=2, cex=1.4)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -359,7 +359,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], 
           pch=21, cex=2, bg=fox[3])
 text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
-legend('topleft', legend='b', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='b', font=2, cex=1.4)
 
 # ABC alone
 par(mar=c(1,0,0,0))
@@ -374,7 +374,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], 
           pch=21, cex=2, bg=rainbow[7])
 text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
-legend('topleft', legend='c', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='c', font=2, cex=1.4)
 
 # sugar alcohols alone
 par(mar=c(1,0,0,0))
@@ -389,7 +389,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], 
           pch=21, cex=2, bg='darkorchid3')
 text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
-legend('topleft', legend='d', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='d', font=2, cex=1.4)
 
 # glycolysis alone
 par(mar=c(1,0,0,0))
@@ -404,7 +404,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], 
           pch=21, cex=2, bg=fox[1])
 text(x=0, y=-0.48, labels='Glycolysis-associated', cex=1.3)
-legend('topleft', legend='e', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='e', font=2, cex=1.4)
 
 # fermentation alone
 par(mar=c(1,0,0,0))
@@ -419,7 +419,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
           pch=21, cex=2, bg=fox[5])
 text(x=0, y=-0.48, labels='Fermentation product synthesis', cex=1.3)
-legend('topleft', legend='f', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='f', font=2, cex=1.4)
 
 # polysaccharides alone
 par(mar=c(1,0,0,0))
@@ -434,7 +434,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], 
           pch=21, cex=2, bg='blue3')
 text(x=0, y=-0.48, labels='Polysaccharide catabolism', cex=1.3)
-legend('topleft', legend='g', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='g', font=2, cex=1.4)
 
 # amino acid (stickland) alone
 par(mar=c(1,0,0,0))
@@ -448,7 +448,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2, bg=fox[2])
 text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
-legend('topleft', legend='h', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='h', font=2, cex=1.4)
 
 # amino sugars alone
 par(mar=c(1,0,0,0))
@@ -463,7 +463,7 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], 
           pch=21, cex=2, bg='firebrick1')
 text(x=0, y=-0.48, labels='Amino sugar catabolism', cex=1.3)
-legend('topleft', legend='i', cex=1.1, font=2, bty='n')
+text(x=-0.5, y=0.5, labels='i', font=2, cex=1.4)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 

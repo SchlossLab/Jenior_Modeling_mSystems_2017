@@ -18,6 +18,7 @@ Clostridium_difficile_630|SigF	519
 Clostridium_difficile_630|SigG	210
 Clostridium_difficile_630|SigK	174
 Clostridium_difficile_630|SigV	16
+Clostridium_difficile_630|GlnF	28
 Clostridium_difficile_630|FliA	24
 Clostridium_difficile_630|TetR_family|1	37
 Clostridium_difficile_630|TetR_family|2	1
