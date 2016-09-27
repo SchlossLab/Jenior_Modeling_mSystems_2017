@@ -44,11 +44,10 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 #--------------------------------------------------------------------------------------------------------------#
 
 # Define subsets of interest
-sigma_keep <- c('SigK', 'SigF', 'CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex', 'SigG', 'SigA1',
-               'TcdR', 'TcdC', 'CdtR')
-paloc_keep <- c('TcdE', 'TcdA', 'TcdB')
-sporulation_keep <- c('SpoIIAB', 'SpoIIE', 'SpoVS', 'SpoIVA', 'SpoVFB', 'SpoVB', 'SpoVG', 
-                      'CdeC', 'CotJB2', 'CotD', 'SspA', 'SspB')
+sigma_keep <- c('TcdR','TcdC','CdtR','SigK', 'SigF', 'CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex', 'SigG', 'SigA1')
+paloc_keep <- c('TcdE','TcdA','TcdB')
+sporulation_keep <- c('SpoIIAB','SpoIIE','SpoVS','SpoIVA','SpoVFB','SpoVB','SpoVG','CdeC','CotJB2','CotD',
+                      'SspA','SspB')
 quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
 
 # Pull of the genes of interest
@@ -106,18 +105,18 @@ combined_mapping_sd <- combined_mapping_sd * 100
 # Proline-Dependent Regulation of Clostridium difficile Stickland Metabolism
 # The Clostridium difficile spo0A Gene Is a Persistence and Transmission Factor
 sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
-rownames(sigma) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 'sigG', 'sigH', 
-                     'sigK', 'spo0A', 'tcdC', 'tcdR')
+rownames(sigma) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 
+                     'sigG', 'sigH', 'sigK', 'spo0A', 'tcdC', 'tcdR')
 sigma <- t(sigma)
-sigma <- cbind(sigma[,3], sigma[,1], sigma[,2], sigma[,12], sigma[,13], sigma[,11], sigma[,6], 
-               sigma[,7], sigma[,8], sigma[,9], sigma[,10], sigma[,4], sigma[,5])
+sigma <- cbind(sigma[,3], sigma[,1], sigma[,2], sigma[,12], sigma[,13], sigma[,11], 
+               sigma[,6], sigma[,7], sigma[,8], sigma[,9], sigma[,10], sigma[,5], sigma[,4])
 sigma[sigma == 0] <- NA
 sigma_sd <- subset(combined_mapping_sd, rownames(combined_mapping_sd) %in% sigma_keep)
-rownames(sigma_sd) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 'sigG', 'sigH', 
-                        'sigK', 'spo0A', 'tcdC', 'tcdR')
+rownames(sigma_sd) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 'sigG', 
+                        'sigH', 'sigK', 'spo0A', 'tcdC', 'tcdR')
 sigma_sd <- t(sigma_sd)
-sigma_sd <- cbind(sigma_sd[,3], sigma_sd[,1], sigma_sd[,2], sigma_sd[,12], sigma_sd[,13], sigma_sd[,11], sigma_sd[,6], 
-               sigma_sd[,7], sigma_sd[,8], sigma_sd[,9], sigma_sd[,10], sigma_sd[,4], sigma_sd[,5])
+sigma_sd <- cbind(sigma_sd[,3], sigma_sd[,1], sigma_sd[,2], sigma_sd[,12], sigma_sd[,13], 
+                  sigma_sd[,11], sigma_sd[,6], sigma_sd[,7], sigma_sd[,8], sigma_sd[,9], sigma_sd[,10], sigma_sd[,5], sigma_sd[,4])
 
 # Pathogenicity
 paloc <- subset(combined_mapping, rownames(combined_mapping) %in% paloc_keep)
@@ -221,14 +220,14 @@ mtext('b', side=2, line=2, las=2, adj=3.3, padj=-13, cex=1.3, font=2)
 # Pathogenicity
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
 x_coords <- (barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='Relative Transcript Abundance', ylim=c(0,2.1), cex.lab=1.4))
-abline(h=c(0.7,1.4), lty=2)
+                     ylab='Relative Transcript Abundance', ylim=c(0,1.2), cex.lab=1.4))
+abline(h=c(0.4,0.8), lty=2)
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,2.1), add=TRUE, cex.lab=1.4)
+        ylab='Relative Transcript Abundance', ylim=c(0,1.2), add=TRUE, cex.lab=1.4)
 box()
-axis(side=2, at=c(0,0.7,1.4,2.1), c('0%','0.7%','1.4%','2.1%'), tick=TRUE, las=1, cex.axis=1.3)
-text(x=seq(3.7,33,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(c('cdtR', 'tcdA', 'tcdB', 'tcdC', 'tcdE', 'tcdR')), 
+axis(side=2, at=c(0,0.4,0.8,1.2), c('0%','0.4%','0.8%','1.2%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 segments(x0=x_coords, y0=paloc+paloc_sd, x1=x_coords, y1=paloc-paloc_sd, lwd=1.5)
 segments(x0=x_coords-0.2, y0=paloc+paloc_sd, x1=x_coords+0.2, y1=paloc+paloc_sd, lwd=1.5)
@@ -246,8 +245,8 @@ barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='
 box()
 axis(side=2, at=c(0,9,18,27), c('0%','9%','18%','27%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 'sigF', 'sigG', 
-                          'sigH', 'sigK', 'rex', 'prdR')), 
+     labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 
+                          'sigF', 'sigG', 'sigH', 'sigK', 'rex')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 segments(x0=x_coords, y0=sigma+sigma_sd, x1=x_coords, y1=sigma-sigma_sd, lwd=1.5)
 segments(x0=x_coords-0.2, y0=sigma+sigma_sd, x1=x_coords+0.2, y1=sigma+sigma_sd, lwd=1.5)

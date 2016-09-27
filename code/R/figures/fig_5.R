@@ -605,7 +605,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
-mtext('a', side=2, line=2, las=2, adj=-2, padj=-8, cex=1.6)
+mtext('a', side=2, line=2, las=2, adj=-2, padj=-8, cex=1.5, font=2)
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -627,7 +627,7 @@ segments(x0=rep(-2, 16), y0=c(1:16), x1=rep(12, 16), y1=c(1:16), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 points(x=shared_importance$Sim_Mean, y=c(1:16), cex=2.5, col='black', pch='|') # Add simulated means
 
-mtext('b', side=2, line=2, las=2, adj=1.5, padj=-13, cex=1.6)
+mtext('b', side=2, line=2, las=2, adj=1.5, padj=-13, cex=1.5, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -646,7 +646,7 @@ points(x=top_importances[c(2:3),3], y=c(16:17), cex=2.5, col='black', pch='|') #
 points(x=top_importances[1,3], y=20, cex=2.5, col='black', pch='|') # Cefoperazone
 points(x=top_importances[c(4:6),3], y=c(23:25), cex=2.5, col='black', pch='|') # Streptomycin
 
-mtext('c', side=2, line=2, las=2, adj=1, padj=-13, cex=1.6)
+mtext('c', side=2, line=2, las=2, adj=1, padj=-13, cex=1.5, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -700,9 +700,9 @@ segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_s
 
 legend('topleft', legend=c('+Glucose +Amino acids','-Glucose +Amino acids','+Glucose -Amino acids','-Glucose -Amino acids','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuraminate'), 
        col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(19,17,15,18,0,1,2,5,6), cex=1.2, pt.cex=1.7, bg='white', lwd=2)
+       pch=c(19,17,15,18,0,1,2,5,6), cex=1.4, pt.cex=2, bg='white', lwd=2)
 
-mtext('d', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.6)
+mtext('d', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.5, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -732,10 +732,10 @@ segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$
 
 legend('topleft', legend=c('-Glucose +Amino acids'), 
        col=c('black'), 
-       pch=c(17), cex=1.2, pt.cex=1.7, bg='white', lwd=2)
+       pch=c(17), cex=1.4, pt.cex=2, bg='white', lwd=2)
 
 
-mtext('e', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.6)
+mtext('e', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.5, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

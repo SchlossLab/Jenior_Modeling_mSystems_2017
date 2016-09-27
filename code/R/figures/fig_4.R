@@ -238,6 +238,18 @@ combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
+# Remove gene sets from combined mapping
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(amino_sugars))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(stickland))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(monosaccharides))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(polysaccharides))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(PTS))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(ABC))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(sugar_alcohols))))
+combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_mapping) %in% rownames(fermentation))))
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
 # Define plot details
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", 
              "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
