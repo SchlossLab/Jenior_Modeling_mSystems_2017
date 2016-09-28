@@ -7,6 +7,7 @@ for (dep in deps){
   } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
+set.seed(42)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -25,6 +26,17 @@ rm(network_file, ko_file, layout_file)
 raw_graph <- graph.data.frame(network, directed=TRUE)
 rm(network)
 
+# Decompose graph
+decomp_whole_graph <- decompose.graph(raw_graph)
+
+# Get largest component and get node information
+largest_component <- which.max(sapply(decomp_whole_graph, vcount))
+largest_whole_graph <- decomp_whole_graph[[largest_component]]
+
+# Find strongly-connected components
+largest_scc <- rownames(as.data.frame(clusters(largest_whole_graph, mode='strong')[1]))
+rm(decomp_whole_graph, largest_component)
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Determine some statistics about graph
@@ -37,30 +49,36 @@ print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
 # Find degrees of nodes
 graph_indegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='in'))
 graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
-graph_alldegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
+graph_undirected <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
 
-# Calculate Eigen centrality
-graph_centrality <- as.data.frame(eigen_centrality(raw_graph, directed=TRUE, scale=FALSE)[1])
-
-# Calculate betweensness
+# Calculate betweensness of entrire graph
 graph_betweenness <- as.data.frame(betweenness(raw_graph))
+
+# Calculate closeness of entrire graph
+graph_closeness <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='all'))
+
+# Calculate closeness of largest, strongly-connected component
+occi <- as.data.frame(closeness(largest_whole_graph, vids=largest_scc, mode='all')) # Ma (2003)
 
 # Merge characteristic tables
 graph_topology <- merge(graph_outdegree, graph_indegree, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, graph_alldegree, by='row.names')
-rownames(graph_topology) <- graph_topology$Row.names
-graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, graph_centrality, by='row.names')
+graph_topology <- merge(graph_topology, graph_undirected, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
 graph_topology <- merge(graph_topology, graph_betweenness, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
-graph_topology <- cbind(rownames(graph_topology), graph_topology)
-colnames(graph_topology) <- c('KEGG_ID','Outdegree','Indegree','All_degree','Eigenvector_centrality','Betweenness')
-rm(graph_indegree, graph_outdegree, graph_alldegree, graph_centrality, graph_betweenness)
+graph_topology$HBLC <- graph_topology[,4] / graph_topology[,3] # Calculate betweensness topolgy ratio, Joy et. al. (2005)
+graph_topology[,3] <- NULL
+graph_topology <- merge(graph_topology, graph_closeness, by='row.names')
+rownames(graph_topology) <- graph_topology$Row.names
+graph_topology$Row.names <- NULL
+graph_topology <- merge(graph_topology, occi, by='row.names', all=TRUE)
+graph_topology[is.na(graph_topology)] <- 0
+colnames(graph_topology) <- c('KEGG_ID','Outdegree','Indegree','Betweenness', 'HBLC', 'Closeness', 'OCCI')
+rm(graph_indegree, graph_outdegree, graph_undirected, graph_betweenness, graph_closeness, occi, largest_scc, largest_whole_graph)
 
 # Read in KEGG code translation files
 kegg_substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/compound_names.tsv'
@@ -70,16 +88,18 @@ kegg_enzyme <- read.delim(kegg_enzyme_file, header=FALSE, sep='\t', quote='', ro
 rm(kegg_substrate_file, kegg_enzyme_file)
 
 # Subset for Enzymes and Substrates
-substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_code))
-substrate_topology <- substrate_topology[order(-substrate_topology$betweenness),]
+substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_ID))
+rownames(substrate_topology) <- substrate_topology$KEGG_ID
 substrate_topology <- merge(substrate_topology, kegg_substrate, by='row.names')
 substrate_topology$Row.names <- NULL
-colnames(substrate_topology)[7] <- 'Common_name'
-enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_code))
-enzyme_topology <- enzyme_topology[order(-enzyme_topology$betweenness),]
+colnames(substrate_topology)[8] <- 'Common_name'
+substrate_topology <- substrate_topology[order(-substrate_topology$Betweenness),]
+enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_ID))
+rownames(enzyme_topology) <- enzyme_topology$KEGG_ID
 enzyme_topology <- merge(enzyme_topology, kegg_enzyme, by='row.names')
 enzyme_topology$Row.names <- NULL
-colnames(enzyme_topology)[7] <- 'name'
+colnames(enzyme_topology)[8] <- 'Common_name'
+enzyme_topology <- enzyme_topology[order(-enzyme_topology$Betweenness),]
 rm(graph_topology, kegg_substrate, kegg_enzyme)
 
 # Write tables to files, ranked by betweenness
@@ -92,25 +112,16 @@ rm(table_file, enzyme_topology)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Format large component for plotting
+# Transform largest component graph for plotting
 
 # Remove loops and multiple edges to make visualzation easier
 simple_graph <- simplify(raw_graph)
-rm(raw_graph)
-
-# Decompose graph
 decomp_simple_graph <- decompose.graph(simple_graph)
-rm(simple_graph)
-
-# Get largest component
 largest_component <- which.max(sapply(decomp_simple_graph, vcount))
 largest_simple_graph <- decomp_simple_graph[[largest_component]]
 ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
 substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
 nodes <- c(ko_simp, substrate_simp)
-rm(decomp_simple_graph, largest_component)
-
-# Print a summary of nodes and edges for large component
 summary(largest_simple_graph)
 print(length(ko_simp))
 print(length(substrate_simp))
@@ -128,7 +139,7 @@ node_size <- cbind.data.frame(nodes, mappings)
 node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
 node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
 V(largest_simple_graph)$size <- as.matrix(node_size)
-rm(ko, ko_simp, substrate_simp, node_size, mappings, nodes)
+rm(raw_graph, ko, ko_simp, substrate_simp, node_size, mappings, nodes, simple_graph, decomp_simple_graph, largest_component)
 #V(largest_simple_graph)$size <- degree(largest_simple_graph) * 5 # Scale by degree!
 
 # Color graph
@@ -416,7 +427,7 @@ corrected_p_values <- as.character(p.adjust(p_values, method='bonferroni'))
 corrected_p_values <- append(corrected_p_values, 'NA', after=5) 
 
 #f_values <- c(, , , , , , , , , )
-df <- c(48, 48, 48, 48, 48, 'NA', 48, 48, 48)
+#df <- c(48, 48, 48, 48, 48, 'NA', 48, 48, 48)
 
 # Clean up
 rm(p_values)
@@ -626,6 +637,7 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
 segments(x0=rep(-2, 16), y0=c(1:16), x1=rep(12, 16), y1=c(1:16), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 points(x=shared_importance$Sim_Mean, y=c(1:16), cex=2.5, col='black', pch='|') # Add simulated means
+# add back 95% confidence interval
 
 mtext('b', side=2, line=2, las=2, adj=1.5, padj=-13, cex=1.5, font=2)
 
