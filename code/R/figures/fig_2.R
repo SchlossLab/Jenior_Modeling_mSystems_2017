@@ -61,46 +61,44 @@ gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(strep, cef, clinda, gf, conv)
 toxin_medians[toxin_medians <= 2.0] <- 1.9
-rm(cef, strep, clinda, gf, conv)
 toxin$titer[toxin$titer <= 2.0] <- 1.9
+rm(cef, strep, clinda, gf, conv)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Calculate significant differences
 
-toxin_raw$titer[toxin_raw$titer < 2.0] <- NA
 cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
 clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
 streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
 germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
 rm(toxin_raw)
 
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.001533 ***
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0001881 ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.05 *
-wilcox.test(cefoperazone, clindamycin, exact=F) # n.s.
-wilcox.test(cefoperazone, streptomycin, exact=F) # n.s.
-wilcox.test(clindamycin, streptomycin, exact=F) # n.s.
+wilcox.test(germfree, cefoperazone, exact=F) # p-value = 
+wilcox.test(germfree, clindamycin, exact=F) # p-value = 
+wilcox.test(germfree, streptomycin, exact=F) # p-value = 
+wilcox.test(cefoperazone, clindamycin, exact=F) # p-value = 
+wilcox.test(cefoperazone, streptomycin, exact=F) # p-value = 
+wilcox.test(clindamycin, streptomycin, exact=F) # p-value = 
 
-p_values <- c(0.001533, 0.0001881, 0.05, 0.1, 0.1, 0.1)
+p_values <- c(,,,,,)
 corrected_p_values <- p.adjust(p_values, method='holm')
 
-cfu_raw[cfu_raw == 0.0] <- NA
 cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
 clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
 streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
 germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
 rm(cfu_raw)
 
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.02341 *
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0005699 ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.001764 **
-wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
-wilcox.test(streptomycin, cefoperazone, exact=F) # n.s.
-wilcox.test(clindamycin, cefoperazone, exact=F) # n.s.
+wilcox.test(germfree, cefoperazone, exact=F) # p-value = 
+wilcox.test(germfree, clindamycin, exact=F) # p-value = 
+wilcox.test(germfree, streptomycin, exact=F) # p-value = 
+wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 
+wilcox.test(streptomycin, cefoperazone, exact=F) # p-value = 
+wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 
 rm(germfree, cefoperazone, clindamycin, streptomycin)
 
-p_values <- c(0.02341, 0.0005699, 0.001764, 0.1, 0.1, 0.1)
+p_values <- c(,,,,,)
 p.adjust(p_values, method='holm')
 rm(p_values)
 
