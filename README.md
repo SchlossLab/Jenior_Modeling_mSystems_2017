@@ -1,7 +1,7 @@
 Clostridium difficile colonizes alternative nutrient niches during infection across unique murine gut environments
 =======
 
-###Abstract
+##Abstract
 
 
 Overview
