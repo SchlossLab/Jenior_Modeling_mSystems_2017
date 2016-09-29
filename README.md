@@ -1,8 +1,8 @@
-Colonization Resistance Metatranscriptomics
+Clostridium difficile colonizes alternative nutrient niches during infection across unique murine gut environments
 =======
 
-Research project initialization and organization following reproducible research
-guidelines as modified for use with typical microbial ecology projects
+###Abstract
+
 
 Overview
 --------
