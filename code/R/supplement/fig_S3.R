@@ -11,10 +11,10 @@ rm(dep, deps)
 #--------------------------------------------------------------------------------------------------------------#
 
 # Define variables
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/germfree.RNA_reads2cdf630.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/germfree.RNA_reads2cdf630.norm.annotated.txt'
 
 # Open files
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
@@ -201,49 +201,58 @@ rm(pooled_amino_acid)
 
 # Set the color palette and output file name
 darjeeling <- wes_palette("Darjeeling")
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figure_S3.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S3.pdf'
 
 # Generate figure
 pdf(file=plot_file, width=12, height=10)
-layout(matrix(c(1,1,
-                2,3), 
-              nrow=2, ncol=2, byrow = TRUE))
+layout(matrix(c(1,2,2,2,
+                3,3,4,4), 
+              nrow=2, ncol=4, byrow = TRUE))
+
+plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+legend('left', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Gnotobiotic'), pt.cex=3.5, bty='n', cex=2.2,
+       pch=22, col='black', pt.bg=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 
 # Global pathway annotations
 par(las=1, mar=c(8,4,1,1))
-barplot(t(transformed_mapping), col=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), 
+barplot(t(transformed_mapping), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
         beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5))
 box()
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
 abline(h=c(1:4), lty=2)
-legend('topleft', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Gnotobiotic'), pt.cex=2, bty='n',
-       pch=22, col='black', pt.bg=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), ncol=2)
+barplot(t(transformed_mapping), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5), add=TRUE)
+axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_mapping), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('A', side=2, line=2, las=2, adj=1, padj=-9, cex=1.5)
+mtext('a', side=2, line=2, las=2, adj=1, padj=-13, cex=1.2, font=2)
+legend('topright', legend='All KEGG Categories', bty='n', cex=1.6)
 
 # Subpathways in Carbohydrate metabolism
 par(las=1, mar=c(11,4,1,1))
-barplot(t(transformed_carbohydrate), col=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), 
+barplot(t(transformed_carbohydrate), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
         beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4))
 box()
-axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 abline(h=c(1:3), lty=2)
+barplot(t(transformed_carbohydrate), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4), add=TRUE)
+axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_carbohydrate), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('B', side=2, line=2, las=2, adj=1, padj=-8, cex=1.5)
-legend('topleft', legend='Carbohydrate Metabolism', bty='n')
+mtext('b', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2, font=2)
+legend('topright', legend='Carbohydrate Metabolism', bty='n', cex=1.6)
 
 # Subpathways in Amino Acid metabolism
 par(las=1, mar=c(11,4,1,1))
-barplot(t(transformed_amino_acid), col=c(darjeeling[1],darjeeling[2],darjeeling[4],darjeeling[5]), 
+barplot(t(transformed_amino_acid), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
         beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4))
 box()
-axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 abline(h=c(1:3), lty=2)
+barplot(t(transformed_amino_acid), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4), add=TRUE)
+axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_amino_acid), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('C', side=2, line=2, las=2, adj=1, padj=-8, cex=1.5)
-legend('topleft', legend='Amino Acid Metabolism', bty='n')
+mtext('c', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2, font=2)
+legend('topright', legend='Amino Acid Metabolism', bty='n', cex=1.6)
 
 dev.off()
