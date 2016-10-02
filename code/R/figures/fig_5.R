@@ -540,7 +540,77 @@ growth_sds <- as.data.frame(t(growth_sds[,1:49]))
 
 # Format growth curves (combined)
 
+# Read in growth rate data
+# Define variables
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/combinations.tsv'
 
+# Read in data
+growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
+growth <- as.data.frame(t(growth))
+rm(growth_file)
+
+# Seperate to groups of each growth substrate and subset to the first 12 hours
+bhi <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
+bhi_median <- rowMedians(bhi, na.rm=TRUE)
+bhi_median[bhi_median < 0] <- 0
+bhi_sd <- rowSds(bhi, na.rm=TRUE)
+fructose_sorbitol <- cbind(growth$C3, growth$C4, growth$C5) - growth$C2
+fructose_sorbitol_median <- rowMedians(fructose_sorbitol, na.rm=TRUE)
+fructose_sorbitol_median[fructose_sorbitol_median < 0] <- 0
+fructose_sorbitol_sd <- rowSds(fructose_sorbitol, na.rm=TRUE)
+fructose_salicin <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
+fructose_salicin_median <- rowMedians(fructose_salicin, na.rm=TRUE)
+fructose_salicin_median[fructose_salicin_median < 0] <- 0
+fructose_salicin_sd <- rowSds(fructose_salicin, na.rm=TRUE)
+fructose_mannitol <- cbind(growth$E3, growth$E4, growth$E5) - growth$E2
+fructose_mannitol_median <- rowMedians(fructose_mannitol, na.rm=TRUE)
+fructose_mannitol_median[fructose_mannitol_median < 0] <- 0
+fructose_mannitol_sd <- rowSds(fructose_mannitol, na.rm=TRUE)
+fructose_acetylneuriminate <- cbind(growth$F3, growth$F4, growth$F5) - growth$F2
+fructose_acetylneuriminate_median <- rowMedians(fructose_acetylneuriminate, na.rm=TRUE)
+fructose_acetylneuriminate_median[fructose_acetylneuriminate_median < 0] <- 0
+fructose_acetylneuriminate_sd <- rowSds(fructose_acetylneuriminate, na.rm=TRUE)
+sorbitol_salicin <- cbind(growth$G3, growth$G4, growth$G5) - growth$G2
+sorbitol_salicin_median <- rowMedians(sorbitol_salicin, na.rm=TRUE)
+sorbitol_salicin_median[sorbitol_salicin_median < 0] <- 0
+sorbitol_salicin_sd <- rowSds(sorbitol_salicin, na.rm=TRUE)
+sorbitol_mannitol <- cbind(growth$B8, growth$B9, growth$B10) - growth$B7
+sorbitol_mannitol_median <- rowMedians(sorbitol_mannitol, na.rm=TRUE)
+sorbitol_mannitol_median[sorbitol_mannitol_median < 0] <- 0
+sorbitol_mannitol_sd <- rowSds(sorbitol_mannitol, na.rm=TRUE)
+sorbitol_acetylneuriminate <- cbind(growth$C8, growth$C9, growth$C10) - growth$C7
+sorbitol_acetylneuriminate_median <- rowMedians(sorbitol_acetylneuriminate, na.rm=TRUE)
+sorbitol_acetylneuriminate_median[sorbitol_acetylneuriminate_median < 0] <- 0
+sorbitol_acetylneuriminate_sd <- rowSds(sorbitol_acetylneuriminate, na.rm=TRUE)
+salicin_mannitol <- cbind(growth$D8, growth$D9, growth$D10) - growth$D7
+salicin_mannitol_median <- rowMedians(salicin_mannitol, na.rm=TRUE)
+salicin_mannitol_median[salicin_mannitol_median < 0] <- 0
+salicin_mannitol_sd <- rowSds(salicin_mannitol, na.rm=TRUE)
+salicin_acetylneuriminate <- cbind(growth$E8, growth$E9, growth$E10) - growth$E7
+salicin_acetylneuriminate_median <- rowMedians(salicin_acetylneuriminate, na.rm=TRUE)
+salicin_acetylneuriminate_median[salicin_acetylneuriminate_median < 0] <- 0
+salicin_acetylneuriminate_sd <- rowSds(salicin_acetylneuriminate, na.rm=TRUE)
+mannitol_acetylneuriminate <- cbind(growth$F8, growth$F9, growth$F10) - growth$F7
+mannitol_acetylneuriminate_median <- rowMedians(mannitol_acetylneuriminate, na.rm=TRUE)
+mannitol_acetylneuriminate_median[mannitol_acetylneuriminate_median < 0] <- 0
+mannitol_acetylneuriminate_sd <- rowSds(mannitol_acetylneuriminate, na.rm=TRUE)
+rm(growth)
+
+combo_medians <- rbind(bhi_median, fructose_sorbitol_median, fructose_salicin_median, fructose_mannitol_median, 
+                       fructose_acetylneuriminate_median, sorbitol_salicin_median, sorbitol_mannitol_median, 
+                       sorbitol_acetylneuriminate_median, salicin_mannitol_median, salicin_acetylneuriminate_median, 
+                       mannitol_acetylneuriminate_median)
+combo_sds <- rbind(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
+                   fructose_acetylneuriminate_sd, sorbitol_salicin_sd, sorbitol_mannitol_sd, 
+                   sorbitol_acetylneuriminate_sd, salicin_mannitol_sd, salicin_acetylneuriminate_sd, 
+                   mannitol_acetylneuriminate_sd)
+rm(bhi_median, fructose_sorbitol_median, fructose_salicin_median, fructose_mannitol_median, 
+   fructose_acetylneuriminate_median, sorbitol_salicin_median, sorbitol_mannitol_median, 
+   sorbitol_acetylneuriminate_median, salicin_mannitol_median, salicin_acetylneuriminate_median, 
+   mannitol_acetylneuriminate_median, bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
+   fructose_acetylneuriminate_sd, sorbitol_salicin_sd, sorbitol_mannitol_sd, 
+   sorbitol_acetylneuriminate_sd, salicin_mannitol_sd, salicin_acetylneuriminate_sd, 
+   mannitol_acetylneuriminate_sd)
 
 
 
