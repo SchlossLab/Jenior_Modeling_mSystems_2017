@@ -9,7 +9,9 @@ Overview
 --------
 
     project
-    |- README          # the top level description of content
+    |- README          # Overview of content
+    |
+    |- LICENSE          # Copyright information
     |
     |- doc/            # documentation for the study
     |  |- protocols/   # wetlab and drylab
