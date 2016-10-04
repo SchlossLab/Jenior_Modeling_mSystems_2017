@@ -182,7 +182,7 @@ E(network)$color <- 'gray15' # Color edges
 cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.monte_carlo.score.txt'
 clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/clindamycin_630.monte_carlo.score.txt'
 strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/streptomycin_630.monte_carlo.score.txt'
-gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree.bipartite.files/germfree.monte_carlo.score.txt'
+gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree_630.bipartite.files/germfree_630.monte_carlo.score.txt'
 
 cef_importance <- read.delim(cef_importance_file, header=TRUE, sep='\t', row.names=1)
 clinda_importance <- read.delim(clinda_importance_file, header=TRUE, sep='\t', row.names=1)
@@ -212,26 +212,26 @@ shared_importance <- shared_importance$Compound_name
 shared_cef <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% shared_importance)))
 shared_cef <- shared_cef[order(shared_cef$Compound_name),] 
 shared_cef$Metabolite_score <- as.numeric(as.character(shared_cef$Metabolite_score))
-shared_cef$Sim_Mean <- as.numeric(as.character(shared_cef$Sim_Mean))
+shared_cef$Sim_Median <- as.numeric(as.character(shared_cef$Sim_Median))
 shared_clinda <- as.data.frame(subset(clinda_importance, (clinda_importance[,1] %in% shared_importance)))
 shared_clinda <- shared_clinda[order(shared_clinda$Compound_name),] 
 shared_clinda$Metabolite_score <- as.numeric(as.character(shared_clinda$Metabolite_score))
-shared_clinda$Sim_Mean <- as.numeric(as.character(shared_clinda$Sim_Mean))
+shared_clinda$Sim_Median <- as.numeric(as.character(shared_clinda$Sim_Median))
 shared_strep <- as.data.frame(subset(strep_importance, (strep_importance[,1] %in% shared_importance)))
 shared_strep <- shared_strep[order(shared_strep$Compound_name),] 
 shared_strep$Metabolite_score <- as.numeric(as.character(shared_strep$Metabolite_score))
-shared_strep$Sim_Mean <- as.numeric(as.character(shared_strep$Sim_Mean))
+shared_strep$Sim_Median <- as.numeric(as.character(shared_strep$Sim_Median))
 shared_gf <- as.data.frame(subset(gf_importance, (gf_importance[,1] %in% shared_importance)))
 shared_gf <- shared_gf[order(shared_gf$Compound_name),] 
 shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
-shared_gf$Sim_Mean <- as.numeric(as.character(shared_gf$Sim_Mean))
+shared_gf$Sim_Median <- as.numeric(as.character(shared_gf$Sim_Median))
 
 shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score)
 rownames(shared_score) <- shared_cef$Compound_name
-shared_sim <- cbind(shared_cef$Sim_Mean, shared_clinda$Sim_Mean, shared_strep$Sim_Mean, shared_gf$Sim_Mean)
+shared_sim <- cbind(shared_cef$Sim_Median, shared_clinda$Sim_Median, shared_strep$Sim_Median, shared_gf$Sim_Median)
 rownames(shared_sim) <- shared_cef$Compound_name
 shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median) , apply(shared_sim, 1, median)))
-colnames(shared_importance) <- c('Metabolite_score', 'Sim_Mean')
+colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median')
 shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
@@ -277,6 +277,7 @@ top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_impor
                          strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
+top_importances$Sim_StD <- top_importances$Sim_StD * 1.95
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
@@ -686,7 +687,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
-mtext('a', side=2, line=2, las=2, adj=-2, padj=-8, cex=1.5, font=2)
+mtext('a', side=2, line=2, las=2, adj=-2, padj=-8, cex=1.3, font=2)
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -700,35 +701,41 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Top metabolite importances (shared)
+# Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.1, color='black', 
-         xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
-segments(x0=rep(-2, 16), y0=c(1:16), x1=rep(12, 16), y1=c(1:16), lty=2)
+         xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
+segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
-points(x=shared_importance$Sim_Mean, y=c(1:16), cex=2.5, col='black', pch='|') # Add simulated means
-# add back 95% confidence interval
-
-mtext('b', side=2, line=2, las=2, adj=1.5, padj=-13, cex=1.5, font=2)
+points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add simulated medians
+mtext('b', side=2, line=2, las=2, adj=1.5, padj=-15, cex=1.3, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Top metabolite importances (separate)
+# Unique metabolite importances
 par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1, groups=top_importances$abx, color='black', 
-         xlab='Metabolite Importance Score', xlim=c(-2,10), 
+         xlab='Metabolite Importance Score', xlim=c(-4,10), 
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), pch=19)
-segments(x0=rep(-2, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
+segments(x0=rep(-4, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 
-# Add simulated means
+# Add simulated medians
 points(x=top_importances[c(19:7),3], y=c(1:13), cex=2.5, col='black', pch='|') # Gnotobiotic
+#points(x=top_importances[c(19:7),3]+top_importances[c(19:7),4], y=c(1:13), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(19:7),3]-top_importances[c(19:7),4], y=c(1:13), cex=1.8, col='black', pch='|')
 points(x=top_importances[c(2:3),3], y=c(16:17), cex=2.5, col='black', pch='|') # Clindamycin
+#points(x=top_importances[c(2:3),3]+top_importances[c(2:3),4], y=c(16:17), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(2:3),3]-top_importances[c(2:3),4], y=c(16:17), cex=1.8, col='black', pch='|')
 points(x=top_importances[1,3], y=20, cex=2.5, col='black', pch='|') # Cefoperazone
+#points(x=top_importances[1,3]+top_importances[1,4], y=20, cex=1.8, col='black', pch='|')
+#points(x=top_importances[1,3]-top_importances[1,4], y=20, cex=1.8, col='black', pch='|')
 points(x=top_importances[c(4:6),3], y=c(23:25), cex=2.5, col='black', pch='|') # Streptomycin
+#points(x=top_importances[c(4:6),3]+top_importances[c(4:6),4], y=c(23:25), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(4:6),3]-top_importances[c(4:6),4], y=c(23:25), cex=1.8, col='black', pch='|')
 
-mtext('c', side=2, line=2, las=2, adj=1, padj=-13, cex=1.5, font=2)
+mtext('c', side=2, line=2, las=2, adj=1, padj=-15, cex=1.3, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -784,7 +791,7 @@ legend('topleft', legend=c('+Glucose +Amino acids','-Glucose +Amino acids','+Glu
        col=c('black','black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
        pch=c(19,17,15,18,0,1,2,5,6), cex=1.4, pt.cex=2, bg='white', lwd=2)
 
-mtext('d', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.5, font=2)
+mtext('d', side=2, line=2, las=2, adj=2, padj=-16, cex=1.3, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -817,7 +824,7 @@ legend('topleft', legend=c('-Glucose +Amino acids'),
        pch=c(17), cex=1.4, pt.cex=2, bg='white', lwd=2)
 
 
-mtext('e', side=2, line=2, las=2, adj=2, padj=-13.5, cex=1.5, font=2)
+mtext('e', side=2, line=2, las=2, adj=2, padj=-16, cex=1.3, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
