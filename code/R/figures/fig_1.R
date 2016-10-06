@@ -40,7 +40,7 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Strep in drinking water timeline
-rect(xleft=-4, ybottom=-0.5, xright=0, ytop=0.5, col=wes_palette("FantasticFox")[1], border='black')
+rect(xleft=-4, ybottom=-0.4, xright=0, ytop=0.4, col=wes_palette("FantasticFox")[1], border='black')
 Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
@@ -54,7 +54,7 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Cef in drinking water timeline
-rect(xleft=-4, ybottom=-0.5, xright=0, ytop=0.5, col=wes_palette("FantasticFox")[3], border='black')
+rect(xleft=-4, ybottom=-0.4, xright=0, ytop=0.4, col=wes_palette("FantasticFox")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
