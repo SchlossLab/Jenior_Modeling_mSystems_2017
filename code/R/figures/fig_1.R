@@ -59,8 +59,8 @@ text(x=c(-3,-2,-1.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 Hrs'), cex=
 text(x=-3.6, y=0, 'c', cex=2, font=2)
 
 # Legend
-legend(x=0.9, y=1.4, legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Switch to untreated drinking water', 'Clindamycin IP injection', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
-       pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],'white',wes_palette("FantasticFox")[5],'darkorchid3','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.5,3.5,3,3,3,3), bty='n')
+legend(x=0.9, y=1.4, legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Clindamycin IP injection', 'Switch to untreated drinking water', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
+       pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'white','darkorchid3','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.5,3.5,3,3,3,3), bty='n')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
