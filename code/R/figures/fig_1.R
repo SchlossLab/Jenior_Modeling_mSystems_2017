@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('shape', 'plotrix', 'wesanderson', 'grid', 'gridExtra');
+deps <- c('shape', 'plotrix', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -10,29 +10,13 @@ for (dep in deps){
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Read in and format antibiotic table
-abx_table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/abx.tsv'
-abx_table <- read.delim(abx_table_file, sep='\t', header=TRUE)
-
-abx_table[,2] <- gsub('_', ' ', abx_table[,2])
-abx_table[,3] <- gsub('_', ' ', abx_table[,3])
-abx_table[,4] <- gsub('_', ' ', abx_table[,4])
-abx_table[,5] <- gsub('_', ' ', abx_table[,5])
-abx_table[,6] <- gsub('_', ' ', abx_table[,6])
-
-abx_table$Target <- sapply(lapply(abx_table$Target, strwrap, width=40), paste, collapse="\n")
-abx_table$Activity <- sapply(lapply(abx_table$Activity, strwrap, width=40), paste, collapse="\n")
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
 pdf(file=plot_file, width=7, height=10)
 
 # Create layout for multi-plot
 layout(mat=matrix(c(1,
                     2,
-                    3,
-                    4), nrow=4, ncol=1, byrow=TRUE))
+                    3), nrow=3, ncol=1, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -77,14 +61,6 @@ text(x=-3.6, y=0, 'c', cex=2, font=2)
 # Legend
 legend(x=0.9, y=1.4, legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Switch to untreated drinking water', 'Clindamycin IP injection', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
        pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],'white',wes_palette("FantasticFox")[5],'darkorchid3','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.5,3.5,3,3,3,3), bty='n')
-
-#----------------------------#
-
-par(mar=c(0,0,0,0))
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-10,10), ylim=c(-4,4)) # Empty plot
-
-# Antibiotic table
-#grid.table(abx_table, rows=NULL)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
