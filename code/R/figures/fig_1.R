@@ -24,12 +24,12 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Strep in drinking water timeline
-rect(xleft=-4, ybottom=-0.4, xright=0, ytop=0.4, col=wes_palette("FantasticFox")[1], border='black')
-Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(0,2,2.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
-text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
+rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[1], border='black')
+Arrows(x0=-4, y0=0, x1=5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
+segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
+segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
+points(x=c(0,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,1,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'a', cex=2, font=2)
 
 #----------------------------#
@@ -38,12 +38,12 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Cef in drinking water timeline
-rect(xleft=-4, ybottom=-0.4, xright=0, ytop=0.4, col=wes_palette("FantasticFox")[3], border='black')
-Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(0,2,2.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
-text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
+rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[3], border='black')
+Arrows(x0=-4, y0=0, x1=5, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
+segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
+segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
+points(x=c(0,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,1,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'b', cex=2, font=2)
 
 #----------------------------#
