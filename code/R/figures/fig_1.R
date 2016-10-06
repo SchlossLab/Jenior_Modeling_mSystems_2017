@@ -45,7 +45,7 @@ Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.
 segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 points(x=c(0,2,2.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid3','black'), col='black', cex=3.4)
-text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 hrs'), cex=1.3)
+text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'a', cex=2, font=2)
 
 #----------------------------#
@@ -59,7 +59,7 @@ Arrows(x0=-4, y0=0, x1=4, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.
 segments(x0=c(-4,0,2,2.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,0,2,2.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 points(x=c(0,2,2.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid3','black'), col='black', cex=3.4)
-text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 hrs'), cex=1.3)
+text(x=c(-4,0,2,2.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'b', cex=2, font=2)
 
 #----------------------------#
@@ -71,7 +71,7 @@ plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty 
 Arrows(x0=-3, y0=0, x1=0, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-3,-2,-1.25), y0=c(-0.5,-0.5,-0.5), x1=c(-3,-2,-1.25), y1=c(0.5,0.5,0.5), lwd=4)
 points(x=c(-3,-2,-1.25), y=c(1,1,1), pch=c(25,25,25), bg=c(wes_palette("FantasticFox")[5],'darkorchid3','black'), col='black', cex=3.4)
-text(x=c(-3,-2,-1.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 hrs'), cex=1.3)
+text(x=c(-3,-2,-1.25), y=c(-0.8,-0.8,-0.8), c('Day -1', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-3.6, y=0, 'c', cex=2, font=2)
 
 # Legend
