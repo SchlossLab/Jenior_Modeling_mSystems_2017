@@ -24,7 +24,7 @@ Overview
     |  +- pbs/         # pbs
     |
     |- results         # All output from workflows and analyses
-    |  |- tables/      # Text version of tables to be rendered with kable in R
+    |  |- tables/      # Text version of tables
     |  |- figures/     # Manuscript figures
     |  +- supplement/  # Supplementary data presentation
     |      |- figures/     # Figures
