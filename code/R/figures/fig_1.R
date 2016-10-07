@@ -87,6 +87,10 @@ segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4, 
 points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
 text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
 text(x=-3.6, y=0, 'e', cex=2, font=2)
+
+legend(x=0.9, y=1.4, legend=c('Conventionally-raised mice', 'Germ free mice'), 
+       pt.bg=c('black', 'forestgreen'), cex=1.5,  pch=c(22,22), pt.cex=c(0,0), bty='n', lwd=2)
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
