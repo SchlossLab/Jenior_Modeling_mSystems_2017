@@ -9,6 +9,23 @@ for (dep in deps){
 }
 set.seed(42)
 
+# Define function for mormatting growth curves for statistical analysis
+format_curve <- function(raw_exp_data, exp_group, raw_control_data){
+  formatted_data <- c()
+  control_data <- c()
+  for (time in 1:49){
+    temp_exp <- cbind(exp_group, time, raw_exp_data[time,])
+    formatted_data <- rbind(formatted_data, temp_exp)
+    temp_control <- cbind('control', time, raw_control_data[time,])
+    control_data <- rbind(control_data, temp_control)
+  }
+  formatted_data <- as.data.frame(rbind(control_data, formatted_data))
+  colnames(formatted_data) <- c('substrate','time','od')
+  formatted_data$od <- as.numeric(as.character(formatted_data$od))
+  
+  return(formatted_data)
+}
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Define file variables for network plot
@@ -314,93 +331,15 @@ bhi <- cbind(growth$F3, growth$F4, growth$F5)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Prepare data for statistical tests
-control_test <- c()
-for (time in 1:49){
-  temp <- cbind('control', time, n_glucose_y_aa[time,])
-  control_test <- rbind(control_test, temp)
-}
-
-fructose_test <- c()
-for (time in 1:49){
-  temp <- cbind('fructose', time, fructose[time,])
-  fructose_test <- rbind(fructose_test, temp)
-}
-fructose_test <- as.data.frame(rbind(control_test, fructose_test))
-colnames(fructose_test) <- c('substrate','time','od')
-fructose_test$od <- as.numeric(as.character(fructose_test$od))
-
-sorbitol_test <- c()
-for (time in 1:49){
-  temp <- cbind('sorbitol', time, sorbitol[time,])
-  sorbitol_test <- rbind(sorbitol_test, temp)
-}
-sorbitol_test <- as.data.frame(rbind(control_test, sorbitol_test))
-colnames(sorbitol_test) <- c('substrate','time','od')
-sorbitol_test$od <- as.numeric(as.character(sorbitol_test$od))
-
-mannitol_test <- c()
-for (time in 1:49){
-  temp <- cbind('mannitol', time, mannitol[time,])
-  mannitol_test <- rbind(mannitol_test, temp)
-}
-mannitol_test <- as.data.frame(rbind(control_test, mannitol_test))
-colnames(mannitol_test) <- c('substrate','time','od')
-mannitol_test$od <- as.numeric(as.character(mannitol_test$od))
-
-salicin_test <- c()
-for (time in 1:49){
-  temp <- cbind('salicin', time, salicin[time,])
-  salicin_test <- rbind(salicin_test, temp)
-}
-salicin_test <- as.data.frame(rbind(control_test, salicin_test))
-colnames(salicin_test) <- c('substrate','time','od')
-salicin_test$od <- as.numeric(as.character(salicin_test$od))
-
-acetylneuraminate_test <- c()
-for (time in 1:49){
-  temp <- cbind('acetylneuraminate', time, acetylneuraminate[time,])
-  acetylneuraminate_test <- rbind(acetylneuraminate_test, temp)
-}
-acetylneuraminate_test <- as.data.frame(rbind(control_test, acetylneuraminate_test))
-colnames(acetylneuraminate_test) <- c('substrate','time','od')
-acetylneuraminate_test$od <- as.numeric(as.character(acetylneuraminate_test$od))
-
-y_glucose_y_aa_test <- c()
-for (time in 1:49){
-  temp <- cbind('y_glucose_y_aa', time, y_glucose_y_aa[time,])
-  y_glucose_y_aa_test <- rbind(y_glucose_y_aa_test, temp)
-}
-y_glucose_y_aa_test <- as.data.frame(rbind(control_test, y_glucose_y_aa_test))
-colnames(y_glucose_y_aa_test) <- c('substrate','time','od')
-y_glucose_y_aa_test$od <- as.numeric(as.character(y_glucose_y_aa_test$od))
-
-y_glucose_n_aa_test <- c()
-for (time in 1:49){
-  temp <- cbind('y_glucose_n_aa', time, y_glucose_n_aa[time,])
-  y_glucose_n_aa_test <- rbind(y_glucose_n_aa_test, temp)
-}
-y_glucose_n_aa_test <- as.data.frame(rbind(control_test, y_glucose_n_aa_test))
-colnames(y_glucose_n_aa_test) <- c('substrate','time','od')
-y_glucose_n_aa_test$od <- as.numeric(as.character(y_glucose_n_aa_test$od))
-
-n_glucose_n_aa_test <- c()
-for (time in 1:49){
-  temp <- cbind('n_glucose_n_aa', time, n_glucose_n_aa[time,])
-  n_glucose_n_aa_test <- rbind(n_glucose_n_aa_test, temp)
-}
-n_glucose_n_aa_test <- as.data.frame(rbind(control_test, n_glucose_n_aa_test))
-colnames(n_glucose_n_aa_test) <- c('substrate','time','od')
-n_glucose_n_aa_test$od <- as.numeric(as.character(n_glucose_n_aa_test$od))
-
-bhi_test <- c()
-for (time in 1:49){
-  temp <- cbind('bhi', time, bhi[time,])
-  bhi_test <- rbind(bhi_test, temp)
-}
-bhi_test <- as.data.frame(rbind(control_test, bhi_test))
-colnames(bhi_test) <- c('substrate','time','od')
-bhi_test$od <- as.numeric(as.character(bhi_test$od))
-rm(temp, time, control_test)
+fructose_test <- format_curve(fructose, 'fructose', n_glucose_y_aa)
+sorbitol_test <- format_curve(sorbitol, 'sorbitol', n_glucose_y_aa)
+mannitol_test <- format_curve(mannitol, 'mannitol', n_glucose_y_aa)
+salicin_test <- format_curve(salicin, 'salicin', n_glucose_y_aa)
+acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', n_glucose_y_aa)
+y_glucose_y_aa_test <- format_curve(y_glucose_y_aa, 'y_glucose_y_aa', n_glucose_y_aa)
+y_glucose_n_aa_test <- format_curve(y_glucose_n_aa, 'y_glucose_n_aa', n_glucose_y_aa)
+n_glucose_n_aa_test <- format_curve(n_glucose_n_aa, 'n_glucose_n_aa', n_glucose_y_aa)
+bhi_test <- format_curve(bhi, 'bhi', n_glucose_y_aa)
 
 # Calculate differences
 sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
@@ -529,7 +468,7 @@ n_glucose_n_aa_sd <- rowSds(n_glucose_n_aa, na.rm=TRUE)
 bhi_sd <- rowSds(bhi, na.rm=TRUE)
 growth_sds <- as.data.frame(rbind(acetylneuraminate_sd, sorbitol_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd))
 rm(acetylneuraminate_median, sorbitol_median, fructose_median, combination_median, mannitol_median, salicin_median, y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
-rm(acetylneuraminate, sorbitol, fructose, combination, mannitol, salicin, y_glucose_y_aa, n_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, bhi)
+rm(acetylneuraminate, sorbitol, fructose, combination, mannitol, salicin, y_glucose_y_aa, y_glucose_n_aa, n_glucose_n_aa, bhi)
 rm(acetylneuraminate_sd, sorbitol_sd, fructose_sd, combination_sd, mannitol_sd, salicin_sd, y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
 rm(growth)
 
@@ -543,7 +482,7 @@ growth_sds <- as.data.frame(t(growth_sds[,1:49]))
 
 # Read in growth rate data
 # Define variables
-growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/combinations.tsv'
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/pairwise-carb-combos.formatted.tsv'
 
 # Read in data
 growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
@@ -595,27 +534,58 @@ mannitol_acetylneuriminate <- cbind(growth$F8, growth$F9, growth$F10) - growth$F
 mannitol_acetylneuriminate_median <- rowMedians(mannitol_acetylneuriminate, na.rm=TRUE)
 mannitol_acetylneuriminate_median[mannitol_acetylneuriminate_median < 0] <- 0
 mannitol_acetylneuriminate_sd <- rowSds(mannitol_acetylneuriminate, na.rm=TRUE)
-rm(growth)
 
-combo_medians <- rbind(bhi_median, fructose_sorbitol_median, fructose_salicin_median, fructose_mannitol_median, 
+combo_medians <- t(as.data.frame(rbind(bhi_median, fructose_sorbitol_median, fructose_salicin_median, fructose_mannitol_median, 
                        fructose_acetylneuriminate_median, sorbitol_salicin_median, sorbitol_mannitol_median, 
                        sorbitol_acetylneuriminate_median, salicin_mannitol_median, salicin_acetylneuriminate_median, 
-                       mannitol_acetylneuriminate_median)
-combo_sds <- rbind(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
+                       mannitol_acetylneuriminate_median)))
+combo_sds <- t(as.data.frame(rbind(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
                    fructose_acetylneuriminate_sd, sorbitol_salicin_sd, sorbitol_mannitol_sd, 
                    sorbitol_acetylneuriminate_sd, salicin_mannitol_sd, salicin_acetylneuriminate_sd, 
-                   mannitol_acetylneuriminate_sd)
+                   mannitol_acetylneuriminate_sd)))
+
+fructose_sorbitol_test <- format_curve(fructose_sorbitol, 'fructose_sorbitol', n_glucose_y_aa)
+fructose_salicin_test <- format_curve(fructose_salicin, 'fructose_salicin', n_glucose_y_aa)
+fructose_mannitol_test <- format_curve(fructose_mannitol, 'fructose_mannitol', n_glucose_y_aa)
+fructose_acetylneuriminate_test <- format_curve(fructose_acetylneuriminate, 'fructose_acetylneuriminate', n_glucose_y_aa)
+sorbitol_salicin_test <- format_curve(sorbitol_salicin, 'sorbitol_salicin', n_glucose_y_aa)
+sorbitol_mannitol_test <- format_curve(sorbitol_mannitol, 'sorbitol_mannitol', n_glucose_y_aa)
+sorbitol_acetylneuriminate_test <- format_curve(sorbitol_acetylneuriminate, 'sorbitol_acetylneuriminate', n_glucose_y_aa)
+salicin_mannitol_test <- format_curve(salicin_mannitol, 'salicin_mannitol', n_glucose_y_aa)
+salicin_acetylneuriminate_test <- format_curve(salicin_acetylneuriminate, 'salicin_acetylneuriminate', n_glucose_y_aa)
+mannitol_acetylneuriminate_test <- format_curve(mannitol_acetylneuriminate, 'mannitol_acetylneuriminate', n_glucose_y_aa)
+
+rm(growth, bhi, fructose_sorbitol, fructose_salicin, fructose_mannitol, 
+   fructose_acetylneuriminate, sorbitol_salicin, sorbitol_mannitol, 
+   sorbitol_acetylneuriminate, salicin_mannitol, salicin_acetylneuriminate, 
+   mannitol_acetylneuriminate, n_glucose_y_aa) 
+  
 rm(bhi_median, fructose_sorbitol_median, fructose_salicin_median, fructose_mannitol_median, 
    fructose_acetylneuriminate_median, sorbitol_salicin_median, sorbitol_mannitol_median, 
    sorbitol_acetylneuriminate_median, salicin_mannitol_median, salicin_acetylneuriminate_median, 
-   mannitol_acetylneuriminate_median, bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
+   mannitol_acetylneuriminate_median) 
+
+rm(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd, 
    fructose_acetylneuriminate_sd, sorbitol_salicin_sd, sorbitol_mannitol_sd, 
    sorbitol_acetylneuriminate_sd, salicin_mannitol_sd, salicin_acetylneuriminate_sd, 
    mannitol_acetylneuriminate_sd)
 
+#-------------------------------------------------------------------------------------------------------------------------------------#
+sorbitol_sig <- aov(formula=od ~ substrate * time, data=sorbitol_test)
+summary(sorbitol_sig) # p = 0.02474 *, corrected = 2.474e-01 n.s.
 
 
-
+plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+lines(combo_medians$fructose_sorbitol_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$fructose_salicin_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$fructose_mannitol_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$fructose_acetylneuriminate_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$sorbitol_salicin_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$sorbitol_mannitol_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$sorbitol_acetylneuriminate_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$salicin_mannitol_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$salicin_acetylneuriminate_median, type='o', col='black', lwd=2, pch=19, cex=2)
+lines(combo_medians$mannitol_acetylneuriminate_median, type='o', col='black', lwd=2, pch=19, cex=2)
 
 
 

@@ -11,14 +11,12 @@ for (dep in deps){
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-pdf(file=plot_file, width=7, height=9)
+pdf(file=plot_file, width=7, height=10)
 
 # Create layout for multi-plot
 layout(mat=matrix(c(1,
                     2,
-                    3,
-                   4,
-                   5), nrow=5, ncol=1, byrow=TRUE))
+                    3), nrow=3, ncol=1, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -62,40 +60,40 @@ text(x=-3.6, y=0, 'c', cex=2, font=2)
 
 # Legend
 legend(x=0.9, y=1.4, legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Clindamycin IP injection', 'Switch to untreated drinking water', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
-       pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'white','darkorchid2','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.5,3.5,3,3,3,3), bty='n')
+       pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'white','darkorchid2','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.6,3.6,3,3,3,3), bty='n')
 
 #----------------------------#
 
-par(mar=c(0,0,0,0))
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+#par(mar=c(0,0,0,0))
+#plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # No antibiotics timeline
-Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4)
-points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
-text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
-text(x=-3.6, y=0, 'd', cex=2, font=2)
+#Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
+#segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4)
+#points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
+#text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
+#text(x=-3.6, y=0, 'd', cex=2, font=2)
 
 #----------------------------#
 
-par(mar=c(0,0,0,0))
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+#par(mar=c(0,0,0,0))
+#plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Germ free timeline
-Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2, col='forestgreen')
-segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4, col='forestgreen')
-points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
-text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
-text(x=-3.6, y=0, 'e', cex=2, font=2)
+#Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2, col='forestgreen')
+#segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4, col='forestgreen')
+#points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
+#text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
+#text(x=-3.6, y=0, 'e', cex=2, font=2)
 
-legend(x=0.9, y=1.4, legend=c('Conventionally-raised mice', 'Germ free mice'), 
-       pt.bg=c('black', 'forestgreen'), cex=1.5,  pch=c(22,22), pt.cex=c(0,0), bty='n', lwd=2)
+#legend(x=0.9, y=1.4, legend=c('Conventionally-raised mice', 'Germ free mice'), 
+#       col=c('black', 'forestgreen'), cex=1.5,  pch=c(22,22), pt.cex=c(0,0), bty='n', lwd=4)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
 dev.off()
-rm(plot_file, abx_table_file, abx_table)
+rm(plot_file)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)

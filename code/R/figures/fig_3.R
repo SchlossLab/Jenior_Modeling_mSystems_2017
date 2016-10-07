@@ -143,33 +143,33 @@ text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]),
      labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
 mtext('a', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
 
-# Quorum sensing
-par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
-x_coords <- (barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='', ylim=c(0,2.7), cex.lab=1.4))
-abline(h=c(0.9,1.8), lty=2)
-barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,2.7), add=TRUE, cex.lab=1.4)
-box()
-axis(side=2, at=c(0,0.9,1.8,2.7), c('0%','0.9%','1.8%','2.7%'), tick=TRUE, las=1, cex.axis=1.3)
-text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
-legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
-mtext('b', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
-
 # Pathogenicity
-par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
+par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
 x_coords <- (barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='Relative Transcript Abundance', ylim=c(0,1.2), cex.lab=1.4))
+                     ylab='', ylim=c(0,1.2), cex.lab=1.4))
 abline(h=c(0.4,0.8), lty=2)
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,1.2), add=TRUE, cex.lab=1.4)
+        ylab='', ylim=c(0,1.2), add=TRUE, cex.lab=1.4)
 box()
 axis(side=2, at=c(0,0.4,0.8,1.2), c('0%','0.4%','0.8%','1.2%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
+mtext('b', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
+
+# Quorum sensing
+par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
+x_coords <- (barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+                     ylab='Relative Transcript Abundance', ylim=c(0,2.7), cex.lab=1.4))
+abline(h=c(0.9,1.8), lty=2)
+barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,2.7), add=TRUE, cex.lab=1.4)
+box()
+axis(side=2, at=c(0,0.9,1.8,2.7), c('0%','0.9%','1.8%','2.7%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
 mtext('c', side=2, line=2, las=2, adj=3.3, padj=-13, cex=1.3, font=2)
 
 # Sigma factors
