@@ -251,6 +251,8 @@ shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median) , apply(
 colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median')
 shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
+shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
@@ -294,15 +296,14 @@ top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_impor
                          strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
-top_importances$Sim_StD <- top_importances$Sim_StD * 1.95
+#top_importances$Sim_StD <- top_importances$Sim_StD * 1.645 # 90% confidence interval
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
+top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahydromethanopterin'] <- 'Tetrahydromethanopterin'
+top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR'
+top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide 
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
-top_importances <- subset(top_importances, rownames(top_importances) != 'C04823')
-top_importances <- subset(top_importances, rownames(top_importances) != 'C00012')
-shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -330,34 +331,34 @@ plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black
 
 text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
                                                    bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
-                                                   bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.5) # Importance algorithm
+                                                   bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6) # Importance algorithm
 
-text(x=-0.95, y=1.14, labels='Tetrathionate reductase', font=2, cex=1.4) # Enzyme 1 name
-text(x=-1, y=1, labels='7', col='white', cex=1.25) # Enzyme 1 transcription
-text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.4) # Enzyme 2 name
-text(x=-0.5, y=-1, labels='94', col='white', cex=2.3) # Enzyme 2 transcription
-text(x=1, y=0.77, labels='Thiosulfate Oxidase', font=2, cex=1.4) # Enzyme 3
-text(x=0.99, y=0.44, labels='115', col='white', cex=2.5) # Enzyme 3 transcription
-text(x=-0.165, y=0.145, 'm', col='white', cex=2) # Substrate node label
-text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
+text(x=-0.95, y=1.14, labels='Tetrathionate reductase', font=2, cex=1.6) # Enzyme 1 name
+text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
+text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.6) # Enzyme 2 name
+text(x=-0.5, y=-1, labels='94', col='white', cex=2.4) # Enzyme 2 transcription
+text(x=1, y=0.77, labels='Thiosulfate Oxidase', font=2, cex=1.6) # Enzyme 3
+text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcription
+text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
+text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.7, font=c(2,1)) # Compound & calculated importance
 segments(x0=-0.05, y0=-0.18, x1=0.25, y1=-0.18, lwd=2)
 legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'), 
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.5)
-text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=1.9) # labeled transcription for input reactions
-text(x=0.99, y=0.32, expression(t[i]), col='white', cex=1.9)
-text(x=-1, y=0.87, expression(t[o]), col='black', cex=1.9) # labeled transcription for output reactions
-text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=1.9) # labeled indegree
-text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=1.9) # labeled outdegree
-text(x=0.3, y=0.33, expression(e[o]), col='black', cex=1.9)
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.7)
+text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
+text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
+text(x=-1, y=0.87, expression(t[o]), col='black', cex=2) # labeled transcription for output reactions
+text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=2) # labeled indegree
+text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=2) # labeled outdegree
+text(x=0.3, y=0.33, expression(e[o]), col='black', cex=2)
 Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3) # Score explanation line
 Arrows(x0=0.63, y0=-0.7, x1=1.14, y1=-0.7, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3)
 segments(x0=0.63, y0=-0.65, x1=0.63, y1=-0.75, lwd=2)
 text(x=0.63, y=-0.83, '0', cex=1.8) 
 text(x=0.12, y=-0.81, '-', cex=2.2)
 text(x=1.14, y=-0.81, '+', cex=2.2)
-text(x=1.15, y=-0.6, 'More likely consumed', cex=1)
-text(x=0.14, y=-0.6, 'More likely released', cex=1)
-text(x=0.63, y=-0.95, 'Importance Score', cex=1.5, font=2) 
+text(x=1.15, y=-0.6, 'More likely consumed', cex=1.3)
+text(x=0.14, y=-0.6, 'More likely released', cex=1.3)
+text(x=0.63, y=-0.95, 'Importance Score', cex=1.6, font=2) 
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -366,7 +367,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
-mtext('a', side=2, line=2, las=2, adj=-2, padj=-8, cex=1.3, font=2)
+mtext('a', side=2, line=2, las=2, adj=-2, padj=-7, cex=1.9, font=2)
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -382,39 +383,41 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.1, color='black', 
-         xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
+dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.4, color='black', 
+         xlab='Median Metabolite Importance Score', xlim=c(-4,10), 
+         pch=c(19,19,1,19,1,1,19,1,1,19,19,19,19,19,19,19,19))
 segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add simulated medians
-mtext('b', side=2, line=2, las=2, adj=1.5, padj=-15, cex=1.3, font=2)
+mtext('b', side=2, line=2, las=2, adj=2, padj=-12.5, cex=1.9, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Unique metabolite importances
-par(mar=c(4,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
-         lcolor=NA, cex=1, groups=top_importances$abx, color='black', 
+         lcolor=NA, cex=1.4, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-4,10), 
-         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), pch=19)
-segments(x0=rep(-4, 14), y0=c(1:13, 16:17, 20, 23:25), x1=rep(10, 14), y1=c(1:13, 16:17, 20, 23:25), lty=2)
+         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+         pch=c(19,1,1,19,1,1,19,19,19,1,19,19,19,19,19,19,19,19,19,19,19), lwd=3)
+segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 
 # Add simulated medians
-points(x=top_importances[c(19:7),3], y=c(1:13), cex=2.5, col='black', pch='|') # Gnotobiotic
-#points(x=top_importances[c(19:7),3]+top_importances[c(19:7),4], y=c(1:13), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(19:7),3]-top_importances[c(19:7),4], y=c(1:13), cex=1.8, col='black', pch='|')
-points(x=top_importances[c(2:3),3], y=c(16:17), cex=2.5, col='black', pch='|') # Clindamycin
-#points(x=top_importances[c(2:3),3]+top_importances[c(2:3),4], y=c(16:17), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(2:3),3]-top_importances[c(2:3),4], y=c(16:17), cex=1.8, col='black', pch='|')
-points(x=top_importances[1,3], y=20, cex=2.5, col='black', pch='|') # Cefoperazone
-#points(x=top_importances[1,3]+top_importances[1,4], y=20, cex=1.8, col='black', pch='|')
-#points(x=top_importances[1,3]-top_importances[1,4], y=20, cex=1.8, col='black', pch='|')
-points(x=top_importances[c(4:6),3], y=c(23:25), cex=2.5, col='black', pch='|') # Streptomycin
-#points(x=top_importances[c(4:6),3]+top_importances[c(4:6),4], y=c(23:25), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(4:6),3]-top_importances[c(4:6),4], y=c(23:25), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(20:7),3], y=c(1:14), cex=2.5, col='black', pch='|') # Gnotobiotic
+#points(x=top_importances[c(20:7),3]+top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(20:7),3]-top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(2:3),3], y=c(17:18), cex=2.5, col='black', pch='|') # Clindamycin
+#points(x=top_importances[c(2:3),3]+top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(2:3),3]-top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
+points(x=top_importances[1,3], y=21, cex=2.5, col='black', pch='|') # Cefoperazone
+#points(x=top_importances[1,3]+top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
+#points(x=top_importances[1,3]-top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
+points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') # Streptomycin
+#points(x=top_importances[c(4:6),3]+top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
+#points(x=top_importances[c(4:6),3]-top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
 
-mtext('c', side=2, line=2, las=2, adj=1, padj=-15, cex=1.3, font=2)
+mtext('c', side=2, line=2, las=2, adj=2, padj=-12.5, cex=1.9, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

@@ -16,7 +16,9 @@ pdf(file=plot_file, width=9, height=9)
 # Create layout for multi-plot
 layout(mat=matrix(c(1,1,2,
                     3,3,4,
-                    5,5,6), nrow=3, ncol=3, byrow=TRUE))
+                    5,5,6,
+                    7,7,8,
+                    9,9,10), nrow=5, ncol=3, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -78,33 +80,36 @@ text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', 
 text(x=-4.6, y=0, 'c', cex=2, font=2)
 
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+legend('center', legend=c('Conventionally-raised mice', 'Germ free mice'), 
+       col=c('black', 'forestgreen'), cex=1.5,  pch=c(22,22), pt.cex=c(0,0), bty='n', lwd=4)
 
 #----------------------------#
 
-#par(mar=c(0,0,0,0))
-#plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+par(mar=c(0,0,0,0))
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # No antibiotics timeline
-#Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-#segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4)
-#points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
-#text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
-#text(x=-3.6, y=0, 'd', cex=2, font=2)
+Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
+segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
+segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
+points(x=c(-4,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', '18 Hrs'), cex=1.3)
+text(x=-4.6, y=0, 'd', cex=2, font=2)
+
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 #----------------------------#
 
-#par(mar=c(0,0,0,0))
-#plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+par(mar=c(0,0,0,0))
+plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Germ free timeline
-#Arrows(x0=-2, y0=0, x1=-0.2, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2, col='forestgreen')
-#segments(x0=c(-2,-1.25), y0=c(-0.5,-0.5), x1=c(-2,-1.25), y1=c(0.5,0.5), lwd=4, col='forestgreen')
-#points(x=c(-2,-1.25), y=c(1,1), pch=c(25,25), bg=c('darkorchid3','black'), col='black', cex=3.4)
-#text(x=c(-2,-1.25), y=c(-0.8,-0.8), c('Day 0', '18 Hrs'), cex=1.3)
-#text(x=-3.6, y=0, 'e', cex=2, font=2)
-
-#legend(x=0.9, y=1.4, legend=c('Conventionally-raised mice', 'Germ free mice'), 
-#       col=c('black', 'forestgreen'), cex=1.5,  pch=c(22,22), pt.cex=c(0,0), bty='n', lwd=4)
+Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2, col='forestgreen')
+segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4, col='forestgreen')
+segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2, col='forestgreen')
+points(x=c(-4,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', '18 Hrs'), cex=1.3)
+text(x=-4.6, y=0, 'e', cex=2, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
