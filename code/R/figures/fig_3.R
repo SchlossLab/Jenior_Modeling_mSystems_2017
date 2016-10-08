@@ -120,7 +120,7 @@ layout(matrix(c(1,2,2,2,3,
 
 # Legend plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.6, cex=2.1,
+legend('center', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germ free'), pt.cex=3.7, cex=2.1,
        pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
       
 # Sporulation

@@ -295,7 +295,7 @@ rm(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd,
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
 pdf(file=plot_file, width=12, height=8)
 layout(matrix(c(1,2), nrow=1, ncol=2, byrow=TRUE))
 
