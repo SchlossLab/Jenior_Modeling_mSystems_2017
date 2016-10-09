@@ -27,10 +27,11 @@ plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty 
 
 # Strep in drinking water timeline
 rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[1], border='black')
+rect(xleft=1, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(1,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+points(x=c(3,3.75), y=c(0.9,0.9), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 text(x=c(-4,1,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'a', cex=2, font=2)
 
@@ -43,10 +44,11 @@ plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty 
 
 # Cef in drinking water timeline
 rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[3], border='black')
+rect(xleft=1, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(1,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
+points(x=c(3,3.75), y=c(0.9,0.9), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 text(x=c(-4,1,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -2', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'b', cex=2, font=2)
 
@@ -56,8 +58,8 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Legend
-legend('center', legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Clindamycin IP injection', 'Switch to untreated drinking water', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
-       pt.bg=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'white','darkorchid2','black'), cex=1.5,  pch=c(22,22,25,25,25,25), pt.cex=c(3.6,3.6,3,3,3,3), bty='n')
+legend('center', legend=expression('Streptomycin in drinking water', 'Cefoperazone in drinking water', 'Untreated distilled drinking water', 'Clindamycin IP injection', paste(italic('C. difficile'), ' str. 630 spore gavage'), 'Euthanize & necropsy'), 
+       pt.bg=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette("Chevalier")[3],wes_palette('FantasticFox')[5],'darkorchid2','black'), cex=1.5,  pch=c(22,22,22,25,25,25), pt.cex=c(3.6,3.6,3.6,3,3,3), bty='n')
 
 #----------------------------#
 
@@ -72,10 +74,11 @@ plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty 
 #text(x=-3.6, y=0, 'c', cex=2, font=2)
 
 # Clinda IP injection abx timeline
+rect(xleft=-4, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
 segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(-4,2,3,3.75), y=c(0.9,0.9,0.9,0.9), pch=25, bg=c('white',wes_palette("FantasticFox")[5],'darkorchid2','black'), col='black', cex=3.4)
+points(x=c(2,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c(wes_palette("FantasticFox")[5],'darkorchid2','black'), col='black', cex=3.4)
 text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'c', cex=2, font=2)
 
@@ -89,11 +92,12 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # No antibiotics timeline
+rect(xleft=-4, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=c(-4,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
-text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', '18 Hrs'), cex=1.3)
+segments(x0=c(-4,3,3.75), y0=c(0.5,0.5,0.5), x1=c(-4,3,3.75), y1=c(-0.5,-0.5,-0.5), lwd=4)
+segments(x0=c(-4,-3,-2,-1,0,1,2), y0=c(0.25,0.25,0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
+points(x=c(3,3.75), y=c(0.9,0.9), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,3,3.75), y=c(-0.8,-0.8,-0.8), c('Day -7', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'd', cex=2, font=2)
 
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
@@ -104,11 +108,12 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Germ free timeline
+rect(xleft=-4, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
 Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2, col='forestgreen')
-segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4, col='forestgreen')
-segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2, col='forestgreen')
-points(x=c(-4,3,3.75), y=c(0.9,0.9,0.9), pch=25, bg=c('white','darkorchid2','black'), col='black', cex=3.4)
-text(x=c(-4,2,3,3.75), y=c(-0.8,-0.8,-0.8,-0.8), c('Day -7', 'Day -1', 'Day 0', '18 Hrs'), cex=1.3)
+segments(x0=c(-4,3,3.75), y0=c(0.5,0.5,0.5), x1=c(-4,3,3.75), y1=c(-0.5,-0.5,-0.5), lwd=4, col='forestgreen')
+segments(x0=c(-4,-3,-2,-1,0,1,2), y0=c(0.25,0.25,0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2, col='forestgreen')
+points(x=c(3,3.75), y=c(0.9,0.9), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+text(x=c(-4,3,3.75), y=c(-0.8,-0.8,-0.8), c('Day -7', 'Day 0', '18 Hrs'), cex=1.3)
 text(x=-4.6, y=0, 'e', cex=2, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
