@@ -339,9 +339,6 @@ text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
 text(x=-0.5, y=-1.3, labels='ATP:dAdo 5\'-Phosphotransferase', font=2, cex=1.5) # Enzyme 2 name
 text(x=-0.5, y=-1, labels='94', col='white', cex=2.4) # Enzyme 2 transcription
 text(x=1, y=0.75, labels=expression(bold(paste('dAdo:', PO[4]^-3, ' Ribosyltransferase'))), cex=1.5) # Enzyme 3
-
-
-
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcription
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 text(x=c(0.3,0.3), y=c(-0.02,-0.12), labels=c('Deoxyadenosine (dAdo)','= 6.554'), cex=1.6, font=c(2,1)) # Compound & calculated importance
