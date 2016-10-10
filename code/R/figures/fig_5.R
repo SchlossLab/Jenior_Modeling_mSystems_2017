@@ -247,8 +247,12 @@ shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_scor
 rownames(shared_score) <- shared_cef$Compound_name
 shared_sim <- cbind(shared_cef$Sim_Median, shared_clinda$Sim_Median, shared_strep$Sim_Median, shared_gf$Sim_Median)
 rownames(shared_sim) <- shared_cef$Compound_name
-shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median) , apply(shared_sim, 1, median)))
-colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median')
+shared_lower <- cbind(shared_cef$Lower_95_interval, shared_clinda$Lower_95_interval, shared_strep$Lower_95_interval, shared_gf$Lower_95_interval)
+rownames(shared_lower) <- shared_cef$Compound_name
+shared_upper <- cbind(shared_cef$Upper_95_interval, shared_clinda$Upper_95_interval, shared_strep$Upper_95_interval, shared_gf$Upper_95_interval)
+rownames(shared_upper) <- shared_cef$Compound_name
+shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median), apply(shared_sim, 1, median), apply(shared_lower, 1, median), apply(shared_upper, 1, median)))
+colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median', 'Sim_Lower', 'Sim_Upper')
 shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
@@ -263,19 +267,15 @@ gf_importance <- gf_importance[c(1:25),]
 cef_only_importance <- as.data.frame(subset(cef_importance, !(cef_importance[,1] %in% clinda_importance[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance[,1])))
-#cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% shared_importance$Compound_name)))
 clinda_only_importance <- as.data.frame(subset(clinda_importance, !(clinda_importance[,1] %in% cef_importance[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance[,1])))
-#clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% shared_importance$Compound_name)))
 strep_only_importance <- as.data.frame(subset(strep_importance, !(strep_importance[,1] %in% clinda_importance[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance[,1])))
-#strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% shared_importance$Compound_name)))
 gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %in% clinda_importance[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
-#gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% shared_importance$Compound_name)))
 rm(cef_importance, clinda_importance, strep_importance, gf_importance)
 
 cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
@@ -292,12 +292,10 @@ strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'Gnotobiotic'
 gf_only_importance$color <- 'forestgreen'
 
-top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_importance[,c(1,2,3,4,6,7)], 
-                         strep_only_importance[,c(1,2,3,4,6,7)], gf_only_importance[,c(1,2,3,4,6,7)])
+top_importances <- rbind(cef_only_importance[,c(1:7)], clinda_only_importance[,c(1:7)], 
+                         strep_only_importance[,c(1:7)], gf_only_importance[,c(1:7)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
-#top_importances$Sim_StD <- top_importances$Sim_StD * 1.645 # 90% confidence interval
-#top_importances$Sim_StD <- top_importances$Sim_StD * 1.95 # 95% confidence interval
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
@@ -390,6 +388,9 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
 segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add simulated medians
+points(x=shared_importance$Sim_Lower, y=c(1:17), cex=1.8, col='black', pch='|') # Add simulated medians
+points(x=shared_importance$Sim_Upper, y=c(1:17), cex=1.8, col='black', pch='|') # Add simulated medians
+
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -406,17 +407,17 @@ abline(v=0, col='gray68', lwd=1.7)
 
 # Add simulated medians
 points(x=top_importances[c(20:7),3], y=c(1:14), cex=2.5, col='black', pch='|') # Gnotobiotic
-#points(x=top_importances[c(20:7),3]+top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(20:7),3]-top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(20:7),5], y=c(1:14), cex=1.8, col='black', pch='|')
 points(x=top_importances[c(2:3),3], y=c(17:18), cex=2.5, col='black', pch='|') # Clindamycin
-#points(x=top_importances[c(2:3),3]+top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(2:3),3]-top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(2:3),5], y=c(17:18), cex=1.8, col='black', pch='|')
 points(x=top_importances[1,3], y=21, cex=2.5, col='black', pch='|') # Cefoperazone
-#points(x=top_importances[1,3]+top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
-#points(x=top_importances[1,3]-top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
+points(x=top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
+points(x=top_importances[1,5], y=21, cex=1.8, col='black', pch='|')
 points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') # Streptomycin
-#points(x=top_importances[c(4:6),3]+top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
-#points(x=top_importances[c(4:6),3]-top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(4:6),5], y=c(24:26), cex=1.8, col='black', pch='|')
 
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
