@@ -141,7 +141,7 @@ segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]),
          x1=c(22,71), y1=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
 text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
      labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
-mtext('a', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
+mtext('a', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
 
 # Pathogenicity
 par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
@@ -156,7 +156,7 @@ text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
-mtext('b', side=2, line=2, las=2, adj=3.3, padj=-12, cex=1.3, font=2)
+mtext('b', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
 
 # Quorum sensing
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
@@ -170,7 +170,7 @@ axis(side=2, at=c(0,0.9,1.8,2.7), c('0%','0.9%','1.8%','2.7%'), tick=TRUE, las=1
 text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
-mtext('c', side=2, line=2, las=2, adj=3.3, padj=-13, cex=1.3, font=2)
+mtext('c', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
 
 # Sigma factors
 par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
@@ -186,7 +186,7 @@ text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
                           'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
-mtext('d', side=2, line=2, las=2, adj=3.3, padj=-13, cex=1.3, font=2)
+mtext('d', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
 
 dev.off()
 

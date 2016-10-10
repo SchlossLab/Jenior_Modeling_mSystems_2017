@@ -297,6 +297,7 @@ top_importances <- rbind(cef_only_importance[,c(1,2,3,4,6,7)], clinda_only_impor
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 #top_importances$Sim_StD <- top_importances$Sim_StD * 1.645 # 90% confidence interval
+#top_importances$Sim_StD <- top_importances$Sim_StD * 1.95 # 95% confidence interval
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
@@ -367,7 +368,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(1,3,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
-mtext('a', side=2, line=2, las=2, adj=-2, padj=-7, cex=1.9, font=2)
+mtext('a', side=2, line=2, las=2, adj=-2, padj=-7, cex=1.4, font=2)
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -389,7 +390,7 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
 segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add simulated medians
-mtext('b', side=2, line=2, las=2, adj=2, padj=-12.5, cex=1.9, font=2)
+mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -417,7 +418,7 @@ points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') #
 #points(x=top_importances[c(4:6),3]+top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
 #points(x=top_importances[c(4:6),3]-top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
 
-mtext('c', side=2, line=2, las=2, adj=2, padj=-12.5, cex=1.9, font=2)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

@@ -309,25 +309,25 @@ abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2))
 
-lines(growth_means$n_glucose_y_aa_mean, type='o', lwd=2, pch=17, cex=2.5)
+lines(growth_means$n_glucose_y_aa_mean, type='o', lwd=2, pch=17, cex=2.7)
 segments(x0=seq(1,49,1), y0=growth_means$n_glucose_y_aa_mean+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_means$n_glucose_y_aa_mean-growth_sds$n_glucose_y_aa_sd, lwd=3, cex=2)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$n_glucose_y_aa_mean+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$n_glucose_y_aa_mean+growth_sds$n_glucose_y_aa_sd, lwd=3)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$n_glucose_y_aa_mean-growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$n_glucose_y_aa_mean-growth_sds$n_glucose_y_aa_sd, lwd=3)
-lines(growth_means$y_glucose_n_aa_mean, type='o', lwd=2, pch=15, cex=2)
+lines(growth_means$y_glucose_n_aa_mean, type='o', lwd=2, pch=16, cex=2.7)
 segments(x0=seq(1,49,1), y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, lwd=3, cex=2)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, lwd=3)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, lwd=3)
 
-lines(growth_means$fructose_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=0, cex=2)
+lines(growth_means$fructose_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=3, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_means$fructose_mean+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_means$fructose_mean-growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$fructose_mean+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_means$fructose_mean+growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$fructose_mean-growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_means$fructose_mean-growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
-lines(growth_means$sorbitol_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=2, pch=1, cex=2.5)
+lines(growth_means$sorbitol_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=3, pch=1, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_means$sorbitol_mean+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_means$sorbitol_mean-growth_sds$sorbitol_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$sorbitol_mean+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_means$sorbitol_mean+growth_sds$sorbitol_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$sorbitol_mean-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_means$sorbitol_mean-growth_sds$sorbitol_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 
-lines(growth_means$mannitol_mean, type='o', col=wes_palette('FantasticFox')[3], lwd=2, pch=2, cex=2)
+lines(growth_means$mannitol_mean, type='o', col=wes_palette('FantasticFox')[3], lwd=3, pch=2, cex=2)
 segments(x0=seq(1,49,1), y0=growth_means$mannitol_mean+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_means$mannitol_mean-growth_sds$mannitol_sd, lwd=3, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$mannitol_mean+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_means$mannitol_mean+growth_sds$mannitol_sd, lwd=3, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$mannitol_mean-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_means$mannitol_mean-growth_sds$mannitol_sd, lwd=3, col=wes_palette('FantasticFox')[3])
@@ -344,9 +344,9 @@ segments(x0=seq(1,49,1)-0.2, y0=growth_means$acetylneuraminate_mean-growth_sds$a
 
 legend('topleft', legend=c('No Carbohydrates','No Amino acids','D-Fructose','D-Sorbitol','Mannitol','Salicin','Neu5Ac','Acetate'), 
        col=c('black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen','red'), 
-       pch=c(17,15,0,1,2,5,6,1), cex=2, pt.cex=3, bg='white', lwd=3)
+       pch=c(17,16,0,1,2,5,6,1), cex=2, pt.cex=3, bg='white', lwd=3)
 
-mtext('a', side=2, line=2, las=2, adj=2, padj=-18, cex=1.8, font=2)
+mtext('a', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -356,12 +356,12 @@ plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab
 abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2))
-mtext('b', side=2, line=2, las=2, adj=2, padj=-18, cex=1.8, font=2)
+mtext('b', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
 
 
 # Use wes_palette("Cavalcanti") for colors
 par(mar=c(0,0,0,0))
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 
 legend('left', legend=c('Fructose + Sorbitol','Fructose + Salicin','Fructose + Mannitol','Fructose + Neu5Ac',
