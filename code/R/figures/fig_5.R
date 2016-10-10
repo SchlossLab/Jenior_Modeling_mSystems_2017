@@ -334,15 +334,18 @@ text(-0.96, 0.08, expression(Importance(m) == paste(log[2],
                                                    bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
                                                    bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6) # Importance algorithm
 
-text(x=-0.95, y=1.14, labels='Tetrathionate reductase', font=2, cex=1.6) # Enzyme 1 name
+text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.5) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
-text(x=-0.5, y=-1.3, labels='Sulfate reductase', font=2, cex=1.6) # Enzyme 2 name
+text(x=-0.5, y=-1.3, labels='ATP:dAdo 5\'-Phosphotransferase', font=2, cex=1.5) # Enzyme 2 name
 text(x=-0.5, y=-1, labels='94', col='white', cex=2.4) # Enzyme 2 transcription
-text(x=1, y=0.77, labels='Thiosulfate Oxidase', font=2, cex=1.6) # Enzyme 3
+text(x=1, y=0.75, labels=expression(bold(paste('dAdo:', PO[4]^-3, ' Ribosyltransferase'))), cex=1.5) # Enzyme 3
+
+
+
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcription
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
-text(x=c(0.1,0.1), y=c(-0.02,-0.12), labels=c('Thiosulfate','= 6.554'), cex=1.7, font=c(2,1)) # Compound & calculated importance
-segments(x0=-0.05, y0=-0.18, x1=0.25, y1=-0.18, lwd=2)
+text(x=c(0.3,0.3), y=c(-0.02,-0.12), labels=c('Deoxyadenosine (dAdo)','= 6.554'), cex=1.6, font=c(2,1)) # Compound & calculated importance
+segments(x0=0.15, y0=-0.18, x1=0.45, y1=-0.18, lwd=2)
 legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'), 
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.7)
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions

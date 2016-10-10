@@ -296,18 +296,21 @@ rm(bhi_sd, fructose_sorbitol_sd, fructose_salicin_sd, fructose_mannitol_sd,
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=19, height=9)
-layout(matrix(c(1,1,2,2,3,
-                1,1,2,2,3), nrow=2, ncol=5, byrow=TRUE))
+pdf(file=plot_file, width=25, height=9)
+layout(matrix(c(1,1,2,2,3,3,4,
+                1,1,2,2,3,3,4), nrow=2, ncol=7, byrow=TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Growth on important compounds (separate)
+# NEED TO ADD THIS
+# Growth on important compounds (overlap)
 par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(3,1,0))
 plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
 abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2))
+mtext('a', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
+
 
 lines(growth_means$n_glucose_y_aa_mean, type='o', lwd=2, pch=17, cex=2.7)
 segments(x0=seq(1,49,1), y0=growth_means$n_glucose_y_aa_mean+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_means$n_glucose_y_aa_mean-growth_sds$n_glucose_y_aa_sd, lwd=3, cex=2)
@@ -317,6 +320,22 @@ lines(growth_means$y_glucose_n_aa_mean, type='o', lwd=2, pch=16, cex=2.7)
 segments(x0=seq(1,49,1), y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1), y1=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, lwd=3, cex=2)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, lwd=3)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, lwd=3)
+
+legend('topleft', legend=c('No Carbohydrates','No Amino acids'), col=c('black','black'), pch=c(17,16), cex=2, pt.cex=3, bg='white', lwd=3)
+
+
+
+
+
+
+
+
+# Growth on important compounds (separate)
+par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(3,1,0))
+plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
+abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
+axis(1, at=seq(1,49,4), labels=seq(0,24,2))
 
 lines(growth_means$fructose_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=3, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_means$fructose_mean+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_means$fructose_mean-growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
@@ -342,11 +361,11 @@ segments(x0=seq(1,49,1), y0=growth_means$acetylneuraminate_mean+growth_sds$acety
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$acetylneuraminate_mean+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_means$acetylneuraminate_mean+growth_sds$acetylneuraminate_sd, lwd=3, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$acetylneuraminate_mean-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_means$acetylneuraminate_mean-growth_sds$acetylneuraminate_sd, lwd=3, col='forestgreen')
 
-legend('topleft', legend=c('No Carbohydrates','No Amino acids','D-Fructose','D-Sorbitol','Mannitol','Salicin','Neu5Ac','Acetate'), 
-       col=c('black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen','red'), 
-       pch=c(17,16,0,1,2,5,6,1), cex=2, pt.cex=3, bg='white', lwd=3)
+legend('topleft', legend=c('D-Fructose','D-Sorbitol','Mannitol','Salicin','Neu5Ac','Acetate'), 
+       col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen','red'), 
+       pch=c(0,1,2,5,6,1), cex=2, pt.cex=3, bg='white', lwd=3)
 
-mtext('a', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
+mtext('b', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -356,7 +375,7 @@ plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab
 abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2))
-mtext('b', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
+mtext('c', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
 
 
 # Use wes_palette("Cavalcanti") for colors
@@ -380,7 +399,6 @@ dev.off()
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
 pdf(file=plot_file, width=12, height=9)
 
-# Growth on important compounds (separate)
 par(mar=c(5,6,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(3,1,0))
 plot(0, type='n', xaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
 abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
