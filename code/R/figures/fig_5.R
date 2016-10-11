@@ -435,7 +435,7 @@ segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,16.7,1), x1=shared_importan
 # Unique metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
-         lcolor=NA, cex=1.4, groups=top_importances$abx, color='black', 
+         lcolor=NA, cex=1.2, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
