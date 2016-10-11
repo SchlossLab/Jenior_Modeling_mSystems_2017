@@ -3,4 +3,4 @@ KO expression file: germfree.RNA_reads2cdf630.norm.ko.txt
 Graph name: germfree_630
 KEGG ortholog nodes: 1183
 Substrate nodes: 758
-Monte Carlo simulation iterations: 1000
+Monte Carlo simulation iterations: 10000

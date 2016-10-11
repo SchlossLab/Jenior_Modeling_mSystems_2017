@@ -210,9 +210,33 @@ rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_import
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format metabolite importance scores
+cef_importance$Metabolite_score <- as.numeric(as.character(cef_importance$Metabolite_score))
+cef_importance$Sim_Median <- as.numeric(as.character(cef_importance$Sim_Median))
+cef_importance$Sim_IQR_25 <- as.numeric(as.character(cef_importance$Sim_IQR_25))
+cef_importance$Sim_IQR_75 <- as.numeric(as.character(cef_importance$Sim_IQR_75))
+cef_importance$Sim_Lower_95_interval <- as.numeric(as.character(cef_importance$Sim_Lower_95_interval))
+cef_importance$Sim_Upper_95_interval <- as.numeric(as.character(cef_importance$Sim_Upper_95_interval))
 cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
+clinda_importance$Metabolite_score <- as.numeric(as.character(clinda_importance$Metabolite_score))
+clinda_importance$Sim_Median <- as.numeric(as.character(clinda_importance$Sim_Median))
+clinda_importance$Sim_IQR_25 <- as.numeric(as.character(clinda_importance$Sim_IQR_25))
+clinda_importance$Sim_IQR_75 <- as.numeric(as.character(clinda_importance$Sim_IQR_75))
+clinda_importance$Sim_Lower_95_interval <- as.numeric(as.character(clinda_importance$Sim_Lower_95_interval))
+clinda_importance$Sim_Upper_95_interval <- as.numeric(as.character(clinda_importance$Sim_Upper_95_interval))
 clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
+strep_importance$Metabolite_score <- as.numeric(as.character(strep_importance$Metabolite_score))
+strep_importance$Sim_Median <- as.numeric(as.character(strep_importance$Sim_Median))
+strep_importance$Sim_IQR_25 <- as.numeric(as.character(strep_importance$Sim_IQR_25))
+strep_importance$Sim_IQR_75 <- as.numeric(as.character(strep_importance$Sim_IQR_75))
+strep_importance$Sim_Lower_95_interval <- as.numeric(as.character(strep_importance$Sim_Lower_95_interval))
+strep_importance$Sim_Upper_95_interval <- as.numeric(as.character(strep_importance$Sim_Upper_95_interval))
 strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
+gf_importance$Metabolite_score <- as.numeric(as.character(gf_importance$Metabolite_score))
+gf_importance$Sim_Median <- as.numeric(as.character(gf_importance$Sim_Median))
+gf_importance$Sim_IQR_25 <- as.numeric(as.character(gf_importance$Sim_IQR_25))
+gf_importance$Sim_IQR_75 <- as.numeric(as.character(gf_importance$Sim_IQR_75))
+gf_importance$Sim_Lower_95_interval <- as.numeric(as.character(gf_importance$Sim_Lower_95_interval))
+gf_importance$Sim_Upper_95_interval <- as.numeric(as.character(gf_importance$Sim_Upper_95_interval))
 gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
 cef_importance <- cef_importance[c(1:50),]
@@ -224,7 +248,6 @@ shared_importance <- as.data.frame(subset(cef_importance, (cef_importance[,1] %i
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% clinda_importance[,1])))
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% strep_importance[,1])))
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
-
 shared_importance <- shared_importance$Compound_name
 shared_cef <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% shared_importance)))
 shared_cef <- shared_cef[order(shared_cef$Compound_name),] 
@@ -247,12 +270,16 @@ shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_scor
 rownames(shared_score) <- shared_cef$Compound_name
 shared_sim <- cbind(shared_cef$Sim_Median, shared_clinda$Sim_Median, shared_strep$Sim_Median, shared_gf$Sim_Median)
 rownames(shared_sim) <- shared_cef$Compound_name
-shared_lower <- cbind(shared_cef$Lower_95_interval, shared_clinda$Lower_95_interval, shared_strep$Lower_95_interval, shared_gf$Lower_95_interval)
+shared_25 <- cbind(shared_cef$Sim_IQR_25, shared_clinda$Sim_IQR_25, shared_strep$Sim_IQR_25, shared_gf$Sim_IQR_25)
+rownames(shared_sim) <- shared_cef$Compound_name
+shared_75 <- cbind(shared_cef$Sim_IQR_75, shared_clinda$Sim_IQR_75, shared_strep$Sim_IQR_75, shared_gf$Sim_IQR_75)
+rownames(shared_sim) <- shared_cef$Compound_name
+shared_lower <- cbind(shared_cef$Sim_Lower_95_interval, shared_clinda$Sim_Lower_95_interval, shared_strep$Sim_Lower_95_interval, shared_gf$Sim_Lower_95_interval)
 rownames(shared_lower) <- shared_cef$Compound_name
-shared_upper <- cbind(shared_cef$Upper_95_interval, shared_clinda$Upper_95_interval, shared_strep$Upper_95_interval, shared_gf$Upper_95_interval)
+shared_upper <- cbind(shared_cef$Sim_Upper_95_interval, shared_clinda$Sim_Upper_95_interval, shared_strep$Sim_Upper_95_interval, shared_gf$Sim_Upper_95_interval)
 rownames(shared_upper) <- shared_cef$Compound_name
-shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median), apply(shared_sim, 1, median), apply(shared_lower, 1, median), apply(shared_upper, 1, median)))
-colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median', 'Sim_Lower', 'Sim_Upper')
+shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median), apply(shared_sim, 1, median), apply(shared_25, 1, median), apply(shared_75, 1, median), apply(shared_lower, 1, median), apply(shared_upper, 1, median)))
+colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median', 'Sim_iqr_25', 'Sim_iqr_75', 'Sim_Lower', 'Sim_Upper')
 shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
@@ -292,8 +319,8 @@ strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'Gnotobiotic'
 gf_only_importance$color <- 'forestgreen'
 
-top_importances <- rbind(cef_only_importance[,c(1:5,8)], clinda_only_importance[,c(1:5,8)], 
-                         strep_only_importance[,c(1:5,8)], gf_only_importance[,c(1:5,8)])
+top_importances <- rbind(cef_only_importance[,c(1:7,10)], clinda_only_importance[,c(1:7,10)], 
+                         strep_only_importance[,c(1:7,10)], gf_only_importance[,c(1:7,10)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
@@ -303,6 +330,9 @@ top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahyd
 top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR'
 top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide 
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
+
+shared_importance[shared_importance < -4] <- -4
+top_importances[top_importances < -4] <- -4
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -329,8 +359,8 @@ par(mar=c(0,1,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 
 text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
-                                                   bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
-                                                   bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6) # Importance algorithm
+                                                    bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
+                                                    bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6) # Importance algorithm
 
 text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.5) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
@@ -376,7 +406,7 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
-# Boxes in A are drawn in seperate software (Gimp)
+# Boxes are drawn in Gimp
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -386,11 +416,19 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
 segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
-points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add confidence intervals
-points(x=shared_importance$Sim_Lower, y=c(1:17), cex=1.6, col='black', pch='|')
-points(x=shared_importance$Sim_Upper, y=c(1:17), cex=1.6, col='black', pch='|')
 
-segments(x0=shared_importance$Sim_Lower, y0=c(1:17), x1=shared_importance$Sim_Upper, y1=c(1:17), lwd=2)
+
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,16.7,1), lwd=1.5)
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,17.3,1), lwd=1.5)
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,16.7,1), lwd=1.5)
+segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,17.1,1), lwd=1.5)
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,17.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,17.3,1), lwd=1.5)
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,17.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,16.9,1), lwd=1.5)
+segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,16.9,1), lwd=1.5)
+segments(x0=shared_importance$Sim_Median, y0=seq(0.9,16.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,16.7,1), lwd=1.5)
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,16.7,1), lwd=1.5)
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,17.3,1), lwd=1.5)
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,16.7,1), lwd=1.5)
 
 
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
@@ -405,28 +443,56 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
 # Simulated confidence intervals
-points(x=top_importances[c(20:7),3], y=c(1:14), cex=2.5, col='black', pch='|') # Gnotobiotic
-points(x=top_importances[c(20:7),4], y=c(1:14), cex=1.6, col='black', pch='|')
-points(x=top_importances[c(20:7),5], y=c(1:14), cex=1.6, col='black', pch='|')
+segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5) # iqr 25
+segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),6], y1=seq(1.4,14.4,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),6], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),3], y1=seq(1.1,14.1,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),7], y1=seq(1.4,14.4,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5) # Gnotobiotic
+segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),3], y0=seq(0.9,13.9,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),5], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(0.6,13.6,1), lwd=1.5) # iqr 75
+segments(x0=top_importances[c(20:7),7], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(1.4,14.4,1), lwd=1.5)
+segments(x0=top_importances[c(20:7),5], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5)
 
+segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5) # iqr 25
+segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),6], y1=c(17.4,18.4), lwd=1.5)
+segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5)
+segments(x0=top_importances[c(2:3),6], y0=c(17.4,18.4), x1=top_importances[c(2:3),3], y1=c(17.1,18.1), lwd=1.5)
+segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),7], y1=c(17.4,18.4), lwd=1.5)
+segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5) # Clindamycin
+segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5)
+segments(x0=top_importances[c(2:3),3], y0=c(16.9,17.9), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5)
+segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5) # iqr 75
+segments(x0=top_importances[c(2:3),7], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(17.4,18.4), lwd=1.5)
+segments(x0=top_importances[c(2:3),5], y0=c(16.6,17.6), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5)
 
+segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5) # iqr 25
+segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,6], y1=21.4, lwd=1.5)
+segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,4], y1=20.6, lwd=1.5)
+segments(x0=top_importances[1,6], y0=21.4, x1=top_importances[1,3], y1=21.1, lwd=1.5)
+segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,7], y1=21.4, lwd=1.5)
+segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,3], y1=20.9, lwd=1.5) # Cefoperazone
+segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,3], y1=20.9, lwd=1.5)
+segments(x0=top_importances[1,3], y0=20.9, x1=top_importances[1,7], y1=20.6, lwd=1.5)
+segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5) # iqr 75
+segments(x0=top_importances[1,7], y0=21.4, x1=top_importances[1,5], y1=21.4, lwd=1.5)
+segments(x0=top_importances[1,5], y0=20.6, x1=top_importances[1,7], y1=20.6, lwd=1.5)
 
-points(x=top_importances[c(2:3),3], y=c(17:18), cex=2.5, col='black', pch='|') # Clindamycin
-points(x=top_importances[c(2:3),4], y=c(17:18), cex=1.6, col='black', pch='|')
-points(x=top_importances[c(2:3),5], y=c(17:18), cex=1.6, col='black', pch='|')
-
-
-
-points(x=top_importances[1,3], y=21, cex=2.5, col='black', pch='|') # Cefoperazone
-points(x=top_importances[1,4], y=21, cex=1.6, col='black', pch='|')
-points(x=top_importances[1,5], y=21, cex=1.6, col='black', pch='|')
-
-points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') # Streptomycin
-points(x=top_importances[c(4:6),4], y=c(24:26), cex=1.6, col='black', pch='|')
-points(x=top_importances[c(4:6),5], y=c(24:26), cex=1.6, col='black', pch='|')
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
+segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5) # iqr 25
+segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),6], y1=c(24.4,25.4,26.4), lwd=1.5)
+segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5)
+segments(x0=top_importances[c(4:6),6], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),3], y1=c(24.1,25.1,26.1), lwd=1.5)
+segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),7], y1=c(24.4,25.4,26.4), lwd=1.5)
+segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5) # Streptomycin
+segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5)
+segments(x0=top_importances[c(4:6),3], y0=c(23.9,24.9,25.9), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5)
+segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5) # iqr 75
+segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(24.4,25.4,26.4), lwd=1.5)
+segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
