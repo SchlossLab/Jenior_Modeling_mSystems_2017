@@ -440,7 +440,7 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
 #abline(v=0, col='gray58', lwd=1.7)
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16.5, cex=1.4, font=2)
 
 # Simulated confidence intervals
 segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 25
