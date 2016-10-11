@@ -339,24 +339,30 @@ top_importances[top_importances < -4] <- -4
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=14, height=14)
-layout(matrix(c(1,2,3,4,4,4,4,5,
-                6,7,7,4,4,4,4,8,
-                9,7,7,4,4,4,4,10,
-                11,12,13,4,4,4,4,14,
-                15,15,15,15,16,16,16,16,
-                15,15,15,15,16,16,16,16,
-                15,15,15,15,16,16,16,16,
-                15,15,15,15,16,16,16,16), nrow=8, ncol=8, byrow=TRUE))
+pdf(file=plot_file, width=16, height=16)
+layout(matrix(c(1,2,3,4,5,6,6,6,6,6,6,6,
+                7,7,7,7,7,6,6,6,6,6,6,6,
+                7,7,7,7,7,6,6,6,6,6,6,6,
+                7,7,7,7,7,6,6,6,6,6,6,6,
+                7,7,7,7,7,6,6,6,6,6,6,6,
+                8,9,10,11,12,6,6,6,6,6,6,6,
+               13,13,13,13,13,13,14,14,14,14,14,14,
+               13,13,13,13,13,13,14,14,14,14,14,14,
+               13,13,13,13,13,13,14,14,14,14,14,14,
+               13,13,13,13,13,13,14,14,14,14,14,14,
+               13,13,13,13,13,13,14,14,14,14,14,14,
+               13,13,13,13,13,13,14,14,14,14,14,14), nrow=12, ncol=12, byrow=TRUE))
 
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # A - Example network and importance calculation
-par(mar=c(0,1,0,0))
+par(mar=c(0,0,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 
 text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
@@ -390,33 +396,29 @@ text(x=1.15, y=-0.6, 'More likely consumed', cex=1.3)
 text(x=0.14, y=-0.6, 'More likely released', cex=1.3)
 text(x=0.63, y=-0.95, 'Importance Score', cex=1.6, font=2) 
 
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-
 # Large component of C. difficile 630 graph
-par(mar=c(1,3,1,1))
+par(mar=c(0,0,0,0))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
-     edge.arrow.size=0.2, edge.arrow.width=0.4, vertex.frame.color='black')
-mtext('a', side=2, line=2, las=2, adj=-2, padj=-7, cex=1.4, font=2)
+     edge.arrow.size=0.5, edge.arrow.width=0.8, vertex.frame.color='black')
+mtext('a', side=2, line=2, las=2, adj=-10, padj=-13, cex=1.4, font=2)
 
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+# Boxes are drawn in Illustrator
 
-# Boxes are drawn in Gimp
+
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Shared metabolite importances
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black', 
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
 #abline(v=0, col='gray58', lwd=1.7)
-mtext('b', side=2, line=2, las=2, adj=2.5, padj=-17, cex=1.4, font=2)
+mtext('b', side=2, line=2, las=2, adj=2.5, padj=-21, cex=1.4, font=2)
 
 segments(x0=rep(-4, 17), y0=c(1:17), x1=shared_importance$Sim_iqr_25, y1=c(1:17), lty=2) # Dotted lines
 segments(x0=shared_importance$Sim_iqr_75, y0=c(1:17), x1=rep(13, 17), y1=c(1:17), lty=2)
@@ -436,13 +438,13 @@ segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,16.7,1), x1=shared_importan
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Unique metabolite importances
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.2, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 #abline(v=0, col='gray58', lwd=1.7)
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-17, cex=1.4, font=2)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-21, cex=1.4, font=2)
 
 # Simulated confidence intervals
 segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 25
