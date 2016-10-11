@@ -284,6 +284,7 @@ shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
+shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine -_'
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
@@ -412,11 +413,13 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.4, color='black', 
+dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black', 
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
-segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 #abline(v=0, col='gray58', lwd=1.7)
-mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
+mtext('b', side=2, line=2, las=2, adj=2.5, padj=-17, cex=1.4, font=2)
+
+segments(x0=rep(-4, 17), y0=c(1:17), x1=shared_importance$Sim_iqr_25, y1=c(1:17), lty=2) # Dotted lines
+segments(x0=shared_importance$Sim_iqr_75, y0=c(1:17), x1=rep(13, 17), y1=c(1:17), lty=2)
 
 segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
 segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,17.3,1), lwd=1.5, col='gray58')
@@ -438,9 +441,8 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.2, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
 #abline(v=0, col='gray58', lwd=1.7)
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16.5, cex=1.4, font=2)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-17, cex=1.4, font=2)
 
 # Simulated confidence intervals
 segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 25
@@ -454,6 +456,8 @@ segments(x0=top_importances[c(20:7),3], y0=seq(0.9,13.9,1), x1=top_importances[c
 segments(x0=top_importances[c(20:7),5], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 75
 segments(x0=top_importances[c(20:7),7], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(1.4,14.4,1), lwd=1.5, col='gray58')
 segments(x0=top_importances[c(20:7),5], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58')
+segments(x0=rep(-4, 17), y0=c(1:14), x1=top_importances[c(20:7),4], y1=c(1:14), lty=2) # Dotted lines
+segments(x0=top_importances[c(20:7),5], y0=c(1:14), x1=rep(13, 17), y1=c(1:14), lty=2)
 
 segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray58') # iqr 25
 segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),6], y1=c(17.4,18.4), lwd=1.5, col='gray58')
@@ -466,6 +470,8 @@ segments(x0=top_importances[c(2:3),3], y0=c(16.9,17.9), x1=top_importances[c(2:3
 segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5, col='gray58') # iqr 75
 segments(x0=top_importances[c(2:3),7], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(17.4,18.4), lwd=1.5, col='gray58')
 segments(x0=top_importances[c(2:3),5], y0=c(16.6,17.6), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray58')
+segments(x0=rep(-4, 17), y0=c(17:18), x1=top_importances[c(2:3),4], y1=c(17:18), lty=2) # Dotted lines
+segments(x0=top_importances[c(2:3),5], y0=c(17:18), x1=rep(13, 17), y1=c(17:18), lty=2)
 
 segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray58') # iqr 25
 segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,6], y1=21.4, lwd=1.5, col='gray58')
@@ -478,6 +484,8 @@ segments(x0=top_importances[1,3], y0=20.9, x1=top_importances[1,7], y1=20.6, lwd
 segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5, col='gray58') # iqr 75
 segments(x0=top_importances[1,7], y0=21.4, x1=top_importances[1,5], y1=21.4, lwd=1.5, col='gray58')
 segments(x0=top_importances[1,5], y0=20.6, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray58')
+segments(x0=rep(-4, 17), y0=21, x1=top_importances[1,4], y1=21, lty=2) # Dotted lines
+segments(x0=top_importances[1,5], y0=21, x1=rep(13, 17), y1=21, lty=2)
 
 segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58') # iqr 25
 segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),6], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray58')
@@ -490,6 +498,8 @@ segments(x0=top_importances[c(4:6),3], y0=c(23.9,24.9,25.9), x1=top_importances[
 segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58') # iqr 75
 segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray58')
 segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58')
+segments(x0=rep(-4, 17), y0=c(24:26), x1=top_importances[c(4:6),4], y1=c(24:26), lty=2) # Dotted lines
+segments(x0=top_importances[c(4:6),5], y0=c(24:26), x1=rep(13, 17), y1=c(24:26), lty=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
