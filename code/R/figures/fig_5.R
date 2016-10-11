@@ -292,8 +292,8 @@ strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'Gnotobiotic'
 gf_only_importance$color <- 'forestgreen'
 
-top_importances <- rbind(cef_only_importance[,c(1:7)], clinda_only_importance[,c(1:7)], 
-                         strep_only_importance[,c(1:7)], gf_only_importance[,c(1:7)])
+top_importances <- rbind(cef_only_importance[,c(1:5,8)], clinda_only_importance[,c(1:5,8)], 
+                         strep_only_importance[,c(1:5,8)], gf_only_importance[,c(1:5,8)])
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
@@ -383,13 +383,15 @@ plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.4, color='black', 
-         xlab='Median Metabolite Importance Score', xlim=c(-4,10), 
-         pch=c(19,19,1,19,1,1,19,1,1,19,19,19,19,19,19,19,19))
+         xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
 segments(x0=rep(-4, 16), y0=c(1:17), x1=rep(13, 16), y1=c(1:17), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
-points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add simulated medians
-points(x=shared_importance$Sim_Lower, y=c(1:17), cex=1.8, col='black', pch='|') # Add simulated medians
-points(x=shared_importance$Sim_Upper, y=c(1:17), cex=1.8, col='black', pch='|') # Add simulated medians
+points(x=shared_importance$Sim_Median, y=c(1:17), cex=2.5, col='black', pch='|') # Add confidence intervals
+points(x=shared_importance$Sim_Lower, y=c(1:17), cex=1.6, col='black', pch='|')
+points(x=shared_importance$Sim_Upper, y=c(1:17), cex=1.6, col='black', pch='|')
+
+segments(x0=shared_importance$Sim_Lower, y0=c(1:17), x1=shared_importance$Sim_Upper, y1=c(1:17), lwd=2)
+
 
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
@@ -399,26 +401,31 @@ mtext('b', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
          lcolor=NA, cex=1.4, groups=top_importances$abx, color='black', 
-         xlab='Metabolite Importance Score', xlim=c(-4,10), 
-         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-         pch=c(19,1,1,19,1,1,19,19,19,1,19,19,19,19,19,19,19,19,19,19,19), lwd=3)
+         xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
+         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 segments(x0=rep(-4, 14), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 14), y1=c(1:14, 17:18, 21, 24:26), lty=2)
 abline(v=0, col='gray68', lwd=1.7)
 
-# Add simulated medians
+# Simulated confidence intervals
 points(x=top_importances[c(20:7),3], y=c(1:14), cex=2.5, col='black', pch='|') # Gnotobiotic
-points(x=top_importances[c(20:7),4], y=c(1:14), cex=1.8, col='black', pch='|')
-points(x=top_importances[c(20:7),5], y=c(1:14), cex=1.8, col='black', pch='|')
-points(x=top_importances[c(2:3),3], y=c(17:18), cex=2.5, col='black', pch='|') # Clindamycin
-points(x=top_importances[c(2:3),4], y=c(17:18), cex=1.8, col='black', pch='|')
-points(x=top_importances[c(2:3),5], y=c(17:18), cex=1.8, col='black', pch='|')
-points(x=top_importances[1,3], y=21, cex=2.5, col='black', pch='|') # Cefoperazone
-points(x=top_importances[1,4], y=21, cex=1.8, col='black', pch='|')
-points(x=top_importances[1,5], y=21, cex=1.8, col='black', pch='|')
-points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') # Streptomycin
-points(x=top_importances[c(4:6),4], y=c(24:26), cex=1.8, col='black', pch='|')
-points(x=top_importances[c(4:6),5], y=c(24:26), cex=1.8, col='black', pch='|')
+points(x=top_importances[c(20:7),4], y=c(1:14), cex=1.6, col='black', pch='|')
+points(x=top_importances[c(20:7),5], y=c(1:14), cex=1.6, col='black', pch='|')
 
+
+
+points(x=top_importances[c(2:3),3], y=c(17:18), cex=2.5, col='black', pch='|') # Clindamycin
+points(x=top_importances[c(2:3),4], y=c(17:18), cex=1.6, col='black', pch='|')
+points(x=top_importances[c(2:3),5], y=c(17:18), cex=1.6, col='black', pch='|')
+
+
+
+points(x=top_importances[1,3], y=21, cex=2.5, col='black', pch='|') # Cefoperazone
+points(x=top_importances[1,4], y=21, cex=1.6, col='black', pch='|')
+points(x=top_importances[1,5], y=21, cex=1.6, col='black', pch='|')
+
+points(x=top_importances[c(4:6),3], y=c(24:26), cex=2.5, col='black', pch='|') # Streptomycin
+points(x=top_importances[c(4:6),4], y=c(24:26), cex=1.6, col='black', pch='|')
+points(x=top_importances[c(4:6),5], y=c(24:26), cex=1.6, col='black', pch='|')
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-16, cex=1.4, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

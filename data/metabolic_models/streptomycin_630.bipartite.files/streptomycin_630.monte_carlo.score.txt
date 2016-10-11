@@ -1,665 +1,759 @@
-Compound_code	Compound_name	Metabolite_score	Sim_Median	Lower_95_interval	Upper_95_interval	Relationshiop	Confidence
-C05528	3-Sulfopyruvate	-9.344	-6.864	-6.87344366	-6.852012935	below	*
-C00027	Hydrogen_peroxide	-8.697	-6.476	-6.484335685	-6.464012935	below	*
-C02876	Propanoyl_phosphate	6.775	1.292	1.28282494	1.30046564	above	*
-C16242	Cobalt-precorrin_5A	-1.585	-1.0	-1.010362825	-0.989867065	below	*
-C16243	Cobalt-precorrin_5B	-1.585	2.904	2.893414	2.91418626	below	*
-C06723	6-Carboxyhex-2-enoyl-CoA	6.248	6.658	6.645919715	6.66657308	below	*
-C00944	3-Dehydroquinate	-3.0	-6.524	-6.5321686	-6.51204888	above	*
-C16595	4-Hydroxy-5-phenyltetrahydro-1,3-oxazin-2-one	5.248	6.768	6.75586402	6.77671528	below	*
-C02430	L-Methionyl-tRNA	-4.524	2.585	2.57449695	2.595362825	below	*
-C04332	6,7-Dimethyl-8-(D-ribityl)lumazine	-3.17	-1.585	-1.59526368	-1.5745957	below	*
-C14819	Fe3+	-8.752	-6.629	-6.6373503	-6.616965535	below	*
-C14818	Fe2+	8.752	6.629	6.616965535	6.6373503	above	*
-C00431	5-Aminopentanoate	-10.361	-6.858	-6.86748	-6.84607258	below	*
-C00437	N-Acetylornithine	3.907	3.585	3.57474264	3.59490186	above	*
-C01451	Salicin	4.17	6.585	6.57313736	6.59346564	below	*
-C00438	N-Carbamoyl-L-aspartate	-5.129	1.292	1.283116845	1.30091752	below	*
-C00826	L-Arogenate	2.585	6.658	6.6460157	6.66646564	below	*
-C00469	Ethanol	10.222	6.966	6.95400464	6.97584182	above	*
-C01181	4-Trimethylammoniobutanoate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C04877	UDP-N-acetylmuramoyl-L-alanyl-D-gamma-glutamyl-meso-2,6-diaminopimelate	4.087	1.0	0.989468905	1.01047382	above	*
-C04874	2-Amino-4-hydroxy-6-(D-erythro-1,2,3-trihydroxypropyl)-7,8-dihydropteridine	5.524	6.578	6.566046115	6.58623022	below	*
-C01185	Nicotinate_D-ribonucleotide	6.257	3.857	3.84669208	3.866879345	above	*
-C15812	[Enzyme]-S-sulfanylcysteine	-6.7	-2.0	-2.01033794	-1.98940847	below	*
-C15811	[Enzyme]-cysteine	7.022	6.585	6.573036635	6.5933503	above	*
-C15815	C15815	0.0	1.585	1.57589683	1.593586115	below	*
-C16688	Sucrose_6-phosphate	-0.0	-2.322	-2.332635375	-2.31134922	above	*
-C05752	Octanoyl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C00794	D-Sorbitol	8.909	7.022	7.01015948	7.03215308	above	*
-C05840	Iminoaspartate	-0.0	0.0	-0.0104517	0.0102384	none	n.s.
-C00886	L-Alanyl-tRNA	-6.022	-6.6	-6.6083503	-6.5879683	above	*
-C00506	L-Cysteate	9.344	6.864	6.852012935	6.87344366	above	*
-C01233	sn-Glycero-3-phosphoethanolamine	3.807	6.531	6.51918792	6.539276435	below	*
-C00226	Primary_alcohol	10.222	6.966	6.95400464	6.97584182	above	*
-C00221	beta-D-Glucose	5.0	6.539	6.527060335	6.54740876	below	*
-C00385	Xanthine	-5.098	0.5	0.49142692	0.50867736	below	*
-C00387	Guanosine	6.087	6.794	6.7820631	6.80333306	below	*
-C02504	alpha-Isopropylmalate	0.0	3.643	3.63284692	3.65268382	below	*
-C00229	Acyl-carrier_protein	-1.0	0.0	-0.010410225	0.01050305	below	*
-C00499	Allantoate	6.375	6.658	6.64587824	6.66655965	below	*
-C16396	2,4-Diamino-6-nitrotoluene	9.814	6.995	6.98313736	7.00498876	above	*
-C00546	Methylglyoxal	-7.017	-6.895	-6.90461746	-6.883022415	below	*
-C16399	2,4-Diamino-6-hydroxylaminotoluene	-9.814	-6.995	-7.00498876	-6.98313736	below	*
-C16217	3-Hydroxyoctadecanoyl-CoA	-5.358	-6.562	-6.57040876	-6.55013736	above	*
-C02291	L-Cystathionine	5.358	6.644	6.63195724	6.65257308	below	*
-C00364	dTMP	-5.044	-2.696	-2.70647382	-2.685452315	below	*
-C00365	dUMP	3.585	2.807	2.79832264	2.81529184	above	*
-C16244	Cobalt-precorrin_7	0.0	-0.5	-0.51050858	-0.489280885	above	*
-C00008	ADP	-6.605	-3.085	-3.09367736	-3.0759071	below	*
-C00007	Oxygen	8.697	6.476	6.464012935	6.484335685	above	*
-C00006	NADP+	-5.781	-6.516	-6.52429184	-6.50415948	above	*
-C00003	NAD+	-3.273	-4.322	-4.33166012	-4.31152618	above	*
-C00002	ATP	6.537	4.858	4.84801124	4.86721614	above	*
-C00369	Starch	8.053	0.0	-0.009937805	0.009787705	above	*
-C05703	Methaneselenol	-9.046	-6.755	-6.76444366	-6.74317528	below	*
-C06613	trans-3-Chloroallyl_aldehyde	-8.477	-3.085	-3.09214792	-3.07717268	below	*
-C06507	Adenosyl_cobyrinate_hexaamide	-0.678	-2.585	-2.59502431	-2.57503968	above	*
-C16619	6-Thioguanosine_monophosphate	-6.304	-6.858	-6.86761746	-6.84607258	above	*
-C11062	4-Hydroxybutyryl-CoA	8.892	6.539	6.5270394	6.54729184	above	*
-C02612	(R)-2-Methylmalate	1.0	6.87	6.85805204	6.87954083	below	*
-C16615	6-Methylthiopurine_5'-monophosphate_ribonucleotide	-4.585	-6.6	-6.60845142	-6.58811208	above	*
-C16614	6-Methylmercaptopurine	4.585	6.6	6.58811208	6.60845142	below	*
-C00645	N-Acetyl-D-mannosamine	-5.96	-6.755	-6.76444366	-6.743060335	above	*
-C00099	beta-Alanine	-2.624	-2.807	-2.81625564	-2.79755634	above	*
-C00311	Isocitrate	0.0	1.0	0.9918314	1.008184005	below	*
-C00310	D-Xylulose	-2.322	1.585	1.5746431	1.59533162	below	*
-C00641	1,2-Diacyl-sn-glycerol	-3.848	0.0	-0.009717	0.01009936	below	*
-C01931	L-Lysyl-tRNA	-7.248	-6.592	-6.600335685	-6.57992248	below	*
-C00314	Pyridoxine	4.524	6.636	6.624060335	6.64462522	below	*
-C00091	Succinyl-CoA	7.371	2.585	2.57828816	2.590846	above	*
-C00760	Cellulose	-1.737	-2.585	-2.59440732	-2.575212295	above	*
-C00093	sn-Glycerol_3-phosphate	5.697	3.7	3.6902198	3.70921614	above	*
-C00094	Sulfite	-2.433	1.0	0.99526	1.0040843	below	*
-C00095	D-Fructose	-7.804	3.17	3.16012816	3.179380065	below	*
-C00097	L-Cysteine	6.449	2.322	2.31282494	2.33072792	above	*
-C14099	2-Naphthaldehyde	-10.222	-6.966	-6.97584182	-6.95400464	below	*
-C06311	Galactitol_1-phosphate	-8.741	-6.937	-6.94696032	-6.92508522	below	*
-C00433	2,5-Dioxopentanoate	2.585	6.672	6.66009786	6.68040876	below	*
-C14090	1-Naphthaldehyde	-10.222	-6.966	-6.97584182	-6.95400464	below	*
-C14095	2-Hydroxy-3-carboxybenzalpyruvate	6.248	6.658	6.645919715	6.66657308	below	*
-C15667	5-Carboxyamino-1-(5-phospho-D-ribosyl)imidazole	4.322	6.508	6.495992	6.5163503	below	*
-C14096	3-Formylsalicylic_acid	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C02702	L-Prolyl-tRNA(Pro)	-8.928	-6.57	-6.57862522	-6.5580631	below	*
-C04732	5-Amino-6-(1-D-ribitylamino)uracil	3.17	1.585	1.5745957	1.59526368	above	*
-C05172	Selenophosphoric_acid	2.0	6.539	6.5270394	6.54723022	below	*
-C11948	2,6-Dimethyl-5-methylene-3-oxo-heptanoyl-CoA	2.585	6.547	6.53495724	6.55550593	below	*
-C11949	3-Isopropylbut-3-enoyl-CoA	-2.585	-6.547	-6.55550593	-6.53495724	above	*
-C05775	alpha-Ribazole	-4.0	-2.0	-2.00917506	-1.990407425	below	*
-C07118	Benzoyl_acetyl-CoA	2.585	6.547	6.53495724	6.55550593	below	*
-C05773	Cobyrinate	-4.17	-6.658	-6.6663503	-6.64602834	above	*
-C05778	Sirohydrochlorin	3.17	0.0	-0.008740165	0.0088243	above	*
-C05670	3-Aminopropiononitrile	5.0	6.524	6.51214684	6.5321686	below	*
-C00164	Acetoacetate	-3.087	-3.322	-3.330883155	-3.31274436	above	*
-C00166	Phenylpyruvate	6.633	2.585	2.57785208	2.59145746	above	*
-C00167	UDP-glucuronate	-4.644	-6.555	-6.56346564	-6.542986075	above	*
-C00160	Glycolate	8.203	0.0	-0.00996032	0.00965222	above	*
-C03794	N6-(1,2-Dicarboxyethyl)-AMP	4.322	0.0	-0.00803746	0.00796952	above	*
-C00162	Fatty_acid	2.585	6.672	6.66009786	6.68040876	below	*
-C00163	Propanoate	7.907	6.484	6.47230642	6.49229184	above	*
-C02984	L-Aspartyl-tRNA(Asp)	-6.229	-6.585	-6.5933503	-6.57294618	above	*
-C02987	L-Glutamyl-tRNA(Glu)	-5.129	-6.492	-6.50029184	-6.480036635	above	*
-C00169	Carbamoyl_phosphate	-5.044	-2.322	-2.331452745	-2.312307885	below	*
-C02047	L-Leucyl-tRNA	-6.6	-6.6	-6.60829184	-6.58807574	none	n.s.
-C03082	4-Phospho-L-aspartate	-4.807	3.585	3.57476792	3.59461746	below	*
-C04377	5,10-Methylenetetrahydromethanopterin	-7.077	-6.476	-6.4843503	-6.4639683	below	*
-C04376	5'-Phosphoribosyl-N-formylglycinamide	6.066	-2.0	-2.010159795	-1.98954277	above	*
-C20396	Methylphosphonate	0.0	7.005	6.99322742	7.01527632	below	*
-C20258	(2S,4S)-4-Hydroxy-2,3,4,5-tetrahydrodipicolinate	-6.827	-1.585	-1.59451476	-1.5752514	below	*
-C00860	L-Histidinol	-3.459	3.322	3.31139188	3.33220522	below	*
-C02962	D-Allose_6-phosphate	7.16	6.6	6.587954475	6.60829184	above	*
-C00864	Pantothenate	4.248	-3.391	-3.40096032	-3.38026548	above	*
-C04272	(R)-2,3-Dihydroxy-3-methylbutanoate	0.322	0.0	-0.00934254	0.00948869	above	*
-C00906	5,6-Dihydrothymine	4.0	6.6	6.5879683	6.608394145	below	*
-C01419	Cys-Gly	8.271	4.248	4.2375957	4.25790186	above	*
-C16186	L-Ascorbate_6-phosphate	-6.304	-6.87	-6.87954952	-6.85802834	above	*
-C01149	4-Trimethylammoniobutanal	2.585	6.672	6.66009786	6.68040876	below	*
-C01144	(S)-3-Hydroxybutanoyl-CoA	8.662	-2.807	-2.81433752	-2.79889618	above	*
-C01146	2-Hydroxy-3-oxopropanoate	-3.585	-6.714	-6.72246564	-6.701940255	above	*
-C01142	(3S)-3,6-Diaminohexanoate	-5.615	-6.63	-6.63846564	-6.6180157	above	*
-C06510	Adenosine-GDP-cobinamide	-4.858	-1.292	-1.30218626	-1.28139188	below	*
-C03561	(R)-3-Hydroxybutanoyl-CoA	10.509	6.644	6.63194618	6.6523503	above	*
-C03402	L-Asparaginyl-tRNA(Asn)	-5.644	-6.459	-6.46710382	-6.44716896	above	*
-C03406	N-(L-Arginino)succinate	-5.087	-6.714	-6.72246564	-6.70195724	above	*
-C05512	Deoxyinosine	5.79	1.585	1.575283	1.59433306	above	*
-C07645	Aldophosphamide	5.248	6.768	6.75586402	6.77671528	below	*
-C07648	Thioguanine	4.585	6.6	6.58811208	6.60845142	below	*
-C00327	L-Citrulline	4.766	-2.454	-2.4643806	-2.44366838	above	*
-C00692	UDP-N-acetylmuramoyl-L-alanyl-D-glutamate	-5.7	0.0	-0.01061365	0.01028896	below	*
-C02320	R-S-Glutathione	5.0	6.524	6.51214684	6.5321686	below	*
-C00084	Acetaldehyde	8.673	-2.904	-2.91257308	-2.89482494	above	*
-C02463	Precorrin_2	1.0	6.585	6.573036635	6.5931686	below	*
-C05269	3-Oxohexanoyl-CoA	-11.029	-6.555	-6.56329184	-6.5430394	below	*
-C03232	3-Phosphonooxypyruvate	-4.322	-6.7	-6.70867736	-6.68800464	above	*
-C18096	D-Allulose_6-phosphate	-7.16	-6.6	-6.60829184	-6.587954475	below	*
-C00269	CDP-diacylglycerol	-2.322	3.17	3.15971736	3.18017994	below	*
-C09814	Benzonitrile	7.651	6.672	6.66000148	6.68057308	above	*
-C11539	Cobalt-precorrin_3	3.807	6.547	6.53508838	6.5553503	below	*
-C11538	Cobalt-sirohydrochlorin	-4.322	-6.6	-6.608335685	-6.58804888	above	*
-C00263	L-Homoserine	0.0	0.0	-0.0050086	0.00443506	none	n.s.
-C00262	Hypoxanthine	5.248	-2.322	-2.330586115	-2.313454175	above	*
-C16216	3-Oxostearoyl-CoA	5.358	6.562	6.55013736	6.57040876	below	*
-C00267	alpha-D-Glucose	3.945	2.585	2.57562902	2.59430462	above	*
-C00266	Glycolaldehyde	-5.524	-6.578	-6.58623022	-6.566046115	above	*
-C04494	Guanosine_3'-diphosphate_5'-triphosphate	-4.0	-1.585	-1.59504564	-1.57473632	below	*
-C00402	D-Aspartate	-6.443	-6.6	-6.60840876	-6.58798094	above	*
-C00460	dUTP	4.392	6.578	6.56597778	6.58646564	below	*
-C00286	dGTP	-6.503	4.17	4.16003968	4.17917506	below	*
-C00283	Hydrogen_sulfide	1.684	-3.322	-3.3292443	-3.313879985	above	*
-C00282	Hydrogen	-6.714	-6.6	-6.60846564	-6.588109315	below	*
-C01962	Thiocysteine	-5.358	-6.644	-6.65257308	-6.63195724	above	*
-C04691	2-Dehydro-3-deoxy-D-arabino-heptonate_7-phosphate	-1.585	0.5	0.489566075	0.510785475	below	*
-C02218	Dehydroalanine	-5.0	-6.467	-6.47523022	-6.45517212	above	*
-C01209	Malonyl-[acyl-carrier_protein]	5.388	3.7	3.68979478	3.7099303	above	*
-C00217	D-Glutamate	5.15	3.0	2.99041572	3.00913398	above	*
-C00212	Adenosine	5.334	6.913	6.90115948	6.92281022	below	*
-C00606	3-Sulfino-L-alanine	-7.337	-2.322	-2.329771625	-2.31396254	below	*
-C06399	Hydrogenobyrinate	-4.17	-6.658	-6.6663503	-6.64602834	above	*
-C05841	Nicotinate_D-ribonucleoside	6.585	6.555	6.542919715	6.56346564	above	*
-C00035	GDP	-5.806	1.585	1.57548524	1.59425564	below	*
-C05844	5-L-Glutamyl-taurine	-5.0	-6.524	-6.5321686	-6.51214684	above	*
-C00033	Acetate	7.691	-4.524	-4.53301706	-4.5137616	above	*
-C00031	D-Glucose	2.888	4.248	4.2375483	4.25797454	below	*
-C00136	Butanoyl-CoA	8.284	-3.391	-3.3985129	-3.38259124	above	*
-C00135	L-Histidine	5.358	-0.792	-0.802211935	-0.78130656	above	*
-C00134	Putrescine	4.322	3.459	3.449583595	3.4680929	above	*
-C00133	D-Alanine	-8.233	4.285	4.274613475	4.29481812	below	*
-C00131	dATP	-3.784	0.0	-0.00714792	0.00671184	below	*
-C00130	IMP	-4.322	0.0	-0.00905024	0.0088243	below	*
-C05635	5-Hydroxyindoleacetate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C05634	5-Hydroxyindoleacetaldehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C00043	UDP-N-acetyl-alpha-D-glucosamine	-3.919	2.585	2.5768314	2.592771625	below	*
-C00041	L-Alanine	5.728	3.085	3.075307885	3.094380065	above	*
-C00040	Acyl-CoA	5.886	6.983	6.97120056	6.99312622	below	*
-C00047	L-Lysine	5.404	3.807	3.79748524	3.816060905	above	*
-C00046	RNA	-5.335	-4.322	-4.329426	-4.31286602	below	*
-C00044	GTP	-6.714	-2.322	-2.32991738	-2.31348064	below	*
-C00049	L-Aspartate	-6.879	0.0	-0.0079	0.00803746	below	*
-C00048	Glyoxylate	-5.005	0.0	-0.0050086	0.0050086	below	*
-C02642	3-Ureidopropionate	-4.0	-6.6	-6.608394145	-6.5879683	above	*
-C00149	(S)-Malate	0.737	-2.585	-2.5925129	-2.57703048	above	*
-C06481	L-Seryl-tRNA(Sec)	-7.109	0.0	-0.010570595	0.010586	below	*
-C20440	alpha-D-Ribose_1,2-cyclic_phosphate_5-phosphate	5.459	-2.454	-2.46454176	-2.44343454	above	*
-C06482	L-Selenocysteinyl-tRNA(Sec)	-2.0	-6.539	-6.54723022	-6.5270394	above	*
-C04236	(2S)-2-Isopropyl-3-oxosuccinate	-2.0	-6.636	-6.64440876	-6.623992	above	*
-C01101	L-Ribulose_5-phosphate	2.322	6.508	6.496109315	6.516276435	below	*
-C01100	L-Histidinol_phosphate	3.0	-1.792	-1.801226015	-1.7822514	above	*
-C01103	Orotidine_5'-phosphate	-3.939	0.0	-0.00948	0.00944366	below	*
-C05125	2-(alpha-Hydroxyethyl)thiamine_diphosphate	-0.193	2.0	1.99317124	2.00617306	below	*
-C03688	Apo-[acyl-carrier-protein]	5.248	6.672	6.6599683	6.68045142	below	*
-C06002	(S)-Methylmalonate_semialdehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C06007	(R)-2,3-Dihydroxy-3-methylpentanoate	0.322	0.0	-0.00934254	0.00948869	above	*
-C06006	(S)-2-Aceto-2-hydroxybutanoate	0.0	2.322	2.31148036	2.3320172	below	*
-C00227	Acetyl_phosphate	-3.074	0.0	-0.002668225	0.00316	below	*
-C16565	Aminopropylcadaverine	-1.0	-6.492	-6.50010382	-6.48012472	above	*
-C04633	(3R)-3-Hydroxypalmitoyl-[acyl-carrier_protein]	4.794	1.0	0.990120655	1.0097565	above	*
-C16255	[Dihydrolipoyllysine-residue_acetyltransferase]_S-acetyldihydrolipoyllysine	-3.503	-6.943	-6.95284182	-6.93122742	above	*
-C00954	Indole-3-acetate	-6.15	-6.858	-6.86748	-6.8461342	above	*
-C00957	Mercaptopyruvate	-6.468	-2.585	-2.5915886	-2.5774871	below	*
-C05345	beta-D-Fructose_6-phosphate	8.027	-3.17	-3.17869	-3.16070486	above	*
-C00818	D-Glucarate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C00424	(S)-Lactaldehyde	-1.585	-6.714	-6.72257308	-6.701842295	above	*
-C00429	5,6-Dihydrouracil	4.0	6.6	6.5879683	6.608394145	below	*
-C03451	(R)-S-Lactoylglutathione	6.728	6.57	6.55800464	6.578335685	above	*
-C01672	Cadaverine	1.0	6.492	6.48012472	6.50010382	below	*
-C00036	Oxaloacetate	6.56	2.585	2.5777557	2.59117306	above	*
-C05223	Dodecanoyl-[acyl-carrier_protein]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C00037	Glycine	1.847	-1.0	-1.0087769	-0.991259835	above	*
-C15809	Iminoglycine	1.0	6.7	6.68792248	6.70857308	below	*
-C16698	N-Acetylmuramic_acid_6-phosphate	-3.248	-6.807	-6.81661746	-6.79516264	above	*
-C02512	3-Cyano-L-alanine	5.0	6.524	6.51214684	6.5321686	below	*
-C00253	Nicotinate	-6.653	-6.858	-6.86754083	-6.8460157	above	*
-C00250	Pyridoxal	4.524	6.636	6.624060335	6.64462522	below	*
-C00251	Chorismate	2.663	4.0	3.99081467	4.00829184	below	*
-C00256	(R)-Lactate	9.87	6.57	6.55795724	6.5783503	above	*
-C05338	4-Hydroxyphenylacetyl-CoA	2.585	6.547	6.53495724	6.55550593	below	*
-C00255	Riboflavin	4.954	-3.0	-3.0103569	-2.989572	above	*
-C05336	Selenomethionyl-tRNA(Met)	-5.883	-6.629	-6.63729184	-6.616930775	above	*
-C00392	Mannitol	7.2	6.845	6.833060335	6.85454952	above	*
-C00258	D-Glycerate	1.585	1.0	0.990994	1.0088243	above	*
-C05335	L-Selenomethionine	2.0	4.248	4.23749695	4.258211935	below	*
-C16596	5-Phenyl-1,3-oxazinane-2,4-dione	-5.248	-6.768	-6.77671528	-6.75586402	above	*
-C04390	N6-Acetyl-LL-2,6-diaminoheptanedioate	7.248	6.7	6.687954475	6.708612185	above	*
-C01081	Thiamin_monophosphate	-3.17	-6.679	-6.68762522	-6.666965535	above	*
-C01083	alpha,alpha-Trehalose	4.17	6.585	6.57313736	6.59346564	below	*
-C00559	Deoxyadenosine	-5.79	-1.585	-1.59433306	-1.575283	below	*
-C00491	L-Cystine	5.358	6.644	6.63195724	6.65257308	below	*
-C00492	Raffinose	1.0	6.607	6.59493354	6.61529184	below	*
-C00493	Shikimate	-0.093	-1.0	-1.00714792	-0.99240494	above	*
-C00555	4-Aminobutyraldehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C01089	(R)-3-Hydroxybutanoate	4.0	6.539	6.5270157	6.54729184	below	*
-C00498	ADP-glucose	-7.221	0.0	-0.00829184	0.00867736	below	*
-C00882	Dephospho-CoA	3.322	0.0	-0.01069344	0.010218255	above	*
-C00881	Deoxycytidine	5.931	6.476	6.46418792	6.48440876	below	*
-C00078	L-Tryptophan	5.0	6.6	6.58798094	6.6083503	below	*
-C00079	L-Phenylalanine	-1.547	-1.0	-1.00474	-0.99475124	below	*
-C00072	Ascorbate	6.304	6.87	6.85802834	6.87954952	below	*
-C00073	L-Methionine	4.868	4.357	4.34695436	4.366380065	above	*
-C00071	Aldehyde	-9.229	-6.943	-6.95309936	-6.93120056	below	*
-C00077	L-Ornithine	3.884	-1.292	-1.30190897	-1.28203968	above	*
-C00074	Phosphoenolpyruvate	-7.068	0.0	-0.00914425	0.00910317	below	*
-C00075	UTP	7.856	7.072	7.06013736	7.0823569	above	*
-C04454	5-Amino-6-(5'-phospho-D-ribitylamino)uracil	-3.907	-6.531	-6.539214815	-6.5190394	above	*
-C03127	L-Isoleucyl-tRNA(Ile)	-7.375	-6.6	-6.60867736	-6.588036635	below	*
-C00085	D-Fructose_6-phosphate	9.156	2.0	1.990212295	2.00954952	above	*
-C02352	1,4-beta-D-Xylan	3.459	6.516	6.50418792	6.5243503	below	*
-C00083	Malonyl-CoA	-5.953	-5.0	-5.009416405	-4.98950248	below	*
-C00082	L-Tyrosine	-5.106	0.0	-0.0040843	0.00443506	below	*
-C00080	H+	6.714	6.6	6.588109315	6.60846564	above	*
-C16630	5,6-Dihydro-5-fluorouracil	4.0	6.6	6.5879683	6.608394145	below	*
-C04640	2-(Formamido)-N1-(5'-phosphoribosyl)acetamidine	-5.977	-0.5	-0.510313845	-0.489613475	below	*
-C03175	Shikimate_3-phosphate	1.585	-1.0	-1.00872792	-0.99127208	above	*
-C00089	Sucrose	1.222	6.919	6.906930775	6.92851476	below	*
-C04646	6-Thioinosine-5'-monophosphate	6.714	2.585	2.5745483	2.59509936	above	*
-C00670	sn-Glycero-3-phosphocholine	3.807	6.531	6.51918792	6.539276435	below	*
-C00671	(S)-3-Methyl-2-oxopentanoic_acid	-4.248	-6.585	-6.59329184	-6.57308838	above	*
-C00672	2-Deoxy-D-ribose_1-phosphate	6.17	3.085	3.07434369	3.09533794	above	*
-C00673	2-Deoxy-D-ribose_5-phosphate	-5.304	-3.807	-3.817362825	-3.796613475	below	*
-C01251	(R)-2-Hydroxybutane-1,2,4-tricarboxylate	-2.807	-6.578	-6.58645142	-6.56600148	above	*
-C01250	N-Acetyl-L-glutamate_5-semialdehyde	0.0	0.0	-0.00937098	0.00929514	none	n.s.
-C05936	N4-Acetylaminobutanal	2.585	6.672	6.66009786	6.68040876	below	*
-C00106	Uracil	-2.524	1.585	1.575939095	1.59429514	below	*
-C00105	UMP	2.518	0.0	-0.00645746	0.0065886	above	*
-C00103	D-Glucose_1-phosphate	-4.493	0.0	-0.009380065	0.00910317	below	*
-C00100	Propanoyl-CoA	4.044	1.0	0.99103824	1.00891752	above	*
-C00101	Tetrahydrofolate	6.809	-3.322	-3.3292443	-3.3136497	above	*
-C15556	L-3,4-Dihydroxybutan-2-one_4-phosphate	1.0	1.585	1.5745483	1.5954043	below	*
-C00109	2-Oxobutanoate	-7.082	-3.322	-3.331265515	-3.31218978	below	*
-C04702	UDPMurAc(oyl-L-Ala-D-gamma-Glu-L-Lys-D-Ala-D-Ala)	3.7	-2.0	-2.0102384	-1.989679835	above	*
-C00363	dTDP	-4.17	-6.476	-6.48410382	-6.46404888	above	*
-C05764	Hexadecanoyl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C06899	Chloral_hydrate	5.248	6.768	6.75586402	6.77671528	below	*
-C05761	Tetradecanoyl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C05760	trans-Tetradec-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C05763	trans-Hexadec-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C05762	3-Oxohexadecanoyl-[acp]	-5.257	1.585	1.5752198	1.59444366	below	*
-C00361	dGDP	5.871	-2.322	-2.331380065	-2.312212295	above	*
-C00170	5'-Methylthioadenosine	1.222	0.0	-0.00645746	0.00617306	above	*
-C02670	D-Glucuronolactone	2.585	6.672	6.66009786	6.68040876	below	*
-C02992	L-Threonyl-tRNA(Thr)	-7.313	-6.7	-6.70872792	-6.687989235	below	*
-C00179	Agmatine	0.0	2.161	2.1506431	2.17132609	below	*
-C02995	Maltose_6'-phosphate	3.585	-3.585	-3.595159795	-3.57484692	above	*
-C03090	5-Phosphoribosylamine	3.848	2.0	1.99074436	2.00921614	above	*
-C04260	O-D-Alanyl-poly(ribitol_phosphate)	-4.954	-6.845	-6.85457559	-6.8330394	above	*
-C07086	Phenylacetic_acid	-7.651	-6.672	-6.68057308	-6.66000148	below	*
-C01077	O-Acetyl-L-homoserine	3.907	6.658	6.64594618	6.66640876	below	*
-C02972	Dihydrolipoylprotein	8.19	6.607	6.59513736	6.61546564	above	*
-C11435	4-(Cytidine_5'-diphospho)-2-C-methyl-D-erythritol	2.737	-1.0	-1.0075129	-0.9921	above	*
-C11436	2-Phospho-4-(cytidine_5'-diphospho)-2-C-methyl-D-erythritol	-2.415	1.0	0.99224694	1.0075129	below	*
-C00857	Deamino-NAD+	2.0	1.0	0.98934369	1.01017994	above	*
-C02412	Glycyl-tRNA(Gly)	-6.983	-6.768	-6.777434575	-6.75612472	below	*
-C00853	Cob(I)alamin	3.0	6.622	6.60991142	6.63040876	below	*
-C01179	3-(4-Hydroxyphenyl)pyruvate	2.882	0.0	-0.00158	0.0	above	*
-C04823	1-(5'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole	-4.907	0.0	-0.0104517	0.01047382	below	*
-C04411	(2R,3S)-3-Isopropylmalate	0.263	-3.585	-3.593883155	-3.575734485	above	*
-C01172	beta-D-Glucose_6-phosphate	6.476	-3.753	-3.7611686	-3.7442231	above	*
-C00473	Retinol	5.248	6.768	6.75586402	6.77671528	below	*
-C03892	Phosphatidylglycerophosphate	-4.524	-6.6	-6.6083503	-6.588109315	above	*
-C00681	1-Acyl-sn-glycerol_3-phosphate	-2.363	-3.907	-3.91681812	-3.89684692	above	*
-C00680	meso-2,6-Diaminoheptanedioate	1.024	3.322	3.31248524	3.33125564	below	*
-C02411	Glutaconyl-1-CoA	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C02839	L-Tyrosyl-tRNA(Tyr)	-6.285	-6.476	-6.48423022	-6.46404888	above	*
-C04257	N-Acetyl-D-mannosamine_6-phosphate	6.209	6.562	6.55004888	6.57057308	below	*
-C00689	alpha,alpha'-Trehalose_6-phosphate	9.01	4.392	4.38134922	4.40181022	above	*
-C02554	L-Valyl-tRNA(Val)	-6.585	-6.658	-6.66651936	-6.64602834	above	*
-C00512	S-Benzoate_coenzyme_A	-2.585	-6.547	-6.55550593	-6.53495724	above	*
-C16220	3-Hydroxyoctadecanoyl-[acp]	5.209	1.585	1.574452315	1.595410225	above	*
-C00921	Dihydropteroate	-4.459	-1.292	-1.302479745	-1.281572	below	*
-C04294	5-(2-Hydroxyethyl)-4-methylthiazole	1.585	6.484	6.47212472	6.49203746	below	*
-C00458	dCTP	-6.927	5.322	5.311572	5.33069	below	*
-C04895	7,8-Dihydroneopterin_3'-triphosphate	-5.524	-6.6	-6.60851936	-6.58790589	above	*
-C04896	5-(5-Phospho-D-ribosylaminoformimino)-1-(5-phosphoribosyl)-imidazole-4-carboxamide	-3.17	-1.0	-1.010362825	-0.9896194	below	*
-C00376	Retinal	-5.248	-6.768	-6.77671528	-6.75586402	above	*
-C04488	5-Methyl-5,6,7,8-tetrahydromethanopterin	-8.76	-6.889	-6.89868382	-6.87700148	below	*
-C00455	Nicotinamide_D-ribonucleotide	5.954	6.555	6.543106155	6.5633503	below	*
-C01697	Galactitol	8.741	6.937	6.92508522	6.94696032	above	*
-C15972	Enzyme_N6-(lipoyl)lysine	-8.14	3.459	3.448589775	3.46890186	below	*
-C16618	6-Thioxanthine_5'-monophosphate	2.322	-2.696	-2.70633162	-2.6855957	above	*
-C00330	Deoxyguanosine	6.585	6.555	6.542919715	6.56346564	above	*
-C00332	Acetoacetyl-CoA	-8.758	0.0	-0.0065886	0.0065886	below	*
-C00334	4-Aminobutanoate	6.405	-1.585	-1.594676315	-1.5752514	above	*
-C00337	(S)-Dihydroorotate	5.644	-1.0	-1.009452745	-0.990547255	above	*
-C05699	L-Selenocystathionine	5.358	6.644	6.63195724	6.65257308	below	*
-C04688	(3R)-3-Hydroxytetradecanoyl-[acyl-carrier_protein]	5.209	1.585	1.574452315	1.595410225	above	*
-C04122	D-1-Aminopropan-2-ol_O-phosphate	-1.585	2.0	1.989429405	2.01045723	below	*
-C00637	Indole-3-acetaldehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C00630	2-Methylpropanoyl-CoA	11.506	6.555	6.54310102	6.5633503	above	*
-C00631	2-Phospho-D-glycerate	-3.511	0.0	-0.00316	0.0025043	below	*
-C16221	(2E)-Octadecenoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C00208	Maltose	4.209	6.807	6.79526692	6.8167802	below	*
-C05985	2-Propynal	2.585	6.672	6.66009786	6.68040876	below	*
-C00204	2-Dehydro-3-deoxy-D-gluconate	-4.369	-2.0	-2.00682876	-1.99285208	below	*
-C01212	UDP-N-acetylmuramoyl-L-alanine	-4.833	-1.585	-1.59462615	-1.57509814	below	*
-C07490	Trichloroethanol	-5.248	-6.768	-6.77671528	-6.75586402	above	*
-C01217	5,6,7,8-Tetrahydromethanopterin	8.76	6.889	6.87700148	6.89868382	above	*
-C00025	L-Glutamate	-5.796	0.0	-0.00782732	0.007771625	below	*
-C00024	Acetyl-CoA	-8.985	0.0	-0.0075129	0.00753344	below	*
-C00148	L-Proline	8.984	1.585	1.57657702	1.59323022	above	*
-C00026	2-Oxoglutarate	-6.898	-1.0	-1.00775306	-0.99215451	below	*
-C00021	S-Adenosyl-L-homocysteine	-3.17	0.0	-0.009416405	0.009787705	below	*
-C00020	AMP	5.481	-1.585	-1.59046522	-1.57882694	above	*
-C00022	Pyruvate	-7.403	-0.5	-0.50796952	-0.49203048	below	*
-C00143	5,10-Methylenetetrahydrofolate	-7.482	2.322	2.3141	2.329426	below	*
-C00140	N-Acetyl-D-glucosamine	10.819	6.539	6.52707574	6.54729184	above	*
-C00141	3-Methyl-2-oxobutanoic_acid	-1.0	3.907	3.89703968	3.91613398	below	*
-C00029	UDP-glucose	-5.476	4.087	4.077283	4.09596176	below	*
-C00147	Adenine	0.0	2.322	2.31396254	2.32935964	below	*
-C00144	GMP	-4.935	-4.755	-4.764380065	-4.74452618	below	*
-C03740	(5-L-Glutamyl)-L-amino_acid	-5.0	-6.524	-6.5321686	-6.51214684	above	*
-C01079	Protoporphyrinogen_IX	-5.7	-6.6	-6.608394145	-6.58807258	above	*
-C05748	trans-Hex-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C05984	2-Hydroxybutanoic_acid	6.672	6.615	6.60296277	6.62357308	above	*
-C05807	2-Polyprenylphenol	3.0	6.57	6.55810102	6.57840876	below	*
-C05729	R-S-Cysteinylglycine	8.271	4.248	4.2375957	4.25790186	above	*
-C04631	UDP-N-acetyl-3-(1-carboxyvinyl)-D-glucosamine	-4.907	2.696	2.6856194	2.70596032	below	*
-C11437	1-Deoxy-D-xylulose_5-phosphate	0.848	0.0	-0.00524876	0.00524876	above	*
-C00644	D-Mannitol_1-phosphate	7.098	-4.248	-4.25796743	-4.23752618	above	*
-C02739	1-(5-Phospho-D-ribosyl)-ATP	2.524	-2.161	-2.16946564	-2.15232264	above	*
-C05726	S-Substituted_L-cysteine	-8.414	-6.845	-6.85454952	-6.83310102	below	*
-C00705	dCDP	4.459	-3.954	-3.96330462	-3.9439275	above	*
-C06250	Holo-[carboxylase]	5.615	-4.425	-4.434274995	-4.4149828	above	*
-C03194	(R)-1-Aminopropan-2-ol	4.322	6.644	6.6319683	6.6523503	below	*
-C04419	Carboxybiotin-carboxyl-carrier_protein	-3.954	4.248	4.238283	4.25678875	below	*
-C01528	Hydrogen_selenide	-10.042	-6.629	-6.63757308	-6.61712472	below	*
-C02938	3-Indoleacetonitrile	7.651	6.672	6.66000148	6.68057308	above	*
-C04752	2-Methyl-4-amino-5-hydroxymethylpyrimidine_diphosphate	2.585	2.161	2.150589775	2.1712384	above	*
-C04751	1-(5-Phospho-D-ribosyl)-5-amino-4-imidazolecarboxylate	6.629	-1.585	-1.595410225	-1.57466206	above	*
-C00763	D-Proline	-8.484	4.248	4.237381215	4.2577565	below	*
-C01134	Pantetheine_4'-phosphate	-5.728	-2.585	-2.595313845	-2.57482006	below	*
-C01137	S-Adenosylmethioninamine	0.0	-2.161	-2.17054952	-2.15109103	above	*
-C00092	D-Glucose_6-phosphate	-7.993	-6.989	-6.99917994	-6.97717528	below	*
-C03511	L-Phenylalanyl-tRNA(Phe)	-6.248	-6.524	-6.53223022	-6.512069815	above	*
-C03512	L-Tryptophanyl-tRNA(Trp)	-5.0	-6.6	-6.6083503	-6.58798094	above	*
-C12147	L-Threonine_O-3-phosphate	3.322	-3.0	-3.0104043	-2.989364625	above	*
-C00329	D-Glucosamine	2.807	6.57	6.5578893	6.5783503	below	*
-C04462	N-Succinyl-2-L-amino-6-oxoheptanedioate	-5.632	0.0	-0.0075129	0.0072443	below	*
-C06408	Precorrin_8X	4.17	6.658	6.64602834	6.6663503	below	*
-C06407	Precorrin_4	3.322	2.0	1.98971104	2.01025736	above	*
-C06406	Precorrin_3B	3.807	6.547	6.53508838	6.5553503	below	*
-C20373	3-Hydroxyglutaryl-[acp]_methyl_ester	5.209	1.585	1.574452315	1.595410225	above	*
-C20372	3-Ketoglutaryl-[acp]_methyl_ester	-5.672	1.585	1.574572	1.59512622	below	*
-C20377	3-Hydroxypimeloyl-[acp]_methyl_ester	5.209	1.585	1.574452315	1.595410225	above	*
-C20376	3-Ketopimeloyl-[acp]_methyl_ester	-5.672	1.585	1.574572	1.59512622	below	*
-C20375	Glutaryl-[acp]_methyl_ester	6.524	6.524	6.51212472	6.5323503	none	n.s.
-C20374	Enoylglutaryl-[acp]_methyl_ester	-6.285	-6.585	-6.5931686	-6.57286718	above	*
-C05897	Undecaprenyl-diphospho-N-acetylmuramoyl-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine	7.14	1.585	1.5746431	1.595106075	above	*
-C20378	Enoylpimeloyl-[acp]_methyl_ester	-6.285	-6.585	-6.5931686	-6.57286718	above	*
-C00804	Propynoate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C00969	3-Hydroxypropanal	5.248	6.57	6.55800464	6.578394145	below	*
-C11545	Cobalt-precorrin_8	2.0	1.792	1.78174264	1.80256546	above	*
-C00966	2-Dehydropantoate	2.585	0.0	-0.00933306	0.00944366	above	*
-C11540	Cobalt-precorrin_4	3.322	2.0	1.98971104	2.01025736	above	*
-C11542	Cobalt-precorrin_6	-2.0	-1.0	-1.01028896	-0.98947483	below	*
-C11543	Cobalt-dihydro-precorrin_6	-0.0	-1.0	-1.010463155	-0.989679835	above	*
-C04916	N-(5'-Phospho-D-1'-ribulosylformimino)-5-amino-1-(5''-phospho-D-ribosyl)-4-imidazolecarboxamide	0.0	4.087	4.07649695	4.09723208	below	*
-C00415	Dihydrofolate	-5.209	-6.615	-6.62323022	-6.602930775	above	*
-C00416	Phosphatidate	2.415	0.0	-0.00981022	0.009416405	above	*
-C03460	2-Methylprop-2-enoyl-CoA	-11.506	-6.555	-6.5633503	-6.54310102	below	*
-C04851	MurAc(oyl-L-Ala-D-gamma-Glu-L-Lys-D-Ala-D-Ala)-diphospho-undecaprenol	7.14	1.585	1.5746431	1.595106075	above	*
-C00993	D-Alanyl-D-alanine	4.248	0.0	-0.010428	0.01033794	above	*
-C00620	alpha-D-Ribose_1-phosphate	6.895	6.883	6.87108838	6.89265222	above	*
-C11355	4-Amino-4-deoxychorismate	-3.087	-4.425	-4.4350172	-4.41434922	above	*
-C05951	Leukotriene_D4	-5.0	-6.524	-6.5321686	-6.51214684	above	*
-C03263	Coproporphyrinogen_III	5.7	6.6	6.58807258	6.608394145	below	*
-C00242	Guanine	-5.486	3.0	2.99012816	3.00937098	below	*
-C00245	Taurine	5.0	6.524	6.51214684	6.5321686	below	*
-C00624	N-Acetyl-L-glutamate	0.0	-1.585	-1.59533162	-1.57439188	above	*
-C16587	3-Carbamoyl-2-phenylpropionaldehyde	-5.248	-6.768	-6.77671528	-6.75586402	above	*
-C02170	Methylmalonate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C00568	4-Aminobenzoate	5.285	1.0	0.98952618	1.010479745	above	*
-C01099	L-Fuculose_1-phosphate	1.585	6.714	6.701842295	6.72257308	below	*
-C01097	D-Tagatose_6-phosphate	5.498	6.707	6.69512472	6.71613398	below	*
-C01096	Sorbitol_6-phosphate	3.841	-4.7	-4.709592575	-4.689572	above	*
-C01094	D-Fructose_1-phosphate	8.513	-2.904	-2.91381022	-2.89403257	above	*
-C05682	Phosphonoacetate	5.0	6.375	6.363211225	6.38310382	below	*
-C00342	Thioredoxin	-9.945	4.0	3.98966838	4.00996032	below	*
-C00343	Thioredoxin_disulfide	9.965	-4.209	-4.2189303	-4.19869208	above	*
-C00344	Phosphatidylglycerol	5.977	6.651	6.63902834	6.65967736	below	*
-C05684	Selenite	10.042	6.629	6.61712472	6.63757308	above	*
-C00060	Carboxylate	-7.651	-6.672	-6.68057308	-6.66000148	below	*
-C00063	CTP	7.751	7.055	7.0432527	7.0654043	above	*
-C00062	L-Arginine	4.087	6.781	6.76908522	6.790398235	below	*
-C00065	L-Serine	4.372	3.7	3.69081467	3.70867736	above	*
-C00064	L-Glutamine	5.387	3.907	3.89774436	3.91572792	above	*
-C11811	1-Hydroxy-2-methyl-2-butenyl_4-diphosphate	4.907	-0.5	-0.51045723	-0.48950248	above	*
-C16633	5-Fluorouridine	5.858	6.539	6.52702834	6.54746564	below	*
-C04675	3-Hydroxy-3-(4-methylpent-3-en-1-yl)glutaryl-CoA	0.0	6.585	6.57309786	6.59340876	below	*
-C16631	alpha-Fluoro-beta-ureidopropionic_acid	-4.0	-6.6	-6.608394145	-6.5879683	above	*
-C04677	1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide	7.171	-3.459	-3.4687802	-3.4489275	above	*
-C16635	5'-Deoxy-5-fluorocytidine	5.931	6.476	6.46418792	6.48440876	below	*
-C16634	5-Fluorouridine_monophosphate	-5.858	-6.539	-6.54746564	-6.52702834	above	*
-C19673	Malonyl-[acp]_methyl_ester	6.524	6.524	6.51212472	6.5323503	none	n.s.
-C03752	2-Amino-2-deoxy-D-gluconate	3.459	6.931	6.91932064	6.94112622	below	*
-C04079	N-((R)-Pantothenoyl)-L-cysteine	5.459	6.409	6.39732064	6.4171686	below	*
-C00668	alpha-D-Glucose_6-phosphate	7.086	-4.524	-4.533416405	-4.5139275	above	*
-C00666	LL-2,6-Diaminoheptanedioate	-6.632	-2.0	-2.009849325	-1.989893925	below	*
-C00663	beta-D-Glucose_1-phosphate	-1.0	2.696	2.68548036	2.706106075	below	*
-C02163	L-Arginyl-tRNA(Arg)	-5.358	-6.6	-6.60840876	-6.587897595	above	*
-C00988	2-Phosphoglycolate	4.459	6.524	6.51207574	6.532394145	below	*
-C00989	4-Hydroxybutanoic_acid	8.707	6.6	6.58793354	6.60840876	above	*
-C00114	Choline	-3.807	-6.531	-6.539276435	-6.51918792	above	*
-C00117	D-Ribose_5-phosphate	-8.481	-2.161	-2.170265515	-2.15147655	below	*
-C00111	Glycerone_phosphate	-7.331	0.0	-0.00759506	0.007267605	below	*
-C02380	6-Mercaptopurine	4.585	6.6	6.58811208	6.60845142	below	*
-C00112	CDP	-6.331	3.0	2.99037385	3.00937098	below	*
-C00119	5-Phospho-alpha-D-ribose_1-diphosphate	-5.54	2.0	1.99224694	2.00775306	below	*
-C00118	D-Glyceraldehyde_3-phosphate	-6.694	3.17	3.16108248	3.17823022	below	*
-C06416	Precorrin_5	-4.585	-6.492	-6.50023022	-6.48014684	above	*
-C11929	Perillyl-CoA	6.248	6.658	6.645919715	6.66657308	below	*
-C01346	dUDP	2.939	-3.7	-3.70905024	-3.69034778	above	*
-C11924	Perillic_acid	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C05750	3-Oxooctanoyl-[acp]	-5.257	1.585	1.5752198	1.59444366	below	*
-C05751	trans-Oct-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C14145	(3S)-3-Hydroxyadipyl-CoA	10.819	6.516	6.50408522	6.5241686	above	*
-C05753	3-Oxodecanoyl-[acp]	-5.257	1.585	1.5752198	1.59444366	below	*
-C05754	trans-Dec-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C05755	Decanoyl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C05756	3-Oxododecanoyl-[acp]	-5.672	1.585	1.574572	1.59512622	below	*
-C05757	(R)-3-Hydroxydodecanoyl-[acp]	5.209	1.585	1.574452315	1.595410225	above	*
-C05758	trans-Dodec-2-enoyl-[acp]	-5.285	0.5	0.489239805	0.51054176	below	*
-C05759	3-Oxotetradecanoyl-[acp]	-5.672	1.585	1.574572	1.59512622	below	*
-C05811	2-Octaprenyl-6-hydroxyphenol	-3.0	-6.57	-6.57840876	-6.55810102	above	*
-C05810	2-Octaprenylphenol	3.0	6.57	6.55810102	6.57840876	below	*
-C00188	L-Threonine	7.454	4.0	3.99041572	4.00891752	above	*
-C00189	Ethanolamine	3.939	4.7	4.68950248	4.70948869	below	*
-C00185	Cellobiose	-2.585	-6.508	-6.51629184	-6.49620056	above	*
-C00183	L-Valine	6.585	6.658	6.64602834	6.66651936	below	*
-C00180	Benzoate	-7.651	-6.672	-6.68057308	-6.66000148	below	*
-C00181	D-Xylose	-1.0	-2.161	-2.17113965	-2.150572	above	*
-C02909	(2-Naphthyl)methanol	10.222	6.966	6.95400464	6.97584182	above	*
-C00159	D-Mannose	7.944	6.977	6.965263365	6.98717994	above	*
-C04216	all-trans-Heptaprenyl_diphosphate	-3.17	-6.539	-6.54729184	-6.526940255	above	*
-C04051	5-Amino-4-imidazolecarboxyamide	-5.459	-6.658	-6.66657308	-6.64593354	above	*
-C00011	CO2	9.41	1.585	1.5766497	1.593184005	above	*
-C04352	(R)-4'-Phosphopantothenoyl-L-cysteine	3.07	0.0	-0.00682876	0.00617306	above	*
-C02553	L-Seryl-tRNA(Ser)	-7.15	-6.484	-6.49229184	-6.47208838	below	*
-C16348	cis-3-Chloroallyl_aldehyde	-8.477	-3.085	-3.09214792	-3.07717268	below	*
-C02946	4-Acetamidobutanoate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C16586	2-Phenyl-1,3-propanediol_monocarbamate	5.248	6.768	6.75586402	6.77671528	below	*
-C05378	beta-D-Fructose_1,6-bisphosphate	9.048	2.696	2.68609814	2.70554952	above	*
-C00015	UDP	-5.735	2.0	1.9916497	2.007986505	below	*
-C05100	3-Ureidoisobutyrate	-4.0	-6.6	-6.608394145	-6.5879683	above	*
-C00151	L-Amino_acid	5.0	6.524	6.51214684	6.5321686	below	*
-C05823	3-Mercaptolactate	-6.672	-6.615	-6.62357308	-6.60296277	below	*
-C02988	L-Histidyl-tRNA(His)	-5.644	-6.6	-6.60846564	-6.5880631	above	*
-C16551	Alcophosphamide	-5.248	-6.768	-6.77671528	-6.75586402	above	*
-C06715	3-Oxopimeloyl-CoA	2.585	6.547	6.53495724	6.55550593	below	*
-C06714	3-Hydroxypimeloyl-CoA	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C16466	7-Methyl-3-oxo-6-octenoyl-CoA	0.0	-6.585	-6.59340876	-6.57309786	above	*
-C16219	3-Oxostearoyl-[acp]	-5.672	1.585	1.574572	1.59512622	below	*
-C09306	Sulfur_dioxide	-7.366	-6.636	-6.64451936	-6.6240157	below	*
-C00254	Prephenate	0.0	0.0	-0.00714792	0.007172015	none	n.s.
-C16237	Protein_N6-(lipoyl)lysine	-6.34	-6.622	-6.6303503	-6.609965535	above	*
-C00931	Porphobilinogen	4.322	6.508	6.49612472	6.516276435	below	*
-C04327	4-Methyl-5-(2-phosphoethyl)-thiazole	2.663	-3.7	-3.71047382	-3.689429405	above	*
-C18239	Precursor_Z	-4.7	-6.845	-6.85465222	-6.83316264	above	*
-C00446	alpha-D-Galactose_1-phosphate	4.807	6.629	6.61704888	6.63746564	below	*
-C00445	5,10-Methenyltetrahydrofolate	-3.415	0.0	-0.00981022	0.00961746	below	*
-C01762	Xanthosine	6.229	6.741	6.72905204	6.75021614	below	*
-C00441	L-Aspartate_4-semialdehyde	7.375	-3.0	-3.00851936	-2.9909071	above	*
-C00440	5-Methyltetrahydrofolate	-5.218	-1.0	-1.00617306	-0.99368	below	*
-C00526	Deoxyuridine	-1.0	4.248	4.237321965	4.25762615	below	*
-C00527	Glutaryl-CoA	-2.585	-6.547	-6.55550593	-6.53495724	above	*
-C11453	2-C-Methyl-D-erythritol_2,4-cyclodiphosphate	1.17	0.0	-0.009849325	0.00948	above	*
-C00522	(R)-Pantoate	-2.433	0.0	-0.00934254	0.009416405	below	*
-C00448	trans,trans-Farnesyl_diphosphate	4.443	3.585	3.575939095	3.59340876	above	*
-C04882	UDP-N-acetylmuramoyl-L-alanyl-D-glutamyl-6-carboxy-L-lysyl-D-alanyl-D-alanine	3.7	-2.0	-2.0102384	-1.989679835	above	*
-C01024	Hydroxymethylbilane	-4.322	-6.508	-6.516276435	-6.49612472	above	*
-C12739	5'-Deoxy-5-fluorouridine	-5.931	-6.476	-6.48440876	-6.46418792	above	*
-C00009	Orthophosphate	-5.7	-6.562	-6.5703503	-6.55004888	above	*
-C00068	Thiamin_diphosphate	1.087	0.0	-0.006490245	0.00671184	above	*
-C04133	N-Acetyl-L-glutamate_5-phosphate	0.0	1.585	1.57473	1.595159795	below	*
-C03838	5'-Phosphoribosylglycinamide	-4.644	0.0	-0.01054176	0.0103806	below	*
-C00288	HCO3-	6.707	6.977	6.96517528	6.98723208	below	*
-C03722	Quinolinate	0.0	0.0	-0.01028896	0.010635375	none	n.s.
-C05402	Melibiose	-1.0	-6.607	-6.61529184	-6.59493354	above	*
-C04619	(3R)-3-Hydroxydecanoyl-[acyl-carrier_protein]	4.794	1.0	0.990120655	1.0097565	above	*
-C05404	D-Gal_alpha_1->6D-Gal_alpha_1->6D-Glucose	-1.0	-6.607	-6.61529184	-6.59493354	above	*
-C03939	Acetyl-[acyl-carrier_protein]	4.585	0.0	-0.0083503	0.00851936	above	*
-C00054	Adenosine_3',5'-bisphosphate	-5.248	-6.672	-6.68045142	-6.6599683	above	*
-C04039	2,3-Dihydroxy-3-methylbutanoate	1.0	1.0	0.989560545	1.010531095	none	n.s.
-C00627	Pyridoxine_phosphate	-4.524	-6.636	-6.64462522	-6.624060335	above	*
-C00459	dTTP	4.822	7.033	7.02129378	7.04351964	below	*
-C01228	Guanosine_3',5'-bis(diphosphate)	-2.322	-6.401	-6.409152405	-6.3892527	above	*
-C00725	Lipoate	6.34	6.622	6.609965535	6.6303503	below	*
-C00231	D-Xylulose_5-phosphate	-7.383	-2.0	-2.008364915	-1.99157702	below	*
-C00232	Succinate_semialdehyde	-6.639	0.0	-0.00775306	0.00803746	below	*
-C00233	4-Methyl-2-oxopentanoate	-2.0	-6.636	-6.64440876	-6.623992	above	*
-C00234	10-Formyltetrahydrofolate	-8.27	3.459	3.45016385	3.467245625	below	*
-C00235	Dimethylallyl_diphosphate	-4.263	0.0	-0.00990897	0.010106075	below	*
-C01613	Stachyose	1.0	6.607	6.59493354	6.61529184	below	*
-C00237	CO	-6.112	0.0	-0.005846	0.0056643	below	*
-C00010	CoA	-9.404	-3.585	-3.59512622	-3.5745957	below	*
-C00012	Peptide	7.57	6.6	6.58793354	6.6083503	above	*
-C00014	Ammonia	-9.175	-4.0	-4.00914425	-3.99045048	below	*
-C05980	Cardiolipin	-5.977	-6.651	-6.65967736	-6.63902834	above	*
-C00018	Pyridoxal_phosphate	-4.524	-6.636	-6.64462522	-6.624060335	above	*
-C00019	S-Adenosyl-L-methionine	-5.744	-2.585	-2.594006	-2.57574436	below	*
-C00153	Nicotinamide	-5.755	-6.82	-6.82940732	-6.80805204	above	*
-C00152	L-Asparagine	7.222	2.807	2.79751131	2.81661746	above	*
-C00155	L-Homocysteine	-2.7	-4.7	-4.7097249	-4.68945824	above	*
-C02835	Imidazole-4-acetate	-2.585	-6.672	-6.68040876	-6.66009786	above	*
-C05714	alpha-Aminopropiononitrile	7.651	6.672	6.66000148	6.68057308	above	*
-C05715	gamma-Amino-gamma-cyanobutanoate	7.651	6.672	6.66000148	6.68057308	above	*
-C05711	gamma-Glutamyl-beta-cyanoalanine	-5.0	-6.524	-6.5321686	-6.51214684	above	*
-C02713	N-Acetylmuramate	4.17	6.585	6.57313736	6.59346564	below	*
-C02336	beta-D-Fructose	1.585	1.792	1.7815957	1.80251964	below	*
-C14108	4-Hydroxymethylsalicylaldehyde	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C00058	Formate	8.627	3.0	2.99041572	3.00929514	above	*
-C04620	(3R)-3-Hydroxyoctanoyl-[acyl-carrier_protein]	4.794	1.0	0.990120655	1.0097565	above	*
-C00655	Xanthosine_5'-phosphate	4.924	-3.522	-3.53114425	-3.512619935	above	*
-C00301	ADP-ribose	6.524	6.615	6.6028893	6.62357308	below	*
-C00302	DL-Glutamate	-7.651	-6.672	-6.68057308	-6.66000148	below	*
-C00718	Amylose	-7.468	0.0	-0.0088717	0.00901706	below	*
-C02232	3-Oxoadipyl-CoA	-10.819	-6.516	-6.5241686	-6.50408522	below	*
-C14089	1-Hydroxymethylnaphthalene	10.222	6.966	6.95400464	6.97584182	above	*
-C14107	2-Hydroxy-4-hydroxymethylbenzalpyruvate	6.248	6.658	6.645919715	6.66657308	below	*
-C14086	2-Hydroxy-3-methylbenzalpyruvate	6.248	6.658	6.645919715	6.66657308	below	*
-C14087	3-Methylsalicylaldehyde	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C17551	2-Polyprenyl-6-hydroxyphenol	-3.0	-6.57	-6.57840876	-6.55810102	above	*
-C17556	di-trans,poly-cis-Undecaprenyl_phosphate	-2.807	-1.792	-1.8023806	-1.781613475	below	*
-C04442	2-Dehydro-3-deoxy-6-phospho-D-gluconate	5.459	-1.792	-1.80072792	-1.7831283	above	*
-C01127	4-Hydroxy-2-oxoglutarate	6.555	6.524	6.51218476	6.53240876	above	*
-C06188	Salicin_6-phosphate	6.858	1.585	1.57434369	1.595132935	above	*
-C05665	3-Aminopropanal	2.585	6.672	6.66009786	6.68040876	below	*
-C03058	2-Hydroxyglutaryl-CoA	6.248	6.658	6.645919715	6.66657308	below	*
-C06186	Arbutin	3.907	6.858	6.84607574	6.86754952	below	*
-C06187	Arbutin_6-phosphate	5.954	-3.7	-3.710106075	-3.689656135	above	*
-C18902	Methylselenic_acid	10.042	6.629	6.61712472	6.63757308	above	*
-C03294	N-Formylmethionyl-tRNA	-5.17	-6.665	-6.67351936	-6.65294618	above	*
-C02051	Lipoylprotein	-5.672	3.459	3.44876792	3.46861746	below	*
-C03114	Dimethylbenzimidazole	6.322	6.57	6.557965535	6.5781686	below	*
-C04088	Octadecanoyl-[acyl-carrier_protein]	-5.285	-6.672	-6.68051936	-6.659908655	above	*
-C00979	O-Acetyl-L-serine	3.524	6.672	6.66015632	6.68096176	below	*
-C00877	Crotonoyl-CoA	6.388	0.0	-0.00601506	0.00632	above	*
-C16273	3-Hydroxy-5-oxohexanoyl-CoA	-2.0	-4.425	-4.43509936	-4.41466838	above	*
-C16272	3-Hydroxy-5-oxohexanoate	3.322	6.87	6.85815	6.87954952	below	*
-C04246	But-2-enoyl-[acyl-carrier_protein]	-5.285	0.5	0.489239805	0.51054176	below	*
-C00409	Methanethiol	-1.585	-6.476	-6.48440876	-6.46412472	above	*
-C03373	Aminoimidazole_ribotide	-5.044	2.161	2.15066206	2.171410225	below	*
-C16074	Phenylacetonitrile	7.651	6.672	6.66000148	6.68057308	above	*
-C04778	N1-(5-Phospho-alpha-D-ribosyl)-5,6-dimethylbenzimidazole	-3.939	2.0	1.99038254	2.009416405	below	*
-C00407	L-Isoleucine	7.375	6.6	6.588036635	6.60867736	above	*
-C01401	Alanine	-7.651	-6.672	-6.68057308	-6.66000148	below	*
-C01151	D-Ribose_1,5-bisphosphate	-5.492	-6.592	-6.60045142	-6.579992	above	*
-C06056	4-Hydroxy-L-threonine	-4.248	-6.524	-6.5323503	-6.51207574	above	*
-C06055	O-Phospho-4-hydroxy-L-threonine	4.248	6.524	6.51207574	6.5323503	below	*
-C03479	Folinic_acid	5.615	6.622	6.610012935	6.630214815	below	*
-C01412	Butanal	11.198	6.644	6.631919715	6.65246564	above	*
-C06114	gamma-Glutamyl-beta-aminopropiononitrile	-5.0	-6.524	-6.5321686	-6.51214684	above	*
-C06508	Adenosyl_cobinamide	5.392	0.0	-0.01047382	0.010570595	above	*
-C06509	Adenosyl_cobinamide_phosphate	3.807	0.0	-0.00796952	0.00803746	above	*
-C09332	Tetrahydrofolyl-[Glu](2)	-5.209	-6.615	-6.62323022	-6.602930775	above	*
-C06032	D-erythro-3-Methylmalate	0.152	-3.459	-3.467702245	-3.449939095	above	*
-C02576	Perillyl_aldehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C03972	2,3,4,5-Tetrahydrodipicolinate	3.36	1.0	0.99132264	1.0083503	above	*
-C03974	2-Acyl-sn-glycerol_3-phosphate	-2.585	-6.547	-6.55550593	-6.53495724	above	*
-C00577	D-Glyceraldehyde	-9.793	0.5	0.48974264	0.510428	below	*
-C01300	2-Amino-4-hydroxy-6-hydroxymethyl-7,8-dihydropteridine	3.322	4.392	4.38138635	4.40190186	below	*
-C00279	D-Erythrose_4-phosphate	-8.254	0.0	-0.0097565	0.00966012	below	*
-C01304	2,5-Diamino-6-(5-phospho-D-ribosylamino)pyrimidin-4(3H)-one	-1.585	-2.0	-2.010313845	-1.989566075	above	*
-C01801	Deoxyribose	3.907	6.615	6.60308838	6.62340876	below	*
-C00275	D-Mannose_6-phosphate	-7.86	-4.907	-4.91634254	-4.89666206	below	*
-C00270	N-Acetylneuraminate	7.651	6.672	6.660012935	6.68045142	above	*
-C00900	2-Acetolactate	0.0	2.322	2.31148036	2.3320172	below	*
-C00479	Propanal	5.248	6.57	6.55800464	6.578394145	below	*
-C00475	Cytidine	0.138	0.0	-0.005846	0.00645746	above	*
-C12215	Iminoerythrose_4-phosphate	-10.014	-6.714	-6.72267736	-6.7020394	below	*
-C12214	Aminofructose_6-phosphate	10.014	6.714	6.7020394	6.72267736	above	*
-C00294	Inosine	5.781	4.17	4.15952618	4.17990186	above	*
-C00357	N-Acetyl-D-glucosamine_6-phosphate	-9.275	-2.0	-2.00891752	-1.99066694	below	*
-C05698	Selenohomocysteine	-3.807	-1.792	-1.802410225	-1.78139188	below	*
-C01267	3-(Imidazol-4-yl)-2-oxopropyl_phosphate	0.0	0.0	-0.00767564	0.007426	none	n.s.
-C00353	Geranylgeranyl_diphosphate	-4.459	-6.539	-6.54703746	-6.526992	above	*
-C00352	D-Glucosamine_6-phosphate	-1.722	1.585	1.57552	1.59437098	below	*
-C00299	Uridine	-2.826	0.0	-0.0065886	0.00617306	below	*
-C02166	Leukotriene_C4	5.0	6.524	6.51214684	6.5321686	below	*
-C04666	D-erythro-1-(Imidazol-4-yl)glycerol_3-phosphate	-0.83	-4.0	-4.00996743	-3.98971104	above	*
-C01269	5-O-(1-Carboxyvinyl)-3-phosphoshikimate	-1.0	0.0	-0.00853279	0.00891752	below	*
-C05979	Propane-1-ol	-5.248	-6.57	-6.578394145	-6.55800464	above	*
-C05898	Undecaprenyl-diphospho-N-acetylmuramoyl-(N-acetylglucosamine)-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine	-7.539	-6.658	-6.66640876	-6.645992	below	*
-C05893	Undecaprenyl-diphospho-N-acetylmuramoyl-(N-acetylglucosamine)-L-alanyl-gamma-D-glutamyl-L-lysyl-D-alanyl-D-alanine	-7.539	-6.658	-6.66640876	-6.645992	below	*
-C05892	UDP-N-acetylmuramoyl-L-alanyl-gamma-D-glutamyl-L-lysine	5.0	6.57	6.55802518	6.57829184	below	*
-C05596	p-Hydroxyphenylacetylglycine	-2.585	-6.547	-6.55550593	-6.53495724	above	*
-C01279	4-Amino-5-hydroxymethyl-2-methylpyrimidine	-0.0	0.0	-0.010428	0.01050305	none	n.s.
-C05382	Sedoheptulose_7-phosphate	-8.76	0.0	-0.00846564	0.00857308	below	*
-C00120	Biotin	1.0	-1.792	-1.80129514	-1.78218978	above	*
-C00121	D-Ribose	3.907	6.615	6.60308838	6.62340876	below	*
-C00122	Fumarate	-2.862	1.0	0.9949914	1.00474	below	*
-C00123	L-Leucine	6.6	6.6	6.58807574	6.60829184	none	n.s.
-C00129	Isopentenyl_diphosphate	-4.17	0.0	-0.0097565	0.00996743	below	*
-C15532	N-Acetyl-L-citrulline	4.907	6.6	6.5880394	6.6083503	below	*
-C11934	2-Hydroxy-4-isopropenylcyclohexane-1-carboxyl-CoA	-6.248	-6.658	-6.66657308	-6.645919715	above	*
-C15973	Enzyme_N6-(dihydrolipoyl)lysine	7.433	6.755	6.74312472	6.76440732	above	*
-C03028	Thiamin_triphosphate	-4.755	-6.562	-6.57023022	-6.55000464	above	*
-C05749	Hexanoyl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C20589	D-Glucosaminate-6-phosphate	-3.459	-6.931	-6.94112622	-6.91932064	above	*
-C05747	(R)-3-Hydroxyhexanoyl-[acp]	5.209	1.585	1.574452315	1.595410225	above	*
-C05746	3-Oxohexanoyl-[acp]	-5.672	1.585	1.574572	1.59512622	below	*
-C05745	Butyryl-[acp]	5.728	-2.0	-2.010052355	-1.989364625	above	*
-C05744	Acetoacetyl-[acp]	-4.109	-3.753	-3.762265515	-3.7432751	below	*
-C03150	Nicotinamide-beta-riboside	5.755	6.82	6.80805204	6.82940732	below	*
-C04618	(3R)-3-Hydroxybutanoyl-[acyl-carrier_protein]	4.472	0.0	-0.00937098	0.009265515	above	*
-C02091	(S)-Ureidoglycine	-6.375	-6.658	-6.66655965	-6.64587824	above	*
-C00726	Nitrile	7.651	6.672	6.66000148	6.68057308	above	*
-C03539	S-Ribosyl-L-homocysteine	4.392	3.459	3.44845824	3.4690725	above	*
-C00199	D-Ribulose_5-phosphate	-5.666	3.807	3.7969828	3.816452745	below	*
-C00051	Glutathione	5.0	6.524	6.51214684	6.5321686	below	*
-C00052	UDP-alpha-D-galactose	2.652	1.0	0.99074436	1.008883155	above	*
-C00194	Cobamide_coenzyme	-4.624	-6.87	-6.87954952	-6.85808522	above	*
-C00197	3-Phospho-D-glycerate	-2.438	-2.807	-2.8158717	-2.797547255	above	*
-C03785	D-Tagatose_1,6-bisphosphate	6.244	-3.459	-3.4689303	-3.44852618	above	*
-C02714	N-Acetylputrescine	-5.524	-6.629	-6.63767736	-6.61697778	above	*
-C00192	Hydroxylamine	3.0	6.644	6.63205204	6.65267736	below	*
-C00354	D-Fructose_1,6-bisphosphate	-7.141	0.0	-0.006354365	0.00632	below	*
-C01050	UDP-N-acetylmuramate	6.063	-2.585	-2.59481022	-2.57484692	above	*
-C04574	di-trans,poly-cis-Undecaprenyl_diphosphate	-6.129	-2.585	-2.59514597	-2.5746194	below	*
-C05130	Imidazole-4-acetaldehyde	2.585	6.672	6.66009786	6.68040876	below	*
-C00206	dADP	8.083	-4.17	-4.17937098	-4.160062195	above	*
-C04807	2-Amino-7,8-dihydro-4-hydroxy-6-(diphosphooxymethyl)pteridine	2.585	0.0	-0.01033162	0.01049752	above	*
-C20423	alpha-D-Ribose_1-methylphosphonate_5-phosphate	0.0	-2.0	-2.01047382	-1.98934369	above	*
-C20422	alpha-D-Ribose_1-methylphosphonate_5-triphosphate	0.0	-4.492	-4.501937805	-4.48176792	above	*
-C03492	D-4'-Phosphopantothenate	5.392	1.0	0.98954277	1.00990897	above	*
-C02457	Propane-1,3-diol	-5.248	-6.57	-6.578394145	-6.55800464	above	*
-C06010	(S)-2-Acetolactate	0.0	1.585	1.57541572	1.5940929	below	*
-C00831	Pantetheine	5.459	6.409	6.39732064	6.4171686	below	*
+Compound_code	Compound_name	Metabolite_score	Sim_Median	IQR_25	IQR_75	Lower_95_interval	Upper_95_interval	Relationshiop	Confidence
+C05528	3-Sulfopyruvate	-9.344	-5.787	-7.14125	-4.755	-6.14380532238	-5.54942124167	below	*
+C05527	3-Sulfinylpyruvate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00027	Hydrogen_peroxide	-8.697	-5.322	-6.807	-3.7	-5.66210485972	-5.13713324799	below	*
+C02876	Propanoyl_phosphate	6.775	-0.585	-5.19	4.954	-0.844313092689	-0.33747840825	above	*
+C16242	Cobalt-precorrin_5A	-1.585	1.585	-6.15	6.304	1.27772147976	1.89997297424	below	*
+C16243	Cobalt-precorrin_5B	-1.585	-1.792	-6.267	5.93675	-2.10512430672	-1.4953763	above	n.s.
+C06723	6-Carboxyhex-2-enoyl-CoA	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C00944	3-Dehydroquinate	-3.0	-5.492	-6.919	-4.17	-5.83770082627	-5.28365017408	above	*
+C16595	4-Hydroxy-5-phenyltetrahydro-1,3-oxazin-2-one	5.248	5.492	4.087	6.919	5.28779718501	5.83770082627	below	*
+C02430	L-Methionyl-tRNA	-4.524	1.0	-5.954	5.913	0.702514421219	1.29543705531	below	*
+C04332	6,7-Dimethyl-8-(D-ribityl)lumazine	-3.17	0.0	-6.0055	6.0	-0.300058724113	0.299783922184	below	*
+C14819	Fe3+	-8.752	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C14818	Fe2+	8.752	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C00431	5-Aminopentanoate	-10.361	-5.954	-7.26325	-4.833	-6.3169009288	-5.71252405068	below	*
+C00437	N-Acetylornithine	3.907	4.018	-5.147	6.538	3.76083535875	4.34466454721	below	n.s.
+C01451	Salicin	4.17	5.63	4.0	7.18	5.43014405188	5.98874142688	below	*
+C00438	N-Carbamoyl-L-aspartate	-5.129	0.0	-5.109	5.285	-0.25526600974	0.264059671457	below	*
+C00826	L-Arogenate	2.585	5.34	3.907	6.87625	5.14479070267	5.68356486582	below	*
+C00534	Pyridoxamine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00469	Ethanol	10.222	6.072	4.833	7.2945	5.83052405068	6.4364623034	above	*
+C01181	4-Trimethylammoniobutanoate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C04877	UDP-N-acetylmuramoyl-L-alanyl-D-gamma-glutamyl-meso-2,6-diaminopimelate	4.087	-0.5	-6.25275	6.066	-0.812412319906	-0.196918454672	above	*
+C04874	2-Amino-4-hydroxy-6-(D-erythro-1,2,3-trihydroxypropyl)-7,8-dihydropteridine	5.524	5.358	3.907	6.919	5.16279070267	5.70370082627	above	n.s.
+C01185	Nicotinate_D-ribonucleotide	6.257	3.954	-5.82325	6.547	3.66304721252	4.28111422309	above	*
+C15812	[Enzyme]-S-sulfanylcysteine	-6.7	0.0	-5.86425	6.044	-0.293001310945	0.301982337613	below	*
+C15813	C15813	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C15810	C15810	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C15811	[Enzyme]-cysteine	7.022	5.358	4.0	6.707	5.15814405188	5.69310846101	above	*
+C15814	C15814	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C15815	C15815	0.0	0.0	-5.05475	5.285	-0.252555463443	0.264059671457	none	n.s.
+C16688	Sucrose_6-phosphate	-0.0	0.0	-5.913	5.98275	-0.295437055312	0.298922043408	none	n.s.
+C05752	Octanoyl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C00794	D-Sorbitol	8.909	6.446	5.573	7.369	6.16755070028	6.81418462043	above	*
+C05840	Iminoaspartate	-0.0	-1.0	-6.304	5.86425	-1.31497297424	-0.706998689055	above	*
+C00886	L-Alanyl-tRNA	-6.022	-5.426	-6.93975	-3.907	-5.772737579	-5.23079070267	below	*
+C00506	L-Cysteate	9.344	5.787	4.755	7.14125	5.54942124167	6.14380532238	above	*
+C01233	sn-Glycero-3-phosphoethanolamine	3.807	5.409	3.907	7.129	5.21379070267	5.76519326354	below	*
+C00226	Primary_alcohol	10.222	6.072	4.833	7.2945	5.83052405068	6.4364623034	above	*
+C00222	3-Oxopropanoate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00221	beta-D-Glucose	5.0	5.492	4.0	7.15	5.29214405188	5.84924250727	below	*
+C00385	Xanthine	-5.098	2.309	-5.199	5.7455	2.04923723143	2.59606808748	below	*
+C00387	Guanosine	6.087	6.03	4.858	7.292	5.78727495101	6.39433739343	above	n.s.
+C02504	alpha-Isopropylmalate	0.0	3.759	-5.3845	6.182	3.48996891183	4.06787736782	below	*
+C00229	Acyl-carrier_protein	-1.0	-1.0	-6.23375	5.954	-1.31146300415	-0.702514421219	none	n.s.
+C00499	Allantoate	6.375	5.492	4.0	6.966	5.29214405188	5.84004913366	above	*
+C00380	Cytosine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C16396	2,4-Diamino-6-nitrotoluene	9.814	6.328	5.298	7.3585	6.06329079671	6.69565999857	above	*
+C14463	(R)-3-Hydroxy-3-methyl-2-oxopentanoate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00546	Methylglyoxal	-7.017	-6.072	-7.23925	-4.901	-6.43370179311	-5.82712649956	below	*
+C16399	2,4-Diamino-6-hydroxylaminotoluene	-9.814	-6.328	-7.3585	-5.298	-6.69565999857	-6.06329079671	below	*
+C16217	3-Hydroxyoctadecanoyl-CoA	-5.358	-5.492	-7.066	-4.0	-5.84504553236	-5.29214405188	above	n.s.
+C02291	L-Cystathionine	5.358	5.459	3.807	7.02475	5.26878710137	5.80998451789	below	n.s.
+C00364	dTMP	-5.044	1.0	-6.066	6.087	0.696918454672	1.30413078906	below	*
+C00365	dUMP	3.585	3.008	-4.851	5.478	2.76562469891	3.28170272095	above	*
+C00362	dGMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C16244	Cobalt-precorrin_7	0.0	0.5	-6.0275	6.15	0.198842068173	0.807278520239	below	*
+C00360	dAMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00008	ADP	-6.605	-3.059	-5.7965	5.697	-3.34861625082	-2.77435516589	below	*
+C00007	Oxygen	8.697	5.322	3.7	6.807	5.13713324799	5.66210485972	above	*
+C00006	NADP+	-5.781	-5.54	-6.91	-4.0	-5.88525115038	-5.34014405188	below	n.s.
+C00003	NAD+	-3.273	-3.481	-6.3295	5.65775	-3.79724705591	-3.19831625238	above	n.s.
+C00002	ATP	6.537	5.317	-4.62675	6.72775	5.08582912301	5.65314521375	above	*
+C00369	Starch	8.053	0.0	-5.672	5.69825	-0.283395734438	0.284707289097	above	*
+C05703	Methaneselenol	-9.046	-6.129	-7.268	-4.833	-6.49213825774	-5.88752405068	below	*
+C06613	trans-3-Chloroallyl_aldehyde	-8.477	-2.044	-4.84	4.263	-2.28582569723	-1.83100352329	below	*
+C06507	Adenosyl_cobyrinate_hexaamide	-0.678	0.0	-5.807	5.787	-0.290140872687	0.289141592946	below	*
+C16619	6-Thioguanosine_monophosphate	-6.304	-6.038	-7.314	-4.931	-6.40343660114	-5.79162757995	below	n.s.
+C11062	4-Hydroxybutyryl-CoA	8.892	5.459	3.907	6.934	5.26379070267	5.80545028607	above	*
+C02612	(R)-2-Methylmalate	1.0	6.066	4.977	7.34625	5.81732923655	6.43304793972	below	*
+C16615	6-Methylthiopurine_5'-monophosphate_ribonucleotide	-4.585	-5.492	-6.883	-3.907	-5.83590212273	-5.29679070267	above	*
+C16614	6-Methylmercaptopurine	4.585	5.492	3.907	6.883	5.29679070267	5.83590212273	below	*
+C00645	N-Acetyl-D-mannosamine	-5.96	-5.791	-7.097	-4.644	-6.14559441596	-5.55896724423	below	n.s.
+C00099	beta-Alanine	-2.624	-3.503	-6.18925	5.05375	-3.81223960673	-3.25049450054	above	*
+C00311	Isocitrate	0.0	0.0	-4.71	4.90175	-0.235330378914	0.244910973428	none	n.s.
+C00310	D-Xylulose	-2.322	0.0	-6.214	6.0055	-0.310476215409	0.300058724113	below	*
+C00641	1,2-Diacyl-sn-glycerol	-3.848	0.0	-5.7495	5.792	-0.287267943433	0.289391412882	below	*
+C01931	L-Lysyl-tRNA	-7.248	-5.57	-6.919	-4.06525	-5.91570082627	-5.36688390172	below	*
+C00315	Spermidine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00314	Pyridoxine	4.524	5.442	3.907	6.966	5.24679070267	5.79004913366	below	*
+C00091	Succinyl-CoA	7.371	2.858	-2.635	4.658	2.72634489417	3.09073225159	above	*
+C00760	Cellulose	-1.737	0.0	-5.565	5.304	-0.278049587826	0.265008987211	below	*
+C00093	sn-Glycerol_3-phosphate	5.697	3.642	-5.84825	6.3475	3.34979811285	3.95914640768	above	*
+C00094	Sulfite	-2.433	0.923	-1.749	3.18225	0.835612986683	1.08199789773	below	*
+C00095	D-Fructose	-7.804	3.989	-5.88	6.62875	3.69521175626	4.32019877903	below	*
+C00096	GDP-mannose	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00097	L-Cysteine	6.449	2.548	-5.885	5.86	2.25396193632	2.840788964	above	*
+C14099	2-Naphthaldehyde	-10.222	-6.072	-7.2945	-4.833	-6.4364623034	-5.83052405068	below	*
+C06311	Galactitol_1-phosphate	-8.741	-6.209	-7.337	-5.261	-6.57558577284	-5.94613946423	below	*
+C00433	2,5-Dioxopentanoate	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C14090	1-Naphthaldehyde	-10.222	-6.072	-7.2945	-4.833	-6.4364623034	-5.83052405068	below	*
+C14095	2-Hydroxy-3-carboxybenzalpyruvate	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C15667	5-Carboxyamino-1-(5-phospho-D-ribosyl)imidazole	4.322	5.459	4.087	6.931	5.25479718501	5.80530039411	below	*
+C14096	3-Formylsalicylic_acid	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C02702	L-Prolyl-tRNA(Pro)	-8.928	-5.476	-6.98	-4.087	-5.82474862947	-5.27179718501	below	*
+C04732	5-Amino-6-(1-D-ribitylamino)uracil	3.17	0.0	-6.0	6.0055	-0.299783922184	0.300058724113	above	*
+C04734	1-(5'-Phosphoribosyl)-5-formamido-4-imidazolecarboxamide	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05172	Selenophosphoric_acid	2.0	5.476	3.907	6.989	5.28079070267	5.82519830536	below	*
+C11948	2,6-Dimethyl-5-methylene-3-oxo-heptanoyl-CoA	2.585	5.644	4.087	7.1725	5.43979718501	6.00236669698	below	*
+C11949	3-Isopropylbut-3-enoyl-CoA	-2.585	-5.644	-7.1725	-4.087	-6.00236669698	-5.43979718501	above	*
+C05775	alpha-Ribazole	-4.0	0.0	-5.273	5.605	-0.263460103613	0.280048147307	below	*
+C07118	Benzoyl_acetyl-CoA	2.585	5.644	4.087	7.1725	5.43979718501	6.00236669698	below	*
+C05773	Cobyrinate	-4.17	-5.229	-6.57	-3.807	-5.55726339479	-5.03878710137	above	*
+C05778	Sirohydrochlorin	3.17	-1.454	-5.358	4.858	-1.72170704251	-1.21127495101	above	*
+C05670	3-Aminopropiononitrile	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C00164	Acetoacetate	-3.087	-4.195	-6.12825	4.6205	-4.50119180352	-3.96414139792	above	*
+C00166	Phenylpyruvate	6.633	2.479	-3.3055	4.525	2.31384404087	2.70508704131	above	*
+C00167	UDP-glucuronate	-4.644	-5.492	-6.861	-3.882	-5.83480291502	-5.29803980235	above	*
+C00160	Glycolate	8.203	-0.877	-5.693	5.3465	-1.16144497817	-0.609867543341	above	*
+C03794	N6-(1,2-Dicarboxyethyl)-AMP	4.322	0.0	-4.565	4.369	-0.228085600795	0.218292659337	above	*
+C00162	Fatty_acid	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C00163	Propanoate	7.907	5.6	4.0	7.18	5.40014405188	5.95874142688	above	*
+C02984	L-Aspartyl-tRNA(Asp)	-6.229	-5.555	-6.966	-4.087	-5.90304913366	-5.35079718501	below	*
+C02987	L-Glutamyl-tRNA(Glu)	-5.129	-5.426	-6.919	-4.0	-5.77170082627	-5.22614405188	above	*
+C00169	Carbamoyl_phosphate	-5.044	-3.269	-6.2575	5.50575	-3.58164964884	-2.99391077841	below	*
+C02047	L-Leucyl-tRNA	-6.6	-5.492	-6.922	-3.907	-5.83785071823	-5.29679070267	below	*
+C03082	4-Phospho-L-aspartate	-4.807	0.678	-5.585	5.95425	0.398951132434	0.975498069777	below	*
+C04377	5,10-Methylenetetrahydromethanopterin	-7.077	-5.209	-6.858	-3.7	-5.55165302306	-5.02413324799	below	*
+C04376	5'-Phosphoribosyl-N-formylglycinamide	6.066	0.0	-5.9655	6.155	-0.298060164631	0.307528340174	above	*
+C20396	Methylphosphonate	0.0	6.455	5.57525	7.471	6.17643828131	6.82828094711	below	*
+C20258	(2S,4S)-4-Hydroxy-2,3,4,5-tetrahydrodipicolinate	-6.827	0.0	-5.669	5.644	-0.283245842477	0.281996742801	below	*
+C03089	5-Methylthio-D-ribose	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00860	L-Histidinol	-3.459	1.0	-5.883	6.109	0.706061864299	1.30522999677	below	*
+C00862	Methanofuran	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02962	D-Allose_6-phosphate	7.16	5.492	4.087	7.044	5.28779718501	5.84394632464	above	*
+C00864	Pantothenate	4.248	0.0	-5.95975	6.022	-0.297772871706	0.300883129899	above	*
+C04272	(R)-2,3-Dihydroxy-3-methylbutanoate	0.322	0.0	-5.536	5.344	-0.276600632202	0.267007546692	above	*
+C04501	N-Acetyl-alpha-D-glucosamine_1-phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00906	5,6-Dihydrothymine	4.0	5.358	3.907	6.922	5.16279070267	5.70385071823	below	*
+C01419	Cys-Gly	8.271	4.303	-5.52775	6.61675	4.02681157069	4.63359921119	above	*
+C16186	L-Ascorbate_6-phosphate	-6.304	-6.087	-7.332	-4.931	-6.45333595291	-5.84062757995	below	n.s.
+C01149	4-Trimethylammoniobutanal	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C01144	(S)-3-Hydroxybutanoyl-CoA	8.662	-2.796	-5.236	3.579	-3.05761143609	-2.61717889042	above	*
+C01146	2-Hydroxy-3-oxopropanoate	-3.585	-5.524	-7.129	-3.807	-5.88019326354	-5.33378710137	above	*
+C04421	N-Succinyl-LL-2,6-diaminoheptanedioate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C01142	(3S)-3,6-Diaminohexanoate	-5.615	-5.392	-6.886	-3.907	-5.73605201469	-5.19679070267	below	n.s.
+C06510	Adenosine-GDP-cobinamide	-4.858	0.0	-6.209	6.248	-0.310226395473	0.312174990968	below	*
+C03561	(R)-3-Hydroxybutanoyl-CoA	10.509	5.459	4.0	7.17	5.25914405188	5.81724178701	above	*
+C03402	L-Asparaginyl-tRNA(Asn)	-5.644	-5.524	-6.977	-4.087	-5.87259873751	-5.31979718501	below	n.s.
+C03406	N-(L-Arginino)succinate	-5.087	-5.524	-7.055	-4.0	-5.8764959285	-5.32414405188	above	*
+C05512	Deoxyinosine	5.79	0.0	-5.4425	5.50825	-0.271928999414	0.275214131562	above	*
+C04181	3-Hydroxy-3-methyl-2-oxobutanoic_acid	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C07645	Aldophosphamide	5.248	5.492	4.087	6.919	5.28779718501	5.83770082627	below	*
+C07648	Thioguanine	4.585	5.492	3.907	6.883	5.29679070267	5.83590212273	below	*
+C05519	L-Allothreonine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00327	L-Citrulline	4.766	-3.202	-6.05725	6.0785	-3.50464436044	-2.89829390483	above	*
+C00692	UDP-N-acetylmuramoyl-L-alanyl-D-glutamate	-5.7	1.292	-5.931	6.114	0.995663592921	1.59747981671	below	*
+C02320	R-S-Glutathione	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C00084	Acetaldehyde	8.673	-2.0	-5.574	5.3905	-2.27849926371	-1.73066912791	above	*
+C02463	Precorrin_2	1.0	5.492	3.907	7.022	5.29679070267	5.84284711693	below	*
+C05269	3-Oxohexanoyl-CoA	-11.029	-5.492	-6.87325	-4.17	-5.83541497386	-5.28365017408	below	*
+C03232	3-Phosphonooxypyruvate	-4.322	-5.508	-6.907	-4.0	-5.85310125842	-5.30814405188	above	*
+C18096	D-Allulose_6-phosphate	-7.16	-5.492	-7.044	-4.087	-5.84394632464	-5.28779718501	below	*
+C00269	CDP-diacylglycerol	-2.322	3.907	-5.67575	6.63275	3.62341690061	4.23839863498	below	*
+C09814	Benzonitrile	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C11539	Cobalt-precorrin_3	3.807	5.358	3.907	6.919	5.16279070267	5.70370082627	below	*
+C11538	Cobalt-sirohydrochlorin	-4.322	-5.358	-6.79725	-3.807	-5.69761771084	-5.16778710137	above	*
+C00263	L-Homoserine	0.0	0.0	-2.59	2.8325	-0.129406726409	0.141522993264	none	n.s.
+C00262	Hypoxanthine	5.248	-3.222	-5.5675	4.833	-3.50017449779	-2.98052405068	above	*
+C13629	1,2-Bis(4-hydroxyphenyl)-2-propanol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C16216	3-Oxostearoyl-CoA	5.358	5.492	4.0	7.066	5.29214405188	5.84504553236	below	n.s.
+C00267	alpha-D-Glucose	3.945	3.175	-5.16375	6.1095	2.91699846197	3.48025497876	above	*
+C00266	Glycolaldehyde	-5.524	-5.358	-6.919	-3.907	-5.70370082627	-5.16279070267	below	n.s.
+C04494	Guanosine_3'-diphosphate_5'-triphosphate	-4.0	0.0	-5.93675	6.0275	-0.296623700004	0.301157931827	below	*
+C00402	D-Aspartate	-6.443	-5.492	-6.94575	-4.0	-5.83903736292	-5.29214405188	below	*
+C00460	dUTP	4.392	5.524	4.087	7.044	5.31979718501	5.87594632464	below	*
+C00286	dGTP	-6.503	4.886	-5.7965	6.636	4.59638374918	5.21756101794	below	*
+C00283	Hydrogen_sulfide	1.684	-3.405	-5.34	3.89825	-3.67180769074	-3.21022788756	above	*
+C00282	Hydrogen	-6.714	-5.322	-6.87	-4.087	-5.6652525909	-5.11779718501	below	*
+C00320	Thiosulfate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C01962	Thiocysteine	-5.358	-5.459	-7.02475	-3.807	-5.80998451789	-5.26878710137	above	n.s.
+C00088	Nitrite	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04691	2-Dehydro-3-deoxy-D-arabino-heptonate_7-phosphate	-1.585	0.0	-6.19475	5.913	-0.309514408658	0.295437055312	below	*
+C02218	Dehydroalanine	-5.0	-5.392	-6.966	-3.907	-5.74004913366	-5.19679070267	above	*
+C05947	L-erythro-4-Hydroxyglutamate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05946	D-4-Hydroxy-2-oxoglutarate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C01209	Malonyl-[acyl-carrier_protein]	5.388	3.261	-5.5675	6.041	2.98282550221	3.56283244565	above	*
+C00217	D-Glutamate	5.15	3.073	-5.369	5.87525	2.80474335363	3.3665509148	above	*
+C00214	Thymidine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00212	Adenosine	5.334	6.361	5.322	7.39575	6.09509166102	6.73052115708	below	*
+C00606	3-Sulfino-L-alanine	-7.337	-1.807	-4.67675	4.17	-2.04066907635	-1.59865017408	below	*
+C06399	Hydrogenobyrinate	-4.17	-5.229	-6.57	-3.807	-5.55726339479	-5.03878710137	above	*
+C05841	Nicotinate_D-ribonucleoside	6.585	5.392	3.807	6.9945	5.20178710137	5.74147310729	above	*
+C00035	GDP	-5.806	-1.897	-6.0975	6.019	-2.20165541092	-1.59626676206	below	*
+C05844	5-L-Glutamyl-taurine	-5.0	-5.459	-6.94575	-4.087	-5.80603736292	-5.25479718501	above	*
+C00033	Acetate	7.691	-4.332	-6.47875	5.6045	-4.65570418097	-4.05197683469	above	*
+C00031	D-Glucose	2.888	4.343	-5.823	6.7265	4.05205970352	4.67908275876	below	*
+C00136	Butanoyl-CoA	8.284	-3.792	-5.69225	3.797	-4.07640750518	-3.60228674124	above	*
+C00135	L-Histidine	5.358	0.0	-6.114	6.13425	-0.305479816705	0.306491587443	above	*
+C00134	Putrescine	4.322	3.222	-5.19475	6.0705	2.96244957837	3.52530638327	above	*
+C00133	D-Alanine	-8.233	4.479	-5.50975	6.716	4.20371092246	4.8145581369	below	*
+C00131	dATP	-3.784	0.0	-3.8575	4.11975	-0.192736079971	0.20583913557	below	*
+C00130	IMP	-4.322	0.0	-5.63475	5.666	-0.281534575921	0.283095950516	below	*
+C05635	5-Hydroxyindoleacetate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C05634	5-Hydroxyindoleacetaldehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C06112	L-Glutamyl-tRNA(Gln)	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00043	UDP-N-acetyl-alpha-D-glucosamine	-3.919	2.066	-4.484	4.9685	1.84196148215	2.31424606956	below	*
+C00041	L-Alanine	5.728	3.555	-5.486	6.08325	3.28089756715	3.8589434241	above	*
+C00040	Acyl-CoA	5.886	6.42	5.585	7.36775	6.14095113243	6.78812216545	below	*
+C00047	L-Lysine	5.404	3.298	-5.1255	5.773	3.04190958447	3.58644209713	above	*
+C00046	RNA	-5.335	-4.145	-5.801	3.82	-4.43484108876	-3.95413756954	below	*
+C00044	GTP	-6.714	2.312	-5.5655	5.92625	2.03392543018	2.60809907814	below	*
+C00049	L-Aspartate	-6.879	1.551	-4.8925	5.32625	1.30655119345	1.81712068592	below	*
+C00048	Glyoxylate	-5.005	0.0	-2.485	2.96775	-0.124160507771	0.14828062251	below	*
+C02642	3-Ureidopropionate	-4.0	-5.358	-6.922	-3.907	-5.70385071823	-5.16279070267	above	*
+C00149	(S)-Malate	0.737	-1.939	-4.781	4.1765	-2.17787782199	-1.73032540817	above	*
+C06481	L-Seryl-tRNA(Sec)	-7.109	-2.322	-6.214	6.0	-2.63247621541	-2.02221607782	below	*
+C20440	alpha-D-Ribose_1,2-cyclic_phosphate_5-phosphate	5.459	0.0	-5.931	5.858	-0.296336407079	0.292689036026	above	*
+C06482	L-Selenocysteinyl-tRNA(Sec)	-2.0	-5.476	-6.989	-3.907	-5.82519830536	-5.28079070267	above	*
+C04236	(2S)-2-Isopropyl-3-oxosuccinate	-2.0	-5.392	-6.989	-3.907	-5.74119830536	-5.19679070267	above	*
+C01101	L-Ribulose_5-phosphate	2.322	5.285	4.0	7.03575	5.08514405188	5.63653412175	below	*
+C01100	L-Histidinol_phosphate	3.0	0.0	-5.503	5.369	-0.27495182063	0.268256646368	above	*
+C01103	Orotidine_5'-phosphate	-3.939	0.0	-5.524	5.529	-0.276001064357	0.276250884293	below	*
+C01102	O-Phospho-L-homoserine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05125	2-(alpha-Hydroxyethyl)thiamine_diphosphate	-0.193	1.716	-3.1855	4.3115	1.55683971931	1.93141973008	below	*
+C03688	Apo-[acyl-carrier-protein]	5.248	5.492	4.0	7.01375	5.29214405188	5.84243491404	below	*
+C06002	(S)-Methylmalonate_semialdehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C06007	(R)-2,3-Dihydroxy-3-methylpentanoate	0.322	0.0	-5.536	5.344	-0.276600632202	0.267007546692	above	*
+C06006	(S)-2-Aceto-2-hydroxybutanoate	0.0	0.0	-5.95975	6.0925	-0.297772871706	0.304405590984	none	n.s.
+C00227	Acetyl_phosphate	-3.074	0.0	-1.254	1.489	-0.0626548397364	0.0743963766887	below	*
+C16565	Aminopropylcadaverine	-1.0	-5.555	-7.044	-4.0	-5.90694632464	-5.35514405188	above	*
+C04633	(3R)-3-Hydroxypalmitoyl-[acyl-carrier_protein]	4.794	-1.907	-5.94725	5.392	-2.20414832187	-1.63759418193	above	*
+C16255	[Dihydrolipoyllysine-residue_acetyltransferase]_S-acetyldihydrolipoyllysine	-3.503	-6.322	-7.3235	-5.334	-6.68791125902	-6.05549209318	above	*
+C00954	Indole-3-acetate	-6.15	-6.213	-7.392	-4.83675	-6.58233379213	-5.97133668573	above	n.s.
+C00957	Mercaptopyruvate	-6.468	-2.261	-4.6745	3.6365	-2.49455665737	-2.07930596116	below	*
+C05345	beta-D-Fructose_6-phosphate	8.027	-4.216	-6.3335	5.46575	-4.53244691186	-3.94290933789	above	*
+C00818	D-Glucarate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C00819	D-Glutamine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00424	(S)-Lactaldehyde	-1.585	-5.426	-6.99175	-3.907	-5.77533570632	-5.23079070267	above	*
+C00429	5,6-Dihydrouracil	4.0	5.358	3.907	6.922	5.16279070267	5.70385071823	below	*
+C00817	D-Altronate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03451	(R)-S-Lactoylglutathione	6.728	5.492	4.06525	6.934	5.28888390172	5.83845028607	above	*
+C01672	Cadaverine	1.0	5.555	4.0	7.044	5.35514405188	5.90694632464	below	*
+C00036	Oxaloacetate	6.56	2.337	-3.11125	4.47	2.18154954535	2.56033902203	above	*
+C05223	Dodecanoyl-[acyl-carrier_protein]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C00037	Glycine	1.847	-1.891	-6.009	5.5205	-2.19123359807	-1.6151738096	above	*
+C15809	Iminoglycine	1.0	5.492	3.907	7.15	5.29679070267	5.84924250727	below	*
+C16698	N-Acetylmuramic_acid_6-phosphate	-3.248	-6.18	-7.285	-4.977	-6.54398764552	-5.93132923655	above	*
+C03912	(S)-1-Pyrroline-5-carboxylate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02512	3-Cyano-L-alanine	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C00253	Nicotinate	-6.653	-6.026	-7.3295	-4.841	-6.39221104294	-5.78412433878	below	*
+C00250	Pyridoxal	4.524	5.442	3.907	6.966	5.24679070267	5.79004913366	below	*
+C00251	Chorismate	2.663	3.737	-4.41775	5.79375	3.5162715963	4.02647884986	below	*
+C00256	(R)-Lactate	9.87	5.392	3.807	6.87625	5.20178710137	5.73556486582	above	*
+C05338	4-Hydroxyphenylacetyl-CoA	2.585	5.644	4.087	7.1725	5.43979718501	6.00236669698	below	*
+C00255	Riboflavin	4.954	1.585	-5.954	6.155	1.28751442122	1.89252834017	above	*
+C05336	Selenomethionyl-tRNA(Met)	-5.883	-5.409	-6.895	-3.907	-5.75350169058	-5.21379070267	below	*
+C00392	Mannitol	7.2	6.066	4.931	7.39125	5.81962757995	6.43529631914	above	*
+C00258	D-Glycerate	1.585	0.0	-5.155	5.2385	-0.257564353143	0.26173634606	above	*
+C05335	L-Selenomethionine	2.0	3.7	-5.87325	6.516	3.40654901317	4.02556533949	below	*
+C16596	5-Phenyl-1,3-oxazinane-2,4-dione	-5.248	-5.492	-6.919	-4.087	-5.83770082627	-5.28779718501	above	*
+C04390	N6-Acetyl-LL-2,6-diaminoheptanedioate	7.248	5.492	3.97675	7.02475	5.29330571458	5.84298451789	above	*
+C01081	Thiamin_monophosphate	-3.17	-5.585	-6.931	-3.907	-5.93130039411	-5.38979070267	above	*
+C01083	alpha,alpha-Trehalose	4.17	5.63	4.0	7.18	5.43014405188	5.98874142688	below	*
+C00559	Deoxyadenosine	-5.79	0.0	-5.50825	5.4425	-0.275214131562	0.271928999414	below	*
+C00491	L-Cystine	5.358	5.459	3.807	7.02475	5.26878710137	5.80998451789	below	n.s.
+C00492	Raffinose	1.0	5.524	4.0	6.883	5.32414405188	5.86790212273	below	*
+C00493	Shikimate	-0.093	0.0	-4.07	4.433	-0.203353427215	0.221490354507	below	n.s.
+C00555	4-Aminobutyraldehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C01089	(R)-3-Hydroxybutanoate	4.0	5.524	4.0	7.0605	5.32414405188	5.87677073043	below	*
+C00498	ADP-glucose	-7.221	0.0	-4.803	5.022	-0.239977029708	0.250919142868	below	*
+C00882	Dephospho-CoA	3.322	0.0	-5.907	6.129	-0.29513727139	0.306229276511	above	*
+C00881	Deoxycytidine	5.931	5.672	4.0	7.2	5.47214405188	6.03174070662	above	n.s.
+C00078	L-Tryptophan	5.0	5.442	4.0	6.919	5.24214405188	5.78770082627	below	*
+C00079	L-Phenylalanine	-1.547	-0.433	-2.987	2.51825	-0.582242429261	-0.30717818966	below	*
+C00072	Ascorbate	6.304	6.087	4.931	7.332	5.84062757995	6.45333595291	above	n.s.
+C00073	L-Methionine	4.868	4.399	-5.52175	6.30575	4.12311135461	4.71406041122	above	*
+C00071	Aldehyde	-9.229	-6.31	-7.4495	-5.285	-6.68220672138	-6.04594032854	below	*
+C00077	L-Ornithine	3.884	0.0	-6.4835	6.257	-0.323941509913	0.312624666851	above	*
+C00074	Phosphoenolpyruvate	-7.068	1.763	-5.6945	5.91325	1.47848007585	2.05844954631	below	*
+C00075	UTP	7.856	6.545	5.67025	7.364	6.26169170254	6.91293480049	above	*
+C04454	5-Amino-6-(5'-phospho-D-ribitylamino)uracil	-3.907	-5.426	-6.907	-3.807	-5.77110125842	-5.23578710137	above	*
+C00039	DNA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03127	L-Isoleucyl-tRNA(Ile)	-7.375	-5.392	-6.966	-3.807	-5.74004913366	-5.20178710137	below	*
+C00085	D-Fructose_6-phosphate	9.156	2.507	-5.9815	6.22125	2.20814041158	2.81783845431	above	*
+C02352	1,4-beta-D-Xylan	3.459	5.585	3.97675	7.066	5.38630571458	5.93804553236	below	*
+C00083	Malonyl-CoA	-5.953	-4.959	-6.769	5.1515	-5.29720622821	-4.70161052081	below	*
+C00082	L-Tyrosine	-5.106	0.0	-2.73475	2.5295	-0.136639013532	0.126383905194	below	*
+C00080	H+	6.714	5.322	4.087	6.87	5.11779718501	5.6652525909	above	*
+C16630	5,6-Dihydro-5-fluorouracil	4.0	5.358	3.907	6.922	5.16279070267	5.70385071823	below	*
+C04640	2-(Formamido)-N1-(5'-phosphoribosyl)acetamidine	-5.977	-1.585	-6.175	5.7615	-1.89352761991	-1.29713248872	below	*
+C03175	Shikimate_3-phosphate	1.585	-0.585	-5.19	5.066	-0.844313092689	-0.331882441703	above	*
+C00089	Sucrose	1.222	5.958	4.874	7.2015	5.71447552721	6.3178156526	below	*
+C04646	6-Thioinosine-5'-monophosphate	6.714	-1.0	-6.0925	6.129	-1.30440559098	-0.693770723489	above	*
+C00670	sn-Glycero-3-phosphocholine	3.807	5.409	3.907	7.129	5.21379070267	5.76519326354	below	*
+C00671	(S)-3-Methyl-2-oxopentanoic_acid	-4.248	-5.459	-6.895	-4.0	-5.80350169058	-5.25914405188	above	*
+C00672	2-Deoxy-D-ribose_1-phosphate	6.17	0.0	-6.358	6.05475	-0.317671029541	0.302519450474	above	*
+C00673	2-Deoxy-D-ribose_5-phosphate	-5.304	-4.022	-6.51	6.0165	-4.34726555557	-3.72139167203	below	*
+C01251	(R)-2-Hydroxybutane-1,2,4-tricarboxylate	-2.807	-5.426	-7.077	-4.0	-5.77959513622	-5.22614405188	above	*
+C01250	N-Acetyl-L-glutamate_5-semialdehyde	0.0	0.0	-5.2905	5.146	-0.264334473386	0.25711467726	none	n.s.
+C01929	L-Histidinal	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05936	N4-Acetylaminobutanal	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C00106	Uracil	-2.524	-0.85	-6.14575	5.94575	-1.15706617329	-0.552926624112	below	*
+C00105	UMP	2.518	1.349	-3.9965	4.4155	1.14931892583	1.56961598473	above	*
+C00103	D-Glucose_1-phosphate	-4.493	2.506	-6.0275	6.02625	2.20484206817	2.80709547684	below	*
+C00100	Propanoyl-CoA	4.044	0.0	-5.331	5.285	-0.26635801486	0.264059671457	above	*
+C00101	Tetrahydrofolate	6.809	-3.974	-5.599	4.1125	-4.25374836338	-3.76852310334	above	*
+C15556	L-3,4-Dihydroxybutan-2-one_4-phosphate	1.0	0.0	-5.889	5.913	-0.294237919624	0.295437055312	above	*
+C00109	2-Oxobutanoate	-7.082	-3.314	-6.2	5.65025	-3.62377671959	-3.03169098228	below	*
+C04702	UDPMurAc(oyl-L-Ala-D-gamma-Glu-L-Lys-D-Ala-D-Ala)	3.7	0.0	-6.109	5.858	-0.30522999677	0.292689036026	above	*
+C00363	dTDP	-4.17	-5.492	-7.04675	-3.907	-5.84408372561	-5.29679070267	above	*
+C15980	(S)-2-Methylbutanoyl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05764	Hexadecanoyl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C06899	Chloral_hydrate	5.248	5.492	4.087	6.919	5.28779718501	5.83770082627	below	*
+C05761	Tetradecanoyl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C05760	trans-Tetradec-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C05763	trans-Hexadec-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C05762	3-Oxohexadecanoyl-[acp]	-5.257	1.585	-5.3725	5.745	1.31656847968	1.87204310549	below	*
+C00361	dGDP	5.871	-1.951	-6.13625	5.94275	-2.25759151542	-1.65407651607	above	*
+C00170	5'-Methylthioadenosine	1.222	0.0	-3.773	3.346	-0.188514123067	0.167179500605	above	*
+C02670	D-Glucuronolactone	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C02992	L-Threonyl-tRNA(Thr)	-7.313	-5.358	-6.807	-3.807	-5.69810485972	-5.16778710137	below	*
+C00179	Agmatine	0.0	0.0	-6.155	5.931	-0.307528340174	0.296336407079	none	n.s.
+C00178	Thymine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02995	Maltose_6'-phosphate	3.585	-4.17	-6.615	5.7445	-4.50051177421	-3.8829818765	above	*
+C00447	Sedoheptulose_1,7-bisphosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03090	5-Phosphoribosylamine	3.848	0.0	-5.2685	5.2905	-0.263235265671	0.264334473386	above	*
+C04260	O-D-Alanyl-poly(ribitol_phosphate)	-4.954	-6.077	-7.304	-4.931	-6.44193696127	-5.83062757995	above	*
+C07086	Phenylacetic_acid	-7.651	-5.459	-7.0275	-4.0	-5.81012191886	-5.25914405188	below	*
+C01077	O-Acetyl-L-homoserine	3.907	5.524	4.087	7.044	5.31979718501	5.87594632464	below	*
+C02972	Dihydrolipoylprotein	8.19	5.426	3.907	6.907	5.23079070267	5.77110125842	above	*
+C11434	2-C-Methyl-D-erythritol_4-phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C11435	4-(Cytidine_5'-diphospho)-2-C-methyl-D-erythritol	2.737	0.0	-4.70475	4.79	-0.235068067982	0.239327497877	above	*
+C11436	2-Phospho-4-(cytidine_5'-diphospho)-2-C-methyl-D-erythritol	-2.415	0.0	-4.79425	4.392	-0.239539844822	0.219441831039	below	*
+C00857	Deamino-NAD+	2.0	1.0	-6.19	5.954	0.69072292028	1.29748557878	above	*
+C02412	Glycyl-tRNA(Gly)	-6.983	-6.098	-7.32825	-4.901	-6.46414858796	-5.85312649956	below	*
+C00853	Cob(I)alamin	3.0	5.524	4.0	7.044	5.32414405188	5.87594632464	below	*
+C01179	3-(4-Hydroxyphenyl)pyruvate	2.882	0.0	0.0	0.70525	0.0	0.0352371018534	above	*
+C04823	1-(5'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole	-4.907	0.0	-6.13425	5.98275	-0.306491587443	0.298922043408	below	*
+C01170	UDP-N-acetyl-D-mannosamine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04411	(2R,3S)-3-Isopropylmalate	0.263	-3.095	-5.8	5.083	-3.38479112478	-2.84103305392	above	*
+C01172	beta-D-Glucose_6-phosphate	6.476	-3.931	-5.78875	4.36375	-4.22022902992	-3.71296965159	above	*
+C00473	Retinol	5.248	5.492	4.087	6.919	5.28779718501	5.83770082627	below	*
+C03892	Phosphatidylglycerophosphate	-4.524	-5.524	-7.055	-4.087	-5.8764959285	-5.31979718501	above	*
+C00681	1-Acyl-sn-glycerol_3-phosphate	-2.363	-3.237	-6.10225	5.5355	-3.54189273986	-2.96042434979	above	*
+C00680	meso-2,6-Diaminoheptanedioate	1.024	2.991	-4.883	5.8595	2.74702585133	3.28376398201	below	*
+C04556	4-Amino-2-methyl-5-phosphomethylpyrimidine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02411	Glutaconyl-1-CoA	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C02839	L-Tyrosyl-tRNA(Tyr)	-6.285	-5.358	-6.807	-3.907	-5.69810485972	-5.16279070267	below	*
+C04257	N-Acetyl-D-mannosamine_6-phosphate	6.209	5.492	3.807	6.954	5.30178710137	5.83944956581	above	*
+C00689	alpha,alpha'-Trehalose_6-phosphate	9.01	3.644	-6.022	6.531	3.3431168701	3.9703147993	above	*
+C05271	trans-Hex-2-enoyl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05270	Hexanoyl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02554	L-Valyl-tRNA(Val)	-6.585	-5.392	-6.82325	-3.907	-5.73291677451	-5.19679070267	below	*
+C00512	S-Benzoate_coenzyme_A	-2.585	-5.644	-7.1725	-4.087	-6.00236669698	-5.43979718501	above	*
+C16220	3-Hydroxyoctadecanoyl-[acp]	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C00921	Dihydropteroate	-4.459	-1.585	-6.19475	5.781	-1.89451440866	-1.29615819098	below	*
+C04294	5-(2-Hydroxyethyl)-4-methylthiazole	1.585	5.476	3.907	7.055	5.28079070267	5.8284959285	below	*
+C00458	dCTP	-6.927	5.608	-4.2315	6.87425	5.39657738888	5.95146493785	below	*
+C04895	7,8-Dihydroneopterin_3'-triphosphate	-5.524	-5.392	-6.91	-3.907	-5.73725115038	-5.19679070267	below	n.s.
+C04896	5-(5-Phospho-D-ribosylaminoformimino)-1-(5-phosphoribosyl)-imidazole-4-carboxamide	-3.17	0.0	-6.022	5.895	-0.300883129899	0.294537703546	below	*
+C00376	Retinal	-5.248	-5.492	-6.919	-4.087	-5.83770082627	-5.28779718501	above	*
+C04488	5-Methyl-5,6,7,8-tetrahydromethanopterin	-8.76	-6.038	-7.36	-4.931	-6.40573494455	-5.79162757995	below	*
+C00455	Nicotinamide_D-ribonucleotide	5.954	5.392	3.807	6.966	5.20178710137	5.74004913366	above	*
+C01697	Galactitol	8.741	6.209	5.261	7.337	5.94613946423	6.57558577284	above	*
+C15972	Enzyme_N6-(lipoyl)lysine	-8.14	3.954	-5.60375	6.583	3.67401430768	4.28291292662	below	*
+C16618	6-Thioxanthine_5'-monophosphate	2.322	2.0	-6.19475	6.2715	1.69048559134	2.31334914466	above	*
+C00330	Deoxyguanosine	6.585	5.392	3.807	6.9945	5.20178710137	5.74147310729	above	*
+C00332	Acetoacetyl-CoA	-8.758	0.0	-4.151	4.22025	-0.207400510164	0.210860516266	below	*
+C00334	4-Aminobutanoate	6.405	0.0	-5.65625	5.87475	-0.282608801642	0.293525932808	above	*
+C00337	(S)-Dihydroorotate	5.644	0.0	-5.37475	5.503	-0.268543939293	0.27495182063	above	*
+C05699	L-Selenocystathionine	5.358	5.459	3.807	7.02475	5.26878710137	5.80998451789	below	n.s.
+C04688	(3R)-3-Hydroxytetradecanoyl-[acyl-carrier_protein]	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C04122	D-1-Aminopropan-2-ol_O-phosphate	-1.585	-2.0	-6.229	6.022	-2.31122567521	-1.6991168701	above	*
+C00636	D-Mannose_1-phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00637	Indole-3-acetaldehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C00630	2-Methylpropanoyl-CoA	11.506	5.392	3.907	6.898	5.19679070267	5.73665158254	above	*
+C00631	2-Phospho-D-glycerate	-3.511	0.0	-0.52325	1.511	-0.0261436562138	0.0754955844033	below	*
+C02527	Butanoylphosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C16221	(2E)-Octadecenoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C00208	Maltose	4.209	6.299	5.304	7.4425	6.03399101279	6.67085697348	below	*
+C01001	Formylmethanofuran	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05985	2-Propynal	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C00204	2-Dehydro-3-deoxy-D-gluconate	-4.369	-2.138	-4.671	3.84825	-2.37138178342	-1.94572608691	below	*
+C01212	UDP-N-acetylmuramoyl-L-alanine	-4.833	0.0	-5.651	5.443	-0.28234649071	0.271953981408	below	*
+C07490	Trichloroethanol	-5.248	-5.492	-6.919	-4.087	-5.83770082627	-5.28779718501	above	*
+C01217	5,6,7,8-Tetrahydromethanopterin	8.76	6.038	4.931	7.36	5.79162757995	6.40573494455	above	*
+C00025	L-Glutamate	-5.796	1.002	-5.243	5.60575	0.740038815998	1.2820856203	below	*
+C00024	Acetyl-CoA	-8.985	-2.422	-5.5635	5.29825	-2.69997464185	-2.15727830571	below	*
+C00148	L-Proline	8.984	1.474	-5.22325	5.28125	1.21302560474	1.73787230651	above	*
+C00026	2-Oxoglutarate	-6.898	-1.87	-5.50525	4.962	-2.1450642396	-1.62207869635	below	*
+C00021	S-Adenosyl-L-homocysteine	-3.17	-0.292	-5.755	5.6345	-0.579542745361	-0.0104779150757	below	*
+C00020	AMP	5.481	-1.935	-4.007	2.86775	-2.13520569603	-1.79171577619	above	*
+C00022	Pyruvate	-7.403	-2.154	-5.67525	5.34725	-2.4375581174	-1.88683007035	below	*
+C00143	5,10-Methylenetetrahydrofolate	-7.482	2.035	-3.96025	4.78175	1.83713012036	2.27391529498	below	*
+C00140	N-Acetyl-D-glucosamine	10.819	5.492	4.087	6.977	5.28779718501	5.84059873751	above	*
+C00141	3-Methyl-2-oxobutanoic_acid	-1.0	3.768	-5.1115	6.24925	3.51260908029	4.08023744595	below	*
+C00029	UDP-glucose	-5.476	4.336	-5.43625	6.20725	4.0643832755	4.6461389585	below	*
+C00147	Adenine	0.0	0.0	-4.97	4.841	-0.248321015542	0.241875661215	none	n.s.
+C00144	GMP	-4.935	-4.978	-6.82575	5.30375	-5.31904168447	-4.71300350379	above	n.s.
+C03740	(5-L-Glutamyl)-L-amino_acid	-5.0	-5.459	-6.94575	-4.087	-5.80603736292	-5.25479718501	above	*
+C01079	Protoporphyrinogen_IX	-5.7	-5.267	-6.781	-3.807	-5.60580579605	-5.07678710137	below	*
+C05748	trans-Hex-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C05984	2-Hydroxybutanoic_acid	6.672	5.492	4.087	7.00275	5.28779718501	5.84188531018	above	*
+C05807	2-Polyprenylphenol	3.0	5.392	3.907	6.931	5.19679070267	5.73830039411	below	*
+C05729	R-S-Cysteinylglycine	8.271	4.303	-5.52775	6.61675	4.02681157069	4.63359921119	above	*
+C04631	UDP-N-acetyl-3-(1-carboxyvinyl)-D-glucosamine	-4.907	0.778	-5.749	5.8545	0.490757038561	1.07051416207	below	*
+C11437	1-Deoxy-D-xylulose_5-phosphate	0.848	0.0	-2.828	2.828	-0.141298155323	0.141298155323	above	*
+C00644	D-Mannitol_1-phosphate	7.098	-4.0	-6.714	5.687	-4.33545820892	-3.71585480576	above	*
+C06319	Precorrin_6Y	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02739	1-(5-Phospho-D-ribosyl)-ATP	2.524	-2.7	-5.75825	4.58875	-2.98770512832	-2.47072775451	above	*
+C00647	Pyridoxamine_phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05726	S-Substituted_L-cysteine	-8.414	-6.15	-7.35125	-5.0	-6.51729775966	-5.90018006485	below	*
+C00705	dCDP	4.459	-3.678	-6.2615	5.609	-3.99084950479	-3.39775199675	above	*
+C06250	Holo-[carboxylase]	5.615	-4.454	-6.32275	4.985	-4.769909799	-4.20492952465	above	*
+C01242	S-Aminomethyldihydrolipoylprotein	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02631	2-Isopropylmaleate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02637	3-Dehydroshikimate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03194	(R)-1-Aminopropan-2-ol	4.322	5.426	4.087	7.044	5.22179718501	5.77794632464	below	*
+C04419	Carboxybiotin-carboxyl-carrier_protein	-3.954	4.098	-4.87325	6.185	3.8545130002	4.40702725978	below	*
+C01528	Hydrogen_selenide	-10.042	-5.358	-6.919	-3.907	-5.70370082627	-5.16279070267	below	*
+C02938	3-Indoleacetonitrile	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C00750	Spermine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04752	2-Methyl-4-amino-5-hydroxymethylpyrimidine_diphosphate	2.585	0.0	-6.304	6.114	-0.314972974241	0.305479816705	above	*
+C04751	1-(5-Phospho-D-ribosyl)-5-amino-4-imidazolecarboxylate	6.629	0.0	-6.0	6.044	-0.299783922184	0.301982337613	above	*
+C00763	D-Proline	-8.484	4.209	-5.087	6.51	3.95483319798	4.53426555557	below	*
+C01134	Pantetheine_4'-phosphate	-5.728	-4.073	-6.56375	5.764	-4.40095111987	-3.78500757876	below	*
+C01137	S-Adenosylmethioninamine	0.0	-0.292	-5.714	5.775	-0.577494221893	-0.00345797489794	above	*
+C00092	D-Glucose_6-phosphate	-7.993	-6.514	-7.42525	-5.576	-6.8849950947	-6.23540080832	below	*
+C06035	4-Methylene-2-oxoglutarate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02226	2-Methylmaleate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03511	L-Phenylalanyl-tRNA(Phe)	-6.248	-5.459	-7.0385	-4.0	-5.81067152272	-5.25914405188	below	*
+C03512	L-Tryptophanyl-tRNA(Trp)	-5.0	-5.442	-6.919	-4.0	-5.78770082627	-5.24214405188	above	*
+C06033	Parapyruvate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C12147	L-Threonine_O-3-phosphate	3.322	2.807	-5.7	6.28975	2.52220527393	3.12126098743	above	*
+C00329	D-Glucosamine	2.807	5.426	3.907	6.94575	5.23079070267	5.77303736292	below	*
+C04462	N-Succinyl-2-L-amino-6-oxoheptanedioate	-5.632	-0.093	-4.273	4.05275	-0.306496116582	0.109491548439	below	*
+C06408	Precorrin_8X	4.17	5.229	3.807	6.57	5.03878710137	5.55726339479	below	*
+C02741	Phosphoribosyl-AMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06407	Precorrin_4	3.322	1.0	-5.93675	6.109	0.703376299996	1.30522999677	above	*
+C06406	Precorrin_3B	3.807	5.358	3.907	6.919	5.16279070267	5.70370082627	below	*
+C20373	3-Hydroxyglutaryl-[acp]_methyl_ester	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C20372	3-Ketoglutaryl-[acp]_methyl_ester	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C20377	3-Hydroxypimeloyl-[acp]_methyl_ester	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C20376	3-Ketopimeloyl-[acp]_methyl_ester	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C20375	Glutaryl-[acp]_methyl_ester	6.524	5.426	3.907	6.919	5.23079070267	5.77170082627	above	*
+C20374	Enoylglutaryl-[acp]_methyl_ester	-6.285	-5.209	-6.73475	-3.7	-5.54549496165	-5.02413324799	below	*
+C05897	Undecaprenyl-diphospho-N-acetylmuramoyl-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine	7.14	1.585	-5.907	6.0925	1.28986272861	1.88940559098	above	*
+C20378	Enoylpimeloyl-[acp]_methyl_ester	-6.285	-5.209	-6.73475	-3.7	-5.54549496165	-5.02413324799	below	*
+C00804	Propynoate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C00969	3-Hydroxypropanal	5.248	5.285	3.907	7.055	5.08979070267	5.6374959285	below	n.s.
+C11545	Cobalt-precorrin_8	2.0	-2.322	-6.229	5.426	-2.63322567521	-2.05089540637	above	*
+C00966	2-Dehydropantoate	2.585	0.0	-5.377	5.22275	-0.268656358264	0.260949413264	above	*
+C11540	Cobalt-precorrin_4	3.322	1.0	-5.93675	6.109	0.703376299996	1.30522999677	above	*
+C11542	Cobalt-precorrin_6	-2.0	1.0	-6.0055	6.175	0.699941275887	1.30852761991	below	*
+C11543	Cobalt-dihydro-precorrin_6	-0.0	-1.0	-6.0925	5.977	-1.30440559098	-0.701365249518	above	*
+C02282	Glutaminyl-tRNA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04916	N-(5'-Phospho-D-1'-ribulosylformimino)-5-amino-1-(5''-phospho-D-ribosyl)-4-imidazolecarboxamide	0.0	3.907	-5.6615	6.5	3.62412888743	4.2317659157	below	*
+C00415	Dihydrofolate	-5.209	-5.392	-6.807	-3.907	-5.73210485972	-5.19679070267	above	n.s.
+C00416	Phosphatidate	2.415	-2.923	-5.9515	5.27675	-3.22036066881	-2.65935253144	above	*
+C00417	cis-Aconitate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03460	2-Methylprop-2-enoyl-CoA	-11.506	-5.392	-6.898	-3.907	-5.73665158254	-5.19679070267	below	*
+C04851	MurAc(oyl-L-Ala-D-gamma-Glu-L-Lys-D-Ala-D-Ala)-diphospho-undecaprenol	7.14	1.585	-5.907	6.0925	1.28986272861	1.88940559098	above	*
+C03345	2-Methylbut-2-enoyl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00993	D-Alanyl-D-alanine	4.248	0.0	-6.07125	6.13425	-0.30334385626	0.306491587443	above	*
+C00620	alpha-D-Ribose_1-phosphate	6.895	6.119	4.977	7.285	5.87032923655	6.48298764552	above	*
+C11355	4-Amino-4-deoxychorismate	-3.087	-3.907	-6.38825	5.5505	-4.22618244015	-3.62967488999	above	*
+C05951	Leukotriene_D4	-5.0	-5.459	-6.94575	-4.087	-5.80603736292	-5.25479718501	above	*
+C05576	3,4-Dihydroxyphenylethyleneglycol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05577	3,4-Dihydroxymandelaldehyde	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03263	Coproporphyrinogen_III	5.7	5.267	3.807	6.781	5.07678710137	5.60580579605	above	*
+C00378	Thiamine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00242	Guanine	-5.486	3.504	-5.6585	6.29875	3.22127877939	3.81871066331	below	*
+C00245	Taurine	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C00246	Butanoic_acid	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00624	N-Acetyl-L-glutamate	0.0	0.0	-6.17	6.13425	-0.308277799979	0.306491587443	none	n.s.
+C16587	3-Carbamoyl-2-phenylpropionaldehyde	-5.248	-5.492	-6.919	-4.087	-5.83770082627	-5.28779718501	above	*
+C02170	Methylmalonate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C00568	4-Aminobenzoate	5.285	0.0	-5.86425	6.0925	-0.293001310945	0.304405590984	above	*
+C01099	L-Fuculose_1-phosphate	1.585	5.426	3.907	6.99175	5.23079070267	5.77533570632	below	*
+C01097	D-Tagatose_6-phosphate	5.498	5.926	4.755	7.1105	5.68842124167	6.28126892978	below	*
+C01096	Sorbitol_6-phosphate	3.841	-4.71	-6.669	5.5	-5.04320982951	-4.43519807133	above	*
+C01094	D-Fructose_1-phosphate	8.513	-2.907	-6.448	5.97175	-3.22916778837	-2.60862756045	above	*
+C05682	Phosphonoacetate	5.0	5.322	3.807	6.957	5.13178710137	5.66959945777	below	*
+C00341	Geranyl_diphosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00342	Thioredoxin	-9.945	4.927	-5.31825	6.73875	4.66127902597	5.2636948176	below	*
+C00343	Thioredoxin_disulfide	9.965	-4.923	-6.73425	5.325	-5.25946997966	-4.65694176906	above	*
+C00344	Phosphatidylglycerol	5.977	5.524	4.087	6.989	5.31979718501	5.87319830536	above	*
+C05684	Selenite	10.042	5.358	3.907	6.919	5.16279070267	5.70370082627	above	*
+C00061	FMN	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00060	Carboxylate	-7.651	-5.459	-7.0275	-4.0	-5.81012191886	-5.25914405188	below	*
+C00063	CTP	7.751	6.604	5.80075	7.4045	6.31417140223	6.97395834197	above	*
+C00062	L-Arginine	4.087	6.173	4.923	7.27675	5.92702729185	6.53657544263	below	*
+C00065	L-Serine	4.372	3.968	-4.45625	6.07025	3.74534798279	4.27129389227	above	*
+C00064	L-Glutamine	5.387	4.648	-3.989	6.238	4.44869365573	4.9596753511	above	*
+C11811	1-Hydroxy-2-methyl-2-butenyl_4-diphosphate	4.907	1.0	-5.95975	6.087	0.702227128294	1.30413078906	above	*
+C16633	5-Fluorouridine	5.858	5.392	3.907	6.977	5.19679070267	5.74059873751	above	*
+C04675	3-Hydroxy-3-(4-methylpent-3-en-1-yl)glutaryl-CoA	0.0	5.303	3.7	6.919	5.11813324799	5.64870082627	below	*
+C16631	alpha-Fluoro-beta-ureidopropionic_acid	-4.0	-5.358	-6.922	-3.907	-5.70385071823	-5.16279070267	above	*
+C04677	1-(5'-Phosphoribosyl)-5-amino-4-imidazolecarboxamide	7.171	-3.009	-6.19025	6.03225	-3.31828957072	-2.70760473923	above	*
+C16635	5'-Deoxy-5-fluorocytidine	5.931	5.672	4.0	7.2	5.47214405188	6.03174070662	above	n.s.
+C16634	5-Fluorouridine_monophosphate	-5.858	-5.392	-6.977	-3.907	-5.74059873751	-5.19679070267	below	*
+C19673	Malonyl-[acp]_methyl_ester	6.524	5.426	3.907	6.919	5.23079070267	5.77170082627	above	*
+C03752	2-Amino-2-deoxy-D-gluconate	3.459	6.575	5.64925	7.461	6.29274094627	6.94778130724	below	*
+C05923	2,5-Diaminopyrimidine_nucleoside_triphosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05922	Formamidopyrimidine_nucleoside_triphosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05921	Biotinyl-5'-AMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00748	Siroheme	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04079	N-((R)-Pantothenoyl)-L-cysteine	5.459	5.426	3.882	6.919	5.23203980235	5.77170082627	above	n.s.
+C00668	alpha-D-Glucose_6-phosphate	7.086	-4.634	-6.497	4.87225	-4.95861602374	-4.39056296419	above	*
+C01268	5-Amino-6-(5'-phosphoribosylamino)uracil	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00666	LL-2,6-Diaminoheptanedioate	-6.632	0.0	-5.792	5.6835	-0.289391412882	0.283970320289	below	*
+C00663	beta-D-Glucose_1-phosphate	-1.0	0.0	-6.229	6.175	-0.311225675214	0.308527619914	below	*
+C02163	L-Arginyl-tRNA(Arg)	-5.358	-5.492	-7.09275	-4.0	-5.84638206901	-5.29214405188	above	n.s.
+C00988	2-Phosphoglycolate	4.459	5.459	4.087	6.898	5.25479718501	5.80365158254	below	*
+C00989	4-Hydroxybutanoic_acid	8.707	5.358	4.06525	6.755	5.15488390172	5.69550673239	above	*
+C00114	Choline	-3.807	-5.409	-7.129	-3.907	-5.76519326354	-5.21379070267	above	*
+C00117	D-Ribose_5-phosphate	-8.481	-3.598	-6.311	5.93675	-3.91332272215	-3.3013763	below	*
+C00116	Glycerol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00111	Glycerone_phosphate	-7.331	-1.939	-4.826	4.24775	-2.18012620141	-1.72676547409	below	*
+C02380	6-Mercaptopurine	4.585	5.492	3.907	6.883	5.29679070267	5.83590212273	below	*
+C00112	CDP	-6.331	0.0	-5.92125	6.0905	-0.295849258205	0.30430566301	below	*
+C00119	5-Phospho-alpha-D-ribose_1-diphosphate	-5.54	3.03	-4.044	5.06425	2.82794563645	3.28303012132	below	*
+C00118	D-Glyceraldehyde_3-phosphate	-6.694	3.322	-5.4095	6.0075	3.05171981216	3.62215865209	below	*
+C06416	Precorrin_5	-4.585	-5.459	-7.033	-4.0	-5.81039672079	-5.25914405188	above	*
+C11929	Perillyl-CoA	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C01346	dUDP	2.939	-3.298	-6.00375	5.17	-3.59797128714	-3.03968618705	above	*
+C11924	Perillic_acid	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C05750	3-Oxooctanoyl-[acp]	-5.257	1.585	-5.3725	5.745	1.31656847968	1.87204310549	below	*
+C05751	trans-Oct-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C14145	(3S)-3-Hydroxyadipyl-CoA	10.819	5.426	3.907	6.858	5.23079070267	5.76865302306	above	*
+C05753	3-Oxodecanoyl-[acp]	-5.257	1.585	-5.3725	5.745	1.31656847968	1.87204310549	below	*
+C05754	trans-Dec-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C05755	Decanoyl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C05756	3-Oxododecanoyl-[acp]	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C05757	(R)-3-Hydroxydodecanoyl-[acp]	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C05758	trans-Dodec-2-enoyl-[acp]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C05759	3-Oxotetradecanoyl-[acp]	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C05811	2-Octaprenyl-6-hydroxyphenol	-3.0	-5.392	-6.931	-3.907	-5.73830039411	-5.19679070267	above	*
+C05810	2-Octaprenylphenol	3.0	5.392	3.907	6.931	5.19679070267	5.73830039411	below	*
+C00236	3-Phospho-D-glyceroyl_phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00188	L-Threonine	7.454	3.95	-4.919	5.94175	3.7042271478	4.24687351994	above	*
+C00189	Ethanolamine	3.939	4.644	-5.448	6.59	4.37179619866	4.97326267453	below	*
+C00186	(S)-Lactate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00185	Cellobiose	-2.585	-5.492	-7.04675	-3.97675	-5.84408372561	-5.29330571458	above	*
+C00183	L-Valine	6.585	5.392	3.907	6.82325	5.19679070267	5.73291677451	above	*
+C00180	Benzoate	-7.651	-5.459	-7.0275	-4.0	-5.81012191886	-5.25914405188	below	*
+C00181	D-Xylose	-1.0	0.0	-6.175	6.39625	-0.308527619914	0.319582152045	below	*
+C02909	(2-Naphthyl)methanol	10.222	6.072	4.833	7.2945	5.83052405068	6.4364623034	above	*
+C00159	D-Mannose	7.944	6.522	5.62025	7.3835	6.24118990189	6.89090909824	above	*
+C04216	all-trans-Heptaprenyl_diphosphate	-3.17	-5.508	-6.931	-4.0	-5.85430039411	-5.30814405188	above	*
+C04051	5-Amino-4-imidazolecarboxyamide	-5.459	-5.492	-6.989	-4.0	-5.84119830536	-5.29214405188	above	n.s.
+C00011	CO2	9.41	3.062	-5.578	5.887	2.78330088034	3.35613799165	above	*
+C04352	(R)-4'-Phosphopantothenoyl-L-cysteine	3.07	0.0	-3.678	3.93075	-0.183767544299	0.196395942021	above	*
+C02553	L-Seryl-tRNA(Ser)	-7.15	-5.585	-7.00275	-4.17	-5.93488531018	-5.37665017408	below	*
+C16348	cis-3-Chloroallyl_aldehyde	-8.477	-2.044	-4.84	4.263	-2.28582569723	-1.83100352329	below	*
+C02946	4-Acetamidobutanoate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C16586	2-Phenyl-1,3-propanediol_monocarbamate	5.248	5.492	4.087	6.919	5.28779718501	5.83770082627	below	*
+C05378	beta-D-Fructose_1,6-bisphosphate	9.048	1.087	-5.71775	5.719	0.801318413155	1.37274404183	above	*
+C00015	UDP	-5.735	-0.906	-5.28825	5.3145	-1.17022205441	-0.640466390926	below	*
+C05100	3-Ureidoisobutyrate	-4.0	-5.358	-6.922	-3.907	-5.70385071823	-5.16279070267	above	*
+C06148	2,5-Diamino-6-(5'-triphosphoryl-3',4'-trihydroxy-2'-oxopentyl)-amino-4-oxopyrimidine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00151	L-Amino_acid	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C05823	3-Mercaptolactate	-6.672	-5.492	-7.00275	-4.087	-5.84188531018	-5.28779718501	below	*
+C02988	L-Histidyl-tRNA(His)	-5.644	-5.248	-6.957	-3.907	-5.59559945777	-5.05279070267	below	*
+C16551	Alcophosphamide	-5.248	-5.492	-6.919	-4.087	-5.83770082627	-5.28779718501	above	*
+C06715	3-Oxopimeloyl-CoA	2.585	5.644	4.087	7.1725	5.43979718501	6.00236669698	below	*
+C06714	3-Hydroxypimeloyl-CoA	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C16466	7-Methyl-3-oxo-6-octenoyl-CoA	0.0	-5.303	-6.919	-3.7	-5.64870082627	-5.11813324799	above	*
+C16219	3-Oxostearoyl-[acp]	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C09306	Sulfur_dioxide	-7.366	-5.426	-6.91	-3.907	-5.77125115038	-5.23079070267	below	*
+C00254	Prephenate	0.0	0.0	-3.9735	4.23875	-0.198531902466	0.211784850026	none	n.s.
+C16237	Protein_N6-(lipoyl)lysine	-6.34	-5.285	-6.728	-3.807	-5.62115770474	-5.09478710137	below	*
+C00931	Porphobilinogen	4.322	5.524	4.0	6.91	5.32414405188	5.86925115038	below	*
+C04327	4-Methyl-5-(2-phosphoethyl)-thiazole	2.663	-4.101	-6.6025	5.555	-4.43088722437	-3.82345005204	above	*
+C16238	Lipoyl-AMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C18239	Precursor_Z	-4.7	-6.276	-7.508	-5.044	-6.65112961463	-6.02398164942	above	*
+C00446	alpha-D-Galactose_1-phosphate	4.807	5.442	3.907	7.119	5.24679070267	5.79769362367	below	*
+C00445	5,10-Methenyltetrahydrofolate	-3.415	0.0	-5.4205	5.565	-0.2708297917	0.278049587826	below	*
+C01762	Xanthosine	6.229	6.011	4.781	7.2485	5.77212217801	6.37316395999	above	n.s.
+C00441	L-Aspartate_4-semialdehyde	7.375	-3.01	-5.7085	5.065	-3.29521941996	-2.75693240569	above	*
+C00440	5-Methyltetrahydrofolate	-5.218	-1.095	-4.244	3.9165	-1.30704716096	-0.899316044794	below	*
+C04281	L-1-Pyrroline-3-hydroxy-5-carboxylate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00526	Deoxyuridine	-1.0	4.108	-5.836	6.64575	3.81641017169	4.44004816681	below	*
+C00527	Glutaryl-CoA	-2.585	-5.644	-7.1725	-4.087	-6.00236669698	-5.43979718501	above	*
+C11453	2-C-Methyl-D-erythritol_2,4-cyclodiphosphate	1.17	0.0	-5.629	5.5905	-0.281247282996	0.279323669495	above	*
+C00522	(R)-Pantoate	-2.433	0.0	-5.433	5.263	-0.271454341538	0.262960463742	below	*
+C00448	trans,trans-Farnesyl_diphosphate	4.443	3.0	-4.5625	5.6885	2.77203930917	3.28422014022	above	*
+C04882	UDP-N-acetylmuramoyl-L-alanyl-D-glutamyl-6-carboxy-L-lysyl-D-alanyl-D-alanine	3.7	0.0	-6.109	5.858	-0.30522999677	0.292689036026	above	*
+C01024	Hydroxymethylbilane	-4.322	-5.524	-6.91	-4.0	-5.86925115038	-5.32414405188	above	*
+C12739	5'-Deoxy-5-fluorouridine	-5.931	-5.672	-7.2	-4.0	-6.03174070662	-5.47214405188	below	n.s.
+C00009	Orthophosphate	-5.7	-5.426	-7.022	-3.807	-5.77684711693	-5.23578710137	below	n.s.
+C01909	Dethiobiotin	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00068	Thiamin_diphosphate	1.087	-0.104	-4.30825	3.96325	-0.319257347125	0.0940197715993	above	*
+C04133	N-Acetyl-L-glutamate_5-phosphate	0.0	0.0	-5.824	5.82925	-0.290990260467	0.291252571398	none	n.s.
+C03838	5'-Phosphoribosylglycinamide	-4.644	0.0	-6.19475	6.28975	-0.309514408658	0.314260987426	below	*
+C00288	HCO3-	6.707	6.416	5.476	7.37825	6.14239720702	6.78464678731	above	n.s.
+C03722	Quinolinate	0.0	1.0	-5.755	5.95975	0.712457254639	1.29777287171	below	*
+C05402	Melibiose	-1.0	-5.524	-6.883	-4.0	-5.86790212273	-5.32414405188	above	*
+C04619	(3R)-3-Hydroxydecanoyl-[acyl-carrier_protein]	4.794	-1.907	-5.94725	5.392	-2.20414832187	-1.63759418193	above	*
+C05404	D-Gal_alpha_1->6D-Gal_alpha_1->6D-Glucose	-1.0	-5.524	-6.883	-4.0	-5.86790212273	-5.32414405188	above	*
+C03939	Acetyl-[acyl-carrier_protein]	4.585	0.0	-4.778	4.844	-0.238727930032	0.242025553177	above	*
+C00054	Adenosine_3',5'-bisphosphate	-5.248	-5.492	-7.01375	-4.0	-5.84243491404	-5.29214405188	above	*
+C04039	2,3-Dihydroxy-3-methylbutanoate	1.0	0.0	-6.214	6.022	-0.310476215409	0.300883129899	above	*
+C00627	Pyridoxine_phosphate	-4.524	-5.442	-6.966	-3.907	-5.79004913366	-5.24679070267	above	*
+C00459	dTTP	4.822	6.686	5.994	7.45375	6.38651586174	7.05841906833	below	*
+C01228	Guanosine_3',5'-bis(diphosphate)	-2.322	-5.459	-6.895	-4.0	-5.80350169058	-5.25914405188	above	*
+C00239	dCMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00725	Lipoate	6.34	5.285	3.807	6.728	5.09478710137	5.62115770474	above	*
+C00231	D-Xylulose_5-phosphate	-7.383	-3.546	-5.69875	3.893	-3.83073227109	-3.35149019849	below	*
+C00232	Succinate_semialdehyde	-6.639	0.737	-4.059	4.77725	0.534196176643	0.975690457042	below	*
+C00233	4-Methyl-2-oxopentanoate	-2.0	-5.392	-6.989	-3.907	-5.74119830536	-5.19679070267	above	*
+C00234	10-Formyltetrahydrofolate	-8.27	3.1	-4.44175	5.4795	2.87807246061	3.37377766693	below	*
+C00235	Dimethylallyl_diphosphate	-4.263	0.0	-5.6835	5.66075	-0.283970320289	0.282833639584	below	*
+C01613	Stachyose	1.0	5.524	4.0	6.883	5.32414405188	5.86790212273	below	*
+C00237	CO	-6.112	0.436	-3.9495	3.892	0.238667233222	0.630459837523	below	*
+C00010	CoA	-9.404	-3.755	-6.50925	5.94275	-4.08022808258	-3.45807651607	below	*
+C00158	Citrate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00012	Peptide	7.57	5.459	4.0	6.989	5.25914405188	5.80819830536	above	*
+C00014	Ammonia	-9.175	-4.844	-6.3215	4.52125	-5.15984734401	-4.61810032364	below	*
+C05980	Cardiolipin	-5.977	-5.524	-6.989	-4.087	-5.87319830536	-5.31979718501	below	*
+C00016	FAD	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00018	Pyridoxal_phosphate	-4.524	-5.442	-6.966	-3.907	-5.79004913366	-5.24679070267	above	*
+C00019	S-Adenosyl-L-methionine	-5.744	0.0	-5.25475	5.27675	-0.262548260849	0.263647468564	below	*
+C00153	Nicotinamide	-5.755	-6.092	-7.373	-4.954	-6.46038447638	-5.84447840825	above	*
+C00152	L-Asparagine	7.222	3.0	-5.24925	5.859	2.73772654108	3.29273900001	above	*
+C00155	L-Homocysteine	-2.7	-4.524	-6.714	5.25025	-4.85945820892	-4.26167657709	above	*
+C02835	Imidazole-4-acetate	-2.585	-5.492	-7.077	-3.807	-5.84559513622	-5.30178710137	above	*
+C05714	alpha-Aminopropiononitrile	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C05715	gamma-Amino-gamma-cyanobutanoate	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C05711	gamma-Glutamyl-beta-cyanoalanine	-5.0	-5.459	-6.94575	-4.087	-5.80603736292	-5.25479718501	above	*
+C02713	N-Acetylmuramate	4.17	5.63	4.0	7.18	5.43014405188	5.98874142688	below	*
+C02336	beta-D-Fructose	1.585	1.0	-6.0055	6.229	0.699941275887	1.31122567521	above	*
+C14108	4-Hydroxymethylsalicylaldehyde	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C02331	Vinylacetyl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00058	Formate	8.627	2.931	-5.55075	5.8655	2.65366239899	3.22406376593	above	*
+C06320	Precorrin_6X	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04620	(3R)-3-Hydroxyoctanoyl-[acyl-carrier_protein]	4.794	-1.907	-5.94725	5.392	-2.20414832187	-1.63759418193	above	*
+C00655	Xanthosine_5'-phosphate	4.924	-3.623	-6.027	5.09025	-3.92413294983	-3.36867081502	above	*
+C00301	ADP-ribose	6.524	5.392	4.087	6.919	5.18779718501	5.73770082627	above	*
+C00302	DL-Glutamate	-7.651	-5.459	-7.0275	-4.0	-5.81012191886	-5.25914405188	below	*
+C00718	Amylose	-7.468	0.0	-5.114	5.087	-0.255515829675	0.254166802025	below	*
+C02232	3-Oxoadipyl-CoA	-10.819	-5.426	-6.858	-3.907	-5.76865302306	-5.23079070267	below	*
+C14089	1-Hydroxymethylnaphthalene	10.222	6.072	4.833	7.2945	5.83052405068	6.4364623034	above	*
+C14107	2-Hydroxy-4-hydroxymethylbenzalpyruvate	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C14086	2-Hydroxy-3-methylbenzalpyruvate	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C14087	3-Methylsalicylaldehyde	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C17551	2-Polyprenyl-6-hydroxyphenol	-3.0	-5.392	-6.931	-3.907	-5.73830039411	-5.19679070267	above	*
+C17556	di-trans,poly-cis-Undecaprenyl_phosphate	-2.807	0.0	-6.285	5.728	-0.314023658488	0.286193717712	below	*
+C04442	2-Dehydro-3-deoxy-6-phospho-D-gluconate	5.459	0.0	-4.98275	5.267	-0.248958056377	0.26316031969	above	*
+C01127	4-Hydroxy-2-oxoglutarate	6.555	5.492	3.907	7.055	5.29679070267	5.8444959285	above	*
+C06188	Salicin_6-phosphate	6.858	0.0	-6.459	6.209	-0.322717392231	0.310226395473	above	*
+C05665	3-Aminopropanal	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C03058	2-Hydroxyglutaryl-CoA	6.248	5.492	4.0	6.895	5.29214405188	5.83650169058	above	*
+C06186	Arbutin	3.907	6.15	4.954	7.36825	5.90247840825	6.51814714744	below	*
+C06187	Arbutin_6-phosphate	5.954	-4.229	-6.69025	5.6185	-4.56327156423	-3.94827733887	above	*
+C18902	Methylselenic_acid	10.042	5.358	3.907	6.919	5.16279070267	5.70370082627	above	*
+C03294	N-Formylmethionyl-tRNA	-5.17	-5.392	-6.794	-3.907	-5.73145532789	-5.19679070267	above	*
+C02051	Lipoylprotein	-5.672	4.17	-5.615	6.592	3.88945221282	4.49936260251	below	*
+C03114	Dimethylbenzimidazole	6.322	5.322	3.807	7.022	5.13178710137	5.67284711693	above	*
+C06611	trans-3-Chloro-2-propene-1-ol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06612	cis-3-Chloro-2-propene-1-ol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04088	Octadecanoyl-[acyl-carrier_protein]	-5.285	-5.322	-6.919	-3.907	-5.66770082627	-5.12679070267	above	n.s.
+C06614	trans-3-Chloroacrylic_acid	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06615	cis-3-Chloroacrylic_acid	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06755	Chloroacetic_acid	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06754	Chloroacetaldehyde	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00979	O-Acetyl-L-serine	3.524	5.812	4.522	7.112	5.58606285065	6.16734387576	below	*
+C00877	Crotonoyl-CoA	6.388	-0.573	-3.693	3.48825	-0.757517004104	-0.39871312224	above	*
+C16273	3-Hydroxy-5-oxohexanoyl-CoA	-2.0	-3.524	-6.492	6.1625	-3.8483662038	-3.21609692992	above	*
+C16272	3-Hydroxy-5-oxohexanoate	3.322	6.077	4.858	7.34625	5.83427495101	6.44404793972	below	*
+C04246	But-2-enoyl-[acyl-carrier_protein]	-5.285	1.585	-5.73475	6.114	1.29846902538	1.89047981671	below	*
+C00409	Methanethiol	-1.585	-5.492	-7.044	-3.97675	-5.84394632464	-5.29330571458	above	*
+C03373	Aminoimidazole_ribotide	-5.044	-1.0	-6.0925	5.931	-1.30440559098	-0.703663592921	below	*
+C16074	Phenylacetonitrile	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C04778	N1-(5-Phospho-alpha-D-ribosyl)-5,6-dimethylbenzimidazole	-3.939	0.0	-5.37475	5.2285	-0.268543939293	0.26123670619	below	*
+C00407	L-Isoleucine	7.375	5.392	3.807	6.966	5.20178710137	5.74004913366	above	*
+C01401	Alanine	-7.651	-5.459	-7.0275	-4.0	-5.81012191886	-5.25914405188	below	*
+C01151	D-Ribose_1,5-bisphosphate	-5.492	-5.459	-7.011	-4.0	-5.80929751307	-5.25914405188	below	n.s.
+C06056	4-Hydroxy-L-threonine	-4.248	-5.426	-6.99725	-3.907	-5.77561050825	-5.23079070267	above	*
+C06506	Adenosyl_cobyrinate_a,c_diamide	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C06055	O-Phospho-4-hydroxy-L-threonine	4.248	5.426	3.907	6.99725	5.23079070267	5.77561050825	below	*
+C03479	Folinic_acid	5.615	5.492	3.907	6.966	5.29679070267	5.84004913366	above	n.s.
+C01412	Butanal	11.198	5.492	3.907	7.022	5.29679070267	5.84284711693	above	*
+C06114	gamma-Glutamyl-beta-aminopropiononitrile	-5.0	-5.459	-6.94575	-4.087	-5.80603736292	-5.25479718501	above	*
+C06508	Adenosyl_cobinamide	5.392	0.0	-6.13425	6.19975	-0.306491587443	0.309764228593	above	*
+C06509	Adenosyl_cobinamide_phosphate	3.807	0.0	-4.54925	4.61475	-0.227298667999	0.23057130915	above	*
+C09332	Tetrahydrofolyl-[Glu](2)	-5.209	-5.392	-6.807	-3.907	-5.73210485972	-5.19679070267	above	n.s.
+C06032	D-erythro-3-Methylmalate	0.152	-2.984	-5.689	4.972	-3.26824512222	-2.73557905648	above	*
+C01157	Hydroxyproline	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C02576	Perillyl_aldehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C03972	2,3,4,5-Tetrahydrodipicolinate	3.36	0.0	-4.9735	4.945	-0.248495889497	0.247071915867	above	*
+C03974	2-Acyl-sn-glycerol_3-phosphate	-2.585	-5.644	-7.1725	-4.087	-6.00236669698	-5.43979718501	above	*
+C00577	D-Glyceraldehyde	-9.793	0.0	-5.86425	6.066	-0.293001310945	0.303081545328	below	*
+C01300	2-Amino-4-hydroxy-6-hydroxymethyl-7,8-dihydropteridine	3.322	4.0	-5.543	6.60175	3.72304961989	4.32984975138	below	*
+C00279	D-Erythrose_4-phosphate	-8.254	0.0	-6.29875	6.13875	-0.314710663309	0.306716425384	below	*
+C13632	4,4'-Dihydroxy-alpha-methylstilbene	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C01304	2,5-Diamino-6-(5-phospho-D-ribosylamino)pyrimidin-4(3H)-one	-1.585	-1.585	-5.977	6.066	-1.88363475048	-1.28191845467	none	n.s.
+C01801	Deoxyribose	3.907	5.459	3.907	7.04675	5.26379070267	5.81108372561	below	*
+C00275	D-Mannose_6-phosphate	-7.86	-5.005	-6.798	5.4005	-5.34465518383	-4.73516948804	below	*
+C00270	N-Acetylneuraminate	7.651	5.492	3.907	6.94575	5.29679070267	5.83903736292	above	*
+C00900	2-Acetolactate	0.0	0.0	-5.95975	6.0925	-0.297772871706	0.304405590984	none	n.s.
+C00479	Propanal	5.248	5.285	3.907	7.055	5.08979070267	5.6374959285	below	n.s.
+C00475	Cytidine	0.138	0.0	-3.5065	3.5995	-0.175198720523	0.179845371317	above	n.s.
+C12215	Iminoerythrose_4-phosphate	-10.014	-5.426	-7.044	-3.907	-5.77794632464	-5.23079070267	below	*
+C12214	Aminofructose_6-phosphate	10.014	5.426	3.907	7.044	5.23079070267	5.77794632464	above	*
+C00294	Inosine	5.781	3.891	-5.619	6.6265	3.61025235687	4.22208636006	above	*
+C00295	Orotate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C00357	N-Acetyl-D-glucosamine_6-phosphate	-9.275	-1.0	-5.64625	5.4985	-1.28210916177	-0.725273017312	below	*
+C05698	Selenohomocysteine	-3.807	0.0	-5.889	5.86425	-0.294237919624	0.293001310945	below	*
+C01267	3-(Imidazol-4-yl)-2-oxopropyl_phosphate	0.0	0.0	-4.3835	4.115	-0.219017137149	0.205601806631	none	n.s.
+C00353	Geranylgeranyl_diphosphate	-4.459	-5.524	-6.895	-4.087	-5.86850169058	-5.31979718501	above	*
+C00352	D-Glucosamine_6-phosphate	-1.722	0.0	-6.03325	6.05875	-0.301445224753	0.302719306422	below	*
+C00299	Uridine	-2.826	0.0	-3.826	3.826	-0.191162214379	0.191162214379	below	*
+C02166	Leukotriene_C4	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C04666	D-erythro-1-(Imidazol-4-yl)glycerol_3-phosphate	-0.83	-3.29	-6.08275	5.81	-3.59391844211	-2.99970923535	above	*
+C01269	5-O-(1-Carboxyvinyl)-3-phosphoshikimate	-1.0	0.0	-5.044	4.954	-0.252018350583	0.24752159175	below	*
+C05979	Propane-1-ol	-5.248	-5.285	-7.055	-3.907	-5.6374959285	-5.08979070267	above	n.s.
+C05898	Undecaprenyl-diphospho-N-acetylmuramoyl-(N-acetylglucosamine)-L-alanyl-D-glutamyl-meso-2,6-diaminopimeloyl-D-alanyl-D-alanine	-7.539	-5.492	-7.0275	-3.807	-5.84312191886	-5.30178710137	below	*
+C05893	Undecaprenyl-diphospho-N-acetylmuramoyl-(N-acetylglucosamine)-L-alanyl-gamma-D-glutamyl-L-lysyl-D-alanyl-D-alanine	-7.539	-5.492	-7.0275	-3.807	-5.84312191886	-5.30178710137	below	*
+C05892	UDP-N-acetylmuramoyl-L-alanyl-gamma-D-glutamyl-L-lysine	5.0	5.426	3.907	7.044	5.23079070267	5.77794632464	below	*
+C05596	p-Hydroxyphenylacetylglycine	-2.585	-5.644	-7.1725	-4.087	-6.00236669698	-5.43979718501	above	*
+C01279	4-Amino-5-hydroxymethyl-2-methylpyrimidine	-0.0	0.0	-5.755	6.129	-0.287542745361	0.306229276511	none	n.s.
+C04046	3-D-Glucosyl-1,2-diacylglycerol	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C05382	Sedoheptulose_7-phosphate	-8.76	0.0	-4.97725	5.206	-0.248683254448	0.260112516482	below	*
+C00120	Biotin	1.0	-1.737	-5.565	5.143	-2.01504958783	-1.4800352147	above	*
+C00121	D-Ribose	3.907	5.459	3.907	7.04675	5.26379070267	5.81108372561	below	*
+C00122	Fumarate	-2.862	0.095	-1.97125	3.034	-0.00349150943419	0.246590736651	below	*
+C00123	L-Leucine	6.6	5.492	3.907	6.922	5.29679070267	5.83785071823	above	*
+C00129	Isopentenyl_diphosphate	-4.17	0.0	-5.5905	5.56775	-0.279323669495	0.27818698879	below	*
+C15532	N-Acetyl-L-citrulline	4.907	5.644	3.907	7.02475	5.44879070267	5.99498451789	below	*
+C00356	(S)-3-Hydroxy-3-methylglutaryl-CoA	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C11934	2-Hydroxy-4-isopropenylcyclohexane-1-carboxyl-CoA	-6.248	-5.492	-6.895	-4.0	-5.83650169058	-5.29214405188	below	*
+C15973	Enzyme_N6-(dihydrolipoyl)lysine	7.433	5.977	4.82025	7.26575	5.73616109152	6.34002583877	above	*
+C03028	Thiamin_triphosphate	-4.755	-5.524	-6.919	-4.0	-5.86970082627	-5.32414405188	above	*
+C05749	Hexanoyl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C20589	D-Glucosaminate-6-phosphate	-3.459	-6.575	-7.461	-5.64925	-6.94778130724	-6.29274094627	above	*
+C05747	(R)-3-Hydroxyhexanoyl-[acp]	5.209	-2.322	-6.36225	5.807	-2.63988337649	-2.03185912731	above	*
+C05746	3-Oxohexanoyl-[acp]	-5.672	2.0	-5.7875	6.16	1.71083342506	2.30777816011	below	*
+C05745	Butyryl-[acp]	5.728	0.0	-6.109	6.07125	-0.30522999677	0.30334385626	above	*
+C05744	Acetoacetyl-[acp]	-4.109	-2.285	-5.86575	5.50975	-2.57807625693	-2.00971092246	below	*
+C03150	Nicotinamide-beta-riboside	5.755	6.092	4.954	7.373	5.84447840825	6.46038447638	below	*
+C04618	(3R)-3-Hydroxybutanoyl-[acyl-carrier_protein]	4.472	-1.585	-5.62525	5.07	-1.86605991804	-1.33168258575	above	*
+C02091	(S)-Ureidoglycine	-6.375	-5.492	-6.966	-4.0	-5.84004913366	-5.29214405188	below	*
+C00726	Nitrile	7.651	5.459	4.0	7.0275	5.25914405188	5.81012191886	above	*
+C00055	CMP	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C03539	S-Ribosyl-L-homocysteine	4.392	-1.0	-6.114	6.175	-1.30547981671	-0.691472380086	above	*
+C00199	D-Ribulose_5-phosphate	-5.666	3.194	-5.613	5.9235	2.9135521408	3.48996167718	below	*
+C00051	Glutathione	5.0	5.459	4.087	6.94575	5.25479718501	5.80603736292	below	*
+C00052	UDP-alpha-D-galactose	2.652	0.0	-5.36775	5.28	-0.268194191384	0.263809851522	above	*
+C00194	Cobamide_coenzyme	-4.624	-6.062	-7.31825	-4.90675	-6.42764894809	-5.81683920664	above	*
+C00197	3-Phospho-D-glycerate	-2.438	-3.157	-6.08825	5.67125	-3.46119324404	-2.87364173855	above	*
+C03785	D-Tagatose_1,6-bisphosphate	6.244	-3.655	-6.36925	5.67775	-3.9732331244	-3.37131697264	above	*
+C02714	N-Acetylputrescine	-5.524	-5.459	-7.044	-3.807	-5.81094632464	-5.26878710137	below	n.s.
+C00192	Hydroxylamine	3.0	5.555	4.0	6.954	5.35514405188	5.90244956581	below	*
+C00354	D-Fructose_1,6-bisphosphate	-7.141	0.0	-3.328	3.298	-0.166280148838	0.164781229227	below	*
+C01118	O-Succinyl-L-homoserine	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C01050	UDP-N-acetylmuramate	6.063	0.0	-5.95775	5.967	-0.297672943732	0.298135110612	above	*
+C04574	di-trans,poly-cis-Undecaprenyl_diphosphate	-6.129	-1.0	-6.285	6.044	-1.31402365849	-0.698017662387	below	*
+C05130	Imidazole-4-acetaldehyde	2.585	5.492	3.807	7.077	5.30178710137	5.84559513622	below	*
+C00206	dADP	8.083	-4.594	-6.528	5.25075	-4.92016490734	-4.3316515951	above	*
+C06156	alpha-D-Glucosamine_1-phosphate	0.0	0.0	0.0	0.0	0.0	0.0	none	n.s.
+C04807	2-Amino-7,8-dihydro-4-hydroxy-6-(diphosphooxymethyl)pteridine	2.585	-0.5	-6.304	6.229	-0.814972974241	-0.188774324786	above	*
+C20423	alpha-D-Ribose_1-methylphosphonate_5-phosphate	0.0	0.0	-6.022	6.109	-0.300883129899	0.30522999677	none	n.s.
+C20422	alpha-D-Ribose_1-methylphosphonate_5-triphosphate	0.0	-5.088	-6.86625	4.833	-5.43106522595	-4.84652405068	above	*
+C03492	D-4'-Phosphopantothenate	5.392	1.0	-6.0	6.25275	0.700216077816	1.31241231991	above	*
+C02457	Propane-1,3-diol	-5.248	-5.285	-7.055	-3.907	-5.6374959285	-5.08979070267	above	n.s.
+C06010	(S)-2-Acetolactate	0.0	0.0	-5.37475	5.50825	-0.268543939293	0.275214131562	none	n.s.
+C00831	Pantetheine	5.459	5.426	3.882	6.919	5.23203980235	5.77170082627	above	n.s.
