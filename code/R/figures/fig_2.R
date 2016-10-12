@@ -138,7 +138,7 @@ segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
 segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
 # Conventional significance
-text(5, 2.4, labels='UD*', cex=1.5)
+text(5, 2.4, labels='UD*', cex=1.4)
 
 mtext('a', side=2, line=2, las=2, adj=1.7, padj=-9.5, cex=1.1, font=2)
 
@@ -167,7 +167,7 @@ segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 
 # Conventional significance
-text(5, 2.4, labels='UD*', cex=1.5)
+text(5, 2.4, labels='UD*', cex=1.4)
 
 mtext('b', side=2, line=2, las=2, adj=1.7, padj=-9.5, cex=1.1, font=2)
 
@@ -200,7 +200,7 @@ segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2
 text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
 
 # Conventional significance
-text(5, 2.1, labels='UD*', cex=1.5)
+text(5, 2.1, labels='UD*', cex=1.4)
 
 # Plot label
 mtext('c', side=2, line=2, las=2, adj=1.6, padj=-8, cex=1.1, font=2)

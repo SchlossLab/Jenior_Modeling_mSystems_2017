@@ -188,6 +188,8 @@ text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 mtext('d', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
 
+text(24.7, 1, labels='UD', cex=1.2) # tcdR expression undetectable
+
 dev.off()
 
 #--------------------------------------------------------------------------------------------------------------#

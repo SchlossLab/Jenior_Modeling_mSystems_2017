@@ -285,6 +285,8 @@ shared_importance <- shared_importance[order(shared_importance$Metabolite_score)
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine -_'
+shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
+
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
@@ -332,8 +334,12 @@ top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphori
 top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide 
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
+# set same minimums as plotting area
 shared_importance[shared_importance < -4] <- -4
 top_importances[top_importances < -4] <- -4
+
+# screen top from shared
+shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,7] %in% top_importances[,1])))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -419,20 +425,22 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
-segments(x0=rep(-4, 17), y0=c(1:17), x1=shared_importance$Sim_iqr_25, y1=c(1:17), lty=2) # Dotted lines
-segments(x0=shared_importance$Sim_iqr_75, y0=c(1:17), x1=rep(13, 17), y1=c(1:17), lty=2)
+segments(x0=rep(-4, 14), y0=c(1:14), x1=shared_importance$Sim_iqr_25, y1=c(1:14), lty=2) # Dotted lines
+segments(x0=shared_importance$Sim_iqr_75, y0=c(1:14), x1=rep(13, 14), y1=c(1:14), lty=2)
 
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,17.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,17.1,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,17.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,17.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,17.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,16.9,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,16.9,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(0.9,16.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,17.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,17.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,16.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,16.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+
+segments(x0=-4, y0=0, x1=-4, y1=18) # Left side of plot 
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -500,6 +508,8 @@ segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[
 segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58')
 segments(x0=rep(-4, 17), y0=c(24:26), x1=top_importances[c(4:6),4], y1=c(24:26), lty=2) # Dotted lines
 segments(x0=top_importances[c(4:6),5], y0=c(24:26), x1=rep(13, 17), y1=c(24:26), lty=2)
+
+segments(x0=-4, y0=0, x1=-4, y1=27) # Left side of plot 
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
