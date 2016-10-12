@@ -287,9 +287,9 @@ lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8, col='gray65', pch=19)
 
 # Axis labels
-text(x=-0.35, y=-0.41, labels='Cefoperazone', cex=1.4)
-text(x=-0.21, y=0.48, labels='Clindamycin', cex=1.4, srt=60)
-text(x=0.55, y=-0.12, labels='Streptomycin', cex=1.4, srt=-60)
+text(x=-0.35, y=-0.41, labels='Cefoperazone (SPF)', cex=1.4)
+text(x=-0.21, y=0.48, labels='Clindamycin (SPF)', cex=1.4, srt=60)
+text(x=0.55, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60)
 
 # Left axis - Clindmycin
 lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))

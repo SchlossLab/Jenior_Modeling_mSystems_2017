@@ -87,7 +87,7 @@ Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, ar
 segments(x0=c(-4,3,3.75), y0=c(0.5,0.5,0.5), x1=c(-4,3,3.75), y1=c(-0.5,-0.5,-0.5), lwd=4)
 segments(x0=c(-4,-3,-2,-1,0,1,2), y0=c(0.25,0.25,0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-text(x=-2.2, y=0.7, 'Conventional and Germ free untreated', cex=1.5)
+text(x=-1.1, y=0.7, 'Specific pathogen free (SPF) and Germ free (GF) no antibiotics', cex=1.5)
 text(x=-4.6, y=0, 'd', cex=1.9, font=2)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)

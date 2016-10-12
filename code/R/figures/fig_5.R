@@ -311,19 +311,19 @@ clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Me
 strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
 gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
 
-cef_only_importance$abx <- 'Cefoperazone'
+cef_only_importance$abx <- 'Cefoperazone (SPF)'
 cef_only_importance$color <- wes_palette("FantasticFox")[3]
-clinda_only_importance$abx <- 'Clindamycin'
+clinda_only_importance$abx <- 'Clindamycin (SPF)'
 clinda_only_importance$color <- wes_palette("FantasticFox")[5]
-strep_only_importance$abx <- 'Streptomycin'
+strep_only_importance$abx <- 'Streptomycin (SPF)'
 strep_only_importance$color <- wes_palette("FantasticFox")[1]
-gf_only_importance$abx <- 'Gnotobiotic'
+gf_only_importance$abx <- 'No Antibiotics (GF)'
 gf_only_importance$color <- 'forestgreen'
 
 top_importances <- rbind(cef_only_importance[,c(1:7,10)], clinda_only_importance[,c(1:7,10)], 
                          strep_only_importance[,c(1:7,10)], gf_only_importance[,c(1:7,10)])
 top_importances$abx <- as.factor(top_importances$abx)
-top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'))
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
@@ -415,10 +415,9 @@ plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 # Shared metabolite importances
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black', 
+dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.3, color='black', 
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
-#abline(v=0, col='gray58', lwd=1.7)
-mtext('b', side=2, line=2, las=2, adj=2.5, padj=-21, cex=1.4, font=2)
+mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
 segments(x0=rep(-4, 17), y0=c(1:17), x1=shared_importance$Sim_iqr_25, y1=c(1:17), lty=2) # Dotted lines
 segments(x0=shared_importance$Sim_iqr_75, y0=c(1:17), x1=rep(13, 17), y1=c(1:17), lty=2)
@@ -440,11 +439,10 @@ segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,16.7,1), x1=shared_importan
 # Unique metabolite importances
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
-         lcolor=NA, cex=1.2, groups=top_importances$abx, color='black', 
+         lcolor=NA, cex=1.3, groups=top_importances$abx, color='black', 
          xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-#abline(v=0, col='gray58', lwd=1.7)
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-21, cex=1.4, font=2)
+mtext('c', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
 # Simulated confidence intervals
 segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 25
