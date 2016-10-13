@@ -1,10 +1,9 @@
-
 # Load dependencies
 deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  } 
+  }
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 set.seed(42)
@@ -20,6 +19,7 @@ format_curve <- function(raw_exp_data, exp_group, raw_control_data){
     control_data <- rbind(control_data, temp_control)
   }
   formatted_data <- as.data.frame(rbind(control_data, formatted_data))
+  
   colnames(formatted_data) <- c('substrate','time','od')
   formatted_data$od <- as.numeric(as.character(formatted_data$od))
   
@@ -176,9 +176,9 @@ node_size <- matrix(c('K01', '10',
                       'K03', '50',
                       'C01', '20'), nrow=4, ncol=2, byrow=TRUE)
 optimal_layout2 <- matrix(c(-21.09826017, 22.1407060,
-                           0.09077637, 0.2154631,
-                           -8.32243732, -29.0949351,
-                           29.67130628, 7.6231375), nrow=4, ncol=2, byrow=TRUE)
+                            0.09077637, 0.2154631,
+                            -8.32243732, -29.0949351,
+                            29.67130628, 7.6231375), nrow=4, ncol=2, byrow=TRUE)
 
 # Format directed graph
 network <- graph.data.frame(network, directed=TRUE)
@@ -297,19 +297,19 @@ shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
 shared_importance <- shared_importance$Compound_name
 shared_cef <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% shared_importance)))
-shared_cef <- shared_cef[order(shared_cef$Compound_name),] 
+shared_cef <- shared_cef[order(shared_cef$Compound_name),]
 shared_cef$Metabolite_score <- as.numeric(as.character(shared_cef$Metabolite_score))
 shared_cef$Sim_Median <- as.numeric(as.character(shared_cef$Sim_Median))
 shared_clinda <- as.data.frame(subset(clinda_importance, (clinda_importance[,1] %in% shared_importance)))
-shared_clinda <- shared_clinda[order(shared_clinda$Compound_name),] 
+shared_clinda <- shared_clinda[order(shared_clinda$Compound_name),]
 shared_clinda$Metabolite_score <- as.numeric(as.character(shared_clinda$Metabolite_score))
 shared_clinda$Sim_Median <- as.numeric(as.character(shared_clinda$Sim_Median))
 shared_strep <- as.data.frame(subset(strep_importance, (strep_importance[,1] %in% shared_importance)))
-shared_strep <- shared_strep[order(shared_strep$Compound_name),] 
+shared_strep <- shared_strep[order(shared_strep$Compound_name),]
 shared_strep$Metabolite_score <- as.numeric(as.character(shared_strep$Metabolite_score))
 shared_strep$Sim_Median <- as.numeric(as.character(shared_strep$Sim_Median))
 shared_gf <- as.data.frame(subset(gf_importance, (gf_importance[,1] %in% shared_importance)))
-shared_gf <- shared_gf[order(shared_gf$Compound_name),] 
+shared_gf <- shared_gf[order(shared_gf$Compound_name),]
 shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
 shared_gf$Sim_Median <- as.numeric(as.character(shared_gf$Sim_Median))
 
@@ -379,7 +379,7 @@ top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
 top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahydromethanopterin'] <- 'Tetrahydromethanopterin'
 top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR'
-top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide 
+top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
 # Change point color based on significance
@@ -403,12 +403,12 @@ layout(matrix(c(1,2,3,4,5,6,6,6,6,6,6,6,
                 7,7,7,7,7,6,6,6,6,6,6,6,
                 7,7,7,7,7,6,6,6,6,6,6,6,
                 8,9,10,11,12,6,6,6,6,6,6,6,
-               13,13,13,13,13,13,14,14,14,14,14,14,
-               13,13,13,13,13,13,14,14,14,14,14,14,
-               13,13,13,13,13,13,14,14,14,14,14,14,
-               13,13,13,13,13,13,14,14,14,14,14,14,
-               13,13,13,13,13,13,14,14,14,14,14,14,
-               13,13,13,13,13,13,14,14,14,14,14,14), nrow=12, ncol=12, byrow=TRUE))
+                13,13,13,13,13,13,14,14,14,14,14,14,
+                13,13,13,13,13,13,14,14,14,14,14,14,
+                13,13,13,13,13,13,14,14,14,14,14,14,
+                13,13,13,13,13,13,14,14,14,14,14,14,
+                13,13,13,13,13,13,14,14,14,14,14,14,
+                13,13,13,13,13,13,14,14,14,14,14,14), nrow=12, ncol=12, byrow=TRUE))
 
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -422,8 +422,8 @@ plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 par(mar=c(0,0,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 
-text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
-                                                    bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
+text(-0.96, 0.08, expression(Importance(m) == paste(log[2],
+                                                    bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ',
                                                     bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6) # Importance algorithm
 
 text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.5) # Enzyme 1 name
@@ -435,7 +435,7 @@ text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcriptio
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 text(x=c(0.3,0.3), y=c(-0.02,-0.12), labels=c('Deoxyadenosine (dAdo)','= 6.554'), cex=1.6, font=c(2,1)) # Compound & calculated importance
 segments(x0=0.15, y0=-0.18, x1=0.45, y1=-0.18, lwd=2)
-legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'), 
+legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.7)
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
 text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
@@ -446,12 +446,12 @@ text(x=0.3, y=0.33, expression(e[o]), col='black', cex=2)
 Arrows(x0=0.63, y0=-0.7, x1=0.12, y1=-0.7, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3) # Score explanation line
 Arrows(x0=0.63, y0=-0.7, x1=1.14, y1=-0.7, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3)
 segments(x0=0.63, y0=-0.65, x1=0.63, y1=-0.75, lwd=2)
-text(x=0.63, y=-0.83, '0', cex=1.8) 
+text(x=0.63, y=-0.83, '0', cex=1.8)
 text(x=0.12, y=-0.81, '-', cex=2.2)
 text(x=1.14, y=-0.81, '+', cex=2.2)
 text(x=1.15, y=-0.6, 'More likely consumed', cex=1.3)
 text(x=0.14, y=-0.6, 'More likely released', cex=1.3)
-text(x=0.63, y=-0.95, 'Importance Score', cex=1.6, font=2) 
+text(x=0.63, y=-0.95, 'Importance Score', cex=1.6, font=2)
 
 # Large component of C. difficile 630 graph
 par(mar=c(0,0,0,0))
@@ -472,8 +472,8 @@ plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 # Unique metabolite importances
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name, 
-         lcolor=NA, cex=1.3, groups=top_importances$abx, color='black', 
+dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
+         lcolor=NA, cex=1.3, groups=top_importances$abx, color='black',
          xlab='Metabolite Importance Score', xlim=c(-2,12), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
@@ -532,13 +532,13 @@ segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[
 segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
 points(x=top_importances[c(4:6),2], y=c(24:26), pch=19, cex=1.5, col=top_importances[c(4:6),10]) # Labeled significance
 
-segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot 
+segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Shared metabolite importances
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.3, color='black', 
+dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.3, color='black',
          xlab='Median Metabolite Importance Score', xlim=c(0,14), pch=19)
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
@@ -555,7 +555,7 @@ segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importan
 segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
 
 segments(x0=rep(0, 14), y0=c(1:14), x1=rep(14, 14), y1=c(1:14), lty=2) # Dotted lines
-segments(x0=0, y0=0, x1=0, y1=18) # Left side of plot 
+segments(x0=0, y0=0, x1=0, y1=18) # Left side of plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -569,4 +569,3 @@ for (dep in deps){
 }
 rm(dep, deps, pkg)
 gc()
-
