@@ -318,6 +318,8 @@ shared_gf$Sim_Median <- as.numeric(as.character(shared_gf$Sim_Median))
 
 
 
+
+
 shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score)
 rownames(shared_score) <- shared_cef$Compound_name
 
