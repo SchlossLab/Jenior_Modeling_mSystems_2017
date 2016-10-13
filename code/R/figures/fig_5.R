@@ -282,11 +282,18 @@ shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median), apply(s
 colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median', 'Sim_iqr_25', 'Sim_iqr_75', 'Sim_Lower', 'Sim_Upper')
 shared_importance$Compound_name <- rownames(shared_importance)
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
+
+# Format names to look better for the plot
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine -_'
 shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
 
+# Add signifficance from each individual table
+shared_importance$cef_sig <- shared_cef$Significance
+shared_importance$strep_sig <- shared_strep$Significance
+shared_importance$clinda_sig <- shared_clinda$Significance
+shared_importance$gf_sig <- shared_gf$Significance
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
@@ -314,18 +321,14 @@ strep_only_importance <- strep_only_importance[order(strep_only_importance$Metab
 gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
 
 cef_only_importance$abx <- 'Cefoperazone (SPF)'
-cef_only_importance$color <- wes_palette("FantasticFox")[3]
 clinda_only_importance$abx <- 'Clindamycin (SPF)'
-clinda_only_importance$color <- wes_palette("FantasticFox")[5]
 strep_only_importance$abx <- 'Streptomycin (SPF)'
-strep_only_importance$color <- wes_palette("FantasticFox")[1]
 gf_only_importance$abx <- 'No Antibiotics (GF)'
-gf_only_importance$color <- 'forestgreen'
-
-top_importances <- rbind(cef_only_importance[,c(1:7,10)], clinda_only_importance[,c(1:7,10)], 
-                         strep_only_importance[,c(1:7,10)], gf_only_importance[,c(1:7,10)])
+top_importances <- rbind(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
+
+# Format names to look better for the plot
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
 top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
@@ -334,9 +337,12 @@ top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphori
 top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide 
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
+# Change point color based on significance
+top_importances$color <- ifelse(top_importances$Significance == '*', 'red', 'black')
+
 # set same minimums as plotting area
-shared_importance[shared_importance < -4] <- -4
-top_importances[top_importances < -4] <- -4
+shared_importance$Sim_iqr_25[shared_importance$Sim_iqr_25 < -4] <- -4
+top_importances$Sim_IQR_25[top_importances$Sim_IQR_25 < -4] <- -4
 
 # screen top from shared
 shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,7] %in% top_importances[,1])))
@@ -425,21 +431,22 @@ dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_n
          xlab='Median Metabolite Importance Score', xlim=c(-4,10), pch=19)
 mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
-segments(x0=rep(-4, 14), y0=c(1:14), x1=shared_importance$Sim_iqr_25, y1=c(1:14), lty=2) # Dotted lines
-segments(x0=shared_importance$Sim_iqr_75, y0=c(1:14), x1=rep(13, 14), y1=c(1:14), lty=2)
+#segments(x0=rep(-4, 14), y0=c(1:14), x1=shared_importance$Sim_iqr_25, y1=c(1:14), lty=2) # Dotted lines
+#segments(x0=shared_importance$Sim_iqr_75, y0=c(1:14), x1=rep(13, 14), y1=c(1:14), lty=2)
 
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray58')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray58')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
 
+segments(x0=rep(-4, 14), y0=c(1:14), x1=rep(10, 14), y1=c(1:14), lty=2) # Dotted lines
 segments(x0=-4, y0=0, x1=-4, y1=18) # Left side of plot 
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -451,64 +458,70 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          xlab='Metabolite Importance Score', xlim=c(-4,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
+segments(x0=rep(-4, 20), y0=c(1:14, 17:18, 21, 24:26), x1=rep(10, 20), y1=c(1:14, 17:18, 21, 24:26), lty=2) # Dotted lines
 
 # Simulated confidence intervals
-segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 25
-segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),6], y1=seq(1.4,14.4,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),6], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),3], y1=seq(1.1,14.1,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),7], y1=seq(1.4,14.4,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray58') # Gnotobiotic
-segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),3], y0=seq(0.9,13.9,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),5], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58') # iqr 75
-segments(x0=top_importances[c(20:7),7], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(1.4,14.4,1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(20:7),5], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray58')
-segments(x0=rep(-4, 17), y0=c(1:14), x1=top_importances[c(20:7),4], y1=c(1:14), lty=2) # Dotted lines
-segments(x0=top_importances[c(20:7),5], y0=c(1:14), x1=rep(13, 17), y1=c(1:14), lty=2)
+segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # iqr 25
+segments(x0=top_importances[c(20:7),4], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),6], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),6], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),3], y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),7], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),3], y0=seq(1.1,14.1,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray75') # Gnotobiotic
+segments(x0=top_importances[c(20:7),6], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),3], y0=seq(0.9,13.9,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),5], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # iqr 75
+segments(x0=top_importances[c(20:7),7], y0=seq(1.4,14.4,1), x1=top_importances[c(20:7),5], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(20:7),5], y0=seq(0.6,13.6,1), x1=top_importances[c(20:7),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
+#segments(x0=rep(-4, 17), y0=c(1:14), x1=top_importances[c(20:7),4], y1=c(1:14), lty=2) # Dotted lines
+#segments(x0=top_importances[c(20:7),5], y0=c(1:14), x1=rep(13, 17), y1=c(1:14), lty=2)
 
-segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray58') # iqr 25
-segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),6], y1=c(17.4,18.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),6], y0=c(17.4,18.4), x1=top_importances[c(2:3),3], y1=c(17.1,18.1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),7], y1=c(17.4,18.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray58') # Clindamycin
-segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),3], y0=c(16.9,17.9), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5, col='gray58') # iqr 75
-segments(x0=top_importances[c(2:3),7], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(17.4,18.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(2:3),5], y0=c(16.6,17.6), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray58')
-segments(x0=rep(-4, 17), y0=c(17:18), x1=top_importances[c(2:3),4], y1=c(17:18), lty=2) # Dotted lines
-segments(x0=top_importances[c(2:3),5], y0=c(17:18), x1=rep(13, 17), y1=c(17:18), lty=2)
+segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray75') # iqr 25
+segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),6], y1=c(17.4,18.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),6], y0=c(17.4,18.4), x1=top_importances[c(2:3),3], y1=c(17.1,18.1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),7], y1=c(17.4,18.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray75') # Clindamycin
+segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),3], y0=c(16.9,17.9), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5, col='gray75') # iqr 75
+segments(x0=top_importances[c(2:3),7], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(17.4,18.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(2:3),5], y0=c(16.6,17.6), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray75')
+#segments(x0=rep(-4, 17), y0=c(17:18), x1=top_importances[c(2:3),4], y1=c(17:18), lty=2) # Dotted lines
+#segments(x0=top_importances[c(2:3),5], y0=c(17:18), x1=rep(13, 17), y1=c(17:18), lty=2)
 
-segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray58') # iqr 25
-segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,6], y1=21.4, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,6], y0=21.4, x1=top_importances[1,3], y1=21.1, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,7], y1=21.4, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray58') # Cefoperazone
-segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,3], y0=20.9, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5, col='gray58') # iqr 75
-segments(x0=top_importances[1,7], y0=21.4, x1=top_importances[1,5], y1=21.4, lwd=1.5, col='gray58')
-segments(x0=top_importances[1,5], y0=20.6, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray58')
-segments(x0=rep(-4, 17), y0=21, x1=top_importances[1,4], y1=21, lty=2) # Dotted lines
-segments(x0=top_importances[1,5], y0=21, x1=rep(13, 17), y1=21, lty=2)
+segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray75') # iqr 25
+segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,6], y1=21.4, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,6], y0=21.4, x1=top_importances[1,3], y1=21.1, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,7], y1=21.4, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray75') # Cefoperazone
+segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,3], y0=20.9, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5, col='gray75') # iqr 75
+segments(x0=top_importances[1,7], y0=21.4, x1=top_importances[1,5], y1=21.4, lwd=1.5, col='gray75')
+segments(x0=top_importances[1,5], y0=20.6, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray75')
+#segments(x0=rep(-4, 17), y0=21, x1=top_importances[1,4], y1=21, lty=2) # Dotted lines
+#segments(x0=top_importances[1,5], y0=21, x1=rep(13, 17), y1=21, lty=2)
 
-segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58') # iqr 25
-segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),6], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),6], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),3], y1=c(24.1,25.1,26.1), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),7], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray58') # Streptomycin
-segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),3], y0=c(23.9,24.9,25.9), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58') # iqr 75
-segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray58')
-segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray58')
-segments(x0=rep(-4, 17), y0=c(24:26), x1=top_importances[c(4:6),4], y1=c(24:26), lty=2) # Dotted lines
-segments(x0=top_importances[c(4:6),5], y0=c(24:26), x1=rep(13, 17), y1=c(24:26), lty=2)
+segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # iqr 25
+segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),6], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),6], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),3], y1=c(24.1,25.1,26.1), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),7], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray75') # Streptomycin
+segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),3], y0=c(23.9,24.9,25.9), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # iqr 75
+segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
+segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
+#segments(x0=rep(-4, 17), y0=c(24:26), x1=top_importances[c(4:6),4], y1=c(24:26), lty=2) # Dotted lines
+#segments(x0=top_importances[c(4:6),5], y0=c(24:26), x1=rep(13, 17), y1=c(24:26), lty=2)
 
+
+
+
+# not working
+points(x=top_importances$Metabolite_score, y=c(1:14, 17:18, 21, 24:26), pch=19, cex=1.5, col=top_importances$color)
 segments(x0=-4, y0=0, x1=-4, y1=27) # Left side of plot 
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
