@@ -1,5 +1,6 @@
+
 # Load dependencies
-deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson');
+deps <- c('vegan', 'igraph', 'ggplot2', 'shape', 'wesanderson', 'matrixStats');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -207,52 +208,10 @@ strep_importance <- read.delim(strep_importance_file, header=TRUE, sep='\t', row
 gf_importance <- read.delim(gf_importance_file, header=TRUE, sep='\t', row.names=1)
 rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_importance_file)
 
-# Read in Monte Carlo ranges
-#cef_range_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/monte_carlo.score_range.tsv'
-#clinda_range_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/monte_carlo.score_range.tsv'
-#strep_range_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/monte_carlo.score_range.tsv'
-#gf_range_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree_630.bipartite.files/monte_carlo.score_range.tsv'
-
-#cef_range <- as.matrix(read.delim(cef_range_file, header=TRUE, sep='\t', row.names=1))
-#colnames(cef_range) <- NULL
-#clinda_range <- as.matrix(read.delim(clinda_range_file, header=TRUE, sep='\t', row.names=1))
-#colnames(clinda_range) <- NULL
-#strep_range <- as.matrix(read.delim(strep_range_file, header=TRUE, sep='\t', row.names=1))
-#colnames(strep_range) <- NULL
-#gf_range <- as.matrix(read.delim(gf_range_file, header=TRUE, sep='\t', row.names=1))
-#colnames(gf_range) <- NULL
-#rm(cef_range_file, clinda_range_file, strep_range_file, gf_range_file)
-
-# Combine simulated ranges by metabolite ID
-#sim_ranges <- merge(cef_range, clinda_range, by='row.names')
-#rownames(sim_ranges) <- sim_ranges$Row.names
-#sim_ranges$Row.names <- NULL
-#sim_ranges <- merge(sim_ranges, strep_range, by='row.names')
-#rownames(sim_ranges) <- sim_ranges$Row.names
-#sim_ranges$Row.names <- NULL
-#sim_ranges <- merge(sim_ranges, gf_range, by='row.names')
-#rownames(sim_ranges) <- sim_ranges$Row.names
-#sim_ranges$Row.names <- NULL
-#rm(cef_range, clinda_range, strep_range, gf_range)
-
-# Calculate new monte carlo ranges
-temp_summary <- as.vector(quantile(sim_ranges[1,], probs=c(0.5,0.25,0.5,0.75,0.95)))
-temp_lower <- temp_summary[3] - abs(1.58 * (temp_summary[2] / sqrt(ncol(sim_ranges))))
-temp_upper <- temp_summary[3] + abs(1.58 * (temp_summary[4] / sqrt(ncol(sim_ranges))))
-sim_summary <- c(temp_summary[3],temp_summary[2],temp_summary[4],temp_lower,temp_upper)
-for (x in seq(2, nrow(sim_ranges), 1)){
-  temp_summary <- as.vector(quantile(sim_ranges[x,], probs=c(0.5,0.25,0.5,0.75,0.95)))
-  temp_lower <- temp_summary[3] - abs(1.58 * (temp_summary[2] / sqrt(ncol(sim_ranges))))
-  temp_upper <- temp_summary[3] + abs(1.58 * (temp_summary[4] / sqrt(ncol(sim_ranges))))
-  sim_summary <- rbind(sim_summary, c(temp_summary[3],temp_summary[2],temp_summary[4],temp_lower,temp_upper))
-}
-sim_summary <- as.matrix(sim_summary)
-colnames(sim_summary) <- c('Sim_Median', 'Sim_iqr_25', 'Sim_iqr_75', 'Sim_Lower', 'Sim_Upper')
-rownames(sim_summary) <- rownames(sim_ranges)
-write.table(sim_summary, file="~/Desktop/combined_sim.tsv", sep='\t', quote=FALSE, row.names=FALSE, col.names=TRUE)
-
-
-
+# Read in Monte Carlo ranges for shared analysis
+sim_range_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/combined_sim.tsv'
+sim_range <- read.delim(sim_range_file, header=TRUE, sep='\t', row.names=1)
+rm(sim_range_file)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -299,47 +258,31 @@ shared_importance <- shared_importance$Compound_name
 shared_cef <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% shared_importance)))
 shared_cef <- shared_cef[order(shared_cef$Compound_name),]
 shared_cef$Metabolite_score <- as.numeric(as.character(shared_cef$Metabolite_score))
-shared_cef$Sim_Median <- as.numeric(as.character(shared_cef$Sim_Median))
 shared_clinda <- as.data.frame(subset(clinda_importance, (clinda_importance[,1] %in% shared_importance)))
 shared_clinda <- shared_clinda[order(shared_clinda$Compound_name),]
 shared_clinda$Metabolite_score <- as.numeric(as.character(shared_clinda$Metabolite_score))
-shared_clinda$Sim_Median <- as.numeric(as.character(shared_clinda$Sim_Median))
 shared_strep <- as.data.frame(subset(strep_importance, (strep_importance[,1] %in% shared_importance)))
 shared_strep <- shared_strep[order(shared_strep$Compound_name),]
 shared_strep$Metabolite_score <- as.numeric(as.character(shared_strep$Metabolite_score))
-shared_strep$Sim_Median <- as.numeric(as.character(shared_strep$Sim_Median))
 shared_gf <- as.data.frame(subset(gf_importance, (gf_importance[,1] %in% shared_importance)))
 shared_gf <- shared_gf[order(shared_gf$Compound_name),]
 shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
-shared_gf$Sim_Median <- as.numeric(as.character(shared_gf$Sim_Median))
 
-
-# Need to work in the new confidence values
-
-
-
-
-
-shared_score <- cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score)
-rownames(shared_score) <- shared_cef$Compound_name
-
-shared_importance <- as.data.frame(cbind(apply(shared_score, 1, median), sim_summary))
-colnames(shared_importance) <- c('Metabolite_score', 'Sim_Median', 'Sim_iqr_25', 'Sim_iqr_75', 'Sim_Lower', 'Sim_Upper')
-shared_importance$Compound_name <- rownames(shared_importance)
+score_median <- as.data.frame(apply(cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score), 1, median))
+shared_importance <- cbind(shared_cef$Compound_name, score_median)
+rownames(shared_importance) <- rownames(shared_cef)
+colnames(shared_importance) <- c('Compound_name','Metabolite_score')
+shared_importance <- merge(shared_importance, sim_range, by='row.names')
+rownames(shared_importance) <- shared_importance$Row.names
+shared_importance$Row.names <- NULL
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
+rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median)
 
 # Format names to look better for the plot
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
 shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine -_'
 shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
-
-# Add signifficance from each individual table
-shared_importance$cef_sig <- shared_cef$Significance
-shared_importance$strep_sig <- shared_strep$Significance
-shared_importance$clinda_sig <- shared_clinda$Significance
-shared_importance$gf_sig <- shared_gf$Significance
-rm(shared_cef, shared_clinda, shared_strep, shared_gf, shared_score, shared_sim)
 
 cef_importance <- cef_importance[c(1:25),]
 clinda_importance <- clinda_importance[c(1:25),]
@@ -384,13 +327,14 @@ rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_i
 
 # Change point color based on significance
 top_importances$color <- ifelse(top_importances$Significance == '*', 'red', 'black')
+shared_importance$color <- ifelse(shared_importance$Metabolite_score > shared_importance$Sim_Upper_sig, 'red', 'black')
 
 # set same minimums as plotting area
-shared_importance$Sim_iqr_25[shared_importance$Sim_iqr_25 < 0] <- 0
+shared_importance[shared_importance < -2] <- -2
 top_importances$Sim_IQR_25[top_importances$Sim_IQR_25 < -2] <- -2
 
 # screen top from shared
-shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,7] %in% top_importances[,1])))
+shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,1] %in% top_importances[,1])))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -539,23 +483,24 @@ segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
 # Shared metabolite importances
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.3, color='black',
-         xlab='Median Metabolite Importance Score', xlim=c(0,14), pch=19)
+         xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
 segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Lower, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Lower95, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
 segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Lower, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Lower95, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
 segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
+segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
 
-segments(x0=rep(0, 14), y0=c(1:14), x1=rep(14, 14), y1=c(1:14), lty=2) # Dotted lines
-segments(x0=0, y0=0, x1=0, y1=18) # Left side of plot
+segments(x0=rep(-2, 14), y0=c(1:14), x1=rep(12, 14), y1=c(1:14), lty=2) # Dotted lines
+points(x=shared_importance$Metabolite_score, y=c(1:14), pch=19, cex=1.5, col=shared_importance$color) # Labeled significance
+segments(x0=-2, y0=0, x1=-2, y1=18) # Left side of plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
