@@ -41,7 +41,7 @@ segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,
 segments(x0=c(-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25), x1=c(-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25), lwd=2)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
 text(x=-3.35, y=0.7, 'Streptomycin', cex=1.5)
-text(x=-4.6, y=0, 'a', cex=1.9, font=2)
+text(x=-4.5, y=0, 'a', cex=1.9, font=2)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 
@@ -57,7 +57,7 @@ segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,
 segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
 text(x=-3.3, y=0.7, 'Cefoperazone', cex=1.5)
-text(x=-4.6, y=0, 'b', cex=1.9, font=2)
+text(x=-4.5, y=0, 'b', cex=1.9, font=2)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 
@@ -73,7 +73,7 @@ segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1
 points(x=2, y=1, pch=25, bg=c(wes_palette("FantasticFox")[5]), col='black', cex=3.4)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
 text(x=-2.85, y=0.7, 'Clindamycin IP injection', cex=1.5)
-text(x=-4.6, y=0, 'c', cex=1.9, font=2)
+text(x=-4.5, y=0, 'c', cex=1.9, font=2)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 
@@ -88,7 +88,7 @@ segments(x0=c(-4,3,3.75), y0=c(0.5,0.5,0.5), x1=c(-4,3,3.75), y1=c(-0.5,-0.5,-0.
 segments(x0=c(-4,-3,-2,-1,0,1,2), y0=c(0.25,0.25,0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
 text(x=-1.1, y=0.7, 'Specific pathogen free (SPF) and Germ free (GF) no antibiotics', cex=1.5)
-text(x=-4.6, y=0, 'd', cex=1.9, font=2)
+text(x=-4.5, y=0, 'd', cex=1.9, font=2)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
 
