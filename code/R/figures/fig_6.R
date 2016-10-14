@@ -321,6 +321,11 @@ segments(x0=seq(1,49,1), y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucos
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean+growth_sds$y_glucose_n_aa_sd, lwd=3)
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_n_aa_mean-growth_sds$y_glucose_n_aa_sd, lwd=3)
 
+lines(growth_means$y_glucose_y_aa_mean, type='o', lwd=2, pch=6, cex=2, col='black')
+segments(x0=seq(1,49,1), y0=growth_means$y_glucose_y_aa_mean+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_means$y_glucose_y_aa_mean-growth_sds$y_glucose_y_aa_sd, lwd=3, cex=2, col='black')
+segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_y_aa_mean+growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_y_aa_mean+growth_sds$y_glucose_y_aa_sd, lwd=3, col='black')
+segments(x0=seq(1,49,1)-0.2, y0=growth_means$y_glucose_y_aa_mean-growth_sds$y_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_means$y_glucose_y_aa_mean-growth_sds$y_glucose_y_aa_sd, lwd=3, col='black')
+
 lines(growth_means$fructose_mean, type='o', col=wes_palette('FantasticFox')[1], lwd=3, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_means$fructose_mean+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_means$fructose_mean-growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$fructose_mean+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_means$fructose_mean+growth_sds$fructose_sd, lwd=3, col=wes_palette('FantasticFox')[1])
@@ -345,9 +350,9 @@ segments(x0=seq(1,49,1), y0=growth_means$acetylneuraminate_mean+growth_sds$acety
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$acetylneuraminate_mean+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_means$acetylneuraminate_mean+growth_sds$acetylneuraminate_sd, lwd=3, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_means$acetylneuraminate_mean-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_means$acetylneuraminate_mean-growth_sds$acetylneuraminate_sd, lwd=3, col='forestgreen')
 
-legend('topleft', legend=c('No Carbohydrates','No Amino acids','N-Acetylglucosamine','D-Fructose','D-Sorbitol','Mannitol','Salicin','Neu5Ac','Acetate'), 
-       col=c('black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen','red'), 
-       pch=c(17,16,6,0,1,2,5,6,1), cex=2, pt.cex=3, bg='white', lwd=3)
+legend('topleft', legend=c('No Carbohydrates','No Amino acids','N-Acetylglucosamine','D-Fructose','D-Sorbitol','Mannitol','Salicin','N-Acetylneuriminate'), 
+       col=c('black','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(17,16,6,0,1,2,5,6), cex=1.3, pt.cex=2.5, bg='white', lwd=3)
 
 mtext('a', side=2, line=2, las=2, adj=2, padj=-21, cex=1.6, font=2)
 
