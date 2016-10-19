@@ -218,31 +218,23 @@ rm(sim_range_file)
 # Format metabolite importance scores
 cef_importance$Metabolite_score <- as.numeric(as.character(cef_importance$Metabolite_score))
 cef_importance$Sim_Median <- as.numeric(as.character(cef_importance$Sim_Median))
-cef_importance$Sim_IQR_25 <- as.numeric(as.character(cef_importance$Sim_IQR_25))
-cef_importance$Sim_IQR_75 <- as.numeric(as.character(cef_importance$Sim_IQR_75))
-cef_importance$Sim_Lower_95_interval <- as.numeric(as.character(cef_importance$Sim_Lower_95_interval))
-cef_importance$Sim_Upper_95_interval <- as.numeric(as.character(cef_importance$Sim_Upper_95_interval))
+cef_importance$Sim_Lower_99_Confidence <- as.numeric(as.character(cef_importance$Sim_Lower_99_Confidence))
+cef_importance$Sim_Upper_99_Confidence <- as.numeric(as.character(cef_importance$Sim_Upper_99_Confidence))
 cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
 clinda_importance$Metabolite_score <- as.numeric(as.character(clinda_importance$Metabolite_score))
 clinda_importance$Sim_Median <- as.numeric(as.character(clinda_importance$Sim_Median))
-clinda_importance$Sim_IQR_25 <- as.numeric(as.character(clinda_importance$Sim_IQR_25))
-clinda_importance$Sim_IQR_75 <- as.numeric(as.character(clinda_importance$Sim_IQR_75))
-clinda_importance$Sim_Lower_95_interval <- as.numeric(as.character(clinda_importance$Sim_Lower_95_interval))
-clinda_importance$Sim_Upper_95_interval <- as.numeric(as.character(clinda_importance$Sim_Upper_95_interval))
+clinda_importance$Sim_Lower_99_Confidence <- as.numeric(as.character(clinda_importance$Sim_Lower_99_Confidence))
+clinda_importance$Sim_Upper_99_Confidence <- as.numeric(as.character(clinda_importance$Sim_Upper_99_Confidence))
 clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
 strep_importance$Metabolite_score <- as.numeric(as.character(strep_importance$Metabolite_score))
 strep_importance$Sim_Median <- as.numeric(as.character(strep_importance$Sim_Median))
-strep_importance$Sim_IQR_25 <- as.numeric(as.character(strep_importance$Sim_IQR_25))
-strep_importance$Sim_IQR_75 <- as.numeric(as.character(strep_importance$Sim_IQR_75))
-strep_importance$Sim_Lower_95_interval <- as.numeric(as.character(strep_importance$Sim_Lower_95_interval))
-strep_importance$Sim_Upper_95_interval <- as.numeric(as.character(strep_importance$Sim_Upper_95_interval))
+strep_importance$Sim_Lower_99_Confidence <- as.numeric(as.character(strep_importance$Sim_Lower_99_Confidence))
+strep_importance$Sim_Upper_99_Confidence <- as.numeric(as.character(strep_importance$Sim_Upper_99_Confidence))
 strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
 gf_importance$Metabolite_score <- as.numeric(as.character(gf_importance$Metabolite_score))
 gf_importance$Sim_Median <- as.numeric(as.character(gf_importance$Sim_Median))
-gf_importance$Sim_IQR_25 <- as.numeric(as.character(gf_importance$Sim_IQR_25))
-gf_importance$Sim_IQR_75 <- as.numeric(as.character(gf_importance$Sim_IQR_75))
-gf_importance$Sim_Lower_95_interval <- as.numeric(as.character(gf_importance$Sim_Lower_95_interval))
-gf_importance$Sim_Upper_95_interval <- as.numeric(as.character(gf_importance$Sim_Upper_95_interval))
+gf_importance$Sim_Lower_99_Confidence <- as.numeric(as.character(gf_importance$Sim_Lower_99_Confidence))
+gf_importance$Sim_Upper_99_Confidence <- as.numeric(as.character(gf_importance$Sim_Upper_99_Confidence))
 gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
 cef_importance <- cef_importance[c(1:50),]
@@ -272,7 +264,7 @@ score_median <- as.data.frame(apply(cbind(shared_cef$Metabolite_score, shared_cl
 shared_importance <- cbind(shared_cef$Compound_name, score_median)
 rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
-shared_importance <- merge(shared_importance, sim_range, by='row.names')
+shared_importance <- merge(shared_importance, sim_range, by='row.names')   # Need to redo sim range now with new scores
 rownames(shared_importance) <- shared_importance$Row.names
 shared_importance$Row.names <- NULL
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
@@ -327,11 +319,11 @@ rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_i
 
 # Change point color based on significance
 top_importances$color <- ifelse(top_importances$Significance == '*', 'red', 'black')
-shared_importance$color <- ifelse(shared_importance$Metabolite_score > shared_importance$Sim_Upper_sig, 'red', 'black')
+shared_importance$color <- ifelse(shared_importance$Metabolite_score > shared_importance$Sim_UpperSig, 'red', 'black')
 
 # set same minimums as plotting area
 shared_importance[shared_importance < -2] <- -2
-top_importances$Sim_IQR_25[top_importances$Sim_IQR_25 < -2] <- -2
+top_importances[,2:5][top_importances[,2:5] < -2] <- -2
 
 # screen top from shared
 shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,1] %in% top_importances[,1])))
@@ -424,56 +416,25 @@ mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 segments(x0=rep(-2, 20), y0=c(1:14, 17:18, 21, 24:26), x1=rep(12, 20), y1=c(1:14, 17:18, 21, 24:26), lty=2) # Dotted lines
 
 # Simulated confidence intervals
-segments(x0=top_importances[c(7:20),4], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # iqr 25
-segments(x0=top_importances[c(7:20),4], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),6], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),6], y0=seq(0.6,13.6,1), x1=top_importances[c(7:20),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),6], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),3], y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),3], y0=seq(1.1,14.1,1), x1=top_importances[c(7:20),7], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),3], y0=seq(1.1,14.1,1), x1=top_importances[c(7:20),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray75') # Gnotobiotic
-segments(x0=top_importances[c(7:20),6], y0=seq(0.6,13.6,1), x1=top_importances[c(7:20),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),3], y0=seq(0.9,13.9,1), x1=top_importances[c(7:20),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),5], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),5], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # iqr 75
-segments(x0=top_importances[c(7:20),7], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),5], y1=seq(1.4,14.4,1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(7:20),5], y0=seq(0.6,13.6,1), x1=top_importances[c(7:20),7], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75')
+# Gnotobiotic
+segments(x0=top_importances[c(7:20),4], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),4], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # lower 99% confidence
+segments(x0=top_importances[c(7:20),3], y0=seq(1.1,14.1,1), x1=top_importances[c(7:20),3], y1=seq(0.9,13.9,1), lwd=1.5, col='gray75') # median
+segments(x0=top_importances[c(7:20),5], y0=seq(1.4,14.4,1), x1=top_importances[c(7:20),5], y1=seq(0.6,13.6,1), lwd=1.5, col='gray75') # upper 99% confidence
 points(x=top_importances[c(7:20),2], y=c(1:14), pch=19, cex=1.5, col=top_importances[c(20:7),10]) # Labeled significance
-
-segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray75') # iqr 25
-segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),6], y1=c(17.4,18.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),6], y0=c(17.4,18.4), x1=top_importances[c(2:3),3], y1=c(17.1,18.1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),7], y1=c(17.4,18.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray75') # Clindamycin
-segments(x0=top_importances[c(2:3),6], y0=c(16.6,17.6), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),3], y0=c(16.9,17.9), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5, col='gray75') # iqr 75
-segments(x0=top_importances[c(2:3),7], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(17.4,18.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(2:3),5], y0=c(16.6,17.6), x1=top_importances[c(2:3),7], y1=c(16.6,17.6), lwd=1.5, col='gray75')
+# Clindamycin
+segments(x0=top_importances[c(2:3),4], y0=c(17.4,18.4), x1=top_importances[c(2:3),4], y1=c(16.6,17.6), lwd=1.5, col='gray75') # lower 99% confidence
+segments(x0=top_importances[c(2:3),3], y0=c(17.1,18.1), x1=top_importances[c(2:3),3], y1=c(16.9,17.9), lwd=1.5, col='gray75') # median
+segments(x0=top_importances[c(2:3),5], y0=c(17.4,18.4), x1=top_importances[c(2:3),5], y1=c(16.6,17.6), lwd=1.5, col='gray75') # upper 99% confidence
 points(x=top_importances[c(2:3),2], y=c(17:18), pch=19, cex=1.5, col=top_importances[c(2:3),10]) # Labeled significance
-
-segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray75') # iqr 25
-segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,6], y1=21.4, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,6], y0=21.4, x1=top_importances[1,3], y1=21.1, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,7], y1=21.4, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray75') # Cefoperazone
-segments(x0=top_importances[1,6], y0=20.6, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,3], y0=20.9, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5, col='gray75') # iqr 75
-segments(x0=top_importances[1,7], y0=21.4, x1=top_importances[1,5], y1=21.4, lwd=1.5, col='gray75')
-segments(x0=top_importances[1,5], y0=20.6, x1=top_importances[1,7], y1=20.6, lwd=1.5, col='gray75')
+# Cefoperazone
+segments(x0=top_importances[1,4], y0=21.4, x1=top_importances[1,4], y1=20.6, lwd=1.5, col='gray75') # lower 99% confidence
+segments(x0=top_importances[1,3], y0=21.1, x1=top_importances[1,3], y1=20.9, lwd=1.5, col='gray75') # median
+segments(x0=top_importances[1,5], y0=21.4, x1=top_importances[1,5], y1=20.6, lwd=1.5, col='gray75') # upper 99% confidence
 points(x=top_importances[1,2], y=21, pch=19, cex=1.5, col=top_importances[1,10]) # Labeled significance
-
-segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # iqr 25
-segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),6], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),6], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),3], y1=c(24.1,25.1,26.1), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),7], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray75') # Streptomycin
-segments(x0=top_importances[c(4:6),6], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),3], y0=c(23.9,24.9,25.9), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # iqr 75
-segments(x0=top_importances[c(4:6),7], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(24.4,25.4,26.4), lwd=1.5, col='gray75')
-segments(x0=top_importances[c(4:6),5], y0=c(23.6,24.6,25.6), x1=top_importances[c(4:6),7], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75')
+# Streptomycin
+segments(x0=top_importances[c(4:6),4], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),4], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # lower 99% confidence
+segments(x0=top_importances[c(4:6),3], y0=c(24.1,25.1,26.1), x1=top_importances[c(4:6),3], y1=c(23.9,24.9,25.9), lwd=1.5, col='gray75') # median
+segments(x0=top_importances[c(4:6),5], y0=c(24.4,25.4,26.4), x1=top_importances[c(4:6),5], y1=c(23.6,24.6,25.6), lwd=1.5, col='gray75') # upper 99% confidence
 points(x=top_importances[c(4:6),2], y=c(24:26), pch=19, cex=1.5, col=top_importances[c(4:6),10]) # Labeled significance
 
 segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
@@ -484,22 +445,14 @@ segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
 par(mar=c(4,4,0,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.3, color='black',
          xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
+segments(x0=rep(-2, 14), y0=c(1:14), x1=rep(12, 14), y1=c(1:14), lty=2) # Dotted lines
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
 
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_25, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Lower95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Lower95, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Lower95, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Median, y1=seq(0.9,13.9,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=shared_importance$Sim_Upper95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_iqr_75, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Upper95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75')
-segments(x0=shared_importance$Sim_iqr_75, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Upper95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75')
-
-segments(x0=rep(-2, 14), y0=c(1:14), x1=rep(12, 14), y1=c(1:14), lty=2) # Dotted lines
+segments(x0=shared_importance$Sim_iqr_25, y0=seq(0.7,13.7,1), x1=shared_importance$Sim_Lower95, y1=seq(0.7,13.7,1), lwd=1.5, col='gray75') # lower 99% confidence
+segments(x0=shared_importance$Sim_Lower95, y0=seq(1.3,14.3,1), x1=shared_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75') # median
+segments(x0=shared_importance$Sim_Median, y0=seq(1.1,14.1,1), x1=shared_importance$Sim_Upper95, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75') # upper 99% confidence
 points(x=shared_importance$Metabolite_score, y=c(1:14), pch=19, cex=1.5, col=shared_importance$color) # Labeled significance
+
 segments(x0=-2, y0=0, x1=-2, y1=18) # Left side of plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
