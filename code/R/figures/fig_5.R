@@ -369,8 +369,13 @@ text(x=-0.5, y=-1, labels='94', col='white', cex=2.4) # Enzyme 2 transcription
 text(x=1, y=0.75, labels=expression(bold(paste('dAdo:', PO[4]^-3, ' Ribosyltransferase'))), cex=1.5) # Enzyme 3
 text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcription
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
-text(x=c(0.3,0.3), y=c(-0.02,-0.12), labels=c('Deoxyadenosine (dAdo)','= 6.554'), cex=1.6, font=c(2,1)) # Compound & calculated importance
-segments(x0=0.15, y0=-0.18, x1=0.45, y1=-0.18, lwd=2)
+
+
+text(x=c(-0.4,-0.4), y=c(0.02,0.12), labels=c('Deoxyadenosine (dAdo)','= 6.554'), cex=1.6, font=c(2,1)) # Compound & calculated importance
+segments(x0=-0.45, y0=0.18, x1=-0.15, y1=0.18, lwd=2)
+
+
+
 legend(x=0.7, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.7)
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
