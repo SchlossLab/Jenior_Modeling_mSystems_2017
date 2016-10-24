@@ -1,6 +1,8 @@
 User Defined Parameters
 KO expression file: clindamycin_630.RNA_reads2cdf630.norm.ko.txt
 Graph name: clindamycin_630
-KEGG ortholog nodes: 1183
+KEGG ortholog nodes: 447
 Substrate nodes: 758
-Monte Carlo simulation iterations: 11830
+Probability distribution generated: yes
+Permutations: 5000
+Duration: 23 seconds
