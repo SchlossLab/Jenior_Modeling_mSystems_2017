@@ -269,7 +269,7 @@ rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median, sim_median,
 # Format names to look better for the plot
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
-shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine -_'
+shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine  _'
 shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
 
 cef_importance <- cef_importance[c(1:25),]
