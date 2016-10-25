@@ -325,47 +325,66 @@ substrates <- c('fructose_mannitol','fructose_sorbitol','fructose_salicin','fruc
                 'salicin_acetylglucosamine','salicin_acetylneuriminate',
                 'acetylglucosamine_acetylneuriminate')
 
-
-
-
-
 # Maximum growth rate
 max_rate <- round(c(diff(fructose_mannitol_median)[which.max(diff(fructose_mannitol_median))], diff(fructose_sorbitol_median)[which.max(diff(fructose_sorbitol_median))], 
                     diff(fructose_salicin_median)[which.max(diff(fructose_salicin_median))], diff(fructose_acetylglucosamine_median)[which.max(diff(fructose_acetylglucosamine_median))],
                     diff(fructose_acetylneuriminate_median)[which.max(diff(fructose_acetylneuriminate_median))],
                     diff(mannitol_sorbitol_median)[which.max(diff(mannitol_sorbitol_median))], diff(mannitol_salicin_median)[which.max(diff(mannitol_salicin_median))], 
                     diff(mannitol_acetylglucosamine_median)[which.max(diff(mannitol_acetylglucosamine_median))], diff(mannitol_acetylneuriminate_median)[which.max(diff(mannitol_acetylneuriminate_median))],
-                    
-                    
-                    diff(fructose_median)[which.max(diff(fructose_median))], diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))],
-                    diff(y_glucose_y_aa_median)[which.max(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[which.max(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[which.max(diff(y_glucose_n_aa_median))],
-                    diff(n_glucose_n_aa_median)[which.max(diff(n_glucose_n_aa_median))], diff(bhi_median)[which.max(diff(bhi_median))]), digits=3)
+                    diff(sorbitol_salicin_median)[which.max(diff(sorbitol_salicin_median))], diff(sorbitol_acetylglucosamine_median)[which.max(diff(sorbitol_acetylglucosamine_median))], 
+                    diff(sorbitol_acetylneuriminate_median)[which.max(diff(sorbitol_acetylneuriminate_median))],
+                    diff(salicin_acetylglucosamine_median)[which.max(diff(salicin_acetylglucosamine_median))], diff(salicin_acetylneuriminate_median)[which.max(diff(salicin_acetylneuriminate_median))],
+                    diff(acetylglucosamine_acetylneuriminate_median)[which.max(diff(acetylglucosamine_acetylneuriminate_median))]), digits=3)
 
 # Time of maximum growth rate
-time_max_rate <- round(c((which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5), 
-                         (which.max(diff(fructose_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5),
-                         (which.max(diff(y_glucose_y_aa_median)) * 0.5), (which.max(diff(n_glucose_y_aa_median)) * 0.5), (which.max(diff(y_glucose_n_aa_median)) * 0.5),
-                         (which.max(diff(n_glucose_n_aa_median)) * 0.5), (which.max(diff(bhi_median)) * 0.5)), digits=3) - 0.5
+time_max_rate <- round(c((which.max(diff(fructose_mannitol_median)) * 0.5), (which.max(diff(fructose_sorbitol_median)) * 0.5), (which.max(diff(fructose_salicin_median)) * 0.5), 
+                         (which.max(diff(fructose_acetylglucosamine_median)) * 0.5), (which.max(diff(fructose_acetylneuriminate_median)) * 0.5), 
+                         (which.max(diff(mannitol_sorbitol_median)) * 0.5), (which.max(diff(mannitol_salicin_median)) * 0.5), 
+                         (which.max(diff(mannitol_acetylglucosamine_median)) * 0.5), (which.max(diff(mannitol_acetylneuriminate_median)) * 0.5),
+                         (which.max(diff(sorbitol_salicin_median)) * 0.5), (which.max(diff(sorbitol_acetylglucosamine_median)) * 0.5), 
+                         (which.max(diff(sorbitol_acetylneuriminate_median)) * 0.5),
+                         (which.max(diff(salicin_acetylglucosamine_median)) * 0.5), (which.max(diff(salicin_acetylneuriminate_median)) * 0.5),
+                         (which.max(diff(acetylglucosamine_acetylneuriminate_median)) * 0.5)), digits=3) - 0.5
+
 # Maximum OD
-max_od <- round(c(max(acetylneuraminate_median), max(sorbitol_median), max(fructose_median), max(mannitol_median), max(salicin_median), 
-                  max(y_glucose_y_aa_median), max(n_glucose_y_aa_median), max(y_glucose_n_aa_median), max(n_glucose_n_aa_median), max(bhi_median)), digits=3)
+max_od <- round(c(max(fructose_mannitol_median), max(fructose_sorbitol_median), max(fructose_salicin_median), max(fructose_acetylglucosamine_median), max(fructose_acetylneuriminate_median),
+                  max(mannitol_sorbitol_median), max(mannitol_salicin_median), max(mannitol_acetylglucosamine_median), max(mannitol_acetylneuriminate_median),
+                  max(sorbitol_salicin_median), max(sorbitol_acetylglucosamine_median), max(sorbitol_acetylneuriminate_median),
+                  max(salicin_acetylglucosamine_median), max(salicin_acetylneuriminate_median),
+                  max(acetylglucosamine_acetylneuriminate_median)), digits=3)
 
 # Time of max OD
-time_max_od <- round(c((which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5), 
-                       (which.max(fructose_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5),
-                       (which.max(y_glucose_y_aa_median) * 0.5), (which.max(n_glucose_y_aa_median) * 0.5), (which.max(y_glucose_n_aa_median) * 0.5),
-                       (which.max(n_glucose_n_aa_median) * 0.5), (which.max(bhi_median) * 0.5)), digits=3) - 0.5
+time_max_od <- round(c((which.max(fructose_mannitol_median) * 0.5), (which.max(fructose_sorbitol_median) * 0.5), (which.max(fructose_salicin_median) * 0.5), 
+                       (which.max(fructose_acetylglucosamine_median) * 0.5), (which.max(fructose_acetylneuriminate_median) * 0.5), 
+                       (which.max(mannitol_sorbitol_median) * 0.5), (which.max(mannitol_salicin_median) * 0.5), 
+                       (which.max(mannitol_acetylglucosamine_median) * 0.5), (which.max(mannitol_acetylneuriminate_median) * 0.5), 
+                       (which.max(sorbitol_salicin_median) * 0.5), (which.max(sorbitol_acetylglucosamine_median) * 0.5), (which.max(sorbitol_acetylneuriminate_median) * 0.5),
+                       (which.max(salicin_acetylglucosamine_median) * 0.5), (which.max(salicin_acetylneuriminate_median) * 0.5),
+                       (which.max(acetylglucosamine_acetylneuriminate_median) * 0.5)), digits=3) - 0.5
 
 # Growth rate at 24 hours
-rate_24_hrs <- round(c(diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], diff(sorbitol_median)[length(diff(sorbitol_median))], 
-                       diff(fructose_median)[length(diff(fructose_median))], diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))],
-                       diff(y_glucose_y_aa_median)[length(diff(y_glucose_y_aa_median))], diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))], diff(y_glucose_n_aa_median)[length(diff(y_glucose_n_aa_median))],
-                       diff(n_glucose_n_aa_median)[length(diff(n_glucose_n_aa_median))], diff(bhi_median)[length(diff(bhi_median))]), digits=3)
+rate_24_hrs <- round(c(diff(fructose_mannitol_median)[length(diff(fructose_mannitol_median))], diff(fructose_sorbitol_median)[length(diff(fructose_sorbitol_median))], 
+                       diff(fructose_salicin_median)[length(diff(fructose_salicin_median))], diff(fructose_acetylglucosamine_median)[length(diff(fructose_acetylglucosamine_median))], 
+                       diff(fructose_acetylneuriminate_median)[length(diff(fructose_acetylneuriminate_median))], 
+                       diff(mannitol_sorbitol_median)[length(diff(mannitol_sorbitol_median))], 
+                       diff(mannitol_salicin_median)[length(diff(mannitol_salicin_median))], diff(mannitol_acetylglucosamine_median)[length(diff(mannitol_acetylglucosamine_median))], 
+                       diff(mannitol_acetylneuriminate_median)[length(diff(mannitol_acetylneuriminate_median))], 
+                       diff(sorbitol_salicin_median)[length(diff(sorbitol_salicin_median))], diff(sorbitol_acetylglucosamine_median)[length(diff(sorbitol_acetylglucosamine_median))], 
+                       diff(sorbitol_acetylneuriminate_median)[length(diff(sorbitol_acetylneuriminate_median))], 
+                       diff(salicin_acetylglucosamine_median)[length(diff(salicin_acetylglucosamine_median))], 
+                       diff(salicin_acetylneuriminate_median)[length(diff(salicin_acetylneuriminate_median))], 
+                       diff(acetylglucosamine_acetylneuriminate_median)[length(diff(acetylglucosamine_acetylneuriminate_median))]), digits=3)
 
 # Mean growth rate
-mean_rate <- round(c(mean(diff(acetylneuraminate_median)), mean(diff(sorbitol_median)), mean(diff(fructose_median)), mean(diff(mannitol_median)),
-                     mean(diff(salicin_median)), mean(diff(n_glucose_y_aa_median)), mean(diff(y_glucose_y_aa_median)), mean(diff(y_glucose_n_aa_median)), 
-                     mean(diff(n_glucose_n_aa_median)), mean(diff(bhi_median))), digits=3)
+mean_rate <- round(c(mean(diff(fructose_mannitol_median)), mean(diff(fructose_sorbitol_median)), mean(diff(fructose_salicin_median)), mean(diff(fructose_acetylglucosamine_median)), mean(diff(fructose_acetylneuriminate_median)), 
+                     mean(diff(mannitol_sorbitol_median)), mean(diff(mannitol_salicin_median)), mean(diff(mannitol_acetylglucosamine_median)), mean(diff(mannitol_acetylneuriminate_median)),
+                     mean(diff(sorbitol_salicin_median)), mean(diff(sorbitol_acetylglucosamine_median)), mean(diff(sorbitol_acetylneuriminate_median)),
+                     mean(diff(salicin_acetylglucosamine_median)), mean(diff(salicin_acetylneuriminate_median)),
+                     mean(diff(salicin_acetylneuriminate_median))), digits=3)
+
+
+
+
 
 # Area under curve
 area_under <- round(c(auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)), 
