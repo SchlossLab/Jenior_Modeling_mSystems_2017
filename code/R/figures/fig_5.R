@@ -528,15 +528,15 @@ rm(table_file, growth_summary)
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
 pdf(file=plot_file, width=16, height=16)
 layout(matrix(c(1,2,3,3,3,3,3,4,4,4,4,4,4,
-                5,6,3,3,3,3,3,4,4,4,4,4,4,
-                7,7,3,3,3,3,3,4,4,4,4,4,4,
-                7,7,3,3,3,3,3,4,4,4,4,4,4,
-                8,9,3,3,3,3,3,4,4,4,4,4,4,
-                10,10,10,10,10,10,11,11,11,11,11,11,11,
-                10,10,10,10,10,10,11,11,11,11,11,11,11,
-                10,10,10,10,10,10,11,11,11,11,11,11,11,
-                10,10,10,10,10,10,11,11,11,11,11,11,11,
-                10,10,10,10,10,10,11,11,11,11,11,11,11), nrow=10, ncol=13, byrow=TRUE))
+                5,5,3,3,3,3,3,4,4,4,4,4,4,
+                5,5,3,3,3,3,3,4,4,4,4,4,4,
+                6,6,3,3,3,3,3,4,4,4,4,4,4,
+                7,8,3,3,3,3,3,4,4,4,4,4,4,
+                9,9,9,9,9,9,10,10,10,10,10,10,10,
+                9,9,9,9,9,9,10,10,10,10,10,10,10,
+                9,9,9,9,9,9,10,10,10,10,10,10,10,
+                9,9,9,9,9,9,10,10,10,10,10,10,10,
+                9,9,9,9,9,9,10,10,10,10,10,10,10), nrow=10, ncol=13, byrow=TRUE))
 
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -602,9 +602,6 @@ segments(x0=-2, y0=0, x1=-2, y1=18) # Left side of plot
 
 #---------------------------------------#
 
-plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
-
 # Large component of C. difficile 630 graph
 par(mar=c(0,1,0,0))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
@@ -612,6 +609,13 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
 
 # Draw box
 rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.7, lwd=2)
+
+#---------------------------------------#
+
+# Add some network stats
+plot.new()
+text(x=0.5, y=0.5, 'filler')
+
 
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -656,6 +660,7 @@ points(x=top_importances[1,2], y=21, pch=21, cex=2.75, lwd=2, col='black', bg=to
 points(x=top_importances[c(4:6),2], y=c(24:26), pch=21, cex=2.75, lwd=2, col='black', bg=top_importances[c(4:6),8]) # Streptomycin
 
 segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
+
 #---------------------------------------#
 
 # Growth on important compounds (separate)
