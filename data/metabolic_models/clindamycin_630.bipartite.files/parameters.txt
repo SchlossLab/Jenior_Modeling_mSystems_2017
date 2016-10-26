@@ -4,5 +4,5 @@ Graph name: clindamycin_630
 KEGG ortholog nodes: 447
 Substrate nodes: 758
 Probability distribution generated: yes
-Permutations: 5000
-Duration: 23 seconds
+Permutations: 10000
+Duration: 69 seconds

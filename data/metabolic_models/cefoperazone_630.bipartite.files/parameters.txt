@@ -4,5 +4,5 @@ Graph name: cefoperazone_630
 KEGG ortholog nodes: 447
 Substrate nodes: 758
 Probability distribution generated: yes
-Permutations: 5000
-Duration: 54 minutes
+Permutations: 10000
+Duration: 73 seconds

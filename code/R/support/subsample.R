@@ -52,7 +52,7 @@ rm(cefoperazone, clindamycin, streptomycin, germfree)
 
 # Rarefy mappings to be equal within effectiveness of sequencing effort
 sub_size <- round(min(colSums(combined_mapping[,1:3])) * 0.9) # 97930
-gf_sub_size <- round(min(colSums(combined_mapping[,4])) * 0.9) # 
+gf_sub_size <- round(min(sum(combined_mapping[,4])) * 0.9) # 34050
 cefoperazone_sub <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
 clindamycin_sub <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
 streptomycin_sub <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
