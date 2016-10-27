@@ -341,31 +341,29 @@ growth <- as.data.frame(t(growth))
 rm(growth_file)
 
 # Seperate to groups of each growth substrate and format - NEED TO CHANGE COORDINATES TO MATCH PLATE
-sorbitol <- cbind(growth$B9, growth$B10, growth$B11) - growth$B8
+sorbitol <- cbind(growth$C9, growth$C10, growth$C11) - growth$C8
 sorbitol[sorbitol < 0] <- 0
-fructose <- cbind(growth$E9, growth$E10, growth$E11) - growth$E8
+fructose <- cbind(growth$D9, growth$D10, growth$D11) - growth$D8
 fructose[fructose < 0] <- 0
-mannitol <- cbind(growth$F9, growth$F10, growth$F11) - growth$F8
+mannitol <- cbind(growth$B9, growth$B10, growth$B11) - growth$B8
 mannitol[mannitol < 0] <- 0
-salicin <- cbind(growth$G9, growth$G10, growth$G11) - growth$G8
+salicin <- cbind(growth$E9, growth$E10, growth$E11) - growth$E8
 salicin[salicin < 0] <- 0
 acetate <- cbind(growth$G9, growth$G10, growth$G11) - growth$G8
 acetate[acetate < 0] <- 0
-hydroxybutanoate <- cbind(growth$G9, growth$G10, growth$G11) - growth$G8
+hydroxybutanoate <- cbind(growth$F9, growth$F10, growth$F11) - growth$F8
 hydroxybutanoate[hydroxybutanoate < 0] <- 0
-acetylglucosamine <- cbind(growth$D9, growth$D10, growth$D11) - growth$D8
+acetylglucosamine <- cbind(growth$F3, growth$F4, growth$F5) - growth$F2
 acetylglucosamine[acetylglucosamine < 0] <- 0
-acetylneuraminate <- cbind(growth$C9, growth$C10, growth$C11) - growth$C8
+acetylneuraminate <- cbind(growth$G3, growth$G4, growth$G5) - growth$G2
 acetylneuraminate[acetylneuraminate < 0] <- 0
-y_glucose_y_aa <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
-y_glucose_y_aa[y_glucose_y_aa < 0] <- 0
 n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
 n_glucose_y_aa[n_glucose_y_aa < 0] <- 0
 y_glucose_n_aa <- cbind(growth$C3, growth$C4, growth$C5) - growth$C2
 y_glucose_n_aa[y_glucose_n_aa < 0] <- 0
 n_glucose_n_aa <- cbind(growth$E3, growth$E4, growth$E5) - growth$E2
 n_glucose_n_aa[n_glucose_n_aa < 0] <- 0
-bhi <- cbind(growth$F3, growth$F4, growth$F5) - growth$F2
+bhi <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
 bhi[bhi < 0] <- 0
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
