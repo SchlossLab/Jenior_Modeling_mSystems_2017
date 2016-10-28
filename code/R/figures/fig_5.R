@@ -615,7 +615,7 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.25, edge.arrow.width=0.4, vertex.frame.color='black')
 
 # Draw box
-rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.7, lwd=2)
+rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.75, lwd=2)
 
 #---------------------------------------#
 
@@ -681,7 +681,7 @@ abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('d', side=2, line=2, las=2, adj=2, padj=-19, cex=1.5, font=2)
+mtext('d', side=2, line=2, las=2, adj=3, padj=-19, cex=1.5, font=2)
 
 lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1), y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
