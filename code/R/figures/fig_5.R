@@ -399,7 +399,8 @@ corrected_p_values <- as.character(p.adjust(c(2e-16, 0.0494, 2e-16, 2e-16, 2e-16
 corrected_p_values <- append(corrected_p_values, 'NA', after=5) # need to fix once i add the new data
 
 # Clean up
-rm(fructose_test, sorbitol_test, mannitol_test, salicin_test, y_glucose_y_aa_test, y_glucose_n_aa_test, n_glucose_n_aa_test, bhi_test, acetylneuraminate_test)
+rm(fructose_test, sorbitol_test, mannitol_test, salicin_test, y_glucose_y_aa_test, y_glucose_n_aa_test, n_glucose_n_aa_test, 
+   bhi_test, acetylneuraminate_test, acetate_test, hydroxybutanoate_test, acetylglucosamine_test)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -536,7 +537,10 @@ layout(matrix(c(1,2,3,3,3,3,3,4,4,4,4,4,4,
                 9,9,9,9,9,9,10,10,10,10,10,10,10,
                 9,9,9,9,9,9,10,10,10,10,10,10,10), nrow=10, ncol=13, byrow=TRUE))
 
-plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+plot.new()
+text(x=0.5, y=0.5, 'a', cex=2.1, font=2)
+
+
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -544,7 +548,7 @@ plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 # Example network and importance calculation
 par(mar=c(0,0,0,0))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-mtext('a', side=2, line=2, las=2, adj=0, padj=-16, cex=1.4, font=2)
+#mtext('a', side=2, line=2, las=2, adj=0, padj=-16, cex=1.4, font=2)
 
 text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.3) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
@@ -555,7 +559,7 @@ text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcriptio
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 
 text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('Deoxyadenosine (dAdo)','Importance = 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
-segments(x0=-1.15, y0=0, x1=-0.45, y1=0, lwd=2.5)
+segments(x0=-1.17, y0=0, x1=-0.43, y1=0, lwd=2)
 
 legend(x=0.78, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.5)
@@ -575,6 +579,11 @@ text(x=1.14, y=-0.61, '+', cex=2.2)
 text(x=1.15, y=-0.4, 'More likely consumed', cex=1.35)
 text(x=0.14, y=-0.4, 'More likely released', cex=1.35)
 text(x=0.63, y=-0.75, 'Importance Score', cex=1.5, font=2)
+
+# Continuation lines
+Arrows(x0=-1.38, y0=1, x1=-1.12, y1=1, arr.type='curved', arr.length=0.45, arr.width=0.25, col='gray15')
+segments(x0=1.25, y0=0.44, x1=1.56, y1=0.44, col='gray15', lwd=1.1)
+segments(x0=-1.38, y0=-1, x1=-0.725, y1=-1, col='gray15', lwd=1.1)
 
 # Draw box
 rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
@@ -610,10 +619,14 @@ rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.7, lwd=2)
 
 #---------------------------------------#
 
-# Add some network stats
+# Add some network stats (Complete network, not just largest component)
 plot.new()
-text(x=0.5, y=0.5, 'filler')
-
+text(x=0.29, y=0.95, 'C. difficile', cex=1.4, font=c(4,2))
+text(x=0.72, y=0.95, 'str. 630 network', cex=1.4, font=2)
+segments(x0=0.14, y0=0.88, x1=0.97, y1=0.88, lwd=2)
+text(x=0.35, y=0.78, '- 447 Enzymes', cex=1.3)
+text(x=0.38, y=0.64, '- 758 Metabolites', cex=1.3)
+text(x=0.33, y=0.48, '- 2135 Edges', cex=1.3)
 
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
@@ -717,7 +730,7 @@ segments(x0=seq(1,49,1), y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_gl
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median+growth_sds$y_glucose_n_aa_sd, lwd=2.5, col='gray50')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$y_glucose_n_aa_median-growth_sds$y_glucose_n_aa_sd, lwd=2.5, col='gray50')
 
-legend('topleft', legend=c('No Carbohydrates','No Amino acids','N-Acetyl-D-glucosamine','D-Fructose','D-Sorbitol','Mannitol','4 Hydroxybutanoic acid','Salicin','Acetate','N-Acetylneuriminate'), 
+legend('topleft', legend=c('No Carbohydrates','No Amino acids','N-Acetyl-D-glucosamine','D-Fructose','D-Sorbitol','Mannitol','4  Hydroxybutanoic acid','Salicin','Acetate','N-Acetylneuriminate'), 
        col=c('gray60','gray60','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[5],'forestgreen','forestgreen'), 
        pch=c(4,19,6,0,15,1,2,17,5,18), cex=1.7, pt.cex=c(2.2,1,2.5,2.5,2.5,2.5,2.5,2.5,2.5,3), bg='white', lwd=2.5)
 
