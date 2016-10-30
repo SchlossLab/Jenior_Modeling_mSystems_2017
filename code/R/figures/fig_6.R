@@ -359,6 +359,8 @@ acetylneuraminate <- cbind(growth$G3, growth$G4, growth$G5) - growth$G2
 acetylneuraminate[acetylneuraminate < 0] <- 0
 n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
 n_glucose_y_aa[n_glucose_y_aa < 0] <- 0
+bhi <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
+bhi[bhi < 0] <- 0
 rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -384,7 +386,7 @@ summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test)) #
 summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test)) # 
 
 # Correct p-values
-corrected_p_values <- as.character(p.adjust(c(, , , , , , , ), method='bonferroni'))
+corrected_p_values <- as.character(p.adjust(c(2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16), method='bonferroni'))
 corrected_p_values <- append(corrected_p_values, 'NA') # need to fix once i add the new data
 
 # Clean up
@@ -404,6 +406,7 @@ hydroxybutanoate_median <- apply(hydroxybutanoate, 1, median)
 acetylglucosamine_median <- apply(acetylglucosamine, 1, median)
 acetylneuraminate_median <- apply(acetylneuraminate, 1, median)
 n_glucose_y_aa_median <- apply(n_glucose_y_aa, 1, median)
+bhi_median <- apply(bhi, 1, median)
 
 # Standard deviations
 sorbitol_sd <- rowSds(sorbitol)
@@ -415,17 +418,13 @@ acetate_sd <- rowSds(acetate)
 hydroxybutanoate_sd <- rowSds(hydroxybutanoate)
 acetylglucosamine_sd <- rowSds(acetylglucosamine)
 n_glucose_y_aa_sd <- rowSds(n_glucose_y_aa)
+bhi_sd <- rowSds(bhi)
 
 # Compile results
 growth_medians <- as.data.frame(cbind(acetate_median, hydroxybutanoate_median, acetylglucosamine_median, 
                                       acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, n_glucose_y_aa_median))
 growth_sds <- as.data.frame(cbind(acetate_sd, hydroxybutanoate_sd, acetylglucosamine_sd, acetylneuraminate_sd, 
                                   sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, n_glucose_y_aa_sd))
-
-rm(acetate_median, hydroxybutanoate_median, acetylglucosamine_median, 
-   acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, n_glucose_y_aa_median)
-rm(acetate_sd, hydroxybutanoate_sd, acetylglucosamine_sd, acetylneuraminate_sd, 
-   sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, n_glucose_y_aa_sd)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -485,7 +484,7 @@ rm(table_file, growth_summary)
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=10, height=21)
+pdf(file=plot_file, width=11, height=18)
 layout(matrix(c(1,1,1,1,2,2,2,2,
                 1,1,1,1,2,2,2,2,
                 1,1,1,1,2,2,2,2,
@@ -495,7 +494,7 @@ layout(matrix(c(1,1,1,1,2,2,2,2,
                 3,3,3,3,3,3,3,3,
                 3,3,3,3,3,3,3,3,
                 3,3,3,3,3,3,3,3,
-                3,3,3,3,3,3,3,3), nrow=10, ncol=6, byrow=TRUE))
+                3,3,3,3,3,3,3,3), nrow=10, ncol=8, byrow=TRUE))
 
 #---------------------------------------#
 
@@ -561,11 +560,11 @@ segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
 
 # Growth on important compounds (separate)
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
-abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
+plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.8), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+abline(h=seq(0,0.9,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
-axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
+axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
 mtext('c', side=2, line=2, las=2, adj=3, padj=-19, cex=1.5, font=2)
 
 lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.5)
@@ -615,10 +614,35 @@ legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','D-Fructo
        col=c('gray60','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[5],'forestgreen','forestgreen'), 
        pch=c(16,6,0,15,1,2,17,5,18), cex=1.7, pt.cex=c(1.2,2.5,2.5,2.5,2.5,2.5,2.5,2.5,3), bg='white', lwd=2.5)
 
+dev.off()
+
+
+
+
+
+
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6test.pdf'
+pdf(file=plot_file, width=9, height=8)
+par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
+plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.8), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+abline(h=seq(0,0.9,0.1), lty=3, col='gray68') # adding gridlines
+abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
+axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
+axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
+
+
+lines(bhi_median, type='o', col='firebrick', lwd=2.5, pch=18, cex=3)
+segments(x0=seq(1,49,1), y0=bhi_median+bhi_sd, x1=seq(1,49,1), y1=bhi_median-bhi_sd, lwd=2.5, col='firebrick')
+segments(x0=seq(1,49,1)-0.2, y0=bhi_median+bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median+bhi_sd, lwd=2.5, col='firebrick')
+segments(x0=seq(1,49,1)-0.2, y0=bhi_median-bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median-bhi_sd, lwd=2.5, col='firebrick')
+
+
+
+dev.off()
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-dev.off()
 rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, top_importances, shared_importance, growth_medians, growth_sds, format_curve)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
@@ -626,4 +650,3 @@ for (dep in deps){
 }
 rm(dep, deps, pkg)
 gc()
-
