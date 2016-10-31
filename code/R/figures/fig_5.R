@@ -249,7 +249,7 @@ rm(glucose, no_carb, no_aa, bhi)
 
 # Time of maximum glucose growth rate
 max_gluc_time <- which.max(diff(glucose_median)) # 7 hours
-max_gluc_rate <- diff(glucose_median)[which.max(diff(glucose_median))]
+diff(glucose_median)[which.max(diff(glucose_median))]
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -334,7 +334,7 @@ segments(x0=seq(1,25,1), y0=no_aa_median+no_aa_sd, x1=seq(1,25,1), y1=no_aa_medi
 segments(x0=seq(1,25,1)-0.3, y0=no_aa_median+no_aa_sd, x1=seq(1,25,1)+0.3, y1=no_aa_median+no_aa_sd, lwd=3, col='gray60')
 segments(x0=seq(1,25,1)-0.3, y0=no_aa_median-no_aa_sd, x1=seq(1,25,1)+0.3, y1=no_aa_median-no_aa_sd, lwd=3, col='gray60')
 
-legend('topleft', legend=c('CDMM + D-Glucose','CDMM - Carbohydrates','CDMM - Amino acids'), 
+legend('topleft', legend=c('D-Glucose','No Carbohydrates','No Amino acids'), 
        col=c('dodgerblue4','black','gray60'), pch=c(15,16,17), cex=2.7, pt.cex=4, bg='white', lwd=2.5)
 
 # Time point for transcriptomic sequencing
@@ -390,7 +390,7 @@ dev.off()
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(max_gluc_time, max_gluc_rate, glucose_median, no_carb_median, no_aa_median, bhi_median, glucose_sd, no_carb_sd, no_aa_sd, bhi_sd)
+rm(max_gluc_time, glucose_median, no_carb_median, no_aa_median, bhi_median, glucose_sd, no_carb_sd, no_aa_sd, bhi_sd)
 rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, invitro_importances)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
