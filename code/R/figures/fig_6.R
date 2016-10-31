@@ -333,57 +333,57 @@ shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance
 
 # Read in growth rate data
 # Define variables
-growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/fig6_growth.tsv'
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cd630_growth.tsv'
 
 # Read in data
 growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
 growth <- as.data.frame(t(growth))
 rm(growth_file)
 
-# Seperate to groups of each growth substrate and format - NEED TO CHANGE COORDINATES TO MATCH PLATE
-sorbitol <- cbind(growth$C9, growth$C10, growth$C11) - growth$C8
+# Seperate to groups of each growth substrate and format
+sorbitol <- cbind(growth$sorbitol_1, growth$sorbitol_2, growth$sorbitol_2) - growth$sorbitol_blank
 sorbitol[sorbitol < 0] <- 0
-fructose <- cbind(growth$D9, growth$D10, growth$D11) - growth$D8
+fructose <- cbind(growth$fructose_1, growth$fructose_2, growth$fructose_3) - growth$fructose_blank
 fructose[fructose < 0] <- 0
-mannitol <- cbind(growth$B9, growth$B10, growth$B11) - growth$B8
+mannitol <- cbind(growth$mannitol_1, growth$mannitol_2, growth$mannitol_3) - growth$mannitol_blank
 mannitol[mannitol < 0] <- 0
-salicin <- cbind(growth$E9, growth$E10, growth$E11) - growth$E8
+salicin <- cbind(growth$salicin_1, growth$salicin_2, growth$salicin_3) - growth$salicin_blank
 salicin[salicin < 0] <- 0
-acetate <- cbind(growth$G9, growth$G10, growth$G11) - growth$G8
+acetate <- cbind(growth$acetate_1, growth$acetate_2, growth$acetate_3) - growth$acetate_blank
 acetate[acetate < 0] <- 0
-hydroxybutanoate <- cbind(growth$F9, growth$F10, growth$F11) - growth$F8
+hydroxybutanoate <- cbind(growth$hydroxybutanoate_1, growth$hydroxybutanoate_2, growth$hydroxybutanoate_3) - growth$hydroxybutanoate_blank
 hydroxybutanoate[hydroxybutanoate < 0] <- 0
-acetylglucosamine <- cbind(growth$F3, growth$F4, growth$F5) - growth$F2
+acetylglucosamine <- cbind(growth$acetylglucosamine_1, growth$acetylglucosamine_2, growth$acetylglucosamine_3) - growth$acetylglucosamine_blank
 acetylglucosamine[acetylglucosamine < 0] <- 0
-acetylneuraminate <- cbind(growth$G3, growth$G4, growth$G5) - growth$G2
+acetylneuraminate <- cbind(growth$acetylneuraminate_1, growth$acetylneuraminate_2, growth$acetylneuraminate_3) - growth$acetylneuraminate_blank
 acetylneuraminate[acetylneuraminate < 0] <- 0
-n_glucose_y_aa <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
-n_glucose_y_aa[n_glucose_y_aa < 0] <- 0
-bhi <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
+no_carb <- cbind(growth$noCarb_1, growth$noCarb_2, growth$noCarb_3) - growth$noCarb_blank
+no_carb[no_carb < 0] <- 0
+bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
 bhi[bhi < 0] <- 0
 rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Prepare data for statistical tests
-fructose_test <- format_curve(fructose, 'fructose', n_glucose_y_aa)
-sorbitol_test <- format_curve(sorbitol, 'sorbitol', n_glucose_y_aa)
-mannitol_test <- format_curve(mannitol, 'mannitol', n_glucose_y_aa)
-salicin_test <- format_curve(salicin, 'salicin', n_glucose_y_aa)
-acetate_test <- format_curve(acetate, 'salicin', n_glucose_y_aa)
-hydroxybutanoate_test <- format_curve(hydroxybutanoate, 'hydroxybutanoate', n_glucose_y_aa)
-acetylglucosamine_test <- format_curve(acetylglucosamine, 'acetylglucosamine', n_glucose_y_aa)
-acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', n_glucose_y_aa)
+fructose_test <- format_curve(fructose, 'fructose', no_carb)
+sorbitol_test <- format_curve(sorbitol, 'sorbitol', no_carb)
+mannitol_test <- format_curve(mannitol, 'mannitol', no_carb)
+salicin_test <- format_curve(salicin, 'salicin', no_carb)
+acetate_test <- format_curve(acetate, 'salicin', no_carb)
+hydroxybutanoate_test <- format_curve(hydroxybutanoate, 'hydroxybutanoate', no_carb)
+acetylglucosamine_test <- format_curve(acetylglucosamine, 'acetylglucosamine', no_carb)
+acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', no_carb)
 
 # Calculate differences
-summary(aov(formula=od ~ substrate * time, data=sorbitol_test)) # 
-summary(aov(formula=od ~ substrate * time, data=fructose_test)) # 
-summary(aov(formula=od ~ substrate * time, data=mannitol_test)) # 
-summary(aov(formula=od ~ substrate * time, data=salicin_test)) # 
-summary(aov(formula=od ~ substrate * time, data=acetate_test)) # 
-summary(aov(formula=od ~ substrate * time, data=hydroxybutanoate_test)) # 
-summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test)) # 
-summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test)) # 
+summary(aov(formula=od ~ substrate * time, data=sorbitol_test)) # 0.0414
+summary(aov(formula=od ~ substrate * time, data=fructose_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=mannitol_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=salicin_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=acetate_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=hydroxybutanoate_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test)) # <2e-16
 
 # Correct p-values
 corrected_p_values <- as.character(p.adjust(c(2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16, 2e-16), method='bonferroni'))
@@ -405,7 +405,7 @@ acetate_median <- apply(acetate, 1, median)
 hydroxybutanoate_median <- apply(hydroxybutanoate, 1, median)
 acetylglucosamine_median <- apply(acetylglucosamine, 1, median)
 acetylneuraminate_median <- apply(acetylneuraminate, 1, median)
-n_glucose_y_aa_median <- apply(n_glucose_y_aa, 1, median)
+no_carb_median <- apply(no_carb, 1, median)
 bhi_median <- apply(bhi, 1, median)
 
 # Standard deviations
@@ -417,14 +417,14 @@ salicin_sd <- rowSds(salicin)
 acetate_sd <- rowSds(acetate)
 hydroxybutanoate_sd <- rowSds(hydroxybutanoate)
 acetylglucosamine_sd <- rowSds(acetylglucosamine)
-n_glucose_y_aa_sd <- rowSds(n_glucose_y_aa)
+no_carb_sd <- rowSds(no_carb)
 bhi_sd <- rowSds(bhi)
 
 # Compile results
 growth_medians <- as.data.frame(cbind(acetate_median, hydroxybutanoate_median, acetylglucosamine_median, 
-                                      acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, n_glucose_y_aa_median))
+                                      acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, no_carb_median))
 growth_sds <- as.data.frame(cbind(acetate_sd, hydroxybutanoate_sd, acetylglucosamine_sd, acetylneuraminate_sd, 
-                                  sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, n_glucose_y_aa_sd))
+                                  sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -435,45 +435,45 @@ substrates <- c('acetate','hydroxybutanoate','acetylglucosamine','acetylneuramin
 max_rate <- round(c(diff(acetate_median)[which.max(diff(acetate_median))], diff(hydroxybutanoate_median)[which.max(diff(hydroxybutanoate_median))],
                     diff(acetylglucosamine_median)[which.max(diff(acetylglucosamine_median))], diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))],
                     diff(sorbitol_median)[which.max(diff(sorbitol_median))], diff(fructose_median)[which.max(diff(fructose_median))], 
-                    diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))], diff(n_glucose_y_aa_median)[which.max(diff(n_glucose_y_aa_median))]), digits=3)
+                    diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))], diff(no_carb_median)[which.max(diff(no_carb_median))]), digits=3)
 
 # Time of maximum growth rate
 time_max_rate <- round(c((which.max(diff(acetate_median)) * 0.5), (which.max(diff(hydroxybutanoate_median)) * 0.5), (which.max(diff(acetylglucosamine_median)) * 0.5),
                          (which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5), 
-                         (which.max(diff(fructose_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5), (which.max(diff(n_glucose_y_aa_median)) * 0.5)), digits=3) - 0.5
+                         (which.max(diff(fructose_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5), (which.max(diff(no_carb_median)) * 0.5)), digits=3) - 0.5
 # Maximum OD
 max_od <- round(c(max(acetate_median), max(hydroxybutanoate_median), max(acetylglucosamine_median), max(acetylneuraminate_median), 
-                  max(sorbitol_median), max(fructose_median), max(mannitol_median), max(salicin_median), max(n_glucose_y_aa_median)), digits=3)
+                  max(sorbitol_median), max(fructose_median), max(mannitol_median), max(salicin_median), max(no_carb_median)), digits=3)
 
 # Time of max OD
 time_max_od <- round(c((which.max(acetate_median) * 0.5), (which.max(hydroxybutanoate_median) * 0.5), (which.max(acetylglucosamine_median) * 0.5),
                        (which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5), 
-                       (which.max(fructose_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5), (which.max(n_glucose_y_aa_median) * 0.5)), digits=3) - 0.5
+                       (which.max(fructose_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5), (which.max(no_carb_median) * 0.5)), digits=3) - 0.5
 
 # Growth rate at 24 hours
 rate_24_hrs <- round(c(diff(acetate_median)[length(diff(acetate_median))], diff(hydroxybutanoate_median)[length(diff(hydroxybutanoate_median))],
                        diff(acetylglucosamine_median)[length(diff(acetylglucosamine_median))], diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], 
                        diff(sorbitol_median)[length(diff(sorbitol_median))], diff(fructose_median)[length(diff(fructose_median))], 
                        diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))], 
-                       diff(n_glucose_y_aa_median)[length(diff(n_glucose_y_aa_median))]), digits=3)
+                       diff(no_carb_median)[length(diff(no_carb_median))]), digits=3)
 
 # Mean growth rate
 mean_rate <- round(c(mean(diff(acetate_median)), mean(diff(hydroxybutanoate_median)), mean(diff(acetylglucosamine_median)), mean(diff(acetylneuraminate_median)),
-                     mean(diff(sorbitol_median)), mean(diff(fructose_median)), mean(diff(mannitol_median)), mean(diff(salicin_median)), mean(diff(n_glucose_y_aa_median))), digits=3)
+                     mean(diff(sorbitol_median)), mean(diff(fructose_median)), mean(diff(mannitol_median)), mean(diff(salicin_median)), mean(diff(no_carb_median))), digits=3)
 
 # Area under curve
 area_under <- round(c(auc(acetate_median, seq(1,49,1)), auc(hydroxybutanoate_median, seq(1,49,1)), auc(acetylglucosamine_median, seq(1,49,1)),
                       auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)), auc(fructose_median, seq(1,49,1)), 
-                      auc(mannitol_median, seq(1,49,1)), auc(salicin_median, seq(1,49,1)), auc(n_glucose_y_aa_median, seq(1,49,1))), digits=3)
+                      auc(mannitol_median, seq(1,49,1)), auc(salicin_median, seq(1,49,1)), auc(no_carb_median, seq(1,49,1))), digits=3)
 
 # Assemble the table
 growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
 colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_of_Max_Rate_in_Hours', 'Max_OD', 'Time_of_Max_OD_in_Hours', 'Rate_at_24_hours', 'Mean_Rate', 'AUC', 'Corrected_AoV_pvalue')
 rm(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under, corrected_p_values)
 
-rm(acetate_median, hydroxybutanoate_median, acetylglucosamine_median, acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, n_glucose_y_aa_median)
-rm(acetate, hydroxybutanoate, acetylglucosamine, acetylneuraminate, sorbitol, fructose, mannitol, salicin, n_glucose_y_aa)
-rm(acetate_sd, hydroxybutanoate_sd, acetylglucosamine_sd, acetylneuraminate_sd, sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, n_glucose_y_aa_sd)
+rm(acetate_median, hydroxybutanoate_median, acetylglucosamine_median, acetylneuraminate_median, sorbitol_median, fructose_median, mannitol_median, salicin_median, no_carb_median)
+rm(acetate, hydroxybutanoate, acetylglucosamine, acetylneuraminate, sorbitol, fructose, mannitol, salicin, no_carb)
+rm(acetate_sd, hydroxybutanoate_sd, acetylglucosamine_sd, acetylneuraminate_sd, sorbitol_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd)
 
 # Write growth summary data to supplementary table
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S6.tsv'
@@ -484,7 +484,7 @@ rm(table_file, growth_summary)
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=11, height=18)
+pdf(file=plot_file, width=13, height=16)
 layout(matrix(c(1,1,1,1,2,2,2,2,
                 1,1,1,1,2,2,2,2,
                 1,1,1,1,2,2,2,2,
@@ -523,7 +523,7 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.2, groups=top_importances$abx, color='black',
          xlab='Metabolite Importance Score', xlim=c(-2,12), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-mtext('b', side=2, line=2, las=2, adj=2.5, padj=-20, cex=1.4, font=2)
+mtext('b', side=2, line=2, las=2, adj=2.5, padj=-19.5, cex=1.4, font=2)
 segments(x0=rep(-2, 20), y0=c(1:14, 17:18, 21, 24:26), x1=rep(12, 20), y1=c(1:14, 17:18, 21, 24:26), lty=2) # Dotted lines
 
 # Probability distribution summaries
@@ -560,12 +560,18 @@ segments(x0=-2, y0=0, x1=-2, y1=27) # Left side of plot
 
 # Growth on important compounds (separate)
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.8), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
-abline(h=seq(0,0.9,0.1), lty=3, col='gray68') # adding gridlines
+plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
-axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
+axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
 mtext('c', side=2, line=2, las=2, adj=3, padj=-19, cex=1.5, font=2)
+
+# Control
+lines(growth_medians$no_carb_median, type='o', lwd=2.5, pch=16, cex=0, col='gray60')
+segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray60')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray60')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray60')
 
 lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1), y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
@@ -576,43 +582,25 @@ lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[
 segments(x0=seq(1,49,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=15, cex=2.5)
-segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 
 lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2.5, pch=1, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
 
-lines(growth_medians$hydroxybutanoate_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=2, cex=2.5)
-segments(x0=seq(1,49,1), y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1), y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=17, cex=2.5)
+lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=2, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 
-lines(growth_medians$acetate_median, type='o', col='forestgreen', lwd=2.5, pch=5, cex=2.5)
-segments(x0=seq(1,49,1), y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1), y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median+growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median-growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
-lines(growth_medians$acetylneuraminate_median, type='o', col='forestgreen', lwd=2.5, pch=18, cex=3)
+lines(growth_medians$acetylneuraminate_median, type='o', col='forestgreen', lwd=2.5, pch=5, cex=2.5)
 segments(x0=seq(1,49,1), y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1), y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 
-# Control
-lines(growth_medians$n_glucose_y_aa_median, type='o', lwd=2.5, pch=16, cex=2.2, col='gray60')
-segments(x0=seq(1,49,1), y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1), y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, cex=2, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median+growth_sds$n_glucose_y_aa_sd, lwd=2.5, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$n_glucose_y_aa_median-growth_sds$n_glucose_y_aa_sd, lwd=2.5, col='gray50')
-
-legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','D-Fructose','D-Sorbitol','Mannitol','4  Hydroxybutanoic acid','Salicin','Acetate','N-Acetylneuriminate'), 
-       col=c('gray60','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],wes_palette('FantasticFox')[5],'forestgreen','forestgreen'), 
-       pch=c(16,6,0,15,1,2,17,5,18), cex=1.7, pt.cex=c(1.2,2.5,2.5,2.5,2.5,2.5,2.5,2.5,3), bg='white', lwd=2.5)
+legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','D-Fructose','Mannitol','Salicin','N-Acetylneuriminate'), 
+       col=c('gray60','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(16,6,0,1,2,5), cex=2, pt.cex=c(0,2.9,2.9,2.9,2.9,2.9), bg='white', lwd=2.5)
 
 dev.off()
 
@@ -620,29 +608,52 @@ dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6test.pdf'
-pdf(file=plot_file, width=9, height=8)
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
+pdf(file=plot_file, width=14, height=10)
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.8), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.83), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
 abline(h=seq(0,0.9,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
 axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
 
+lines(growth_medians$no_carb_median, type='o', lwd=2.5, pch=16, cex=0, col='gray60')
+segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray60')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray60')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray60')
 
-lines(bhi_median, type='o', col='firebrick', lwd=2.5, pch=18, cex=3)
-segments(x0=seq(1,49,1), y0=bhi_median+bhi_sd, x1=seq(1,49,1), y1=bhi_median-bhi_sd, lwd=2.5, col='firebrick')
-segments(x0=seq(1,49,1)-0.2, y0=bhi_median+bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median+bhi_sd, lwd=2.5, col='firebrick')
-segments(x0=seq(1,49,1)-0.2, y0=bhi_median-bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median-bhi_sd, lwd=2.5, col='firebrick')
+lines(bhi_median, type='o', col='darkorchid3', lwd=2.5, pch=15, cex=1.5)
+segments(x0=seq(1,49,1), y0=bhi_median+bhi_sd, x1=seq(1,49,1), y1=bhi_median-bhi_sd, lwd=2.5, col='darkorchid3')
+segments(x0=seq(1,49,1)-0.2, y0=bhi_median+bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median+bhi_sd, lwd=2.5, col='darkorchid3')
+segments(x0=seq(1,49,1)-0.2, y0=bhi_median-bhi_sd, x1=seq(1,49,1)+0.2, y1=bhi_median-bhi_sd, lwd=2.5, col='darkorchid3')
+
+lines(growth_medians$sorbitol_median, type='o', col='forestgreen', lwd=2.5, pch=16, cex=1.5)
+segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col='forestgreen')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col='forestgreen')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col='forestgreen')
+
+lines(growth_medians$hydroxybutanoate_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=17, cex=1.5)
+segments(x0=seq(1,49,1), y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1), y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+
+lines(growth_medians$acetate_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=18, cex=1.5)
+segments(x0=seq(1,49,1), y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1), y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median+growth_sds$acetate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median-growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
 
 
+legend('topleft', legend=c('No Carbohydrates','BHI','D-Sorbitol','Hydroxybutanoic acid','Acetate'), 
+       col=c('gray60','darkorchid3','forestgreen',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[5]), 
+       pch=c(16,15,16,17,18), cex=1.3, pt.cex=c(0,2.5,2.5,2.5,2.5), bg='white', lwd=2.5)
 
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, top_importances, shared_importance, growth_medians, growth_sds, format_curve)
+rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, top_importances, 
+   shared_importance, growth_medians, growth_sds, format_curve, bhi, bhi_median, bhi_sd)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)

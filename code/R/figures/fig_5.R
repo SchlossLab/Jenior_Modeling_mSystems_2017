@@ -180,7 +180,6 @@ E(network)$color <- 'gray15' # Color edges
 
 # Read in substrate importance data
 invitro_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/invitro_glucose_630.bipartite.files/invitro_glucose_630.importance_score.tsv'
-
 invitro_importance <- read.delim(invitro_importance_file, header=TRUE, sep='\t', row.names=1)
 rm(invitro_importance_file)
 
@@ -213,7 +212,7 @@ invitro_importance$Sim_Upper_95_Confidence[invitro_importance$Sim_Upper_95_Confi
 
 # Read in growth rate data
 # Define variables
-growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/fig5_growth.tsv'
+growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cd630_growth.tsv'
 
 # Read in data
 growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
@@ -221,13 +220,13 @@ growth <- as.data.frame(t(growth))
 rm(growth_file)
 
 # Seperate to groups of each growth substrate and format
-y_gluc_y_aa <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
-y_gluc_y_aa[y_gluc_y_aa < 0] <- 0
-n_gluc_y_aa <- cbind(growth$D3, growth$D4, growth$D5) - growth$D2
-n_gluc_y_aa[n_gluc_y_aa < 0] <- 0
-y_gluc_n_aa <- cbind(growth$C3, growth$C4, growth$C5) - growth$C2
-y_gluc_n_aa[y_gluc_n_aa < 0] <- 0
-bhi <- cbind(growth$B3, growth$B4, growth$B5) - growth$B2
+glucose <- cbind(growth$glucose_1, growth$glucose_2, growth$glucose_3) - growth$glucose_blank
+glucose[glucose < 0] <- 0
+no_carb <- cbind(growth$noCarb_1, growth$noCarb_2, growth$noCarb_3) - growth$noCarb_blank
+no_carb[no_carb < 0] <- 0
+no_aa <- cbind(growth$noAA_1, growth$noAA_2, growth$noAA_3) - growth$noAA_blank
+no_aa[no_aa < 0] <- 0
+bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
 bhi[bhi < 0] <- 0
 rm(growth)
 
@@ -236,48 +235,34 @@ rm(growth)
 # Format growth curves
 
 # Find medians 
-y_gluc_y_aa_median <- apply(y_gluc_y_aa, 1, median)
-n_gluc_y_aa_median <- apply(n_gluc_y_aa, 1, median)
-y_gluc_n_aa_median <- apply(y_gluc_n_aa, 1, median)
-bhi_median <- apply(bhi, 1, median)
+glucose_median <- apply(glucose, 1, median)[1:25]
+no_carb_median <- apply(no_carb, 1, median)[1:25]
+no_aa_median <- apply(no_aa, 1, median)[1:25]
+bhi_median <- apply(bhi, 1, median)[1:25]
 
 # Standard deviations
-y_gluc_y_aa_sd <- rowSds(y_gluc_y_aa)
-n_gluc_y_aa_sd <- rowSds(n_gluc_y_aa)
-y_gluc_n_aa_sd <- rowSds(y_gluc_n_aa)
-bhi_sd <- rowSds(bhi)
+glucose_sd <- rowSds(glucose)[1:25]
+no_carb_sd <- rowSds(no_carb)[1:25]
+no_aa_sd <- rowSds(no_aa)[1:25]
+bhi_sd <- rowSds(bhi)[1:25]
+rm(glucose, no_carb, no_aa, bhi)
 
-rm(y_glucose_y_aa, y_glucose_n_aa, n_glucose_y_aa, n_glucose_n_aa, bhi)
-
-# Compile results
-growth_medians <- as.data.frame(cbind(y_gluc_y_aa_median, n_gluc_y_aa_median, y_gluc_n_aa_median, bhi_median))
-growth_sds <- as.data.frame(cbind(y_gluc_y_aa_sd, n_gluc_y_aa_sd, y_gluc_n_aa_sd, bhi_sd))
-
-rm(y_glucose_y_aa_median, n_glucose_y_aa_median, y_glucose_n_aa_median, n_glucose_n_aa_median, bhi_median)
-rm(y_glucose_y_aa_sd, n_glucose_y_aa_sd, y_glucose_n_aa_sd, n_glucose_n_aa_sd, bhi_sd)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Time of maximum growth rate
-(which.max(diff(y_glucose_y_aa_median)) * 0.5) - 0.5 # 
-(which.max(diff(n_glucose_y_aa_median)) * 0.5 ) - 0.5 # 
-(which.max(diff(y_glucose_n_aa_median)) * 0.5) - 0.5 # 
-(which.max(diff(bhi_median)) * 0.5) - 0.5 # 
+# Time of maximum glucose growth rate
+max_gluc_time <- which.max(diff(glucose_median)) # 7 hours
+max_gluc_rate <- diff(glucose_median)[which.max(diff(glucose_median))]
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=35, height=10)
-layout(matrix(c(1,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,
-                6,6,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,
-                7,7,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,
-                7,7,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,
-                8,9,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5), nrow=5, ncol=18, byrow=TRUE))
+pdf(file=plot_file, width=28, height=10)
+layout(matrix(c(1,2,2,2,3,3,3,3,4,4,4,
+                5,2,2,2,3,3,3,3,4,4,4,
+                6,2,2,2,3,3,3,3,4,4,4,
+                7,2,2,2,3,3,3,3,4,4,4), nrow=4, ncol=11, byrow=TRUE))
 
 plot.new()
-text(x=0.5, y=0.5, 'a', cex=2.1, font=2)
-plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+text(x=0.9, y=0.1, 'a', cex=2.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -296,7 +281,7 @@ text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('Deoxyadenosine (dAdo)','Importance = 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
 segments(x0=-1.17, y0=0, x1=-0.43, y1=0, lwd=2)
 
-legend(x=0.78, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
+legend(x=0.92, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.5)
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
 text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
@@ -325,74 +310,67 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 
 #---------------------------------------#
 
-# Growth on important compounds (separate)
+# Growth on glucose
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
+plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,26), ylim=c(-0.03,0.63), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]))
 abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
-abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
-axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
+abline(v=seq(1,26,2), lty=3, col='gray68') # adding gridlines
+axis(1, at=seq(1,25,4), labels=seq(0,12,2), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('b', side=2, line=2, las=2, adj=3, padj=-19, cex=1.5, font=2)
+mtext('b', side=2, line=2, las=2, adj=3, padj=-24, cex=1.5, font=2)
 
-lines(growth_medians$y_gluc_y_aa_median, type='o', lwd=2.5, pch=19, cex=1, col='darkorchid3')
-segments(x0=seq(1,49,1), y0=growth_medians$y_gluc_y_aa_median+growth_sds$y_gluc_y_aa_sd, 
-         x1=seq(1,49,1), y1=growth_medians$y_gluc_y_aa_median-growth_sds$y_gluc_y_aa_sd, lwd=2.5, cex=2, col='darkorchid3')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_gluc_n_aa_median+growth_sds$y_gluc_n_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$y_gluc_n_aa_median+growth_sds$y_gluc_n_aa_sd, lwd=2.5, col='darkorchid3')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_gluc_n_aa_median-growth_sds$y_gluc_n_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$y_gluc_n_aa_median-growth_sds$y_gluc_n_aa_sd, lwd=2.5, col='darkorchid3')
+lines(glucose_median, type='o', lwd=3, pch=15, cex=3, col='dodgerblue4')
+segments(x0=seq(1,25,1), y0=glucose_median+glucose_sd, x1=seq(1,25,1), y1=glucose_median-glucose_sd, lwd=3, cex=2, col='dodgerblue4')
+segments(x0=seq(1,25,1)-0.3, y0=glucose_median+glucose_sd, x1=seq(1,25,1)+0.3, y1=glucose_median+glucose_sd, lwd=3, col='dodgerblue4')
+segments(x0=seq(1,25,1)-0.3, y0=glucose_median-glucose_sd, x1=seq(1,25,1)+0.3, y1=glucose_median-glucose_sd, lwd=3, col='dodgerblue4')
 
-lines(growth_medians$n_gluc_y_aa_median, type='o', lwd=2.5, pch=4, cex=2.2, col='gray60')
-segments(x0=seq(1,49,1), y0=growth_medians$n_gluc_y_aa_median+growth_sds$n_gluc_y_aa_sd, 
-         x1=seq(1,49,1), y1=growth_medians$n_gluc_y_aa_median-growth_sds$n_gluc_y_aa_sd, lwd=2.5, cex=2, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_gluc_y_aa_median+growth_sds$n_gluc_y_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$n_gluc_y_aa_median+growth_sds$n_gluc_y_aa_sd, lwd=2.5, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$n_gluc_y_aa_median-growth_sds$n_gluc_y_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$n_gluc_y_aa_median-growth_sds$n_gluc_y_aa_sd, lwd=2.5, col='gray50')
+lines(no_carb_median, type='o', lwd=3, pch=16, cex=2, col='black')
+segments(x0=seq(1,25,1), y0=no_carb_median+no_carb_sd, x1=seq(1,25,1), y1=no_carb_median-no_carb_sd, lwd=3, cex=2, col='black')
+segments(x0=seq(1,25,1)-0.3, y0=no_carb_median+no_carb_sd, x1=seq(1,25,1)+0.3, y1=no_carb_median+no_carb_sd, lwd=3, col='black')
+segments(x0=seq(1,25,1)-0.3, y0=no_carb_median-no_carb_sd, x1=seq(1,25,1)+0.3, y1=no_carb_median-no_carb_sd, lwd=3, col='black')
 
-lines(growth_medians$y_gluc_n_aa_median, type='o', lwd=2.5, pch=19, cex=1, col='gray60')
-segments(x0=seq(1,49,1), y0=growth_medians$y_gluc_n_aa_median+growth_sds$y_gluc_n_aa_sd, 
-         x1=seq(1,49,1), y1=growth_medians$y_gluc_n_aa_median-growth_sds$y_gluc_n_aa_sd, lwd=2.5, cex=2, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_gluc_n_aa_median+growth_sds$y_gluc_n_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$y_gluc_n_aa_median+growth_sds$y_gluc_n_aa_sd, lwd=2.5, col='gray50')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$y_gluc_n_aa_median-growth_sds$y_gluc_n_aa_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$y_gluc_n_aa_median-growth_sds$y_gluc_n_aa_sd, lwd=2.5, col='gray50')
+lines(no_aa_median, type='o', lwd=3, pch=17, cex=2, col='gray60')
+segments(x0=seq(1,25,1), y0=no_aa_median+no_aa_sd, x1=seq(1,25,1), y1=no_aa_median-no_aa_sd, lwd=3, cex=2, col='gray60')
+segments(x0=seq(1,25,1)-0.3, y0=no_aa_median+no_aa_sd, x1=seq(1,25,1)+0.3, y1=no_aa_median+no_aa_sd, lwd=3, col='gray60')
+segments(x0=seq(1,25,1)-0.3, y0=no_aa_median-no_aa_sd, x1=seq(1,25,1)+0.3, y1=no_aa_median-no_aa_sd, lwd=3, col='gray60')
 
-legend('topleft', legend=c('D-Glucose','No Carbohydrates','No Amino acids'), 
-       col=c('darkorchid2','gray60','gray60'), pch=c(15,16,17), cex=2, pt.cex=c(2,2,2), bg='white', lwd=2.5)
+legend('topleft', legend=c('CDMM + D-Glucose','CDMM - Carbohydrates','CDMM - Amino acids'), 
+       col=c('dodgerblue4','black','gray60'), pch=c(15,16,17), cex=2.7, pt.cex=4, bg='white', lwd=2.5)
 
 # Time point for transcriptomic sequencing
-Arrows(x0=25, y0=0.8, x1=25, y1=0.7, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3, col='firebrick')
+Arrows(x0=max_gluc_time, y0=0.415, x1=max_gluc_time, y1=0.35, lwd=3, arr.type='triangle', arr.length=0.6, arr.width=0.3, col='firebrick')
+text(x=max_gluc_time, y=0.43, 'Max rate', col='firebrick', cex=1.5, font=2)
 
 #---------------------------------------#
 
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(invitro_importance$Metabolite_score, labels=invitro_importance$Compound_name, lcolor=NA, cex=1.2, color=entry_color,
-         xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
-segments(x0=rep(-2, 14), y0=c(1:14), x1=rep(12, 14), y1=c(1:14), lty=2) # Dotted lines
-mtext('c', side=2, line=2, las=2, adj=2.5, padj=-19.5, cex=1.4, font=2)
+plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
+#dotchart(invitro_importance$Metabolite_score, labels=invitro_importance$Compound_name, lcolor=NA, cex=1.2, color=entry_color,
+#         xlab='Median Metabolite Importance Score', xlim=c(-2,12), pch=19)
+#segments(x0=rep(-2, 14), y0=c(1:14), x1=rep(12, 14), y1=c(1:14), lty=2) # Dotted lines
+mtext('c', side=2, line=2, las=2, adj=2, padj=-25, cex=1.5, font=2)
 
-segments(x0=invitro_importance$Sim_Upper_95_Confidence, y0=seq(0.7,13.7,1), x1=invitro_importance$Sim_Upper_95_Confidence, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75') # lower 95% confidence
-segments(x0=invitro_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=invitro_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75') # median
-segments(x0=invitro_importance$Sim_Upper_95_Confidence, y0=seq(0.7,13.7,1), x1=invitro_importance$Sim_Upper_95_Confidence, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75') # upper 95% confidence
-segments(x0=invitro_importance$Sim_Lower_95_Confidence, y0=c(1:14), x1=invitro_importance$Sim_Upper_95_Confidence, y1=c(1:14), lwd=1.5, col='gray75') # connection
+#segments(x0=invitro_importance$Sim_Upper_95_Confidence, y0=seq(0.7,13.7,1), x1=invitro_importance$Sim_Upper_95_Confidence, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75') # lower 95% confidence
+#segments(x0=invitro_importance$Sim_Median, y0=seq(0.9,13.9,1), x1=invitro_importance$Sim_Median, y1=seq(1.1,14.1,1), lwd=1.5, col='gray75') # median
+#segments(x0=invitro_importance$Sim_Upper_95_Confidence, y0=seq(0.7,13.7,1), x1=invitro_importance$Sim_Upper_95_Confidence, y1=seq(1.3,14.3,1), lwd=1.5, col='gray75') # upper 95% confidence
+#segments(x0=invitro_importance$Sim_Lower_95_Confidence, y0=c(1:14), x1=invitro_importance$Sim_Upper_95_Confidence, y1=c(1:14), lwd=1.5, col='gray75') # connection
 
 # Labeled significance
-points(x=shared_importance$Metabolite_score, y=c(1:14), pch=21, cex=2.75, lwd=2, col='black', bg=shared_importance$point_color)
+#points(x=shared_importance$Metabolite_score, y=c(1:14), pch=21, cex=2.75, lwd=2, col='black', bg=shared_importance$point_color)
 
-segments(x0=-2, y0=0, x1=-2, y1=18) # Left side of plot
+#segments(x0=-2, y0=0, x1=-2, y1=18) # Left side of plot
 
 #---------------------------------------#
 
 # Add some network stats (Complete network, not just largest component)
 plot.new()
-text(x=0.29, y=0.95, 'C. difficile', cex=1.4, font=c(4,2))
-text(x=0.72, y=0.95, 'str. 630 network', cex=1.4, font=2)
-segments(x0=0.14, y0=0.88, x1=0.97, y1=0.88, lwd=2)
-text(x=0.35, y=0.78, '- 447 Enzymes', cex=1.3)
-text(x=0.38, y=0.64, '- 758 Metabolites', cex=1.3)
-text(x=0.33, y=0.48, '- 2135 Edges', cex=1.3)
+text(x=0.19, y=0.45, 'C. difficile', cex=1.4, font=c(4,2))
+text(x=0.64, y=0.45, '630 network', cex=1.4, font=2)
+segments(x0=0.01, y0=0.38, x1=0.88, y1=0.38, lwd=2)
+text(x=0.26, y=0.28, '- 447 Enzymes', cex=1.3)
+text(x=0.295, y=0.15, '- 758 Metabolites', cex=1.3)
+text(x=0.23, y=0, '- 2135 Edges', cex=1.3)
 
 #---------------------------------------#
 
@@ -407,35 +385,13 @@ rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.75, lwd=2)
 #---------------------------------------#
 
 plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
-plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
-dev.off()
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_S8.pdf'
-pdf(file=plot_file, width=12, height=10)
-
-par(mar=c(7,7,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
-abline(h=seq(0,1,0.1), lty=3, col='gray68') # adding gridlines
-abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
-axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
-axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-
-lines(growth_medians$bhi_median, type='o', lwd=2.5, pch=19, cex=1, col='dodgerblue4')
-segments(x0=seq(1,49,1), y0=growth_medians$bhi_median+growth_sds$bhi_sd, 
-         x1=seq(1,49,1), y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2.5, cex=2, col='dodgerblue4')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median+growth_sds$bhi_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median+growth_sds$bhi_sd, lwd=2.5, col='dodgerblue4')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$bhi_median-growth_sds$bhi_sd, 
-         x1=seq(1,49,1)+0.2, y1=growth_medians$bhi_median-growth_sds$bhi_sd, lwd=2.5, col='dodgerblue4')
-
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, invitro_importances, growth_medians, growth_sds)
+rm(max_gluc_time, max_gluc_rate, glucose_median, no_carb_median, no_aa_median, bhi_median, glucose_sd, no_carb_sd, no_aa_sd, bhi_sd)
+rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file, invitro_importances)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
