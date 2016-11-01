@@ -31,8 +31,7 @@ wilcox.test(mock, infected, exact=F)
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S7.pdf'
-pdf(file=plot_file, width=8, height=5)
-layout(matrix(c(1,2), nrow=1, ncol=2, byrow = TRUE))
+pdf(file=plot_file, width=5, height=5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -48,18 +47,6 @@ segments(x0=c(0.7,1.7), y0=c(median(mock),median(infected)), x1=c(1.3,2.3), y1=,
 text(2, median(infected) + 1.5, labels='*', font=2, cex=2)
 #legend('topright', legend=expression(paste(italic(p),'-value = 0.01219')), bty='n', pt.cex=0)
 mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=1.5)
-
-# p-Cresol
-stripchart(acetate~group, data=scfa, vertical=T, pch=c(1,19), lwd=3,
-           ylim=c(0,10), xaxt='n', yaxt='n', col=wes_palette('Darjeeling2')[2],
-           cex=1.8, ylab='nmol p-Cresol per mg Cecal Content', method='jitter', jitter=0.25)
-abline(h=c(2,4,6,8), lty=2)
-axis(side=1, at=c(1,2), c('Mock Infected', '630 Infected'), tick=FALSE)
-axis(side=2, at=seq(0,10,2), labels=c('0.0','2.0','4.0','6.0','8.0','10.0'))
-segments(x0=c(0.7,1.7), y0=c(median(mock),median(infected)), x1=c(1.3,2.3), y1=, lwd=3)
-text(2, median(infected) + 1.5, labels='*', font=2, cex=2)
-#legend('topright', legend=expression(paste(italic(p),'-value = 0.01219')), bty='n', pt.cex=0)
-mtext('B', side=2, line=2, las=2, adj=2, padj=-12, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
