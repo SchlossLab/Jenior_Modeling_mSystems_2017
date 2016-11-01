@@ -253,8 +253,7 @@ combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_m
 # Compare distribution of groups
 
 # 2x2 Factorial MANOVA with 3 Dependent Variables. 
-Y <- cbind(y1,y2,y3)
-summary(manova(Y ~ A*B), test='Pillai')
+#summary(manova(Y ~ A*B), test='Pillai')
 
 
 
