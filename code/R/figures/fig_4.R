@@ -250,6 +250,21 @@ combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_m
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
+# Compare distribution of groups
+
+# 2x2 Factorial MANOVA with 3 Dependent Variables. 
+Y <- cbind(y1,y2,y3)
+summary(manova(Y ~ A*B), test='Pillai')
+
+
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------#
+
 # Define plot details
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", 
              "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
