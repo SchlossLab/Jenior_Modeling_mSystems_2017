@@ -211,30 +211,26 @@ rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_import
 
 # Format metabolite importance scores
 cef_importance$Metabolite_score <- as.numeric(as.character(cef_importance$Metabolite_score))
-cef_importance$Sim_Median <- as.numeric(as.character(cef_importance$Sim_Median))
-cef_importance$Sim_Lower_95_Confidence <- as.numeric(as.character(cef_importance$Sim_Lower_95_Confidence))
-cef_importance$Sim_Upper_95_Confidence <- as.numeric(as.character(cef_importance$Sim_Upper_95_Confidence))
+cef_importance$Lower_95_Confidence <- as.numeric(as.character(cef_importance$Lower_95_Confidence))
+cef_importance$Upper_95_Confidence <- as.numeric(as.character(cef_importance$Upper_95_Confidence))
 cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
 clinda_importance$Metabolite_score <- as.numeric(as.character(clinda_importance$Metabolite_score))
-clinda_importance$Sim_Median <- as.numeric(as.character(clinda_importance$Sim_Median))
-clinda_importance$Sim_Lower_95_Confidence <- as.numeric(as.character(clinda_importance$Sim_Lower_95_Confidence))
-clinda_importance$Sim_Upper_95_Confidence <- as.numeric(as.character(clinda_importance$Sim_Upper_95_Confidence))
+clinda_importance$Lower_95_Confidence <- as.numeric(as.character(clinda_importance$Lower_95_Confidence))
+clinda_importance$Upper_95_Confidence <- as.numeric(as.character(clinda_importance$Upper_95_Confidence))
 clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
 strep_importance$Metabolite_score <- as.numeric(as.character(strep_importance$Metabolite_score))
-strep_importance$Sim_Median <- as.numeric(as.character(strep_importance$Sim_Median))
-strep_importance$Sim_Lower_95_Confidence <- as.numeric(as.character(strep_importance$Sim_Lower_95_Confidence))
-strep_importance$Sim_Upper_95_Confidence <- as.numeric(as.character(strep_importance$Sim_Upper_95_Confidence))
+strep_importance$Lower_95_Confidence <- as.numeric(as.character(strep_importance$Lower_95_Confidence))
+strep_importance$Upper_95_Confidence <- as.numeric(as.character(strep_importance$Upper_95_Confidence))
 strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
 gf_importance$Metabolite_score <- as.numeric(as.character(gf_importance$Metabolite_score))
-gf_importance$Sim_Median <- as.numeric(as.character(gf_importance$Sim_Median))
-gf_importance$Sim_Lower_95_Confidence <- as.numeric(as.character(gf_importance$Sim_Lower_95_Confidence))
-gf_importance$Sim_Upper_95_Confidence <- as.numeric(as.character(gf_importance$Sim_Upper_95_Confidence))
+gf_importance$Lower_95_Confidence <- as.numeric(as.character(gf_importance$Lower_95_Confidence))
+gf_importance$Upper_95_Confidence <- as.numeric(as.character(gf_importance$Upper_95_Confidence))
 gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
-cef_importance <- cef_importance[c(1:50),]
-clinda_importance <- clinda_importance[c(1:50),]
-strep_importance <- strep_importance[c(1:50),]
-gf_importance <- gf_importance[c(1:50),]
+cef_importance <- cef_importance[c(1:60),]
+clinda_importance <- clinda_importance[c(1:60),]
+strep_importance <- strep_importance[c(1:60),]
+gf_importance <- gf_importance[c(1:60),]
 
 shared_importance <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% clinda_importance[,1])))
 shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% clinda_importance[,1])))
@@ -255,22 +251,18 @@ shared_gf <- shared_gf[order(shared_gf$Compound_name),]
 shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
 
 score_median <- as.data.frame(apply(cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score), 1, median))
-sim_median <- as.data.frame(apply(cbind(shared_cef$Sim_Median, shared_clinda$Sim_Median, shared_strep$Sim_Median, shared_gf$Sim_Median), 1, median))
-sim_lower95 <- as.data.frame(apply(cbind(shared_cef$Sim_Lower_95_Confidence, shared_clinda$Sim_Lower_95_Confidence, shared_strep$Sim_Lower_95_Confidence, shared_gf$Sim_Lower_95_Confidence), 1, median))
-sim_upper95 <- as.data.frame(apply(cbind(shared_cef$Sim_Upper_95_Confidence, shared_clinda$Sim_Upper_95_Confidence, shared_strep$Sim_Upper_95_Confidence, shared_gf$Sim_Upper_95_Confidence), 1, median))
-
-shared_importance <- cbind(shared_cef$Compound_name, score_median, sim_median, sim_lower95, sim_upper95)
+sim_lower95 <- as.data.frame(apply(cbind(shared_cef$Lower_95_Confidence, shared_clinda$Lower_95_Confidence, shared_strep$Lower_95_Confidence, shared_gf$Lower_95_Confidence), 1, median))
+sim_upper95 <- as.data.frame(apply(cbind(shared_cef$Upper_95_Confidence, shared_clinda$Upper_95_Confidence, shared_strep$Upper_95_Confidence, shared_gf$Upper_95_Confidence), 1, median))
+shared_importance <- cbind(shared_cef$Compound_name, score_median, sim_lower95, sim_upper95)
 rownames(shared_importance) <- rownames(shared_cef)
-colnames(shared_importance) <- c('Compound_name','Metabolite_score','Sim_Median','Sim_Lower95','Sim_Upper95')
+colnames(shared_importance) <- c('Compound_name','Metabolite_score','Sim_Lower95','Sim_Upper95')
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
-rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median, sim_median, sim_lower95, sim_upper95)
+rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median, sim_lower95, sim_upper95)
 
-# Format names to look better for the plot
-shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
-shared_importance[shared_importance == 'N-Acetyl-D-glucosamine'] <- 'N-Acetyl-D-glucosamine    '
-shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
+# Remove non-significant scores
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,2] > shared_importance[,4])))
 
+# Subset to most important metabolites
 cef_importance <- cef_importance[c(1:25),]
 clinda_importance <- clinda_importance[c(1:25),]
 strep_importance <- strep_importance[c(1:25),]
@@ -289,12 +281,10 @@ gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %i
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
 rm(cef_importance, clinda_importance, strep_importance, gf_importance)
-
 cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
 clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Metabolite_score),]
 strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
 gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
-
 cef_only_importance$abx <- 'Cefoperazone (SPF)'
 clinda_only_importance$abx <- 'Clindamycin (SPF)'
 strep_only_importance$abx <- 'Streptomycin (SPF)'
@@ -302,19 +292,33 @@ gf_only_importance$abx <- 'No Antibiotics (GF)'
 top_importances <- rbind(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances$abx <- as.factor(top_importances$abx)
 top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
-
-# Format names to look better for the plot
-top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('mono', '', top_importances$Compound_name)
-top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
-top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahydromethanopterin'] <- 'Tetrahydromethanopterin'
-top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR'
-top_importances <- subset(top_importances, rownames(top_importances) != 'C00012') # Remove generic Peptide
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
 # Remove non-significant points
 top_importances <- rbind(top_importances[1,], as.data.frame(subset(top_importances, (top_importances[,2] > top_importances[,5]))))
-shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,2] > shared_importance[,5])))
+
+# Remove non-significant scores and those in distinct list
+shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,2] > shared_importance[,4])))
+#shared_importance <- as.data.frame(subset(shared_importance, !(shared_importance[,1] %in% top_importances[,1])))
+
+# Format names to look better for the plot
+top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('alpha-','',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('beta-','',top_importances$Compound_name)
+top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR'
+top_importances$Compound_name[top_importances$Compound_name == '(S)-3-Hydroxybutanoyl-CoA'] <- '3-Hydroxybutanoyl-CoA'
+shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('alpha,alpha\'-','',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('beta-','',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('(R)-','',shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('(3S)-','',shared_importance$Compound_name)
+shared_importance[shared_importance == '2-Methylpropanoyl-CoA'] <- 'Isobutyryl-CoA'
+shared_importance[shared_importance == '(R)-3-Hydroxybutanoyl-CoA'] <- '3 Hydroxybutanoyl CoA'
+
+# Remove overlaps from shared list
+shared_importance <- as.data.frame(subset(shared_importance, !(rownames(shared_importance) %in% c('C00033','C00085','C00058'))))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -550,9 +554,9 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black',
-         xlab='Median Metabolite Importance Score', xlim=c(0,12), pch=19)
-segments(x0=rep(0, 13), y0=c(1:13), x1=rep(12, 13), y1=c(1:13), lty=2) # Dotted lines
-mtext('b', side=2, line=2, las=2, adj=2.5, padj=-18, cex=1.4, font=2)
+         xlab=expression(paste('Metabolite Importance Score (',Log[2],')')), xlim=c(0,12), pch=19)
+segments(x0=rep(0,13), y0=c(1:13), x1=rep(12,13), y1=c(1:13), lty=2) # Dotted lines
+mtext('b', side=2, line=2, las=2, adj=3, padj=-17.5, cex=1.4, font=2)
 
 #---------------------------------------#
 
@@ -578,14 +582,14 @@ plot(0, type='n', axes=F, xlab='', ylab='') # Empty plot
 
 #---------------------------------------#
 
-# Unique metabolite importances
+# Distinct metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.2, groups=top_importances$abx, color='black',
-         xlab='Metabolite Importance Score', xlim=c(0,12), pch=19, lwd=3,
+         xlab=expression(paste('Metabolite Importance Score (',Log[2],')')), xlim=c(0,12), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('c', side=2, line=2, las=2, adj=2.5, padj=-18, cex=1.4, font=2)
-segments(x0=rep(0, 15), y0=c(1:11, 14:15, 18, 21), x1=rep(12, 15), y1=c(1:11, 14:15, 18, 21), lty=2) # Dotted lines
+segments(x0=rep(0, 15), y0=c(1:10, 13:14, 17, 20), x1=rep(12, 15), y1=c(1:10, 13:14, 17, 20), lty=2) # Dotted lines
 
 #---------------------------------------#
 
@@ -660,11 +664,6 @@ lines(growth_medians$glucose_median, type='o', lwd=2.5, pch=15, cex=1.5, col='do
 segments(x0=seq(1,49,1), y0=growth_medians$glucose_median+growth_sds$glucose_sd, x1=seq(1,49,1), y1=growth_medians$glucose_median-growth_sds$glucose_sd, lwd=2.5, cex=2, col='dodgerblue4')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$glucose_median+growth_sds$glucose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$glucose_median+growth_sds$glucose_sd, lwd=2.5, col='dodgerblue4')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$glucose_median-growth_sds$glucose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$glucose_median-growth_sds$glucose_sd, lwd=2.5, col='dodgerblue4')
-
-#lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=16, cex=1.5)
-#segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-#segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-#segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 
 lines(growth_medians$hydroxybutanoate_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=17, cex=1.5)
 segments(x0=seq(1,49,1), y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, x1=seq(1,49,1), y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
