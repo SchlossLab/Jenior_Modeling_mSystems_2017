@@ -1,8 +1,8 @@
 User Defined Parameters
-KO expression file: cefoperazone_630.RNA_reads2cdf630.norm.ko.txt
+KO expression file: cefoperazone_630.RNA_reads2cdf630.norm.ko.pick.txt
 Graph name: cefoperazone_630
 KEGG ortholog nodes: 447
 Substrate nodes: 758
 Probability distribution generated: yes
 Permutations: 10000
-Duration: 68 seconds
+Duration: 75 seconds

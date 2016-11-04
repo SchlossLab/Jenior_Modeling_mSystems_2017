@@ -1,8 +1,8 @@
 User Defined Parameters
-KO expression file: streptomycin_630.RNA_reads2cdf630.norm.ko.txt
+KO expression file: streptomycin_630.RNA_reads2cdf630.norm.ko.pick.txt
 Graph name: streptomycin_630
 KEGG ortholog nodes: 447
 Substrate nodes: 758
 Probability distribution generated: yes
 Permutations: 10000
-Duration: 70 seconds
+Duration: 71 seconds

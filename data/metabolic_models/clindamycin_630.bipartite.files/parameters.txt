@@ -1,5 +1,5 @@
 User Defined Parameters
-KO expression file: clindamycin_630.RNA_reads2cdf630.norm.ko.txt
+KO expression file: clindamycin_630.RNA_reads2cdf630.norm.ko.pick.txt
 Graph name: clindamycin_630
 KEGG ortholog nodes: 447
 Substrate nodes: 758

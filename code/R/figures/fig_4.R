@@ -56,6 +56,9 @@ combined_mapping$Clindamycin <- round(rowMeans(clindamycin_sub), digits=0)
 combined_mapping$Streptomycin <- round(rowMeans(streptomycin_sub), digits=0)
 rm(index, sub_size, cefoperazone_sub, clindamycin_sub, streptomycin_sub)
 
+# Calculate coverage
+sum(combined_mapping$Cefoperazone) / length(combined_mapping$Cefoperazone) # ~24x
+
 # Eliminate genes with no transcripts mapping
 combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) > 5, ] 
 
