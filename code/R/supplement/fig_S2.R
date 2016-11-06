@@ -30,7 +30,7 @@ wilcox.test(mock, infected, exact=F)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S7.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S2.pdf'
 pdf(file=plot_file, width=5, height=5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -46,7 +46,6 @@ axis(side=2, at=seq(0,10,2), labels=c('0.0','2.0','4.0','6.0','8.0','10.0'))
 segments(x0=c(0.7,1.7), y0=c(median(mock),median(infected)), x1=c(1.3,2.3), y1=, lwd=3)
 text(2, median(infected) + 1.5, labels='*', font=2, cex=2)
 #legend('topright', legend=expression(paste(italic(p),'-value = 0.01219')), bty='n', pt.cex=0)
-mtext('A', side=2, line=2, las=2, adj=2, padj=-12, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 

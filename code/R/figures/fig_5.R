@@ -242,15 +242,18 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 
 #---------------------------------------#
 
-# Size of network
-par(mar=c(0,0,0,0))
-plot.new()
-text(x=0.25, y=1, 'C. difficile', cex=1.5, font=c(4,2))
-text(x=0.55, y=1, '630 network', cex=1.5, font=2)
-segments(x0=0.12, y0=0.97, x1=0.7, y1=0.97, lwd=2)
-text(x=0.31, y=0.9, '- 447 Enzymes', cex=1.4)
-text(x=0.33, y=0.805, '- 758 Metabolites', cex=1.4)
-text(x=0.29, y=0.7, '- 2135 Edges', cex=1.4)
+# Importance algorithm
+
+text(-0.96, 0.08, expression(Importance(m) == paste(log[2],  
+                                          bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ',  
+                                                    text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
+                                           bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
+                                    bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6)))) # Importance algorithm 
+                                                    
+
+
+
+
 
 dev.off()
 

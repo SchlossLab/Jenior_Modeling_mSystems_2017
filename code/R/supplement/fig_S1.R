@@ -43,10 +43,10 @@ streptomycin$gene <- NULL
 streptomycin$pathway <- NULL
 
 # Merge tables
-combined_mapping <- merge(cefoperazone, clindamycin, by='row.names')
+combined_mapping <- merge(streptomycin, cefoperazone, by='row.names')
 rownames(combined_mapping) <- combined_mapping$Row.names
 combined_mapping$Row.names <- NULL
-combined_mapping <- merge(combined_mapping, streptomycin, by='row.names')
+combined_mapping <- merge(combined_mapping, clindamycin, by='row.names')
 rownames(combined_mapping) <- combined_mapping$Row.names
 combined_mapping$Row.names <- NULL
 combined_mapping <- merge(combined_mapping, germfree, by='row.names')
@@ -201,7 +201,7 @@ rm(pooled_amino_acid)
 
 # Set the color palette and output file name
 darjeeling <- wes_palette("Darjeeling")
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S3.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S1.pdf'
 
 # Generate figure
 pdf(file=plot_file, width=12, height=10)
@@ -210,7 +210,7 @@ layout(matrix(c(1,2,2,2,
               nrow=2, ncol=4, byrow = TRUE))
 
 plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-legend('left', legend=c('Cefoperazone', 'Clindamycin', 'Streptomycin', 'Gnotobiotic'), pt.cex=3.5, bty='n', cex=2.2,
+legend('left', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'), pt.cex=3.7, bty='n', cex=2.2,
        pch=22, col='black', pt.bg=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 
 # Global pathway annotations
