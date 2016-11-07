@@ -306,7 +306,7 @@ rm(acetate, acetylglucosamine, acetylneuraminate, trehalose, starch, fructose, m
 rm(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, trehalose_sd, starch_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd)
 
 # Write growth summary data to supplementary table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S4.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S4.tsv'
 write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, growth_summary)
 
