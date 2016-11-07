@@ -59,10 +59,10 @@ strep_importance <- as.data.frame(subset(strep_importance, (strep_importance[,3]
 gf_importance <- as.data.frame(subset(gf_importance, (gf_importance[,3] != 'n.s.')))
 
 # Write significant ranked data to supplementary table
-write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3A.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(clinda_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3B.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(strep_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3C.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(gf_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3D.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3cef.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+write.table(clinda_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3clinda.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+write.table(strep_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3strep.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+write.table(gf_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3gf.tsv', quote=FALSE, sep='\t', row.names=FALSE)
 # Assemble into multi-paneled Excel table downstream
 
 # Take top 50 scores
