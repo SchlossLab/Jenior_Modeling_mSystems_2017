@@ -105,11 +105,11 @@ enzyme_topology <- enzyme_topology[order(-enzyme_topology$Betweenness),]
 rm(kegg_substrate, kegg_enzyme)
 
 # Write tables to files, ranked by betweenness
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S3_substrate_topology.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S2_substrate_topology.tsv'
 write.table(substrate_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S3_enzyme_topology.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S2_enzyme_topology.tsv'
 write.table(enzyme_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S3_graph_topology.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S2_graph_topology.tsv'
 write.table(graph_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
 rm(table_file, graph_topology, enzyme_topology, substrate_topology)
 
