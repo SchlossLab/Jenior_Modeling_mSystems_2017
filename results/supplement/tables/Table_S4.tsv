@@ -2,7 +2,7 @@ Substrate	Max_Growth_Rate	Time_of_Max_Rate_in_Hours	Max_OD	Time_of_Max_OD_in_Hou
 acetate	0.005	16	0.063	19	0	0.001	1.559
 acetylglucosamine	0.085	7	0.774	20	-0.027	0.012	15.549
 acetylneuraminate	0.024	9	0.439	24	0.003	0.009	10.99
-trehalose	0.089	6	0.671	24	0.002	0.014	11.514
+trehalose	0.044	8.5	0.559	18	-0.023	0.001	15.06
 fructose	0.089	6	0.671	24	0.002	0.014	11.514
 mannitol	0.044	7	0.464	19.5	0	0.01	7.657
 salicin	0.077	13.5	0.869	15	-0.004	0.002	23.618

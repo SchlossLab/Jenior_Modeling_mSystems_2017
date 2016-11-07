@@ -59,10 +59,10 @@ strep_importance <- as.data.frame(subset(strep_importance, (strep_importance[,3]
 gf_importance <- as.data.frame(subset(gf_importance, (gf_importance[,3] != 'n.s.')))
 
 # Write significant ranked data to supplementary table
-write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3cef.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(clinda_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3clinda.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(strep_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3strep.tsv', quote=FALSE, sep='\t', row.names=FALSE)
-write.table(gf_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3gf.tsv', quote=FALSE, sep='\t', row.names=FALSE)
+write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3cef.tsv', quote=FALSE, sep='\t', row.names=TRUE)
+write.table(clinda_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3clinda.tsv', quote=FALSE, sep='\t', row.names=TRUE)
+write.table(strep_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3strep.tsv', quote=FALSE, sep='\t', row.names=TRUE)
+write.table(gf_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3gf.tsv', quote=FALSE, sep='\t', row.names=TRUE)
 # Assemble into multi-paneled Excel table downstream
 
 # Take top 50 scores
@@ -221,7 +221,7 @@ rm(trehalose_test, fructose_test, starch_test, mannitol_test, salicin_test, acet
 # Find medians 
 starch_median <- apply(starch, 1, median)
 fructose_median <-  apply(fructose, 1, median)
-trehalose_median <-  apply(fructose, 1, median)
+trehalose_median <-  apply(trehalose, 1, median)
 mannitol_median <- apply(mannitol, 1, median)
 salicin_median <- apply(salicin, 1, median)
 acetate_median <- apply(acetate, 1, median)
@@ -357,29 +357,29 @@ axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=
 mtext('c', side=2, line=2, las=2, adj=3.5, padj=-17, cex=1.8, font=2)
 
 # Control
-lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray60')
+lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray45')
 segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray45')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray45')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray45')
 
 # Shared
-lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.5)
+lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.3)
 segments(x0=seq(1,49,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1), y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
-lines(growth_medians$trehalose_median, type='o', col='black', lwd=2.5, pch=25, cex=2.5, bg='black')
+lines(growth_medians$trehalose_median, type='o', col='black', lwd=2.5, pch=25, cex=2.3, bg='black')
 segments(x0=seq(1,49,1), y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1), y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median+growth_sds$trehalose_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median-growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
 
 # Streptomycin
-lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.5)
+lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
 segments(x0=seq(1,49,1), y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1), y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median+growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median+growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$fructose_median-growth_sds$fructose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$fructose_median-growth_sds$fructose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 
 # Cefoperazone
-lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2.5, pch=1, cex=2.5)
+lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2.5, pch=1, cex=2.7)
 segments(x0=seq(1,49,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
@@ -414,15 +414,21 @@ abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
 axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
 
+# Control
+lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray45')
+segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray45')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray45')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray45')
+
 lines(growth_medians$starch_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,49,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$starch_median+growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$starch_median-growth_sds$starch_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 
-lines(growth_medians$no_aa_median, type='o', lwd=2.5, pch=15, cex=0, col='gray60')
-segments(x0=seq(1,49,1), y0=growth_medians$no_aa_median+growth_sds$no_aa_sd, x1=seq(1,49,1), y1=growth_medians$no_aa_median-growth_sds$no_aa_sd, lwd=2.5, cex=2, col='gray60')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_aa_median+growth_sds$no_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_aa_median+growth_sds$no_aa_sd, lwd=2.5, col='gray60')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_aa_median-growth_sds$no_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_aa_median-growth_sds$no_aa_sd, lwd=2.5, col='gray60')
+lines(growth_medians$no_aa_median, type='o', lwd=2.5, pch=15, cex=1, col='gray45')
+segments(x0=seq(1,49,1), y0=growth_medians$no_aa_median+growth_sds$no_aa_sd, x1=seq(1,49,1), y1=growth_medians$no_aa_median-growth_sds$no_aa_sd, lwd=2.5, cex=2, col='gray45')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_aa_median+growth_sds$no_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_aa_median+growth_sds$no_aa_sd, lwd=2.5, col='gray45')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_aa_median-growth_sds$no_aa_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_aa_median-growth_sds$no_aa_sd, lwd=2.5, col='gray45')
 
 lines(bhi_median, type='o', col='darkorchid3', lwd=2.5, pch=15, cex=0.8)
 segments(x0=seq(1,49,1), y0=bhi_median+bhi_sd, x1=seq(1,49,1), y1=bhi_median-bhi_sd, lwd=2.5, col='darkorchid3')
@@ -434,9 +440,9 @@ segments(x0=seq(1,49,1), y0=growth_medians$acetate_median+growth_sds$acetate_sd,
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median+growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median-growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 
-legend('topleft', legend=c('No Amino acids','BHI','Starch','Acetate'), 
-       col=c('gray60','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen'), 
-       pch=c(16,15,15,18), cex=1.3, pt.cex=c(0,1,2.5,2.5), bg='white', lwd=2.5)
+legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Starch','Acetate'), 
+       col=c('gray45','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen'), 
+       pch=c(16,16,15,15,18), cex=1.3, pt.cex=c(0,1,1,2.5,2.5), bg='white', lwd=2.5)
 
 dev.off()
 
