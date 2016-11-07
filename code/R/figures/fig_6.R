@@ -161,8 +161,8 @@ growth <- as.data.frame(t(growth))
 rm(growth_file)
 
 # Seperate to groups of each growth substrate and format
-glucose <- cbind(growth$glucose_1, growth$glucose_2, growth$glucose_3) - growth$glucose_blank
-glucose[glucose < 0] <- 0
+trehalose <- cbind(growth$trehalose_1, growth$trehalose_2, growth$trehalose_3) - growth$trehalose_blank
+trehalose[trehalose < 0] <- 0
 starch <- cbind(growth$starch_1, growth$starch_2, growth$starch_2) - growth$starch_blank
 starch[starch < 0] <- 0
 fructose <- cbind(growth$fructose_1, growth$fructose_2, growth$fructose_3) - growth$fructose_blank
@@ -188,7 +188,7 @@ rm(growth)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Prepare data for statistical tests
-glucose_test <- format_curve(glucose, 'glucose', no_carb)
+trehalose_test <- format_curve(trehalose, 'trehalose', no_carb)
 fructose_test <- format_curve(fructose, 'fructose', no_carb)
 starch_test <- format_curve(starch, 'starch', no_carb)
 mannitol_test <- format_curve(mannitol, 'mannitol', no_carb)
@@ -200,7 +200,7 @@ bhi_test <- format_curve(bhi, 'bhi', no_carb)
 no_aa_test <- format_curve(no_aa, 'no_amino_acids', no_carb)
 
 # Calculate differences
-summary(aov(formula=od ~ substrate * time, data=glucose_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=trehalose_test)) # <2e-16
 summary(aov(formula=od ~ substrate * time, data=starch_test)) # 0.0414
 summary(aov(formula=od ~ substrate * time, data=fructose_test)) # <2e-16
 summary(aov(formula=od ~ substrate * time, data=mannitol_test)) # <2e-16
@@ -212,7 +212,7 @@ summary(aov(formula=od ~ substrate * time, data=bhi_test)) # <2e-16
 summary(aov(formula=od ~ substrate * time, data=no_aa_test)) # <2e-16
 
 # Clean up
-rm(glucose_test, fructose_test, starch_test, mannitol_test, salicin_test, acetylneuraminate_test, acetate_test, acetylglucosamine_test, bhi_test, no_aa_test)
+rm(trehalose_test, fructose_test, starch_test, mannitol_test, salicin_test, acetylneuraminate_test, acetate_test, acetylglucosamine_test, bhi_test, no_aa_test)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -221,6 +221,7 @@ rm(glucose_test, fructose_test, starch_test, mannitol_test, salicin_test, acetyl
 # Find medians 
 starch_median <- apply(starch, 1, median)
 fructose_median <-  apply(fructose, 1, median)
+trehalose_median <-  apply(fructose, 1, median)
 mannitol_median <- apply(mannitol, 1, median)
 salicin_median <- apply(salicin, 1, median)
 acetate_median <- apply(acetate, 1, median)
@@ -234,6 +235,7 @@ no_aa_median <- apply(no_aa, 1, median)
 starch_sd <- rowSds(starch)
 acetylneuraminate_sd <- rowSds(acetylneuraminate)
 fructose_sd <-  rowSds(fructose)
+trehalose_sd <-  rowSds(trehalose)
 mannitol_sd <- rowSds(mannitol)
 salicin_sd <- rowSds(salicin)
 acetate_sd <- rowSds(acetate)
@@ -243,9 +245,9 @@ bhi_sd <- rowSds(bhi)
 no_aa_sd <- rowSds(no_aa)
 
 # Compile results
-growth_medians <- as.data.frame(cbind(acetate_median, acetylglucosamine_median, 
+growth_medians <- as.data.frame(cbind(acetate_median, acetylglucosamine_median, trehalose_median,
                                       acetylneuraminate_median, starch_median, fructose_median, mannitol_median, salicin_median, no_carb_median, no_aa_median))
-growth_sds <- as.data.frame(cbind(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, 
+growth_sds <- as.data.frame(cbind(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, trehalose_sd,
                                   starch_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -448,5 +450,6 @@ for (dep in deps){
 }
 rm(dep, deps, pkg)
 gc()
+
 
 

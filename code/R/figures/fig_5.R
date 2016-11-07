@@ -192,7 +192,7 @@ par(mar=c(0,1,1,1))
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.25, edge.arrow.width=0.4, vertex.frame.color='black')
 # Draw box
-rect(xleft=0.4, ybottom=-0.4, xright=0.8, ytop=-0.75, lwd=2)
+rect(xleft=0.8, ybottom=0, xright=1.15, ytop=0.3, lwd=2)
 text(x=-1, y=1, 'a', cex=2, font=2)
 
 #---------------------------------------#
@@ -244,16 +244,11 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 
 # Importance algorithm
 
-text(-0.96, 0.08, expression(Importance(m) == paste(log[2],  
-                                          bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ',  
-                                                    text(-0.96, 0.08, expression(Importance(m) == paste(log[2], 
-                                           bgroup('(',frac(Sigma * t[i], Sigma * e[o]),''),' - ', 
-                                    bgroup('',frac(Sigma * t[o], Sigma * e[i]),')'))), cex = 1.6)))) # Importance algorithm 
-                                                    
-
-
-
-
+plot.new()
+text(x=0.28, y=0.9, expression(mu[i] == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
+text(x=0.8, y=0.9, expression(mu[o] == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
+text(x=0.58, y=0.6, expression(Importance(m) == paste(Log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+text(x=c(0.05,0.56,0.07), y=c(0.9,0.9,0.6), labels=c('(i)','(ii)','(iii)'), cex = 1.8, font=2)                                                                  
 
 dev.off()
 
@@ -267,5 +262,4 @@ for (dep in deps){
 }
 rm(dep, deps, pkg)
 gc()
-
 

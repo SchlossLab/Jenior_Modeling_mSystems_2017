@@ -1,42 +1,11 @@
-Compound_name	Metabolite_score	Sim_Mean	Sim_StD	Std_from_Sim_Mean	KEGG_code
-Butanal	10.534	4.837	2.553	2	C01412
-2-Methylpropanoyl-CoA	10.335	4.977	2.571	2	C00630
-N-Acetyl-D-glucosamine	9.574	4.978	2.633	1	C00140
-Ethanol	9.567	5.726	1.802	2	C00469
-Primary_alcohol	9.567	5.726	1.802	2	C00226
-(2-Naphthyl)methanol	9.567	5.726	1.802	2	C02909
-1-Hydroxymethylnaphthalene	9.567	5.726	1.802	2	C14089
-Selenite	9.409	4.964	2.534	1	C05684
-Methylselenic_acid	9.409	4.964	2.534	1	C18902
-(3S)-3-Hydroxyadipyl-CoA	9.264	4.928	2.527	1	C14145
-Thioredoxin_disulfide	9.26	-1.34	6.049	1	C00343
-(R)-3-Hydroxybutanoyl-CoA	9.226	4.967	2.559	1	C03561
-L-Proline	9.074	0.111	5.108	1	C00148
-dADP	9.019	-1.559	5.864	1	C00206
-(R)-Lactate	8.867	5.016	2.473	1	C00256
-Aminofructose_6-phosphate	8.842	5.018	2.562	1	C12214
-D-Fructose_1-phosphate	8.76	-0.239	6.222	1	C01094
-alpha,alpha'-Trehalose_6-phosphate	8.607	0.965	6.18	1	C00689
-UTP	8.59	6.212	1.365	1	C00075
-beta-D-Fructose_1,6-bisphosphate	8.479	0.047	5.793	1	C05378
-CTP	8.411	6.298	1.226	1	C00063
-Propanoate	8.185	4.831	2.551	1	C00163
-Glutaryl-[acp]_methyl_ester	8.175	4.956	2.522	1	C20375
-Malonyl-[acp]_methyl_ester	8.175	4.956	2.522	1	C19673
-CO2	8.05	0.415	5.405	1	C00011
-Acetate	7.984	-1.384	5.864	1	C00033
-D-Fructose_6-phosphate	7.971	0.063	6.018	1	C00085
-Fe2+	7.788	4.796	2.619	1	C14818
-Formate	7.607	0.784	5.877	1	C00058
-L-Cysteate	7.574	5.705	1.857	1	C00506
-L-Isoleucine	7.418	5.073	2.481	0	C00407
-L-Aspartate_4-semialdehyde	7.368	-0.564	5.318	1	C00441
-[Enzyme]-cysteine	7.16	4.889	2.584	0	C15811
-L-Valine	7.139	5.04	2.568	0	C00183
-D-Mannose	6.801	6.216	1.353	0	C00159
-beta-D-Fructose_6-phosphate	6.779	-0.601	5.796	1	C05345
-6-Carboxyhex-2-enoyl-CoA	6.539	5.047	2.51	0	C06723
-2-Hydroxy-3-carboxybenzalpyruvate	6.539	5.047	2.51	0	C14095
-L-Leucine	6.459	4.999	2.55	0	C00123
-L-Threonine	6.418	1.142	5.626	0	C00188
-5,6,7,8-Tetrahydromethanopterin	6.366	5.633	1.85	0	C01217
+Substrate	Max_Growth_Rate	Time_of_Max_Rate_in_Hours	Max_OD	Time_of_Max_OD_in_Hours	Rate_at_24_hours	Mean_Rate	AUC
+acetate	0.005	16	0.063	19	0	0.001	1.559
+acetylglucosamine	0.085	7	0.774	20	-0.027	0.012	15.549
+acetylneuraminate	0.024	9	0.439	24	0.003	0.009	10.99
+trehalose	0.089	6	0.671	24	0.002	0.014	11.514
+fructose	0.089	6	0.671	24	0.002	0.014	11.514
+mannitol	0.044	7	0.464	19.5	0	0.01	7.657
+salicin	0.077	13.5	0.869	15	-0.004	0.002	23.618
+bhi	0.057	8	0.663	12.5	0.002	0.001	16.673
+no_amino_acids	0.006	0	0.011	17.5	-0.001	0	0.225
+no_carbohydrates	0.028	7	0.212	13	-0.001	0.004	3.695
