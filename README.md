@@ -3,7 +3,6 @@ Clostridium difficile colonizes alternative nutrient niches during infection acr
 
 Overview
 --------
-project
     |- README          # Overview of content
     |
     |- LICENSE         # Copyright information
