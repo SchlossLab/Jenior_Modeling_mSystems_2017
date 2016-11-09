@@ -298,9 +298,7 @@ area_under <- round(c(auc(acetate_median, seq(1,49,1)), auc(acetylglucosamine_me
 growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under)
 colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_of_Max_Rate_in_Hours', 'Max_OD', 'Time_of_Max_OD_in_Hours', 'Rate_at_24_hours', 'Mean_Rate', 'AUC')
 
-
 rm(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under)
-
 rm(acetate_median, acetylglucosamine_median, acetylneuraminate_median, trehalose_median, starch_median, fructose_median, mannitol_median, salicin_median, no_carb_median, no_aa_median)
 rm(acetate, acetylglucosamine, acetylneuraminate, trehalose, starch, fructose, mannitol, salicin, no_carb, no_aa)
 rm(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, trehalose_sd, starch_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd)
