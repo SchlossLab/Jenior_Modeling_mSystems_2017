@@ -97,7 +97,6 @@ cfu <- read.delim(cfu_file, sep='\t', header=T)
 cfu_raw <- cfu
 toxin <- read.delim(toxin_file, sep='\t', header=T)
 toxin_raw <- toxin
-rm(cfu_file, toxin_file)
 
 # Format CFU data and collect summary statistics
 cfu[cfu == 0] <- 100
@@ -145,38 +144,47 @@ toxin$titer[toxin$titer <= 2.0] <- 1.9
 
 #----------------------------#
 
-# Calculate significant differences
+# Calculate significant differences and correct p values
 
+# Toxin
 cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
 clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
 streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
 germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
+gf_vs_cef_tox_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
+gf_vs_clinda_tox_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
+gf_vs_strep_tox_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
+cef_vs_clinda_tox_p <- wilcox.test(cefoperazone, clindamycin, exact=F)$p.value
+cef_vs_strep_tox_p <- wilcox.test(cefoperazone, streptomycin, exact=F)$p.value
+clinda_vs_strep_tox_p <- wilcox.test(clindamycin, streptomycin, exact=F)$p.value
+tox_p_values <- c(gf_vs_cef_tox_p,gf_vs_clinda_tox_p,gf_vs_strep_tox_p,cef_vs_clinda_tox_p,cef_vs_strep_tox_p,clinda_vs_strep_tox_p)
+tox_p_values <- round(p.adjust(tox_p_values, method='holm'), digits=3)
+gf_vs_cef_tox_cp <- tox_p_values[1]
+gf_vs_clinda_tox_cp <- tox_p_values[2]
+gf_vs_strep_tox_cp <- tox_p_values[3]
+cef_vs_clinda_tox_cp <- tox_p_values[4]
+cef_vs_strep_tox_cp <- tox_p_values[5]
+clinda_vs_strep_tox_cp <- tox_p_values[6]
 
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.000476, corrected = 0.001904, **
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0001152, corrected = 0.0006912, ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.0003599, corrected = 0.0017995, **
-wilcox.test(cefoperazone, clindamycin, exact=F) # p-value = 0.9189, corrected = 0.9189, n.s.
-wilcox.test(cefoperazone, streptomycin, exact=F) # p-value = 0.1242, corrected = 0.2484, n.s.
-wilcox.test(clindamycin, streptomycin, exact=F) # p-value = 0.07892, corrected = 0.23676, n.s.
-
-p_values <- c(0.000476,0.0001152,0.0003599,0.9189,0.1242,0.07892)
-p.adjust(p_values, method='holm')
-
+# Spores
 cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
 clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
 streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
 germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
-
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 3.807e-05, corrected = 0.00019035, ***
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 3.09e-05, corrected = 0.0001854, ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 4.304e-05, corrected = 0.00019035, ***
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
-wilcox.test(streptomycin, cefoperazone, exact=F) # p-value = 0.4618, corrected = 0.9927, n.s.
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
-rm(germfree, cefoperazone, clindamycin, streptomycin)
-
-p_values <- c(3.807e-05,3.09e-05,4.304e-05,0.3309,0.4618,0.3309)
-p_values <- p.adjust(p_values, method='holm')
+gf_vs_cef_spore_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
+gf_vs_clinda_spore_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
+gf_vs_strep_spore_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
+clinda_vs_cef_spore_p <- wilcox.test(clindamycin, cefoperazone, exact=F)$p.value
+strep_vs_cef_spore_p <- wilcox.test(streptomycin, cefoperazone, exact=F)$p.value
+strep_vs_clinda_spore_p <- wilcox.test(streptomycin, clindamycin, exact=F)$p.value
+spore_p_values <- c(gf_vs_cef_spore_p,gf_vs_clinda_spore_p,gf_vs_strep_spore_p,clinda_vs_cef_spore_p,strep_vs_cef_spore_p, strep_vs_clinda_spore_p)
+spore_p_values <- round(p.adjust(spore_p_values, method='holm'), digits=3)
+gf_vs_cef_spore_cp <- spore_p_values[1]
+gf_vs_clinda_spore_cp <- spore_p_values[2]
+gf_vs_strep_spore_cp <- spore_p_values[3]
+clinda_vs_cef_spore_cp <- spore_p_values[4]
+strep_vs_cef_spore_cp <- spore_p_values[5]
+strep_vs_clinda_spore_cp <- spore_p_values[6]
 
 ```
 
@@ -199,7 +207,6 @@ network <- read.delim(network_file, header=FALSE, sep='\t')
 
 # Format directed graph
 raw_graph <- graph.data.frame(network, directed=TRUE)
-rm(network)
 
 # Decompose graph
 decomp_whole_graph <- decompose.graph(raw_graph)
@@ -289,17 +296,29 @@ acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', n
 bhi_test <- format_curve(bhi, 'bhi', no_carb)
 no_aa_test <- format_curve(no_aa, 'no_amino_acids', no_carb)
 
-# Calculate differences
-summary(aov(formula=od ~ substrate * time, data=trehalose_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=starch_test)) # 0.0414
-summary(aov(formula=od ~ substrate * time, data=fructose_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=mannitol_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=salicin_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=acetate_test)) # 0.0632
-summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=bhi_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=no_aa_test)) # <2e-16
+# Calculate differences and correct p values
+trehalose_p <- summary(aov(formula=od ~ substrate * time, data=trehalose_test))[[1]][["Pr(>F)"]][3]
+starch_p <- summary(aov(formula=od ~ substrate * time, data=starch_test))[[1]][["Pr(>F)"]][3]
+fructose_p <- summary(aov(formula=od ~ substrate * time, data=fructose_test))[[1]][["Pr(>F)"]][3]
+mannitol_p <- summary(aov(formula=od ~ substrate * time, data=mannitol_test))[[1]][["Pr(>F)"]][3]
+salicin_p <- summary(aov(formula=od ~ substrate * time, data=salicin_test))[[1]][["Pr(>F)"]][3]
+acetate_p <- summary(aov(formula=od ~ substrate * time, data=acetate_test))[[1]][["Pr(>F)"]][3]
+acetylglucosamine_p <- summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test))[[1]][["Pr(>F)"]][3]
+acetylneuraminate_p <- summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test))[[1]][["Pr(>F)"]][3]
+bhi_p <- summary(aov(formula=od ~ substrate * time, data=bhi_test))[[1]][["Pr(>F)"]][3]
+no_aa_p <- summary(aov(formula=od ~ substrate * time, data=no_aa_test))[[1]][["Pr(>F)"]][3]
+aov_p_values <- c(trehalose_p,starch_p,fructose_p,mannitol_p,salicin_p,acetate_p,acetylglucosamine_p,acetylneuraminate_p,bhi_p,no_aa_p)
+aov_p_values <- round(p.adjust(aov_p_values, method='holm'), digits=3)
+trehalose_cp <- aov_p_values[1]
+starch_cp <- aov_p_values[2]
+fructose_cp <- aov_p_values[3]
+mannitol_cp <- aov_p_values[4]
+salicin_cp <- aov_p_values[5]
+acetate_cp <- aov_p_values[6]
+acetylglucosamine_cp <- aov_p_values[7]
+acetylneuraminate_cp <- aov_p_values[8]
+bhi_cp <- aov_p_values[9]
+no_aa_cp <- aov_p_values[10]
 
 # Find medians 
 starch_median <- apply(starch, 1, median)
@@ -464,9 +483,7 @@ The authors would like to acknowledge members of the University of Michigan Germ
 Matthew L. Jenior, Jhansi L. Leslie, & Patrick D. Schloss PhD.
 
 **Contributions** 
-Matthew L. Jenior - mouse work, nucleic acid extraction, algorithm delevopment, analysis, writing
-Jhansi L. Leslie - mouse work, toxin assays
-Patrick D. Schloss PhD. - paid for it, writing
+M.L.J. conceived, designed and performed experiments, analyzed data, and wrote the manuscript. J.L.L. performed experiments and analyzed data. P.D.S. wrote the manuscript.
 
 **Competing interests**
 The authors declare no competing interest. 
@@ -491,13 +508,11 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Figure 6 | Results from network-based metabolite importance calculation and *in vitro* growth with important carbohydrates.** Prior to importance calculation, transcript abundances for each condition were evenly rarefied to 27,664 normalized reads to include gnotobiotic mice for even comparison across colonized environments (~18x coverage). *(a)* Median shared significant metabolites among the 50 highest scoring metabolites from each condition (*P* < 0.05). Median importance scores and pooled random distribution were recalculated per metabolite using the values from each condition tested. **(b)** Distinctly important significant metabolites from each treatment group (*P* < 0.05). The top 25 scoring metabolites from each group was cross-referenced against each other group resulting in metabolites that are differentially important between environments. *(c)* *in vitro* growth curves validating identified growth nutrients from network analysis. In gray is a control curve in which amino acids are the only possible source of carbon for *C. difficile*. One metabolite that is consistently important to *C. difficile* and at least one metabolite indicated as distinctly important from each group supported growth significantly more (*P* << 0.001) than No Carbohydrates (+ Amino acids) control. Only those carbon sources that significantly improved *C. difficile* growth over controls are displayed (remainder are located in Table S4). Significant differences were calculated using 2-Way ANOVA with Holm-Bonferroni correction.
 
-
 **Supplementary Figure 1 | Expression of specific KEGG gene families.** Abundances of normalized transcriptomic reads from *C. difficile* str. 630 in each tested condition. *(a)* All KEGG families. **(b)** Those sub-families within Carbohydrate metabolism. *(c)* Sub-families within Amino acid metabolism.
 
 **Supplementary Figure 2 | *in vivo* acetate concentrations with GC-MS analysis from cefoperazone-treated mouse cecal content.** 2 groups of 5 mice each were pretreated with cefoperazone as outlined Fig. 1b. A single cage was infected with *C. difficile* in the same fashion as other experiments described here. Animals were necropsied at 18 hours post-infection and cecal content was flash frozen for later GC-MS analysis. Significance was determined using Wilcoxon signed-rank test.
 
 **Supplementary Figure 3 |  Additional growth curves for additional carbon sources and controls.** Significant metabolites from network analysis that did not provide improved growth over No Carbohydrate control. Also included is the negative control of minimal media with no amino acids as well as *C. difficile* growth in standard Brain-Heart Infusion broth.
-
 
 **Supplementary Table 1 |  Sets of genes included in Figure 4 with normalized abundances and citations.**
 

@@ -200,16 +200,16 @@ bhi_test <- format_curve(bhi, 'bhi', no_carb)
 no_aa_test <- format_curve(no_aa, 'no_amino_acids', no_carb)
 
 # Calculate differences
-summary(aov(formula=od ~ substrate * time, data=trehalose_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=starch_test)) # 0.0414
-summary(aov(formula=od ~ substrate * time, data=fructose_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=mannitol_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=salicin_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=acetate_test)) # 0.0632
-summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=bhi_test)) # <2e-16
-summary(aov(formula=od ~ substrate * time, data=no_aa_test)) # <2e-16
+summary(aov(formula=od ~ substrate * time, data=trehalose_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=starch_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=fructose_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=mannitol_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=salicin_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=acetate_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=bhi_test))[[1]][["Pr(>F)"]][3]
+summary(aov(formula=od ~ substrate * time, data=no_aa_test))[[1]][["Pr(>F)"]][3]
 
 # Clean up
 rm(trehalose_test, fructose_test, starch_test, mannitol_test, salicin_test, acetylneuraminate_test, acetate_test, acetylglucosamine_test, bhi_test, no_aa_test)

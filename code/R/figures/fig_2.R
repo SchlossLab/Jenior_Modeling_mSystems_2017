@@ -72,23 +72,21 @@ cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
 clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
 streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
 germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
-rm(toxin_raw)
 
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 0.000476, corrected = 0.001904, **
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 0.0001152, corrected = 0.0006912, ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 0.0003599, corrected = 0.0017995, **
-wilcox.test(cefoperazone, clindamycin, exact=F) # p-value = 0.9189, corrected = 0.9189, n.s.
-wilcox.test(cefoperazone, streptomycin, exact=F) # p-value = 0.1242, corrected = 0.2484, n.s.
-wilcox.test(clindamycin, streptomycin, exact=F) # p-value = 0.07892, corrected = 0.23676, n.s.
+gf_vs_cef_tox_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
+gf_vs_clinda_tox_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
+gf_vs_strep_tox_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
+cef_vs_clinda_tox_p <- wilcox.test(cefoperazone, clindamycin, exact=F)$p.value
+cef_vs_strep_tox_p <- wilcox.test(cefoperazone, streptomycin, exact=F)$p.value
+clinda_vs_strep_tox_p <- wilcox.test(clindamycin, streptomycin, exact=F)$p.value
 
-p_values <- c(0.000476,0.0001152,0.0003599,0.9189,0.1242,0.07892)
-p.adjust(p_values, method='holm')
+#p_values <- c(,,,,,,,)
+#p_values <- p.adjust(p_values, method='holm')
 
 cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
 clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
 streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
 germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
-rm(cfu_raw)
 
 wilcox.test(germfree, cefoperazone, exact=F) # p-value = 3.807e-05, corrected = 0.00019035, ***
 wilcox.test(germfree, clindamycin, exact=F) # p-value = 3.09e-05, corrected = 0.0001854, ***
@@ -138,7 +136,7 @@ segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
 segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
 # Conventional significance
-text(5, 2.4, labels='UD*', cex=1.4)
+text(5, 2.4, labels='UD', cex=1.4)
 
 mtext('a', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1, font=2)
 
@@ -167,7 +165,7 @@ segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 
 # Conventional significance
-text(5, 2.4, labels='UD*', cex=1.4)
+text(5, 2.4, labels='UD', cex=1.4)
 
 mtext('b', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1, font=2)
 
@@ -200,7 +198,7 @@ segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2
 text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
 
 # Conventional significance
-text(5, 2.1, labels='UD*', cex=1.4)
+text(5, 2.1, labels='UD', cex=1.4)
 
 # Plot label
 mtext('c', side=2, line=2, las=2, adj=1.6, padj=-9, cex=1.1, font=2)
