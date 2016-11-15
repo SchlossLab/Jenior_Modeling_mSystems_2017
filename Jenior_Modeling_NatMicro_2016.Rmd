@@ -1,7 +1,10 @@
 ---
-title: *Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut environments
+title: "*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut environments"
 csl: nature.csl
-output: pdf_document
+output:
+  word_document:
+    keep_md: true
+    reference_docx: manuscript_format.docx
 bibliography: references.bib
 ---
 
@@ -37,20 +40,20 @@ format_curve <- function(raw_exp_data, exp_group, raw_control_data){
 }
 
 # Set initial working directory
-setwd('~/Desktop/Jenior_Transcriptomics_2015/')
+setwd('~/Desktop/Repositories/Jenior_Transcriptomics_2015/')
 
 # Point to data files
-# Table 1
-antibiotic_file <- 'data/abx.tsv'
-# Figure 2
-cfu_file <- 'data/wetlab_assays/cfu.dat'
-toxin_file <- 'data/wetlab_assays/toxin_titer.dat'
-# Figure 5
-network_file <- 'data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.tsv'
-# Figure 6
-growth_file <- 'data/wetlab_assays/cd630_growth.tsv'
-# Figure S2
-acetate_file <- 'data/wetlab_assays/cef_acetate_630.txt'
+# Table 1 data
+antibiotics <- read.delim('data/abx.tsv', sep='\t', header=FALSE)
+# Figure 2 data
+cfu <- read.delim('data/wetlab_assays/cfu.dat', sep='\t', header=T)
+toxin <- read.delim('data/wetlab_assays/toxin_titer.dat', sep='\t', header=T)
+# Figure 5 data
+network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.tsv', header=FALSE, sep='\t')
+# Figure 6 data
+growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
+# Figure S2 data
+scfa <- read.delim('data/wetlab_assays/cef_acetate_630.txt', sep='\t', header=T)
 
 # Set seed to the answer to the ultimate question of life, the universe, and everything
 set.seed(42)
@@ -76,7 +79,6 @@ Based on the ability of *C. difficile* to grow on a diverse array of carbon sour
 
 ```{r table_1, echo=F, warning=F, message=F, results='hide', cache=T}
 
-antibiotics <- read.delim(antibiotic_file, sep='\t', header=FALSE)
 antibiotics <- gsub('_', ' ', antibiotics)
 kable(antibiotics)
 
@@ -92,10 +94,7 @@ kable(antibiotics)
 
 ```{r figure_2, echo=F, warning=F, message=F, results='hide', cache=T}
 
-# Read in data
-cfu <- read.delim(cfu_file, sep='\t', header=T)
 cfu_raw <- cfu
-toxin <- read.delim(toxin_file, sep='\t', header=T)
 toxin_raw <- toxin
 
 # Format CFU data and collect summary statistics
@@ -202,9 +201,6 @@ Moving beyond a strictly topological analysis of the *C. difficile* metabolic ne
 
 ```{r figure_5, echo=F, warning=F, message=F, results='hide', cache=T}
 
-# Read in metabolic network data
-network <- read.delim(network_file, header=FALSE, sep='\t')
-
 # Format directed graph
 raw_graph <- graph.data.frame(network, directed=TRUE)
 
@@ -257,7 +253,6 @@ To validate the biological relevance of substrates identified as uniquely import
 
 ```{r figure_6, echo=F, warning=F, message=F, results='hide', cache=T}
 
-growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
 growth <- as.data.frame(t(growth))
 
 # Seperate to groups of each growth substrate and format
@@ -412,9 +407,6 @@ no_carb_mean_rate <- round(mean(diff(no_carb_median)), digits=3)
 ```
 
 ```{r figure_S2, echo=F, warning=F, message=F, results='hide', cache=T}
-
-# Read in data
-scfa <- read.delim(acetate_file, sep='\t', header=T)
 
 # Format the data
 scfa$group <- factor(scfa$group, levels=c('mock', 'infected'))

@@ -1,0 +1,12 @@
+base
+shape
+permute
+lattice
+vegan
+MASS
+klaR
+igraph
+matrixStats
+caTools
+flux
+knitr
