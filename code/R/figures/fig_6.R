@@ -187,35 +187,6 @@ rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Prepare data for statistical tests
-trehalose_test <- format_curve(trehalose, 'trehalose', no_carb)
-fructose_test <- format_curve(fructose, 'fructose', no_carb)
-starch_test <- format_curve(starch, 'starch', no_carb)
-mannitol_test <- format_curve(mannitol, 'mannitol', no_carb)
-salicin_test <- format_curve(salicin, 'salicin', no_carb)
-acetate_test <- format_curve(acetate, 'salicin', no_carb)
-acetylglucosamine_test <- format_curve(acetylglucosamine, 'acetylglucosamine', no_carb)
-acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', no_carb)
-bhi_test <- format_curve(bhi, 'bhi', no_carb)
-no_aa_test <- format_curve(no_aa, 'no_amino_acids', no_carb)
-
-# Calculate differences
-summary(aov(formula=od ~ substrate * time, data=trehalose_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=starch_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=fructose_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=mannitol_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=salicin_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=acetate_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=bhi_test))[[1]][["Pr(>F)"]][3]
-summary(aov(formula=od ~ substrate * time, data=no_aa_test))[[1]][["Pr(>F)"]][3]
-
-# Clean up
-rm(trehalose_test, fructose_test, starch_test, mannitol_test, salicin_test, acetylneuraminate_test, acetate_test, acetylglucosamine_test, bhi_test, no_aa_test)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
 # Format growth curves
 
 # Find medians 
@@ -365,6 +336,10 @@ lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, p
 segments(x0=seq(1,49,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1), y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
+lines(growth_medians$trehalose_median, type='o', col='black', bg='black', lwd=2.5, pch=25, cex=2.3)
+segments(x0=seq(1,49,1), y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1), y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median+growth_sds$trehalose_sd, lwd=2.5, col='black')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median-growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
 
 # Streptomycin
 lines(growth_medians$fructose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
@@ -390,9 +365,9 @@ segments(x0=seq(1,49,1), y0=growth_medians$acetylneuraminate_median+growth_sds$a
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
 
-legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','D-Fructose','Mannitol','Salicin','N-Acetylneuriminate'), 
-       col=c('gray45','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(16,6,0,1,2,5), cex=2.4, pt.cex=c(0,3.4,3.4,3.4,3.4,3.4), pt.bg='white', lwd=3, bg='white')
+legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','Trehalose','D-Fructose','Mannitol','Salicin','N-Acetylneuriminate'), 
+       col=c('gray45','black','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(16,6,25,0,1,2,5), cex=2.4, pt.cex=c(0,3.4,3.2,3.4,3.4,3.4,3.4), pt.bg=c('white','white','black','white','white','white','white'), lwd=3, bg='white')
 
 dev.off()
 
@@ -412,11 +387,6 @@ lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray45
 segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray45')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray45')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray45')
-
-lines(growth_medians$trehalose_median, type='o', col='black', lwd=2.5, pch=17, cex=2.3)
-segments(x0=seq(1,49,1), y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1), y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median+growth_sds$trehalose_sd, lwd=2.5, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$trehalose_median-growth_sds$trehalose_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col='black')
 
 lines(growth_medians$starch_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,49,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
@@ -438,9 +408,9 @@ segments(x0=seq(1,49,1), y0=growth_medians$acetate_median+growth_sds$acetate_sd,
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median+growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median-growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 
-legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Trehalose','Starch','Acetate'), 
-       col=c('gray45','gray45','darkorchid3','black',wes_palette('FantasticFox')[1],'forestgreen'), 
-       pch=c(16,16,15,17,15,18), cex=1.3, pt.cex=c(0,1,1,2.5,2.5,2.5), bg='white', lwd=2.5)
+legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Starch','Acetate'), 
+       col=c('gray45','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen'), 
+       pch=c(16,16,15,15,18), cex=1.3, pt.cex=c(0,1,1,2.5,2.5), bg='white', lwd=2.5)
 
 dev.off()
 
