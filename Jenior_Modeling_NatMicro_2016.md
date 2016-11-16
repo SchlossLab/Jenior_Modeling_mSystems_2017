@@ -1,6 +1,6 @@
 # *Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut environments
 
-**Authors:** Matthew L. Jenior, Jhansi L. Leslie, and Patrick D. Schloss^\*^
+**Authors:** Matthew L. Jenior, Jhansi L. Leslie, Vincent B. Young, and Patrick D. Schloss^\*^
 
 
 
@@ -116,17 +116,21 @@ gorwth curves - Significant differences were determined by 2-way ANOVA with Holm
 
 ###Acknowledgements
 
-The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (U01...), and Jhansi's grant. Data availability...
+The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (ERIN; U19AI09087), and the Translational Research Education Certificate (MICHR; UL1TR000433). Processed transcriptomic read data is available at...
 
 
 ###Author Information
 
 **Affiliations**
 **Department of Microbiology and Immunology, University of Michigan, Ann Arbor, Michigan.**
-Matthew L. Jenior, Jhansi L. Leslie, & Patrick D. Schloss PhD.
+Matthew L. Jenior, Jhansi L. Leslie, & Patrick D. Schloss Ph.D.
+
+**Department of Internal Medicine & Infectious Diseases, University of Michigan Medical Center, Ann Arbor, Michigan.**
+Vincent B. Young M.D. Ph.D.
+
 
 **Contributions** 
-M.L.J. conceived, designed and performed experiments, analyzed data, and wrote the manuscript. J.L.L. performed experiments and analyzed data. P.D.S. wrote the manuscript.
+M.L.J. conceived, designed and performed experiments, analyzed data, and drafted the manuscript. J.L.L. performed experiments and analyzed data. V.B.Y. contributed to the manuscript. P.D.S. interpreted data and contributed the manuscript.
 
 **Competing interests**
 The authors declare no competing interest. 
