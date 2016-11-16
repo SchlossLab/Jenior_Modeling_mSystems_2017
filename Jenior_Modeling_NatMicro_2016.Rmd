@@ -40,7 +40,8 @@ format_curve <- function(raw_exp_data, exp_group, raw_control_data){
 }
 
 # Set initial working directory
-setwd('~/Desktop/Repositories/Jenior_Transcriptomics_2015/')
+script_directory <- dirname(parent.frame(2)$ofile)
+setwd(script_directory)
 
 # Point to data files
 # Table 1 data
