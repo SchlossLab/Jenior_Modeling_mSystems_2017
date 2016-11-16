@@ -116,7 +116,7 @@ gorwth curves - Significant differences were determined by 2-way ANOVA with Holm
 
 ###Acknowledgements
 
-The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (ERIN; U19AI09087), and the Translational Research Education Certificate (MICHR; UL1TR000433). Processed transcriptomic read data is available at...
+The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (ERIN; U19AI09087), and the Translational Research Education Certificate (MICHR; UL1TR000433). Pooled and quality trimmed transcriptomic read data is available at...
 
 
 ###Author Information
