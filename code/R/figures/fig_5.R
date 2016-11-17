@@ -228,7 +228,7 @@ text(x=0.63, y=-0.63, '0', cex=1.8)
 text(x=0.12, y=-0.61, '-', cex=2.2)
 text(x=1.14, y=-0.61, '+', cex=2.2)
 text(x=1.15, y=-0.4, 'More likely consumed', cex=1.35)
-text(x=0.14, y=-0.4, 'More likely released', cex=1.35)
+text(x=0.14, y=-0.4, 'More likely produced', cex=1.35)
 text(x=0.63, y=-0.75, 'Importance Score', cex=1.5, font=2)
 
 # Continuation arrows

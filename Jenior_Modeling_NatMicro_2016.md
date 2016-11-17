@@ -155,10 +155,7 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Supplementary Figure 1 | Expression of specific KEGG gene families.** Abundances of normalized transcriptomic reads from *C. difficile* str. 630 in each tested condition. **(a)** All KEGG families. **(b)** Those sub-families within Carbohydrate metabolism. **(c)** Sub-families within Amino acid metabolism.
 
-
-
-**Supplementary Figure 2 | .** supp figure from nick...
-
+**Supplementary Figure 2 | Additional explanation for how to interpret Figure 4.** Colored areas are >90% of color-associated antibiotic-treated and <10% the other two antibiotic-treated communities...
 
 **Supplementary Figure 3 | *in vivo* acetate concentrations with GC-MS analysis from cefoperazone-treated mouse cecal content.** 2 groups of 5 mice each were pretreated with cefoperazone as outlined Fig. 1b. A single cage was infected with *C. difficile* in the same fashion as other experiments described here. Animals were necropsied at 18 hours post-infection and cecal content was flash frozen for later GC-MS analysis. Significance was determined using Wilcoxon signed-rank test.
 
