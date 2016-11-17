@@ -44,19 +44,31 @@ rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_import
 
 # Format metabolite importance scores
 cef_importance$Metabolite_score <- as.numeric(as.character(cef_importance$Metabolite_score))
-cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
 clinda_importance$Metabolite_score <- as.numeric(as.character(clinda_importance$Metabolite_score))
-clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
 strep_importance$Metabolite_score <- as.numeric(as.character(strep_importance$Metabolite_score))
-strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
 gf_importance$Metabolite_score <- as.numeric(as.character(gf_importance$Metabolite_score))
-gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
 # Remove non-significant scores
 cef_importance <- as.data.frame(subset(cef_importance, (cef_importance[,3] != 'n.s.')))
 clinda_importance <- as.data.frame(subset(clinda_importance, (clinda_importance[,3] != 'n.s.')))
 strep_importance <- as.data.frame(subset(strep_importance, (strep_importance[,3] != 'n.s.')))
 gf_importance <- as.data.frame(subset(gf_importance, (gf_importance[,3] != 'n.s.')))
+
+# Sort for least important, subset, and format names
+cef_least_importance <- cef_importance[order(cef_importance$Metabolite_score),][c(1:10),]
+clinda_least_importance <- clinda_importance[order(clinda_importance$Metabolite_score),][c(1:10),]
+strep_least_importance <- strep_importance[order(strep_importance$Metabolite_score),][c(1:10),]
+gf_least_importance <- gf_importance[order(gf_importance$Metabolite_score),][c(1:10),]
+cef_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
+clinda_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
+strep_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
+gf_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
+
+# Sort for most important
+cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
+clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
+strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
+gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
 
 # Write significant ranked data to supplementary table
 write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3cef.tsv', quote=FALSE, sep='\t', row.names=TRUE)
@@ -299,7 +311,7 @@ layout(matrix(c(1,1,1,1,2,2,2,2,
 # Shared metabolite importances
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.4, color='black',
-         xlab=expression(paste('Importance Score (',Log[2],')')), xlim=c(0,10), pch=19, lwd=3)
+         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3)
 segments(x0=rep(0,10), y0=c(1:10), x1=rep(12,10), y1=c(1:10), lty=2) # Dotted lines
 mtext('a', side=2, line=2, las=2, adj=2.9, padj=-20, cex=1.8, font=2)
 
@@ -309,7 +321,7 @@ mtext('a', side=2, line=2, las=2, adj=2.9, padj=-20, cex=1.8, font=2)
 par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.4, groups=top_importances$abx, color='black',
-         xlab=expression(paste('Importance Score (',Log[2],')')), xlim=c(0,10), pch=19, lwd=3,
+         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('b', side=2, line=2, las=2, adj=2.4, padj=-20, cex=1.8, font=2)
 segments(x0=rep(0, 15), y0=c(1:17, 20:23, 26:30, 33:35), x1=rep(12, 15), y1=c(1:17, 20:23, 26:30, 33:35), lty=2) # Dotted lines
@@ -374,6 +386,39 @@ dev.off()
 #---------------------------------------#
 
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/Figure_S3.pdf'
+pdf(file=plot_file, width=17, height=15)
+layout(matrix(c(1,2,
+                3,4), nrow=2, ncol=2, byrow=TRUE))
+
+par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+dotchart(strep_least_importance$Metabolite_score, labels=strep_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[1],
+         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+mtext('a', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+
+par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+dotchart(cef_least_importance$Metabolite_score, labels=cef_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[3],
+         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+mtext('b', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+
+par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+dotchart(clinda_least_importance$Metabolite_score, labels=clinda_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[5],
+         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+mtext('c', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+
+par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+dotchart(gf_least_importance$Metabolite_score, labels=gf_least_importance$Compound_name, lcolor=NA, cex=1.4, color='forestgreen',
+         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+mtext('d', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+
+dev.off()
+
+#---------------------------------------#
+
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/Figure_S4.pdf'
 pdf(file=plot_file, width=14, height=10)
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
 plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.83), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
