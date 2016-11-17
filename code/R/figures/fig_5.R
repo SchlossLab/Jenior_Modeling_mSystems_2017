@@ -199,7 +199,7 @@ text(x=-1, y=1, 'a', cex=2, font=2)
 # Example network and importance calculation
 par(mar=c(0,0,0,1))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(x=-1.5, y=1.5, 'b', cex=2, font=2)
+text(x=-1.5, y=1.45, 'b', cex=2, font=2)
 
 text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.3) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
@@ -244,10 +244,9 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 # Importance algorithm
 
 plot.new()
-text(x=0.28, y=0.9, expression(mu[i] == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
-text(x=0.8, y=0.9, expression(mu[o] == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
-text(x=0.58, y=0.6, expression(Importance(m) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
-text(x=c(0.05,0.56,0.07), y=c(0.9,0.9,0.6), labels=c('(i)','(ii)','(iii)'), cex = 1.8, font=2)                                                                  
+text(x=0.27, y=0.8, expression(paste(bold('(i) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
+text(x=0.27, y=0.6, expression(paste(bold('(ii) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
+text(x=0.55, y=0.4, expression(paste(bold('(iii) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
 
 dev.off()
 
