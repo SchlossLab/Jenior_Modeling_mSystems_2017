@@ -135,9 +135,6 @@ segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
 segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
 segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
-# Conventional significance
-text(5, 2.4, labels='UD', cex=1.4)
-
 mtext('a', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -164,9 +161,6 @@ segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 
-# Conventional significance
-text(5, 2.4, labels='UD', cex=1.4)
-
 mtext('b', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1, font=2)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -175,7 +169,7 @@ mtext('b', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1, font=2)
 par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.2,
-           ylab=expression(paste('Toxin Titer/g Content (',Log[10],')')), xlab='Treatment Group',
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='Treatment Group',
            method='jitter', jitter=0.15, cex=2)
 axis(side=1, at=c(1:5), labels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)', 'No Antibiotics (SPF)'), tick=FALSE, cex.axis=1.1)
 axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
@@ -196,9 +190,6 @@ segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 # Adding significance to plot
 segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
 text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
-
-# Conventional significance
-text(5, 2.1, labels='UD', cex=1.4)
 
 # Plot label
 mtext('c', side=2, line=2, las=2, adj=1.6, padj=-9, cex=1.1, font=2)

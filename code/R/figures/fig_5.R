@@ -231,10 +231,10 @@ text(x=1.15, y=-0.4, 'More likely consumed', cex=1.35)
 text(x=0.14, y=-0.4, 'More likely released', cex=1.35)
 text(x=0.63, y=-0.75, 'Importance Score', cex=1.5, font=2)
 
-# Continuation lines
+# Continuation arrows
 Arrows(x0=-1.38, y0=1, x1=-1.12, y1=1, arr.type='curved', arr.length=0.45, arr.width=0.25, col='gray15')
-segments(x0=1.25, y0=0.44, x1=1.56, y1=0.44, col='gray15', lwd=1.1)
-segments(x0=-1.38, y0=-1, x1=-0.725, y1=-1, col='gray15', lwd=1.1)
+Arrows(x0=1.25, y0=0.44, x1=1.5, y1=0.44, arr.type='curved', arr.length=0.45, arr.width=0.25, col='gray15')
+Arrows(x0=-0.725, y0=-1, x1=-1.32, y1=-1, arr.type='curved', arr.length=0.45, arr.width=0.25, col='gray15')
 
 # Draw box
 rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
@@ -246,7 +246,7 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 plot.new()
 text(x=0.28, y=0.9, expression(mu[i] == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
 text(x=0.8, y=0.9, expression(mu[o] == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
-text(x=0.58, y=0.6, expression(Importance(m) == paste(Log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+text(x=0.58, y=0.6, expression(Importance(m) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
 text(x=c(0.05,0.56,0.07), y=c(0.9,0.9,0.6), labels=c('(i)','(ii)','(iii)'), cex = 1.8, font=2)                                                                  
 
 dev.off()

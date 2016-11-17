@@ -60,9 +60,9 @@ clinda_least_importance <- clinda_importance[order(clinda_importance$Metabolite_
 strep_least_importance <- strep_importance[order(strep_importance$Metabolite_score),][c(1:10),]
 gf_least_importance <- gf_importance[order(gf_importance$Metabolite_score),][c(1:10),]
 cef_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
-clinda_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
-strep_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
-gf_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
+clinda_least_importance$Compound_name <- gsub('_',' ',clinda_least_importance$Compound_name)
+strep_least_importance$Compound_name <- gsub('_',' ',strep_least_importance$Compound_name)
+gf_least_importance$Compound_name <- gsub('_',' ',gf_least_importance$Compound_name)
 
 # Sort for most important
 cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
@@ -385,40 +385,40 @@ dev.off()
 
 #---------------------------------------#
 
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/Figure_S3.pdf'
-pdf(file=plot_file, width=17, height=15)
-layout(matrix(c(1,2,
-                3,4), nrow=2, ncol=2, byrow=TRUE))
+#plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/Figure_S3.pdf'
+#pdf(file=plot_file, width=17, height=15)
+#layout(matrix(c(1,2,
+#                3,4), nrow=2, ncol=2, byrow=TRUE))
 
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(strep_least_importance$Metabolite_score, labels=strep_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[1],
-         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
-segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
-mtext('a', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+#par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+#dotchart(strep_least_importance$Metabolite_score, labels=strep_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[1],
+#         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+#segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+#mtext('a', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
 
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(cef_least_importance$Metabolite_score, labels=cef_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[3],
-         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
-segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
-mtext('b', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+#par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+#dotchart(cef_least_importance$Metabolite_score, labels=cef_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[3],
+#         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+#segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+#mtext('b', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
 
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(clinda_least_importance$Metabolite_score, labels=clinda_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[5],
-         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
-segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
-mtext('c', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+#par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+#dotchart(clinda_least_importance$Metabolite_score, labels=clinda_least_importance$Compound_name, lcolor=NA, cex=1.4, color=wes_palette('FantasticFox')[5],
+#         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+#segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+#mtext('c', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
 
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(gf_least_importance$Metabolite_score, labels=gf_least_importance$Compound_name, lcolor=NA, cex=1.4, color='forestgreen',
-         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
-segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
-mtext('d', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
+#par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
+#dotchart(gf_least_importance$Metabolite_score, labels=gf_least_importance$Compound_name, lcolor=NA, cex=1.4, color='forestgreen',
+#         xlab='Importance Score', xlim=c(0,-10), pch=19, lwd=3)
+#segments(x0=rep(0,10), y0=c(1:10), x1=rep(-12,10), y1=c(1:10), lty=2)
+#mtext('d', side=2, line=2, las=2, adj=2.9, padj=-16, cex=1.5, font=2)
 
-dev.off()
+#dev.off()
 
 #---------------------------------------#
 
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/Figure_S4.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S4.pdf'
 pdf(file=plot_file, width=14, height=10)
 par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
 plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,0.83), lwd=2, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)

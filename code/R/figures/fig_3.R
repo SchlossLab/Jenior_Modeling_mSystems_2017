@@ -125,11 +125,8 @@ legend('center', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamyc
       
 # Sporulation
 par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
-x_coords <- (barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4))
-abline(h=c(10,20), lty=2)
 barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,30), add=TRUE, cex.lab=1.4)
+        ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
 box()
 axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
@@ -145,13 +142,10 @@ mtext('a', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
 
 # Pathogenicity
 par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
-x_coords <- (barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='', ylim=c(0,1.2), cex.lab=1.4))
-abline(h=c(0.4,0.8), lty=2)
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,1.2), add=TRUE, cex.lab=1.4)
+        ylab='', ylim=c(0,1.5), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,0.4,0.8,1.2), c('0%','0.4%','0.8%','1.2%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,0.5,1,1.5), c('0%','0.5%','1.0%','1.5%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
@@ -160,13 +154,10 @@ mtext('b', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
 
 # Quorum sensing
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
-x_coords <- (barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-                     ylab='Relative Transcript Abundance', ylim=c(0,2.7), cex.lab=1.4))
-abline(h=c(0.9,1.8), lty=2)
 barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,2.7), add=TRUE, cex.lab=1.4)
+        ylab='Relative Transcript Abundance', ylim=c(0,3), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,0.9,1.8,2.7), c('0%','0.9%','1.8%','2.7%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,1,2,3), c('0%','1.0%','2.0%','3.0%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
@@ -174,13 +165,10 @@ mtext('c', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
 
 # Sigma factors
 par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
-x_coords <- (barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,27), cex.lab=1.4))
-abline(h=c(9, 18), lty=2)
 barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,27), add=TRUE, cex.lab=1.4)
+        ylab='', ylim=c(0,30), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,9,18,27), c('0%','9%','18%','27%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 
                           'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
@@ -188,15 +176,15 @@ text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 mtext('d', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
 
-text(24.7, 1, labels='UD', cex=1.2) # tcdR expression undetectable
-
 dev.off()
+
+# Add asterisks in Illustrator
 
 #--------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 rm(quorum, sigma, sporulation, paloc, 
-   plot_file, select_palette, make.italic, x_coords)
+   plot_file, select_palette, make.italic)
 for (dep in deps){
   pkg <- paste('package:', dep,sep='')
    detach(pkg, character.only = TRUE)
