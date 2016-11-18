@@ -257,7 +257,7 @@ combined_mapping <- as.data.frame(subset(combined_mapping, !(rownames(combined_m
 rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "#4EB265", 
              "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
 fox <- wes_palette("FantasticFox")
-tick_labels <- c('10%','','30%','','50%','','70%','','90%')
+tick_labels <- c('10%','30%','50%','70%','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_4.pdf'
 
 # Open a PDF
@@ -286,55 +286,56 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
-# Add points
-tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8, col='gray65', pch=19)
-
 # Axis labels
-text(x=-0.35, y=-0.41, labels='Cefoperazone (SPF)', cex=1.4)
-text(x=-0.21, y=0.48, labels='Clindamycin (SPF)', cex=1.4, srt=60)
-text(x=0.55, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60)
+text(x=-0.35, y=-0.43, labels='Cefoperazone (SPF)', cex=1.4)
+text(x=-0.22, y=0.49, labels='Clindamycin (SPF)', cex=1.4, srt=60)
+text(x=0.56, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60)
 
 # Left axis - Clindmycin
-lines(x=c(-0.52,-0.54), y=c(-0.233,-0.233))
-lines(x=c(-0.462,-0.492), y=c(-0.133,-0.133))
-lines(x=c(-0.404,-0.424), y=c(-0.033,-0.033))
-lines(x=c(-0.346,-0.366), y=c(0.067,0.067))
-lines(x=c(-0.289,-0.309), y=c(0.167,0.167))
-lines(x=c(-0.23,-0.25), y=c(0.267,0.267))
-lines(x=c(-0.173,-0.193), y=c(0.367,0.367))
-lines(x=c(-0.115,-0.135), y=c(0.467,0.467))
-lines(x=c(-0.057,-0.077), y=c(0.567,0.567))
-text(x=c(-0.57,-0.522,-0.454,-0.396,-0.339,-0.28,-0.223,-0.165,-0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=tick_labels, cex=0.9)
+lines(x=c(-0.52,-0.54), y=c(-0.233,-0.22))
+lines(x=c(-0.462,-0.482), y=c(-0.133,-0.12))
+lines(x=c(-0.404,-0.424), y=c(-0.033,-0.02))
+lines(x=c(-0.346,-0.366), y=c(0.067,0.08))
+lines(x=c(-0.289,-0.309), y=c(0.167,0.18))
+lines(x=c(-0.23,-0.25), y=c(0.267,0.28))
+lines(x=c(-0.173,-0.193), y=c(0.367,0.38))
+lines(x=c(-0.115,-0.135), y=c(0.467,0.48))
+lines(x=c(-0.057,-0.077), y=c(0.567,0.58))
+text(x=c(-0.552, -0.436, -0.321, -0.205, -0.089),  
+     y=c(-0.215, -0.015, 0.195, 0.395, 0.595),  
+     labels=tick_labels, srt=60)
 
 # Right axis - Streptomycin
-lines(x=c(0.52,0.54), y=c(-0.233,-0.233))
-lines(x=c(0.462,0.482), y=c(-0.133,-0.133))
-lines(x=c(0.404,0.424), y=c(-0.033,-0.033))
-lines(x=c(0.346,0.366), y=c(0.067,0.067))
-lines(x=c(0.289,0.309), y=c(0.167,0.167))
-lines(x=c(0.23,0.25), y=c(0.267,0.267))
-lines(x=c(0.173,0.193), y=c(0.367,0.367))
-lines(x=c(0.115,0.135), y=c(0.467,0.467))
-lines(x=c(0.057,0.077), y=c(0.567,0.567))
-text(x=c(0.57,0.522,0.454,0.396,0.339,0.28,0.223,0.165,0.107), 
-     y=c(-0.233,-0.133,-0.033,0.067,0.167,0.267,0.367,0.467,0.567), 
-     labels=rev(tick_labels), cex=0.9)
+lines(x=c(0.52,0.54), y=c(-0.233,-0.22))
+lines(x=c(0.462,0.482), y=c(-0.133,-0.12))
+lines(x=c(0.404,0.424), y=c(-0.033,-0.02))
+lines(x=c(0.346,0.366), y=c(0.067,0.08))
+lines(x=c(0.289,0.309), y=c(0.167,0.18))
+lines(x=c(0.23,0.25), y=c(0.267,0.28))
+lines(x=c(0.173,0.193), y=c(0.367,0.38))
+lines(x=c(0.115,0.135), y=c(0.467,0.48))
+lines(x=c(0.057,0.077), y=c(0.567,0.58))
+
+text(x=c(0.549, 0.44, 0.324, 0.209, 0.10), 
+     y=c(-0.215, -0.005, 0.185, 0.378, 0.584),
+     labels=rev(tick_labels), srt=-60) 
 
 # Bottom axis - Cefoperzone
-lines(x=c(-0.462,-0.462), y=c(-0.333,-0.353))
-lines(x=c(-0.346,-0.346), y=c(-0.333,-0.353))
-lines(x=c(-0.231,-0.231), y=c(-0.333,-0.353))
-lines(x=c(-0.115,-0.115), y=c(-0.333,-0.353))
-lines(x=c(0,0), y=c(-0.333,-0.353))
-lines(x=c(0.116,0.116), y=c(-0.333,-0.353))
-lines(x=c(0.232,0.232), y=c(-0.333,-0.353))
-lines(x=c(0.347,0.347), y=c(-0.333,-0.353))
-lines(x=c(0.463,0.463), y=c(-0.333,-0.353))
-text(x=c(-0.462,-0.346,-0.231,-0.115,0,0.116,0.232,0.347,0.463), 
-     y=c(-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373,-0.373), 
-     labels=rev(tick_labels), cex=0.9)
+lines(x=c(-0.462,-0.462), y=c(-0.333,-0.356))
+lines(x=c(-0.346,-0.346), y=c(-0.333,-0.356))
+lines(x=c(-0.231,-0.231), y=c(-0.333,-0.356))
+lines(x=c(-0.115,-0.115), y=c(-0.333,-0.356))
+lines(x=c(0,0), y=c(-0.333,-0.356))
+lines(x=c(0.116,0.116), y=c(-0.333,-0.356))
+lines(x=c(0.232,0.232), y=c(-0.333,-0.356))
+lines(x=c(0.347,0.347), y=c(-0.333,-0.356))
+lines(x=c(0.463,0.463), y=c(-0.333,-0.356))
+text(x=c(-0.462, -0.231, 0, 0.232, 0.463),  
+     y=c(-0.373, -0.373, -0.373, -0.373, -0.373),  
+     labels=rev(tick_labels))
+
+# Add points
+tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8, col='gray65', pch=19)
 
 # Color points by substrate
 tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=apply(PTS, 1, max)*3.5, bg=alpha(fox[3],0.7))
@@ -347,8 +348,8 @@ tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=poly
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 
 # Add the legend
-legend(x=0.3, y=0.51, legend=c('PTS transporters', 'ABC sugar transporters', 'Sugar alcohol catabolism', 'Glycolysis-associated', 'Fermentation product synthesis', 
-                               'Polysaccharide catabolism', 'Amino acid catabolism', 'Amino sugar catabolism', 'All genes'), 
+legend(x=0.3, y=0.51, legend=c('PTS transporters', 'ABC sugar transporters', 'Sugar alcohol metabolism', 'Glycolysis-associated', 'Fermentation product synthesis', 
+                               'Polysaccharide metabolism', 'Amino acid metabolism', 'Amino sugar metabolism', 'All genes'), 
        ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
        pt.bg=c(fox[3], rainbow[7], 'darkorchid3', fox[1], fox[5], 'blue3', fox[2], 'firebrick1', 'gray65'), bty='n')
 # Size legend
@@ -403,7 +404,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], 
           pch=21, cex=2, bg='darkorchid3')
-text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
+text(x=0, y=-0.48, labels='Sugar alcohol metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='d', font=2, cex=1.6)
 
 # glycolysis alone
@@ -448,7 +449,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], 
           pch=21, cex=2, bg='blue3')
-text(x=0, y=-0.48, labels='Polysaccharide catabolism', cex=1.3)
+text(x=0, y=-0.48, labels='Polysaccharide metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='g', font=2, cex=1.6)
 
 # amino acid (stickland) alone
@@ -462,7 +463,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2, bg=fox[2])
-text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
+text(x=0, y=-0.48, labels='Amino acid metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='h', font=2, cex=1.6)
 
 # amino sugars alone
@@ -477,13 +478,17 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], 
           pch=21, cex=2, bg='firebrick1')
-text(x=0, y=-0.48, labels='Amino sugar catabolism', cex=1.3)
+text(x=0, y=-0.48, labels='Amino sugar metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='i', font=2, cex=1.6)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
 dev.off()
+
+
+
+
 rm(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation, 
    ABC_relabund, amino_sugars_relabund, combined_mapping, fermentation_relabund, monosaccharides_relabund, 
    polysaccharides_relabund, PTS_relabund, stickland_relabund, sugar_alcohols_relabund, plot_file, 
