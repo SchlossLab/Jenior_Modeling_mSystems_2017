@@ -452,9 +452,7 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Supplementary Figure 1 | Expression of specific KEGG gene families.** Abundances of normalized transcriptomic reads from *C. difficile* str. 630 in each tested condition. **(a)** All KEGG families. **(b)** Those sub-families within Carbohydrate metabolism. **(c)** Sub-families within Amino acid metabolism.
 
-
-**Supplementary Figure 2 | Additional explanation for how to interpret Figure 4.** **(a)** **(b)**
-
+**Supplementary Figure 2 | Additional explanation for Figure 4 interpretation.** Relative abundance of transcription for *C. difficile* 630 genes during infection across the 3 antibiotic pretreatment models used during this study. Points that are located closer to a corner are more highly transcribed in the condition associated with that corner compared to the others. As this shows a 3-dimensional data set in 2 dimensions, there is an amount of distortion proximal to each corner. Simply put for points that are nearer to an edge, a greater percentage of their total transcription was contributed by *C. difficile* colonizing those mice. **(a)** This point represents the transcription for a gene that is overrepresented in cefoperazone-treated mice. **(b)** This point represents a gene in which transcripts are equally detectable in all 3 conditions. **(c)** Transcripts for this gene are only underrepresented in only cefoperazone-treated mice, and are equally detectable in clindamycin and streptomycin-treated animals.
 
 **Supplementary Figure 3 | *in vivo* acetate concentrations with GC-MS analysis from cefoperazone-treated mouse cecal content.** 2 groups of 5 mice each were pretreated with cefoperazone as outlined Fig. 1b. A single cage was infected with *C. difficile* in the same fashion as other experiments described here. Animals were necropsied at 18 hours post-infection and cecal content was flash frozen for later GC-MS analysis. Significance was determined using Wilcoxon signed-rank test.
 
