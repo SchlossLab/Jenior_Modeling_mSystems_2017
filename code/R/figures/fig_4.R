@@ -274,7 +274,7 @@ layout(mat=matrix(c(1,1,1,1,
 # Generate raw plot
 par(mar=c(0,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('','',''), grid=seq(0.1,0.9,by=0.1), cex=0)
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0)
 
 # Center triangle
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -364,7 +364,7 @@ text(x=-0.5, y=0.5, labels='a', font=2, cex=1.5)
 # PTS alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -379,7 +379,7 @@ text(x=-0.5, y=0.5, labels='b', font=2, cex=1.6)
 # ABC alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -394,7 +394,7 @@ text(x=-0.5, y=0.5, labels='c', font=2, cex=1.6)
 # sugar alcohols alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -409,7 +409,7 @@ text(x=-0.5, y=0.5, labels='d', font=2, cex=1.6)
 # glycolysis alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -424,7 +424,7 @@ text(x=-0.5, y=0.5, labels='e', font=2, cex=1.6)
 # fermentation alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -439,7 +439,7 @@ text(x=-0.5, y=0.5, labels='f', font=2, cex=1.6)
 # polysaccharides alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -454,7 +454,7 @@ text(x=-0.5, y=0.5, labels='g', font=2, cex=1.6)
 # amino acid (stickland) alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -468,7 +468,7 @@ text(x=-0.5, y=0.5, labels='h', font=2, cex=1.6)
 # amino sugars alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=seq(0.1,0.9,by=0.1), cex=0.3, col='gray75')
+        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
