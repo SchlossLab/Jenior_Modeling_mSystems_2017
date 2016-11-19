@@ -67,8 +67,9 @@ combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:3]) > 5, ]
 # Subset by gene annotations and calculate relative abundances
 
 # Amino sugar catabolism
-mur <- rbind(subset(combined_mapping, grepl('mur.;', combined_mapping$gene)), 
-             subset(combined_mapping, grepl('mur;', combined_mapping$gene))) # Muramidase
+mur <- rbind(subset(combined_mapping, grepl('murA;', combined_mapping$gene)), 
+             subset(combined_mapping, grepl('murB;', combined_mapping$gene)), 
+             subset(combined_mapping, grepl('murG;', combined_mapping$gene))) # Muramidase
 nag <- rbind(subset(combined_mapping, grepl('nag.;', combined_mapping$gene)), 
              subset(combined_mapping, grepl('nag;', combined_mapping$gene))) # Acetylglucosaminidase
 acd <- rbind(subset(combined_mapping, grepl('acd.;', combined_mapping$gene)), 
@@ -232,7 +233,7 @@ fermentation[,1:3] <- log10(fermentation[,1:3] + 1)
 
 # Prep the data from and write it to a file
 gene_table$KEGG_code <- rownames(gene_table)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S1.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1.tsv'
 write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)
 
@@ -315,9 +316,8 @@ lines(x=c(0.23,0.25), y=c(0.267,0.28))
 lines(x=c(0.173,0.193), y=c(0.367,0.38))
 lines(x=c(0.115,0.135), y=c(0.467,0.48))
 lines(x=c(0.057,0.077), y=c(0.567,0.58))
-
-text(x=c(0.549, 0.44, 0.324, 0.209, 0.10), 
-     y=c(-0.215, -0.005, 0.185, 0.378, 0.584),
+text(x=c(0.553, 0.44, 0.324, 0.209, 0.092), 
+     y=c(-0.212, -0.02, 0.185, 0.379, 0.584),
      labels=rev(tick_labels), srt=-60) 
 
 # Bottom axis - Cefoperzone
@@ -349,7 +349,7 @@ tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_suga
 
 # Add the legend
 legend(x=0.3, y=0.51, legend=c('PTS transporters', 'ABC sugar transporters', 'Sugar alcohol metabolism', 'Glycolysis-associated', 'Fermentation product synthesis', 
-                               'Polysaccharide metabolism', 'Amino acid metabolism', 'Amino sugar metabolism', 'All genes'), 
+                               'Polysaccharide metabolism', 'Amino acid catabolism', 'Amino sugar metabolism', 'All genes'), 
        ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
        pt.bg=c(fox[3], rainbow[7], 'darkorchid3', fox[1], fox[5], 'blue3', fox[2], 'firebrick1', 'gray65'), bty='n')
 # Size legend
@@ -463,7 +463,7 @@ lines(x=c(-0.577,0.288), y=c(-0.333,0.1665))
 lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=2, bg=fox[2])
-text(x=0, y=-0.48, labels='Amino acid metabolism', cex=1.3)
+text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='h', font=2, cex=1.6)
 
 # amino sugars alone

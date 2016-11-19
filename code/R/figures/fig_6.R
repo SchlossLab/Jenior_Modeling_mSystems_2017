@@ -195,6 +195,8 @@ no_aa <- cbind(growth$noAA_1, growth$noAA_2, growth$noAA_3) - growth$noAA_blank
 no_aa[no_aa < 0] <- 0
 bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
 bhi[bhi < 0] <- 0
+sorbitol <- cbind(growth$sorbitol_1, growth$sorbitol_2, growth$sorbitol_3) - growth$sorbitol_blank
+sorbitol[sorbitol < 0] <- 0
 rm(growth)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -213,6 +215,7 @@ acetylneuraminate_median <- apply(acetylneuraminate, 1, median)
 no_carb_median <- apply(no_carb, 1, median)
 bhi_median <- apply(bhi, 1, median)
 no_aa_median <- apply(no_aa, 1, median)
+sorbitol_median <- apply(sorbitol, 1, median)
 
 # Standard deviations
 starch_sd <- rowSds(starch)
@@ -226,11 +229,12 @@ acetylglucosamine_sd <- rowSds(acetylglucosamine)
 no_carb_sd <- rowSds(no_carb)
 bhi_sd <- rowSds(bhi)
 no_aa_sd <- rowSds(no_aa)
+sorbitol_sd <- rowSds(sorbitol)
 
 # Compile results
-growth_medians <- as.data.frame(cbind(acetate_median, acetylglucosamine_median, trehalose_median,
+growth_medians <- as.data.frame(cbind(acetate_median, acetylglucosamine_median, trehalose_median, sorbitol_median,
                                       acetylneuraminate_median, starch_median, fructose_median, mannitol_median, salicin_median, no_carb_median, no_aa_median))
-growth_sds <- as.data.frame(cbind(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, trehalose_sd,
+growth_sds <- as.data.frame(cbind(acetate_sd, acetylglucosamine_sd, acetylneuraminate_sd, trehalose_sd, sorbitol_sd,
                                   starch_sd, fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -453,9 +457,14 @@ segments(x0=seq(1,49,1), y0=growth_medians$acetate_median+growth_sds$acetate_sd,
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median+growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median+growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetate_median-growth_sds$acetate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetate_median-growth_sds$acetate_sd, lwd=2.5, col='forestgreen')
 
-legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Starch','Acetate'), 
-       col=c('gray45','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen'), 
-       pch=c(16,16,15,15,18), cex=1.3, pt.cex=c(0,1,1,2.5,2.5), bg='white', lwd=2.5)
+lines(growth_medians$sorbitol_median, type='o', col='firebrick', lwd=2.5, pch=17, cex=1.5)
+segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col='firebrick')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col='firebrick')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col='firebrick')
+
+legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Starch','Acetate', 'Sorbitol'), 
+       col=c('gray45','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen','firebrick'), 
+       pch=c(16,16,15,15,18,17), cex=1.3, pt.cex=c(0,1,1,2.5,2.5,2.5), bg='white', lwd=2.5)
 
 dev.off()
 
