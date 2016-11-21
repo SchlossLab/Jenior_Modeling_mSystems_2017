@@ -212,8 +212,8 @@ text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('Deoxyadenosine (dAdo)','Importance = 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
 segments(x0=-1.15, y0=0, x1=-0.45, y1=0, lwd=2)
 
-legend(x=0.81, y=1.3, legend=c('Enzyme node', 'Metabolite node'),
-       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3, cex=1.5)
+legend(x=0.7, y=1.28, legend=c('Enzyme node', 'Metabolite node'),
+       pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3.3, cex=1.7, bty='n')
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
 text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
 text(x=-1, y=0.87, expression(t[o]), col='black', cex=2) # labeled transcription for output reactions
