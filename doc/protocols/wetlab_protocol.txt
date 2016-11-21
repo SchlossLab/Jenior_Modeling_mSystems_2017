@@ -205,4 +205,4 @@ RNA-Seq Sample Submission (U of M Sequencing Core)
 6.	Make sure you’re following their specifications, click the accept box, and finally click Agree and Continue.
 7.	Download the sample submission form, fill it out, and re-upload it to the online form.
 8.	Fill out the rest of the online form (using FTP download) and click Submit Samples.
-9.	Take the samples you just submitted the information for to the sample drop off point in 2568 MSRB II.
+9.	Take the samples you just submitted the information for to the sample drop off point.
