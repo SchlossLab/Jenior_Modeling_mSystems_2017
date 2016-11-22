@@ -20,19 +20,19 @@ NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
 
 
 ## Remove contaminating bacterial rRNA sequences
-/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/dbs/silva/silva_db -1 ${transcriptome}.read1.pool.cut.trim.fasta -2 ${transcriptome}.read2.pool.cut.trim.fasta --un-conc ${transcriptome}.filter.read.fasta
+bowtie2 -f --fr -x data/references/silva_db -1 ${transcriptome}.read1.pool.cut.trim.fasta -2 ${transcriptome}.read2.pool.cut.trim.fasta --un-conc ${transcriptome}.filter.read.fasta
 mv ${transcriptome}.filter.read.1.fasta ${transcriptome}.read1.pool.cut.trim.silva_filter.fasta
 mv ${transcriptome}.filter.read.2.fasta ${transcriptome}.read2.pool.cut.trim.silva_filter.fasta
-/home/mljenior/bin/bowtie2/bowtie2 -f -x /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/dbs/silva/silva_db -U ${transcriptome}.orphan.pool.cut.trim.fasta --un ${transcriptome}.orphan.pool.cut.trim.silva_filter.fasta
+bowtie2 -f -x data/references/silva_db -U ${transcriptome}.orphan.pool.cut.trim.fasta --un ${transcriptome}.orphan.pool.cut.trim.silva_filter.fasta
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read1.pool.cut.trim.silva_filter.fasta > ${transcriptome}.filtering.summary
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read2.pool.cut.trim.silva_filter.fasta >> ${transcriptome}.filtering.summary
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.orphan.pool.cut.trim.silva_filter.fasta >> ${transcriptome}.filtering.summary
 
 ## Remove residual Mus musculus (mouse) exome sequences
-/home/mljenior/bin/bowtie2/bowtie2 -f --fr -x /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/dbs/mus_musculus/mus_db -1 ${transcriptome}.read1.pool.cut.trim.silva_filter.fasta -2 ${transcriptome}.read2.pool.cut.trim.silva_filter.fasta --un-conc ${transcriptome}.filter.read.fasta
+bowtie2 -f --fr -x data/references/mus_db -1 ${transcriptome}.read1.pool.cut.trim.silva_filter.fasta -2 ${transcriptome}.read2.pool.cut.trim.silva_filter.fasta --un-conc ${transcriptome}.filter.read.fasta
 mv ${transcriptome}.filter.read.1.fasta ${transcriptome}.read1.pool.cut.trim.silva_filter.mus_filter.fasta
 mv ${transcriptome}.filter.read.2.fasta ${transcriptome}.read2.pool.cut.trim.silva_filter.mus_filter.fasta
-/home/mljenior/bin/bowtie2/bowtie2 -f -x /mnt/EXT/Schloss-data/matt/metatranscriptomes_HiSeq/dbs/mus_musculus/mus_db -U ${transcriptome}.orphan.pool.cut.trim.silva_filter.fasta --un ${transcriptome}.orphan.pool.cut.trim.silva_filter.mus_filter.fasta
+bowtie2 -f -x data/references/mus_db -U ${transcriptome}.orphan.pool.cut.trim.silva_filter.fasta --un ${transcriptome}.orphan.pool.cut.trim.silva_filter.mus_filter.fasta
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read1.pool.cut.trim.silva_filter.mus_filter.fasta >> ${transcriptome}.filtering.summary
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read2.pool.cut.trim.silva_filter.mus_filter.fasta >> ${transcriptome}.filtering.summary
 python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.orphan.pool.cut.trim.silva_filter.mus_filter.fasta >> ${transcriptome}.filtering.summary

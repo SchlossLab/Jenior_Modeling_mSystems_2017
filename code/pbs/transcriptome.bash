@@ -18,19 +18,19 @@ elif [ $1 = 'germfree' ]; then
 fi
 
 ## Pool reads from the same lane
-pool_job_id=$(qsub -v transcriptome=$1 pool.pbs | sed 's/\..*$//')
+pool_job_id=$(qsub -v transcriptome=$1 code/pbs/pool.pbs | sed 's/\..*$//')
 echo $1 read pooling: $pool_job_id
 
 ## Curate and filter contaminating reads
-trimming_job_id=$(qsub -v transcriptome=$1,forward=$F_primer,reverse=$R_primer -W depend=afterok:$pool_job_id trimming.pbs | sed 's/\..*$//')
+trimming_job_id=$(qsub -v transcriptome=$1,forward=$F_primer,reverse=$R_primer -W depend=afterok:$pool_job_id code/pbs/trimming.pbs | sed 's/\..*$//')
 echo $1 quality trimming: $trimming_job_id
-filter_job_id=$(qsub -v transcriptome=$1 -W depend=afterok:$trimming_job_id filter.pbs | sed 's/\..*$//')
+filter_job_id=$(qsub -v transcriptome=$1 -W depend=afterok:$trimming_job_id code/pbs/filter.pbs | sed 's/\..*$//')
 echo $1 filtering reads: $filter_job_id
 
 ## Map curated reads to C. difficile
-mapping_job1_id=$(qsub -v transcriptome=$1 -W depend=afterok:$filter_job_id map2select_630.pbs | sed 's/\..*$//')
+mapping_job1_id=$(qsub -v transcriptome=$1 -W depend=afterok:$filter_job_id code/pbs/map2select_630.pbs | sed 's/\..*$//')
 echo $1 mapping job 1 reads: $mapping_job1_id
-mapping_job2_id=$(qsub -v transcriptome=$1 -W depend=afterok:$filter_job_id map2cdf_genes.pbs | sed 's/\..*$//')
+mapping_job2_id=$(qsub -v transcriptome=$1 -W depend=afterok:$filter_job_id code/pbs/map2cdf_genes.pbs | sed 's/\..*$//')
 echo $1 mapping job 1 reads: $mapping_job2_id
 
 

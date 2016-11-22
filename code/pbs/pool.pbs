@@ -25,8 +25,8 @@ zcat *_L00*_R2_*.fastq.gz > ${transcriptome}.read2.pool.fastq.gz
 gunzip ${transcriptome}*.pool.fastq.gz
 
 # Return some stats on the pooled fastqs
-python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read1.pool.fastq > ${transcriptome}.pooling.summary
-python /mnt/EXT/Schloss-data/bin/seq_stats.py ${transcriptome}.read2.pool.fastq >> ${transcriptome}.pooling.summary
+python code/python/seq_stats.py ${transcriptome}.read1.pool.fastq > ${transcriptome}.pooling.summary
+python code/python/seq_stats.py ${transcriptome}.read2.pool.fastq >> ${transcriptome}.pooling.summary
 
 
 echo "qsub working directory absolute is"
