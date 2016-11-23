@@ -7,7 +7,7 @@ Overview
     |
     |- metadata.tsv 	   # Metadata for mouse experimental groups
     |
-    |- kegg/Documentation for the study
+    |- kegg/       # KEGG dictionaries for labeling orthologs and metabolites
     |  |- compound_names.tsv       # KEGG compound code to molecule name dictionary
     |  +- ko_names.tsv     # KO code to enzyme name dictionary
     |
@@ -79,3 +79,13 @@ Overview
     |  |- cef_acetate_630.txt      # GC-MS quantification of acetate in infected mouse ceca
     |  |- cfu.dat      # Colony forming unti quantification from each infection model
     |  +- toxin_titer.dat      # Toxin titer data from each infection model
+    |
+    |- references/     # Databases for mapping reads to C. difficile genes
+    |  |- cdf.kegg.genes.fasta.gz     # Fasta with all C. difficile 630 genes in KEGG (gzipped)
+    |  |- cd630.select_genes.fasta.gz      # Fasta with select C. difficile 630 genes from NCBI (gzipped)
+    |  |- cdf_db.*.bt2      # Bowtie2 formatted database for cdf.kegg.genes.fasta
+    |  +- cd630.select_genes.db.*.bt2      # Bowtie2 formatted database for cd630.select_genes.fasta
+
+
+
+

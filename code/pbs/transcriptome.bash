@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Create Bowtie databases
+db_job_id=$(qsub -v transcriptome=$1 code/pbs/db_build.pbs | sed 's/\..*$//')
+echo $1 creating mapping databases: $db_job_id
 
 ## Assign correct Nextera XT primer pair that was used (5' + 3' reverse complement)
 F_primer=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
@@ -21,11 +24,9 @@ fi
 pool_job_id=$(qsub -v transcriptome=$1 code/pbs/pool.pbs | sed 's/\..*$//')
 echo $1 read pooling: $pool_job_id
 
-## Curate and filter contaminating reads
+## Curate reads
 trimming_job_id=$(qsub -v transcriptome=$1,forward=$F_primer,reverse=$R_primer -W depend=afterok:$pool_job_id code/pbs/trimming.pbs | sed 's/\..*$//')
 echo $1 quality trimming: $trimming_job_id
-filter_job_id=$(qsub -v transcriptome=$1 -W depend=afterok:$trimming_job_id code/pbs/filter.pbs | sed 's/\..*$//')
-echo $1 filtering reads: $filter_job_id
 
 ## Map curated reads to C. difficile
 mapping_job1_id=$(qsub -v transcriptome=$1 -W depend=afterok:$filter_job_id code/pbs/map2select_630.pbs | sed 's/\..*$//')
