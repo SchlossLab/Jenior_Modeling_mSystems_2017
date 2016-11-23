@@ -117,7 +117,7 @@ Based on the evidence presented, and in spite of the limitations discussed above
 
 ###Acknowledgements
 
-The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (ERIN; U19AI09087), and a Translational Research Education Certificate grant to Jhansi Leslie (MICHR; UL1TR000433). Pooled and quality trimmed transcriptomic read data and experiment metadata are available through the NCBI Sequence Read Archive (SRA#...). Data processing steps for beginning from sequence data to the final manuscript are hosted at http://www.github.com/SchlossLab/Jenior\_Modeling_NatMicro_2016.
+The authors would like to acknowledge members of the University of Michigan Germ free Mouse Center, Sequencing Core, and Metabolomics Core for their assistance in experimental design, execution, and data collection. This work was supported by funding from the National Institutes of Health to P. Schloss (R01GM099514, P30DK034933), the Enterics Research Investigators Network (ERIN; U19AI09087), and a Translational Research Education Certificate grant to Jhansi Leslie (MICHR; UL1TR000433). Pooled and quality trimmed transcriptomic read data and experiment metadata are available through the NCBI Sequence Read Archive (SRA PRJNA354635). Data processing steps for beginning from sequence data to the final manuscript are hosted at http://www.github.com/SchlossLab/Jenior\_Modeling_NatMicro_2016.
 
 ###Author Information
 
