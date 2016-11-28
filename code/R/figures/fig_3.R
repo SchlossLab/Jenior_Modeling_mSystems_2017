@@ -139,6 +139,8 @@ segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]),
 text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
      labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
 mtext('a', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
+text(x=c(32.5,36,38,41.5,43.5,47,60,69), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+
 
 # Pathogenicity
 par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
@@ -151,6 +153,7 @@ text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
 mtext('b', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
+text(x=c(5,10.5,13,15,16), y=0.025, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Quorum sensing
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
@@ -162,6 +165,7 @@ text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
 mtext('c', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
+text(x=c(4.5,14.5), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Sigma factors
 par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
@@ -175,10 +179,10 @@ text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
 mtext('d', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
+text(x=c(21.5,23.5,24.5,25.5,26.5,71), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 dev.off()
 
-# Add asterisks in Illustrator
 
 #--------------------------------------------------------------------------------------------------------------#
 
