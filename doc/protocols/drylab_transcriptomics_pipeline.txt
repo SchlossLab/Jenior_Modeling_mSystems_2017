@@ -60,25 +60,47 @@ python /mnt/EXT/Schloss-data/bin/seq_stats.py Transcriptome.orphan.pool.cut.trim
 /home/mljenior/bin/bowtie/bowtie /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/cdf/cdf_db -f -p 4 -1 Transcriptome.read1.pool.cut.trim.filt1.filt2.fasta -2 Transcriptome.read2.pool.cut.trim.filt1.filt2.fasta reads.aligned.paired.transcripts2cdf630.sam
 /home/mljenior/bin/bowtie/bowtie /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/cdf/cdf_db -f -p 4 Transcriptome.orphan.pool.cut.trim.filt1.fasta reads.aligned.orphan.transcripts2cdf630.sam
 
-# Remove PCR and optical duplicates
-
-
-
-
-# Format alignment to C. difficile
+# Format alignment
 samtools view -bS Transcriptome.aligned.paired.transcripts2cdf630.sam > Transcriptome.aligned.paired.transcripts2cdf630.bam
-samtools sort Transcriptome.aligned.paired.transcripts2cdf630.bam Transcriptome.aligned.paired.transcripts2cdf630.sorted
+samtools sort Transcriptome.aligned.paired.transcripts2cdf630.bam Transcriptome.aligned.paired.transcripts2cdf630.sort
 samtools view -bS Transcriptome.aligned.orphan.transcripts2cdf630.sam > Transcriptome.aligned.orphan.transcripts2cdf630.bam
-samtools sort Transcriptome.aligned.orphan.transcripts2cdf630.bam Transcriptome.aligned.orphan.transcripts2cdf630.sorted
-samtools merge Transcriptome.aligned.transcripts2cdf630.sorted.merge.bam Transcriptome.aligned.paired.transcripts2cdf630.sorted.bam Transcriptome.aligned.orphan.transcripts2cdf630.sorted.bam
-samtools index Transcriptome.aligned.transcripts2cdf630.sorted.merge.bam
-samtools idxstats Transcriptome.aligned.transcripts2cdf630.sorted.merge.bam > Transcriptome.mapped2cdf630.txt
+samtools sort Transcriptome.aligned.orphan.transcripts2cdf630.bam Transcriptome.aligned.orphan.transcripts2cdf630.sort
+
+# Merge and sort paired-end and single-end mappings
+samtools merge Transcriptome.RNA_reads2cdf630.sort.merge.bam Transcriptome.pair.RNA_reads2cdf630.sort.bam Transcriptome.orphan.RNA_reads2cdf630.sort.bam
+samtools sort Transcriptome.RNA_reads2cdf630.sort.merge.bam $Transcriptome.RNA_reads2cdf630.sort.merge.sort
+
+# Remove PCR and optical duplicates
+java -Xmx10g -jar /share/apps/rhel6/picard/1.77/MarkDuplicates.jar \
+	INPUT=Transcriptome.RNA_reads2cdf630.sort.merge.sort.bam \
+	OUTPUT=Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.bam \
+	METRICS_FILE=Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.metrics \
+	AS=TRUE \
+	VALIDATION_STRINGENCY=LENIENT \
+	MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 \
+	REMOVE_DUPLICATES=TRUE
+
+# Sort and index final BAM files
+samtools sort Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.bam Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.sort
+samtools index Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.sort.bam
+
+# Convert to human-readable format
+samtools idxstats Transcriptome.RNA_reads2cdf630.sort.merge.sort.rmdup.sort.bam > Transcriptome.RNA_reads2cdf630.txt
+
+# Normalize mapping abundances by read and gene length
+code/python/normalize_idxstats.py Transcriptome.RNA_reads2cdf630.txt 50
 
 # Remainder of the analysis is performed in R
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 6. Extra
+
+
+
+
+
+
 
 #!/bin/bash
 
