@@ -96,11 +96,7 @@ code/python/normalize_idxstats.py Transcriptome.RNA_reads2cdf630.txt 50
 
 # 6. Extra
 
-
-
-
-
-
+# Curation script
 
 #!/bin/bash
 
@@ -145,10 +141,13 @@ echo $1 filtering reads: $filter_job_id
 
 echo
 
+#------------------#
 
+# Commands for submitting curation jobs
 
-
-
-
-
+qsub -v transcriptome=$1 code/pbs/db_build.pbs
+for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
+do
+	bash code/pbs/transcriptome.bash transcriptome
+done
 

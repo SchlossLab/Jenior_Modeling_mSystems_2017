@@ -1,8 +1,5 @@
 #!/bin/bash
 
-## Create Bowtie databases
-db_job_id=$(qsub -v transcriptome=$1 code/pbs/db_build.pbs | sed 's/\..*$//')
-echo $1 creating mapping databases: $db_job_id
 
 ## Assign correct Nextera XT primer pair that was used (5' + 3' reverse complement)
 F_primer=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
