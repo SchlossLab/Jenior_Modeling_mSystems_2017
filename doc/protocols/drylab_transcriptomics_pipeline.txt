@@ -145,7 +145,7 @@ echo
 
 # Commands for submitting curation jobs
 
-qsub -v transcriptome=$1 code/pbs/db_build.pbs
+qsub code/pbs/db_build.pbs
 for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
 do
 	bash code/pbs/transcriptome.bash transcriptome
