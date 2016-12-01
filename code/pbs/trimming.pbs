@@ -19,6 +19,12 @@ cd $PBS_O_WORKDIR
 NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
 
 
+# Navigate to fastqs
+cd data/fastqs/${transcriptome}/
+
+# Unzip pooled raw reads
+gunzip ${transcriptome}.read*.pool.cut.fastq.gz
+
 # Cut residual Illumina adapters
 python2.7 cutadapt --error-rate=0.1 --overlap=10 -a ${forward} -A ${reverse} -o ${transcriptome}.read1.pool.cut.fastq -p ${transcriptome}.read2.pool.cut.fastq ${transcriptome}.read1.pool.fastq ${transcriptome}.read2.pool.fastq
 python code/python/seq_stats.py ${transcriptome}.read1.pool.cut.fastq > ${transcriptome}.trimming.summary
