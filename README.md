@@ -60,7 +60,7 @@ Overview
 ```
 git clone https://github.com/SchlossLab/Jenior_Modeling_NatMicro_2016.git
 
-# Downloaded transcriptomic sequencing reads from the SRA (PRJNA354635) to data/fastqs/
+# Download raw transcriptomic sequencing reads from the SRA (PRJNA354635) to data/fastqs/
 
 qsub code/pbs/db_build.pbs
 for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
