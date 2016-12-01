@@ -55,7 +55,7 @@ Overview
     |  +- docx/  # files created during knitting of final docx from Rmd
 
 
-#### Running analysis
+#### Running the analysis
 
 ```
 git clone https://github.com/SchlossLab/Jenior_Modeling_NatMicro_2016.git
