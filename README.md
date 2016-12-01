@@ -53,3 +53,19 @@ Overview
     |
     |- Jenior_Modeling_NatMicro_2016_cache/
     |  +- docx/  # files created during knitting of final docx from Rmd
+
+
+#### Running analysis
+
+```
+git clone https://github.com/SchlossLab/Jenior_Modeling_NatMicro_2016.git
+
+# Downloaded transcriptomic sequencing reads from the SRA (PRJNA354635) to data/fastqs/
+
+qsub code/pbs/db_build.pbs
+for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
+do
+	bash code/pbs/transcriptome.bash transcriptome
+done
+
+```

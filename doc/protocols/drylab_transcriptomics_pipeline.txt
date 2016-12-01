@@ -4,14 +4,20 @@
 
 # Table of Contents
 # 1. Dependencies
-# 2. Read pooling
-# 3. Quality trimming
-# 4. Mapping
-# 6. Extra
+# 2. Quality trimming
+# 3. Mapping
+# 4. Extra
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # 1. Dependencies
+
+# Language versions
+- R (v3.2.3)
+- Python (v2.7)
+- Java (v7.0)
+
+# Software
 - Cutadapt - http://cutadapt.readthedocs.io/en/stable/guide.html
 - Sickle - https://github.com/najoshi/sickle
 - Bowtie2 - http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
@@ -21,20 +27,7 @@
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 2. Pool raw read files from the same sample
-
-# Unzip and pool the right reads
-zcat *_L00*_R1_*.fastq > Transcriptome.read1.pool.fastq.gz
-zcat *_L00*_R2_*.fastq > Transcriptome.read2.pool.fastq.gz
-gunzip Transcriptome.*.pool.fastq.gz
-
-# Record some statistics about the initial reads
-python /mnt/EXT/Schloss-data/bin/seq_stats.py Transcriptome.read1.pool.fastq > Transcriptome.pooling.summary
-python /mnt/EXT/Schloss-data/bin/seq_stats.py Transcriptome.read2.pool.fastq >> Transcriptome.pooling.summary
-
-#-------------------------------------------------------------------------------------------------------------------------#
-
-# 3. Quality trim the data
+# 2. Quality trim the data
 
 # Cut residual Illumina adapters (needs to be adjusted for each sequencing effort)
 python2.7 /mnt/EXT/Schloss-data/bin/cutadapt-1.9.1/bin/cutadapt --error-rate=0.1 --overlap=10 -a forward -A reverse -o Transcriptome.read1.pool.cut.fastq -p Transcriptome.read2.pool.cut.fastq Transcriptome.read1.pool.fastq Transcriptome.read2.pool.fastq
@@ -56,7 +49,7 @@ python /mnt/EXT/Schloss-data/bin/seq_stats.py Transcriptome.orphan.pool.cut.trim
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 4. Map to C. difficile 630 genes
+# 3. Map to C. difficile 630 genes
 /home/mljenior/bin/bowtie/bowtie /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/cdf/cdf_db -f -p 4 -1 Transcriptome.read1.pool.cut.trim.filt1.filt2.fasta -2 Transcriptome.read2.pool.cut.trim.filt1.filt2.fasta reads.aligned.paired.transcripts2cdf630.sam
 /home/mljenior/bin/bowtie/bowtie /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/cdf/cdf_db -f -p 4 Transcriptome.orphan.pool.cut.trim.filt1.fasta reads.aligned.orphan.transcripts2cdf630.sam
 
@@ -94,17 +87,13 @@ code/python/normalize_idxstats.py Transcriptome.RNA_reads2cdf630.txt 50
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
-# 6. Extra
+# 4. Extra
 
 # Curation script
 
 #!/bin/bash
 
 cd /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/fastq/$1
-
-pool_job_id=$(qsub -v transcriptome=$1 /mnt/EXT/Schloss-data/matt/Transcriptomes_HiSeq/pbs/pool.pbs | sed 's/\..*$//')
-echo $1 read pooling: $pool_job_id
-
 
 # Select correct sequencing primers
 F_primer=AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT
@@ -140,14 +129,4 @@ filter_job_id=$(qsub -v transcriptome=$1 -W depend=afterok:$trimming_job_id /mnt
 echo $1 filtering reads: $filter_job_id
 
 echo
-
-#------------------#
-
-# Commands for submitting curation jobs
-
-qsub code/pbs/db_build.pbs
-for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
-do
-	bash code/pbs/transcriptome.bash transcriptome
-done
 
