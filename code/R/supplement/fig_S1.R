@@ -69,11 +69,11 @@ plot(metadata_axes$axis1, metadata_axes$axis2, pch=21, cex=0,
 # add mock points
 points(x=mock_axes$axis1, y=mock_axes$axis2, 
        col=c(wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black', wes_palette("FantasticFox")[1])[mock_axes$abx], 
-       pch=1, lwd=3, cex=3)
+       pch=1, lwd=3, cex=3.5)
 # add mock infected points
 points(x=infected_axes$axis1, y=infected_axes$axis2, 
        col=c(wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black', wes_palette("FantasticFox")[1])[infected_axes$abx], 
-       pch=1, lwd=3, cex=3)
+       pch=1, lwd=3, cex=3.5)
 
 # Add legends
 legend('topleft', legend=c('Streptomycin-treated', 'Cefoperzone-treated', 'Clindamycin-treated', 'No Antibiotics'), 
@@ -98,7 +98,7 @@ segments(x0=0.7, y0=strep_div, x1=1.3, y1=strep_div, lwd=2.5)
 segments(x0=1.7, y0=cef_div, x1=2.3, y1=cef_div, lwd=2.5)
 segments(x0=2.7, y0=clinda_div, x1=3.3, y1=clinda_div, lwd=2.5)
 segments(x0=3.7, y0=conv_div, x1=4.3, y1=conv_div, lwd=2.5)
-text(x=4, y=19, '***', font=2, cex=3) # add significance
+text(x=4, y=19, '*', font=2, cex=3) # add significance
 
 # add legend
 legend('topleft', legend=c('Streptomycin-treated', 'Cefoperzone-treated', 'Clindamycin-treated', 'No Antibiotics'), 
