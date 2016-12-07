@@ -28,6 +28,10 @@ Founded on the ability of *C. difficile* to grow on a diverse array of carbon so
 
 
 
+
+###Insert Table 1 here
+
+
 **Levels of *C. difficile* sporulation and toxin activity vary between antibiotic-treated specific pathogen free and germfree mice.**
 
 Due to the connection between metabolism, sporulation, and toxin production in *C. difficile*, we measured sporulation and toxin production at 18 hours post infection in each group. There was not a significant difference in the number of vegetative cells between any susceptible condition tested (Fig. 2a). All antibiotic treated (Table 1) specific pathogen free (SPF) and germfree (GF) animals were colonized to ~1×10^8^ colony forming units (c.f.u.) per gram of content, while untreated SPF mice maintained colonization resistance to *C. difficile*. Despite having the same number of vegetative *C. difficile* cells, large differences were detected in the density of *C. difficile* spores. Significantly more spores (*P* = 0.005, 0.008, 0.003) were detected in ex-GF mice than in the antibiotic treated mice (Fig. 2b). The spore densities in both streptomycin and clindamycin-treated mice were also generally higher than that in cefoperazone-treated mice. There was significantly more toxin activity in ex-GF animals than any other colonized group (all *P* <= 0.001), but toxin titer also varied between antibiotic treatment groups (Fig. 2c). Although similar toxin activity was found in both the cefoperazone and clindamycin-treated groups, toxin titer was below the limit of detection in most streptomycin-treated animals. These results indicate that *C. difficile* was able to colonize different communities to a consistently high level, but that the density of spores and toxin titer varied by treatment.
@@ -136,9 +140,7 @@ The authors declare no competing interest.
 Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 
-###Figures
- 
-**Table 1 | Antibiotics used during *C. difficile* infection models.**
+###Figure Legends
 
 **Figure 1 | Experimental time lines for mouse model pretreatments and *C. difficile* infection.** 9 wild-type C57BL/6 mice across 3 cages were included in each treatment group. **(a)** Streptomycin or **(b)** cefoperazone administered *ad libitum* in drinking water for 5 days with 2 days recovery with untreated drinking water before infection, **(c)** a single clindamycin intraperitoneal injection one day prior to infection, or **(d)** no antibiotic pretreatment (for both SPF control and GF mice). If no antibiotics were administered in the drinking water, mice were given untreated drinking water for the duration of the experiment beginning 7 days prior to infection. At the time of infection, mice were challenged with 1×10^3^ *C. difficile* str. 630 spores at the time of infection. Sacrifice and necropsy was done 18 hours post-challenge and cecal content was then collected.
 
