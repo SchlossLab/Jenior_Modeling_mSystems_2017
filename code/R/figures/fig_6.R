@@ -432,10 +432,10 @@ axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
 axis(2, at=seq(0.0,0.8,0.2), labels=c('0.0','0.2','0.4','0.6','0.8'), tck=-0.018)
 
 # Control
-lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray45')
-segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray45')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray45')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray45')
+lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='blue')
+segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='blue')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='blue')
+segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='blue')
 
 lines(growth_medians$starch_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2)
 segments(x0=seq(1,49,1), y0=growth_medians$starch_median+growth_sds$starch_sd, x1=seq(1,49,1), y1=growth_medians$starch_median-growth_sds$starch_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
@@ -463,7 +463,7 @@ segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbit
 segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col='firebrick')
 
 legend('topleft', legend=c('No Carbohydrates','No Amino acids','BHI','Starch','Acetate', 'Sorbitol'), 
-       col=c('gray45','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen','firebrick'), 
+       col=c('blue','gray45','darkorchid3',wes_palette('FantasticFox')[1],'forestgreen','firebrick'), 
        pch=c(16,16,15,15,18,17), cex=1.3, pt.cex=c(0,1,1,2.5,2.5,2.5), bg='white', lwd=2.5)
 
 dev.off()
