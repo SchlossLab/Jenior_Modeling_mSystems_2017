@@ -5,4 +5,4 @@ KEGG ortholog nodes: 447
 Substrate nodes: 758
 Probability distribution generated: yes
 Permutations: 10000
-Duration: 69 seconds
+Duration: 64 seconds
