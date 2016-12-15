@@ -12,8 +12,8 @@ set.seed(42)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Define file variables for network plot
-network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/bipartite_graph.tsv'
-ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/cefoperazone_630.mapping.tsv'
+network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/graph.tsv'
+ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/KO_mapping.tsv'
 layout_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/optimal_layout.tsv'
 
 # Read in metabolic network data
@@ -192,14 +192,14 @@ plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.25, edge.arrow.width=0.4, vertex.frame.color='black')
 # Draw box
 rect(xleft=0.8, ybottom=0, xright=1.15, ytop=0.3, lwd=2)
-text(x=-1, y=1, 'a', cex=2, font=2)
+text(x=-1, y=1, 'A', cex=2)
 
 #---------------------------------------#
 
 # Example network and importance calculation
 par(mar=c(0,0,0,1))
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(x=-1.5, y=1.45, 'b', cex=2, font=2)
+text(x=-1.5, y=1.45, 'B', cex=2)
 
 text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.3) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription

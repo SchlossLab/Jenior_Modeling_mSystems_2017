@@ -241,46 +241,46 @@ growth_sds <- as.data.frame(cbind(acetate_sd, acetylglucosamine_sd, acetylneuram
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Analyze growth curves
-substrates <- c('acetate','acetylglucosamine','acetylneuraminate','sorbitol', 'mannitol','salicin','bhi','no_amino_acids','no_carbohydrates')
+substrates <- c('acetate','acetylglucosamine','acetylneuraminate','sorbitol', 'galactitol','mannitol','salicin','bhi','no_amino_acids','no_carbohydrates')
 
 # Maximum growth rate
 max_rate <- round(c(diff(acetate_median)[which.max(diff(acetate_median))],
                     diff(acetylglucosamine_median)[which.max(diff(acetylglucosamine_median))], 
                     diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))],
-                    diff(sorbitol_median)[which.max(diff(sorbitol_median))], 
+                    diff(sorbitol_median)[which.max(diff(sorbitol_median))], diff(galactitol_median)[which.max(diff(galactitol_median))],
                     diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))], 
                     diff(bhi_median)[which.max(diff(bhi_median))], diff(no_aa_median)[which.max(diff(no_aa_median))], 
                     diff(no_carb_median)[which.max(diff(no_carb_median))]), digits=3)
 
 # Time of maximum growth rate
 time_max_rate <- round(c((which.max(diff(acetate_median)) * 0.5), (which.max(diff(acetylglucosamine_median)) * 0.5),
-                         (which.max(diff(acetylneuraminate_median)) * 0.5), 
-                         (which.max(diff(sorbitol_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5), 
+                         (which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5),
+                         (which.max(diff(galactitol_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5), 
                          (which.max(diff(bhi_median)) * 0.5), (which.max(diff(no_aa_median)) * 0.5), (which.max(diff(no_carb_median)) * 0.5)), digits=3) - 0.5
 # Maximum OD
-max_od <- round(c(max(acetate_median), max(acetylglucosamine_median), max(acetylneuraminate_median), 
-                  max(sorbitol_median), max(mannitol_median), max(salicin_median), max(bhi_median), max(no_aa_median), max(no_carb_median)), digits=3)
+max_od <- round(c(max(acetate_median), max(acetylglucosamine_median), max(acetylneuraminate_median), max(sorbitol_median),
+                  max(galactitol_median), max(mannitol_median), max(salicin_median), max(bhi_median), max(no_aa_median), max(no_carb_median)), digits=3)
 
 # Time of max OD
 time_max_od <- round(c((which.max(acetate_median) * 0.5), (which.max(acetylglucosamine_median) * 0.5),
-                       (which.max(acetylneuraminate_median) * 0.5), 
-                       (which.max(sorbitol_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5), 
+                       (which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5),
+                       (which.max(galactitol_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5), 
                        (which.max(bhi_median) * 0.5), (which.max(no_aa_median) * 0.5), (which.max(no_carb_median) * 0.5)), digits=3) - 0.5
 
 # Growth rate at 24 hours
 rate_24_hrs <- round(c(diff(acetate_median)[length(diff(acetate_median))],
                        diff(acetylglucosamine_median)[length(diff(acetylglucosamine_median))], diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], 
-                       diff(sorbitol_median)[length(diff(sorbitol_median))], 
+                       diff(sorbitol_median)[length(diff(sorbitol_median))], diff(galactitol_median)[length(diff(galactitol_median))], 
                        diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))], 
                        diff(bhi_median)[length(diff(bhi_median))], diff(no_aa_median)[length(diff(no_aa_median))], diff(no_carb_median)[length(diff(no_carb_median))]), digits=3)
 
 # Mean growth rate
-mean_rate <- round(c(mean(diff(acetate_median)), mean(diff(acetylglucosamine_median)), mean(diff(acetylneuraminate_median)),
-                     mean(diff(sorbitol_median)), mean(diff(mannitol_median)), mean(diff(salicin_median)), mean(diff(bhi_median)), mean(diff(no_aa_median)), mean(diff(no_carb_median))), digits=3)
+mean_rate <- round(c(mean(diff(acetate_median)), mean(diff(acetylglucosamine_median)), mean(diff(acetylneuraminate_median)), mean(diff(sorbitol_median)),
+                     mean(diff(galactitol_median)), mean(diff(mannitol_median)), mean(diff(salicin_median)), mean(diff(bhi_median)), mean(diff(no_aa_median)), mean(diff(no_carb_median))), digits=3)
 
 # Area under curve
 area_under <- round(c(auc(acetate_median, seq(1,49,1)), auc(acetylglucosamine_median, seq(1,49,1)),
-                      auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)), 
+                      auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)),  auc(galactitol_median, seq(1,49,1)),
                       auc(mannitol_median, seq(1,49,1)), auc(salicin_median, seq(1,49,1)), auc(bhi_median, seq(1,49,1)), auc(no_aa_median, seq(1,49,1)), auc(no_carb_median, seq(1,49,1))), digits=3)
 
 # Assemble the table
@@ -319,7 +319,7 @@ par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.4, color='black',
          xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3)
 segments(x0=rep(0,10), y0=c(1:9), x1=rep(12,10), y1=c(1:9), lty=2) # Dotted lines
-mtext('a', side=2, line=2, las=2, adj=2.9, padj=-20, cex=1.8, font=2)
+mtext('A', side=2, line=2, las=2, adj=2.7, padj=-20, cex=1.8)
 
 #---------------------------------------#
 
@@ -329,7 +329,7 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.4, groups=top_importances$abx, color='black',
          xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-mtext('b', side=2, line=2, las=2, adj=2.4, padj=-20, cex=1.8, font=2)
+mtext('B', side=2, line=2, las=2, adj=2.3, padj=-20, cex=1.8)
 segments(x0=rep(0, 15), y0=c(1:17, 20:21, 24:25, 28:30), x1=rep(12, 15), y1=c(1:17, 20:21, 24:25, 28:30), lty=2) # Dotted lines
 
 #---------------------------------------#
@@ -341,7 +341,7 @@ abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('c', side=2, line=2, las=2, adj=3.5, padj=-17, cex=1.8, font=2)
+mtext('C', side=2, line=2, las=2, adj=3, padj=-17, cex=1.8)
 
 # Shared
 lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.3)

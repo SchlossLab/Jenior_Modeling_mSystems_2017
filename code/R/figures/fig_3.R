@@ -138,47 +138,46 @@ segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]),
          x1=c(22,71), y1=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
 text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
      labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
-mtext('a', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
+mtext('A', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2)
 text(x=c(32.5,36,38,41.5,43.5,47,60,69), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
-
 
 # Pathogenicity
 par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,1.5), cex.lab=1.4)
+        ylab='', ylim=c(0,1), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,0.5,1,1.5), c('0%','0.5%','1.0%','1.5%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,0.333,0.666,1.0), c('0%','0.3%','0.6%','1.0%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
-mtext('b', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2, font=2)
+mtext('B', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2)
 text(x=c(5,10.5,13,15,16), y=0.025, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Quorum sensing
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
 barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='Relative Transcript Abundance', ylim=c(0,3), cex.lab=1.4)
+        ylab='Relative Transcript Abundance', ylim=c(0,2.5), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,1,2,3), c('0%','1.0%','2.0%','3.0%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,0.833,1.666,2.5), c('0%','0.83%','1.66%','2.5%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
-mtext('c', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
+mtext('C', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
 text(x=c(4.5,14.5), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
-
+8.3
 # Sigma factors
 par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
 barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
-        ylab='', ylim=c(0,30), cex.lab=1.4)
+        ylab='', ylim=c(0,25), cex.lab=1.4)
 box()
-axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
+axis(side=2, at=c(0,8.333,16.666,25), c('0%','8.33%','16.66%','25%'), tick=TRUE, las=1, cex.axis=1.3)
 text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 
                           'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
-mtext('d', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2, font=2)
+mtext('D', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
 text(x=c(21.5,23.5,24.5,25.5,26.5,71), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 dev.off()
