@@ -48,6 +48,7 @@ network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/gr
 # Figure 6 data
 growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
 # Figure 7 data
+metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
 concentrations <- read.delim('data/wetlab_assays/ms_substrates.tsv', sep='\t', header=TRUE, row.names=1)
 # Figure S2 data
 scfa <- read.delim('data/wetlab_assays/cef_acetate_630.txt', sep='\t', header=T)
@@ -109,7 +110,6 @@ gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
 spore_medians <- c(strep, cef, clinda, gf, conv)
 spore_medians[spore_medians == 2.0] <- 1.6
-rm(cfu, cef, strep, clinda, gf, conv)
 vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
 vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
 spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
@@ -224,12 +224,6 @@ graph_closeness <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='a
 
 # Calculate closeness of largest, strongly-connected component
 occi <- as.data.frame(closeness(largest_whole_graph, vids=largest_scc, mode='all')) # Ma (2003)
-
-
-# Get values of interest for text
-
-
-
 
 ```
 
@@ -365,7 +359,85 @@ N-acetyl-D-glucosamine was found to be important to *C. difficile* in each condi
 
 ```{r figure_7, echo=F, warning=F, message=F, results='hide', cache=T}
 
-concentrations
+# Format and merge tables
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+concentrations <- merge(concentrations, metadata, by='row.names')
+rownames(concentrations) <- concentrations$Row.names
+concentrations$Row.names <- NULL
+concentrations <- subset(concentrations, infection != '630')
+concentrations$infection <- NULL
+
+# Sort by treatment group
+concentrations$abx <- factor(concentrations$abx, levels=c('none','streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
+
+# Subset each metabolites - main body
+acetylglucosamine <- concentrations[,c(1,13)]
+mannitol_sorbitol <- concentrations[,c(3,13)]
+galactitol <- concentrations[,c(4,13)]
+salicylate <- concentrations[,c(5,13)]
+acetylneuriminate <- concentrations[,c(6,13)]
+
+# Subset each metabolites - supplement
+proline <- concentrations[,c(2,13)]
+ribose <- concentrations[,c(7,13)]
+lysine <- concentrations[,c(8,13)]
+isoleucine <- concentrations[,c(9,13)]
+leucine <- concentrations[,c(10,13)]
+methionine <- concentrations[,c(11,13)]
+threonine <- concentrations[,c(12,13)]
+
+# Calculate significant differences
+acetylglucosamine_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine, abx=='none')[,1], subset(acetylglucosamine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylglucosamine, abx=='none')[,1], subset(acetylglucosamine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylglucosamine, abx=='none')[,1], subset(acetylglucosamine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylglucosamine, abx=='none')[,1], subset(acetylglucosamine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+mannitol_sorbitol_p <- p.adjust(c(wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], subset(mannitol_sorbitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], subset(mannitol_sorbitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], subset(mannitol_sorbitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], subset(mannitol_sorbitol, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+galactitol_p <- p.adjust(c(wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+salicylate_p <- p.adjust(c(wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+acetylneuriminate_p <- p.adjust(c(wilcox.test(subset(acetylneuriminate, abx=='none')[,1], subset(acetylneuriminate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], subset(acetylneuriminate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], subset(acetylneuriminate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], subset(acetylneuriminate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+proline_p <- p.adjust(c(wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+ribose_p <- p.adjust(c(wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+lysine_p <- p.adjust(c(wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+isoleucine_p <- p.adjust(c(wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+leucine_p <- p.adjust(c(wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+methionine_p <- p.adjust(c(wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+threonine_p <- p.adjust(c(wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
 
 ```
 
@@ -382,7 +454,7 @@ These preliminary conclusions are further supported by previous mass spectrometr
 
 Collectively, our results support the hypothesis that *C. difficile* can adapt its metabolism to the available niche landscape across susceptible gut environments and give insight to the adaptive strategies that *C. difficile* can use to colonize diverse human microbiota. All of our *in vivo*, *in vitro*, and *in silico* data demonstrate the plasticity of *C. difficile* to effectively change its metabolism to utilize alternative resources for growth. This may be the result of increased concentration of particular metabolites as a consequence of concordant decreases in the population of one or more competitors for those resources. 
 
-
+Citations for absolute concentrations
 
 
 In addition to uncovering adaptive strategies of *C. difficile*, our method is also able to identify consistent trends in metabolism across environments. The findings that N-acetyl-D-glucosamine and Stickland fermentations substrates were consistently among the highest scoring shared metabolite among all tested conditions strongly indicates that these metabolites are central to the nutritional strategy of *C. difficile* and may be utilized in and condition in which they are available. The metabolism of both substrate types provides not only carbon and energy to *C. difficile*, but are also a source for nitrogen which is a limited resource in the mammalian lower GI tract [@Fuller1998]. Apart from exploring differential patterns in known metabolism, our modeling approach also allowed for the identification of emergent properties for the metabolic strategy of *C. difficile* during infection. One interesting result is the appearance of CO~2~, an apparent metabolic end product, in the list of shared important metabolites (Fig. 6a). While this may be a shortcoming of the annotation, one group has posited that *C. difficile* may actually be autotrophic under certain conditions and could explain the appearance of CO~2~ in Fig. 6a [@Kopke2013]. This highlights that our method does not only identify growth substrates, but also reports any metabolites that are being removed from the environment.
@@ -421,7 +493,7 @@ Based on the evidence presented, our results support the hypothesis that *C. dif
 
 **Quantification of *in vivo* metabolite relative concentrations.** All methods utilized a Waters ACQUITY ultra-performance liquid chromatography (UPLC) and a Thermo Scientific Q-Exactive high resolution/accurate mass spectrometer interfaced with a heated electrospray ionization (HESI-II) source and Orbitrap mass analyzer operated at 35,000 mass resolution. The sample extract was dried then reconstituted in solvents compatible to each of the four methods. Each reconstitution solvent contained a series of standards at fixed concentrations to ensure injection and chromatographic consistency. One aliquot was analyzed using acidic positive ion conditions, chromatographically optimized for more hydrophilic compounds. In this method, the extract was gradient eluted from a C18 column (Waters UPLC BEH C18-2.1x100 mm, 1.7 µm) using water and methanol, containing 0.05% perfluoropentanoic acid (PFPA) and 0.1% formic acid (FA). Another aliquot was also analyzed using acidic positive ion conditions, however it was chromatographically optimized for more hydrophobic compounds. In this method, the extract was gradient eluted from the same afore mentioned C18 column using methanol, acetonitrile, water, 0.05% PFPA and 0.01% FA and was operated at an overall higher organic content. Another aliquot was analyzed using basic negative ion optimized conditions using a separate dedicated C18 column. The basic extracts were gradient eluted from the column using methanol and water, however with 6.5mM Ammonium Bicarbonate at pH 8. The fourth aliquot was analyzed via negative ionization following elution from a HILIC column (Waters UPLC BEH Amide 2.1x150 mm, 1.7 µm) using a gradient consisting of water and acetonitrile with 10mM Ammonium Formate, pH 10.8. The MS analysis alternated between MS and data-dependent MS n scans using dynamic exclusion. The scan range varied slighted between methods but covered 70-1000 m/z. Library matches for each compound were checked for each sample and corrected if necessary. Peaks were quantified using AUC.
 
-**Statistical methods.** All statistical analyses were performed using R (v.3.2.0). Significant differences between community structure of treatment groups from 16S rRNA gene sequencing were determined with AMOVA in the mothur software package. Significant differences of Inv. Simpson diversity, CFU, toxin titer, and acetate concentration were determined by Wilcoxon rank-abundance test with Holm-Bonferroni correction. Significant differences for growth curves compared to no carbohydrate control (+ amino acids) were calculated using 2-way ANOVA with Holm-Bonferroni correction. Significance for metabolite importance scores was determined as described above. Welch’s two-sample t-test was used to calculate significant differences is relative metabolite concentrations from mass-spectrometry data.
+**Statistical methods.** All statistical analyses were performed using R (v.3.2.0). Significant differences between community structure of treatment groups from 16S rRNA gene sequencing were determined with AMOVA in the mothur software package. Significant differences of Inv. Simpson diversity, CFU, toxin titer, and acetate concentration were determined by Wilcoxon rank-abundance test with Holm-Bonferroni correction. Significant differences for growth curves compared to no carbohydrate control (+ amino acids) were calculated using 2-way ANOVA with Holm-Bonferroni correction. Significance for metabolite importance scores was determined as described above. Wilcoxon rank-abundance test with Holm-Bonferroni correction was also used to calculate significant differences is relative metabolite concentrations from mass-spectrometry data.
 
 
 ###Acknowledgements
