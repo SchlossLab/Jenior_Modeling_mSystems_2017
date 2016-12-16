@@ -382,7 +382,8 @@ legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts'
 # amino acid (stickland) alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
+#label=c('Cef','Clinda','Strep')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -396,7 +397,7 @@ text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
 # amino sugars alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -411,7 +412,7 @@ text(x=0, y=-0.48, labels='Amino sugar metabolism', cex=1.3)
 # glycolysis alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -426,7 +427,7 @@ text(x=0, y=-0.48, labels='Glycolysis-associated', cex=1.3)
 # polysaccharides alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -441,7 +442,7 @@ text(x=0, y=-0.48, labels='Polysaccharide metabolism', cex=1.3)
 # PTS alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -456,7 +457,7 @@ text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
 # ABC alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -471,7 +472,7 @@ text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
 # sugar alcohols alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')
@@ -486,7 +487,7 @@ text(x=0, y=-0.48, labels='Sugar alcohol metabolism', cex=1.3)
 # fermentation alone
 par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
-        frame=TRUE, label=c('Cef','Clinda','Strep'), grid=FALSE, cex=0.3, col='gray75')
+        frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
 lines(x=c(-0.288,0.288), y=c(0.1665,0.1665), col='gray68')
 lines(x=c(0,0.288), y=c(-0.333,0.1665), col='gray68')

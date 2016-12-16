@@ -1,6 +1,6 @@
 ---
 title: "*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut environments"
-csl: pnas.csl
+csl: nature.csl
 output:
  word_document:
   keep_md: true
@@ -402,8 +402,8 @@ glycine_p <- c(0.88731411, 0.01684264, 0.88731411, 0.01470245)
 
 ```
 
-**Predicted substrates *in vivo* concentrations**
-In order to validate results from transcriptomic and metabolic modeling analyses, we utilized untargeted mass-specrometry to measure the 
+**Metabolic networks accurately predict changes in corresponding *in vivo* concentrations**
+In order to validate results from transcriptomic and metabolic modeling analyses, we utilized untargeted mass-specrometry to measure the relative concentrations of metabolites highlighted by network-based importance scores. 
 
 
 
@@ -434,6 +434,12 @@ calculate fold increse
 In addition to uncovering adaptive strategies of *C. difficile*, our method is also able to identify consistent trends in metabolism across environments. The findings that N-acetyl-D-glucosamine and Stickland fermentations substrates were consistently among the highest scoring shared metabolite among all tested conditions strongly indicates that these metabolites are central to the nutritional strategy of *C. difficile* and may be utilized in and condition in which they are available. The metabolism of both substrate types provides not only carbon and energy to *C. difficile*, but are also a source for nitrogen which is a limited resource in the mammalian lower GI tract [@Fuller1998]. Apart from exploring differential patterns in known metabolism, our modeling approach also allowed for the identification of emergent properties for the metabolic strategy of *C. difficile* during infection. One interesting result is the appearance of CO~2~, an apparent metabolic end product, in the list of shared important metabolites (Fig. 6a). While this may be a shortcoming of the annotation, one group has posited that *C. difficile* may actually be autotrophic under certain conditions and could explain the appearance of CO~2~ in Fig. 6a [@Kopke2013]. This highlights that our method does not only identify growth substrates, but also reports any metabolites that are being removed from the environment.
 
 While our results are consistent with previously published work on the metabolism of *C. difficile*, there are potential limitations of this approach. Ultimately, the metabolite importance calculation is dependent on correct and existing gene annotation. In this regard it has been shown that the pathway annotations in KEGG are robust to missing elements [@Green2006], however this does not completely eliminate the posibility for this type of error. Due to the topology of the metabolic network, we were also unable to integrate stoichiometry for each reaction which may effect rates of consumption or production. In addition to computational limitations, our network-based approach simplifies several aspects of bacterial metabolism. First, the importance algorithm operates under the assumption that all detectable transcript is translated to effector protein. While this is not completely accurate, since bacterial transcription and translation are physically coupled, we were comfortable using normalized levels of transcription to infer approximate amount of translation. Second, the metabolite importance scores do not account for the amount of each metabolite that is actually available. Finally, the importance algorithm only consider the transcription of those enzyme nodes immediately adjacent to the metabolite node of interest. Although this does not negate any observations made in the current study, it may be beneficial to incorporate the importance of other local metabolites or subnetworks into the final score of each metabolite. In spite of these assumptions, the method outlined here supports known elements of *C. difficile* biology and future studies could employ metabolomic analysis to confirm the predictions made here. 
+
+
+
+Colonization resistance is based on AAs, virulence is the result of carbohydrates carbs
+
+Some are used at all times no matter what
 
 Based on the evidence presented, our results support the hypothesis that *C. difficile* is a metabolic generalist and is able to catabolize alternative carbon sources across susceptible gut environments. This may be due to an inability to outcompete a collection of metabolic specialists in an intact community, and separate classes on antibiotics differentially eliminate these populations and allow for *C. difficile* colonization. This concept may also potentially explain the success rate of fecal microbial transplant (FMT), in that wholesale installation of a diverse range of specialized metabolic strategies is enough to outcompete *C. difficile* from the majority of perturbed gut environments. Furthermore, our metabolic network platform may also prove informative for generating hypotheses through reverse ecology that could ultimately lead to uncovering new interaction between species that ultimately impact host health [@Levy2012]. In conclusion, *C. difficile* is is able to optimize its nutritional strategy for each colonized gut environment. Our results implicate that further considerations are needed when attempting to design targeted prebiotic and probiotic therapies for the prevention or elimination of *C. difficile* from the human gut.
 
@@ -509,9 +515,11 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Figure 6 | Results from network-based metabolite importance calculation and *in vitro* growth with important carbohydrates.** Prior to importance calculation, transcript abundances for each condition were evenly rarefied for even comparison across colonized environments (\~18x coverage). **(A)** Median shared significant metabolites among the 50 highest scoring metabolites from each condition (*P* < 0.05). Median importance scores and pooled random distribution were recalculated per metabolite using the scores from each condition tested. **(B)** Distinctly important significant metabolites from each treatment group (*P* < 0.05). The top 25 scoring metabolites from each group was cross-referenced against each other group resulting in metabolites that are differentially important between environments. **(C)** *in vitro* growth curves validating identified growth nutrients from network analysis. One metabolite that is consistently important to *C. difficile* and at least one metabolite indicated as distinctly important from each group supported growth significantly more (*P* < 0.001) than no carbohydrate control (+ amino acids, gray line). Only those carbon sources that significantly improved *C. difficile* growth over control are displayed (remainder are located in Table S4). Significant differences were calculated using 2-Way ANOVA with Holm-Bonferroni correction.
 
-** Figure 7 | Relative *in vivo* concentrations of importance metabolites from network-based analysis**
-**(A)** Shared. **(B)** Streptomycin. **(C)** Cefoperazone. **(D)** Clindamycin. **(E)** Germfree. **(F)** **(G)**
+**Figure 7 | Relative *in vivo* concentrations of importance metabolites from network-based analysis** Mass-spectrometry (UPLC-MS) quantification of select metabolites in cecal content from *C. difficile* susceptible mice compared to resistant controls. Samples were collected at the same 18 hour timepoint as the analyses performed in infection experiments (n = 9 mice per group). Mass-to-charge ratios were normalized between runs 
 
+**(A)** N−Acetylglucosamine / N−Acetylgalactosamine. All experimental groups demonstrated a significant decrease compared to resistance mice **(B)** Galactitol. **(C)** Mannitol / Sorbitol. **(D)** Salicylate. **(E)** N−Acetylneuriminate. **(F)** Proline. **(G)** Glycine.
+
+Significant differences (*P* < 0.05) between experimental, susceptible groups and resistant SPF mice are denoted by a single asterisk (\*) and were determined using Wilcoxon rank-abundance test with Holm-Bonferroni correction.
 
 
 

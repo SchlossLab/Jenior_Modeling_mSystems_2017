@@ -169,9 +169,12 @@ mtext('B', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
 par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette, cex.lab=1.2,
-           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='Treatment Group',
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=2)
-axis(side=1, at=c(1:5), labels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)', 'No Antibiotics (SPF)'), tick=FALSE, cex.axis=1.1)
+mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.9)
+mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
+mtext('Mice:', side=1, at=0.12, padj=3.5, cex=0.7)
+
 axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
 # Draw axis break
