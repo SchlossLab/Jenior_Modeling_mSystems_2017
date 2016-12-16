@@ -31,38 +31,114 @@ concentrations$infection <- NULL
 concentrations$abx <- factor(concentrations$abx, levels=c('none','streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
 
 # Subset each metabolites - main body
-acetylglucosamine <- concentrations[,c(1,13)]
-mannitol_sorbitol <- concentrations[,c(3,13)]
-galactitol <- concentrations[,c(4,13)]
-salicylate <- concentrations[,c(5,13)]
-acetylneuriminate <- concentrations[,c(6,13)]
+acetylglucosamine <- concentrations[,c(1,14)]
+mannitol_sorbitol <- concentrations[,c(3,14)]
+galactitol <- concentrations[,c(4,14)]
+salicylate <- concentrations[,c(5,14)]
+acetylneuriminate <- concentrations[,c(6,14)]
 
 # Subset each metabolites - supplement
-proline <- concentrations[,c(2,13)]
-ribose <- concentrations[,c(7,13)]
-lysine <- concentrations[,c(8,13)]
-isoleucine <- concentrations[,c(9,13)]
-leucine <- concentrations[,c(10,13)]
-methionine <- concentrations[,c(11,13)]
-threonine <- concentrations[,c(12,13)]
+proline <- concentrations[,c(2,14)]
+ribose <- concentrations[,c(7,14)]
+lysine <- concentrations[,c(8,14)]
+isoleucine <- concentrations[,c(9,14)]
+leucine <- concentrations[,c(10,14)]
+methionine <- concentrations[,c(11,14)]
+threonine <- concentrations[,c(12,14)]
+glycine <- concentrations[,c(13,14)]
 
 # Remove raw data
 rm(concentrations, metadata)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
+# Calculate significant differences and correct p-values
+acetylglucosamine_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+mannitol_sorbitol_p <- p.adjust(c(wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+galactitol_p <- p.adjust(c(wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+salicylate_p <- p.adjust(c(wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+acetylneuriminate_p <- p.adjust(c(wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+proline_p <- p.adjust(c(wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+ribose_p <- p.adjust(c(wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+lysine_p <- p.adjust(c(wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+isoleucine_p <- p.adjust(c(wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+leucine_p <- p.adjust(c(wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+methionine_p <- p.adjust(c(wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+threonine_p <- p.adjust(c(wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                        method='holm')
+glycine_p <- p.adjust(c(wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                        method='holm')
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_7.pdf'
 select_palette <- c('gray', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
-pdf(file=plot_file, width=7, height=10)
-layout(matrix(c(1,
-                2,
-                3,
-                4,
-                5),
-              nrow=5, ncol=1, byrow = TRUE))
+pdf(file=plot_file, width=9, height=12)
+layout(matrix(c(1,1,
+                2,2,
+                3,3,
+                4,4,
+                5,5,
+                6,7),
+              nrow=6, ncol=2, byrow = TRUE))
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------#
 
 # A. Acetylglucosamine
 par(las=1, mar=c(0.5,4,1,1), mgp=c(2.5,0.7,0))
@@ -117,12 +193,99 @@ legend('topright', legend='N-Acetylneuriminate', pt.cex=0, bty='n', cex=1.2)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(3,5), c(2.2,2.3), labels=c('*','*'), cex=2.5)
 
+axis(1, at=c(1:5), tick=FALSE, cex.axis=1.2, labels=c('No Antibiotics (SPF)','Streptomycin (SPF)','Cefoperazone (SPF)','Clindamycin (SPF)','No Antibiotics (GF)'))
+
+#--------------------------------#
+
+# Proline
+par(las=1, mar=c(3,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(proline~abx, data=proline, col=select_palette, whisklty=1, ylim=c(0,3),
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('bottomright', legend='Proline', pt.cex=0, bty='n', cex=1.2)
+mtext('F', side=2, line=2, las=2, adj=1.7, padj=-5.5, cex=1.1)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(2,3,4,5), c(3.0,2.8,2.3,2.85), labels=c('*','*','*','*'), cex=2.5)
+axis(1, at=c(1:5), tick=FALSE, labels=c('No Abx SPF','Strep SPF','Cef SPF','Clinda SPF','No Abx GF'))
+
+# Glycine
+par(las=1, mar=c(3,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(glycine~abx, data=glycine, col=select_palette, whisklty=1, ylim=c(0,3),
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('bottomright', legend='Glycine', pt.cex=0, bty='n', cex=1.2)
+mtext('G', side=2, line=2, las=2, adj=1.7, padj=-5.5, cex=1.1)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(3,5), c(2.5,2.1), labels=c('*','*'), cex=2.5)
+axis(1, at=c(1:5), tick=FALSE, labels=c('No Abx SPF','Strep SPF','Cef SPF','Clinda SPF','No Abx GF'))
+
+dev.off()
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
+pdf(file=plot_file, width=7, height=12)
+layout(matrix(c(1,
+                2,
+                3,
+                4,
+                5,
+                6),
+              nrow=6, ncol=1, byrow = TRUE))
+
+#--------------------------------#
+
+par(las=1, mar=c(0.5,4,1,1), mgp=c(2.5,0.7,0))
+boxplot(ribose~abx, data=ribose, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', legend='Ribose', pt.cex=0, bty='n', cex=1.2)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-6, cex=1.1)
+
+#--------------------------------#
+
+par(las=1, mar=c(0.5,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(lysine~abx, data=lysine, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', legend='Lysine', pt.cex=0, bty='n', cex=1.2)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-6, cex=1.1)
+
+#--------------------------------#
+
+par(las=1, mar=c(0.5,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(isoleucine~abx, data=isoleucine, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', legend='Isoleucine', pt.cex=0, bty='n', cex=1.2)
+mtext('C', side=2, line=2, las=2, adj=1.7, padj=-6, cex=1.1)
+
+#--------------------------------#
+
+par(las=1, mar=c(0.5,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(leucine~abx, data=leucine, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', legend='Leucine', pt.cex=0, bty='n', cex=1.2)
+mtext('D', side=2, line=2, las=2, adj=1.7, padj=-6, cex=1.1)
+
+#--------------------------------#
+
+par(las=1, mar=c(0.5,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(methionine~abx, data=methionine, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', legend='Methionine', pt.cex=0, bty='n', cex=1.2)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-6, cex=1.1)
+
+#--------------------------------#
+
+par(las=1, mar=c(3,4,0.5,1), mgp=c(2.5,0.7,0))
+boxplot(threonine~abx, data=threonine, col=select_palette, whisklty=1,
+        xaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('bottomright', legend='Threonine', pt.cex=0, bty='n', cex=1.2)
+mtext('F', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.1)
+
 axis(1, at=c(1:5), tick=FALSE, labels=c('No Antibiotics (SPF)','Streptomycin (SPF)','Cefoperazone (SPF)','Clindamycin (SPF)','No Antibiotics (GF)'), cex=1.2)
+
+dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
-dev.off()
 rm(plot_file, select_palette, acetylglucosamine, mannitol_sorbitol, galactitol, salicylate, acetylneuriminate, 
    proline, ribose, lysine, isoleucine, leucine, methionine, threonine)
 for (dep in deps){
