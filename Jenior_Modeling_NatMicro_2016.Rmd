@@ -407,7 +407,7 @@ In order to validate results from transcriptomic and metabolic modeling analyses
 
 
 
-These preliminary conclusions are further supported by previous mass spectrometry-based efforts analyzing the metabolome from mouse intestinal content treated under similar conditions to those used in the current study. These investigations revealed that several of the substrates predicted to be used by *C. difficile* in a given condition through metabolic modeling (Fig. 6a & 6b), are increased in the gastrointestinal tract of mice in the corresponding treatment group. One recent study found that cefoperazone treatment resulted in a 553-fold increase in mannitol concentration in the cecum of mice prior to *C. difficile* colonization [@Theriot2014]. Similar trends have also been demonstrated in streptomycin-treated conventional and GF mice [@Antunes2011;@Matsumoto2012]. Together these results provide evidence that our network-based approach accurately predicts which metabolites *C. difficile* adapts its metabolic strategy towards, most likely due to increases in availability.
+Investigations into absolute concentration of ... revealed that several of the substrates predicted to be used by *C. difficile* in a given condition through metabolic modeling (Fig. 6a & 6b), are increased in the gastrointestinal tract of mice in the corresponding treatment group. One recent study found that cefoperazone treatment resulted in a 553-fold increase in mannitol concentration in the cecum of mice prior to *C. difficile* colonization [@Theriot2014]. Similar trends have also been demonstrated in streptomycin-treated conventional and GF mice [@Antunes2011;@Matsumoto2012]. Together these results provide evidence that our network-based approach accurately predicts which metabolites *C. difficile* adapts its metabolic strategy towards, most likely due to increases in availability.
 
 Some are used at all times no matter what
 
@@ -440,6 +440,9 @@ While our results are consistent with previously published work on the metabolis
 Colonization resistance is based on AAs, virulence is the result of carbohydrates carbs
 
 Some are used at all times no matter what
+
+These trends would not be evident without multi omic analysis supported by metabolic network techniques.
+
 
 Based on the evidence presented, our results support the hypothesis that *C. difficile* is a metabolic generalist and is able to catabolize alternative carbon sources across susceptible gut environments. This may be due to an inability to outcompete a collection of metabolic specialists in an intact community, and separate classes on antibiotics differentially eliminate these populations and allow for *C. difficile* colonization. This concept may also potentially explain the success rate of fecal microbial transplant (FMT), in that wholesale installation of a diverse range of specialized metabolic strategies is enough to outcompete *C. difficile* from the majority of perturbed gut environments. Furthermore, our metabolic network platform may also prove informative for generating hypotheses through reverse ecology that could ultimately lead to uncovering new interaction between species that ultimately impact host health [@Levy2012]. In conclusion, *C. difficile* is is able to optimize its nutritional strategy for each colonized gut environment. Our results implicate that further considerations are needed when attempting to design targeted prebiotic and probiotic therapies for the prevention or elimination of *C. difficile* from the human gut.
 
