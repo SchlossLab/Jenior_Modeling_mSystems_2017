@@ -402,15 +402,8 @@ glycine_p <- c(0.88731411, 0.01684264, 0.88731411, 0.01470245)
 
 ```
 
-**Metabolic networks accurately predict changes in corresponding *in vivo* concentrations**
-In order to validate results from transcriptomic and metabolic modeling analyses, we utilized untargeted mass-specrometry to measure the relative concentrations of metabolites highlighted by network-based importance scores. 
-
-
-
-Investigations into absolute concentration of ... revealed that several of the substrates predicted to be used by *C. difficile* in a given condition through metabolic modeling (Fig. 6a & 6b), are increased in the gastrointestinal tract of mice in the corresponding treatment group. One recent study found that cefoperazone treatment resulted in a 553-fold increase in mannitol concentration in the cecum of mice prior to *C. difficile* colonization [@Theriot2014]. Similar trends have also been demonstrated in streptomycin-treated conventional and GF mice [@Antunes2011;@Matsumoto2012]. Together these results provide evidence that our network-based approach accurately predicts which metabolites *C. difficile* adapts its metabolic strategy towards, most likely due to increases in availability.
-
-Some are used at all times no matter what
-
+**Metabolomic analysis support network-based results for metabolic adaptation and uncover additional aspects of *C. difficile*’s nutrient niche.**
+In order to validate results from transcriptomic and metabolic modeling analyses, we utilized untargeted mass-specrometry to measure the relative *in vivio* concentrations of metabolites highlighted by network-based importance scores. We compared cecal content from mock *C. difficile*-infected susceptible and resistant mice at the same 18 hour time point as the previous analyses. Initially N-acetylglucosamine (Fig. 7a) and salicylate (Fig. 7b) were found to be significantly decreased in all susceptible treatment groups compared to resistant controls (*P* < 0.05). Additionally, we found that galactitol (Fig. 7c), mannitol & sorbitol (Fig. 7d), and N-acetylneuraminate (Fig. 7e) were significantly increased in both cefoperazone-treated SPF and GF mice (*P* < 0.05). Finally, these assays also revealed that proline (Fig. 7f) was significantly increased in all *C. difficile* susceptible conditions (*P* < 0.05), while glycine (fig. 7g) was found to also be concordantly increased. These amino acids are required together for *C. difficile* to perform Stickland fermentation. Together metabolomic results support network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments. Furthermore there also appears that there may be conserved elements of *C. difficile*’s nutrient niche that it exploits in all gut environments it is able to colonize.
 
 
 ###Discussion
