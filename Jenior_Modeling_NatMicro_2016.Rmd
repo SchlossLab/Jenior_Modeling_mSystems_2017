@@ -430,7 +430,7 @@ While our results are consistent with previously published work on the metabolis
 
 
 
-Colonization resistance is based on AAs, virulence is the result of carbohydrates carbs
+Colonization resistance is based on AAs, virulence is the result of carbohydrates
 
 Some are used at all times no matter what
 
