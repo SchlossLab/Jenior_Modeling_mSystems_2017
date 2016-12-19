@@ -13,7 +13,7 @@
 
 ###Significance
 
-*Clostridium difficile* infection has grown to be the largest single cause of hospital-acquired infection in the United States. A compromised gut microbiota, typically through previous antibiotic treatment, is a prerequisite feature of *C. difficile* colonization susceptibility. This loss of resistance has also been characterized across classes of antibiotics, in which many result in distinct gut communities and each presumeably presents individual metabolic challenges to *C. difficile* as it colonizes. In this study we demonstrate that not only does *C. difficile* alter its pathogenesis between differentially sensitized hosts, but also exploits seperate available nutrient niches across these environments. We accomplish this through an *in vivo* murine model of infection, characterized using transcriptomic-enabled genome-scale metabolic modeling in combination with untargeted metabolomic analysis. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect numerous different hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by the concentrations of specific carbohydrate sources that are accessible for growth during each unique infection.
+*Clostridium difficile* infection has grown to be the largest single cause of hospital-acquired infection in the United States. A compromised gut microbiota, typically through previous antibiotic treatment, is a prerequisite feature of *C. difficile* colonization susceptibility. This loss of resistance has also been described across classes of antibiotics, in which many result in distinct gut communities and each presumably presents individual metabolic challenges to *C. difficile* as it colonizes. In this study we demonstrate that not only does *C. difficile* alter its pathogenesis between differentially sensitized hosts, but also exploits separate available nutrient niches across these environments. We accomplish this through an *in vivo* murine model of infection, characterized using transcriptomic-enabled genome-scale metabolic modeling in combination with untargeted metabolomic analysis. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect numerous different hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by the concentrations of specific carbohydrate sources that are accessible for growth during each unique infection.
 
 
 ###Introduction
@@ -183,7 +183,7 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Supplementary Table 4 | Growth curve analysis for each tested carbon source.**
 
-**Supplementary Table 5 | Normalized untargeted metabolomics results for molecules of interest.**
+**Supplementary Table 5 | Normalized untargeted metabolomics results for molecules highlighted by network analysis.**
 
 
 ### References
