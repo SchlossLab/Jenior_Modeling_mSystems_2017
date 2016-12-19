@@ -512,7 +512,7 @@ Correspondence to [Patrick D. Schloss](pdschloss#umich.edu)
 
 **Supplementary Table 4 | Growth curve analysis for each tested carbon source.**
 
-**Supplementary Table 5 | Normalized untargeted metabolomics results.**
+**Supplementary Table 5 | Normalized untargeted metabolomics results for molecules of interest.**
 
 
 ### References
