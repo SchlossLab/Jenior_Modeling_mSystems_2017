@@ -58,7 +58,9 @@ Overview
 #### Running the analysis
 
 ```
-git clone https://github.com/SchlossLab/Jenior_Modeling_NatMicro_2016.git
+# Clone bigSMALL to Desktop
+git clone git@github.com:mjenior/bigsmall.git
+git clone git@github.com:SchlossLab/Jenior_Modeling_NatMicro_2016.git
 
 # Download raw transcriptomic sequencing reads from the SRA (PRJNA354635) to data/fastqs/
 
@@ -67,5 +69,24 @@ for transcriptome in cefoperazone_630 clindamycin_630 streptomycin_630 germfree
 do
 	bash code/pbs/transcriptome.bash transcriptome
 done
+
+python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/streptomycin_630.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name streptomycin_630
+python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/cefoperazone_630.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name cefoperazone_630
+python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/clindamycin_630.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name clindamycin_630
+python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/germfree.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name germfree_630
+
+R code/R/figures/fig_1.R
+R code/R/figures/fig_2.R
+R code/R/figures/fig_3.R
+R code/R/figures/fig_4.R
+R code/R/figures/fig_5.R
+R code/R/figures/fig_6.R
+R code/R/figures/fig_7.R
+
+R code/R/supplement/fig_S1.R
+R code/R/supplement/fig_S2.R
+R code/R/supplement/fig_S3.R
+R code/R/supplement/fig_S4.R
+R code/R/supplement/fig_S5.R
 
 ```
