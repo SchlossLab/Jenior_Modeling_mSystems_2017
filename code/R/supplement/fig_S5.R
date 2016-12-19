@@ -33,7 +33,7 @@ abline(v=c(lower_95,upper_95), lty=2, lwd=2, col='red')
 
 # Actual score for sorbitol
 arrows(x0=metabolite_1_score, y0=0.11, x1=metabolite_1_score, y1=0.089, col='blue', length=0.2, angle=20, lwd=3)
-mtext('a', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1, font=2)
+mtext('A', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1)
 
 #-----------------------------#
 
@@ -60,6 +60,6 @@ abline(v=c(lower_95,upper_95), lty=2, lwd=2, col='red')
 
 # Actual score for aspartate
 arrows(x0=metabolite_2_score, y0=0.095, x1=metabolite_2_score, y1=0.075, col='blue', length=0.2, angle=20, lwd=3)
-mtext('b', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1, font=2)
+mtext('B', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1)
 
 dev.off()

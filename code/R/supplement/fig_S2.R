@@ -224,7 +224,7 @@ barplot(t(transformed_mapping), col=c(wes_palette('FantasticFox')[1],wes_palette
 axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_mapping), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('a', side=2, line=2, las=2, adj=1, padj=-13, cex=1.2, font=2)
+mtext('A', side=2, line=2, las=2, adj=1, padj=-13, cex=1.2)
 legend('topright', legend='All KEGG Categories', bty='n', cex=1.6)
 
 # Subpathways in Carbohydrate metabolism
@@ -238,7 +238,7 @@ barplot(t(transformed_carbohydrate), col=c(wes_palette('FantasticFox')[1],wes_pa
 axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_carbohydrate), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('b', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2, font=2)
+mtext('B', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2)
 legend('topright', legend='Carbohydrate Metabolism', bty='n', cex=1.6)
 
 # Subpathways in Amino Acid metabolism
@@ -252,7 +252,7 @@ barplot(t(transformed_amino_acid), col=c(wes_palette('FantasticFox')[1],wes_pale
 axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
 text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
      labels=rownames(transformed_amino_acid), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('c', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2, font=2)
+mtext('C', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2)
 legend('topright', legend='Amino Acid Metabolism', bty='n', cex=1.6)
 
 dev.off()
