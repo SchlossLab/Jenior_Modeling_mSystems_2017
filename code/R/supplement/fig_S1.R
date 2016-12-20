@@ -82,7 +82,7 @@ legend('topleft', legend=c('Streptomycin-treated', 'Cefoperzone-treated', 'Clind
 #legend('bottomleft', legend=c('Mock Infected', '630 Infected'), 
 #       col='black', pt.bg=c('white','black'), pch=21, cex=2, pt.cex=3, bty='n')
 
-mtext('a', side=2, line=2, las=2, adj=1.7, padj=-18.1, cex=1.6, font=2)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-18.1, cex=1.6)
 
 #-----------------------#
 
@@ -105,7 +105,7 @@ legend('topleft', legend=c('Streptomycin-treated', 'Cefoperzone-treated', 'Clind
        col=c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'black'), 
        pch=15, cex=1.9, pt.cex=2.8, bty='n')
 
-mtext('b', side=2, line=2, las=2, adj=1.7, padj=-19.5, cex=1.6, font=2)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-19.5, cex=1.6)
 
 #-----------------------#
 
