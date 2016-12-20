@@ -12,13 +12,13 @@ Overview
     |
     |- LICENSE         # Copyright information
     |
-    |- Jenior_Modeling_NatMicro_2016.Rmd 	   # executable Rmarkdown for this study
+    |- Jenior_Modeling_PNAS_2016.Rmd 	   # executable Rmarkdown for this study
     |
-    |- Jenior_Modeling_NatMicro_2016.md 	   # Markdown version of manuscript
+    |- Jenior_Modeling_PNAS_2016.md 	   # Markdown version of manuscript
     |
     |- manuscript_format.docx 	   # Text tyle-formatting file used for generated docx
     |
-    |- nature.csl 	   # Journal-specific formatting csl file
+    |- pnas.csl 	   # Journal-specific formatting csl file
     |
     |- references.bib 	   # Bibtex formatted refereces cited in manuscript
     |
@@ -51,7 +51,7 @@ Overview
     |      |- figures/     # Supplementary figures
     |      +- tables/      # Text and excel versions of supplementary tables
     |
-    |- Jenior_Modeling_NatMicro_2016_cache/
+    |- Jenior_Modeling_PNAS_2016_cache/
     |  +- docx/  # files created during knitting of final docx from Rmd
 
 
