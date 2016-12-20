@@ -1,9 +1,13 @@
 *Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut environments
 =======
 
-##Abstract
+###Abstract
 
-*Clostridium difficile* infection (CDI) has grown to be the most prevalent cause of hospital acquired infection in the United States. Susceptibility to CDI is induced by recent antibiotic exposure, which is known to alter the structure of the gut microbiome and to affect the availability of growth nutrients in the gut. We hypothesized that *C. difficile* is a generalist that adapts its physiology to the nutrients available within the gut. We orally challenged C57BL/6 mice that previously received one of three antibiotics with *C. difficile* and demonstrated that it was able to colonize the cecum within 18 hours of infection. However, levels of both spore and toxin production, which are known to be affected by nutrient availability, varied between each antibiotic treatment group. To more closely investigate the specific responses of *C. difficile* as it colonized the cecum, we performed *in vivo* transcriptional analysis of *C. difficile* from cecal content of infected mice. This approach revealed variation in expression of genes that drive life-cycle switches as well as metabolic pathways associated with catabolizing a variety of carbon sources such as carbohydrates, amino acids, and amino sugars. To assess which substrates *C. difficile* was most likely exploiting in each antibiotic-perturbed microbiome, we developed a novel metabolite scoring algorithm within the genome-scale bipartite metabolic network of *C. difficile* that incorporated both network topology and transcript abundance to infer the likelihood that a given metabolite was acquired from the environment. Applying this approach, we found that *C. difficile* indeed occupies alternative nutrient niches across each antibiotic-perturbed microbiome and that the highlighted metabolites support significant growth, *in vitro*. *In silico* findings were further validated using *in vivo* metabolomic analysis to compare resitant and susceptible cecal conditions. These results support the hypothesis that consumption of N-acetyl-D-glucosamine and Stickland fermentation substrates are central components of *C. difficile*'s metabolic strategy and pathogenesis. This work has implications for elucidating specifics of the nutrient niche of *C. difficile* during infection and may lead to the discovery of targeted measures to prevent *C. difficile* colonization including potential pre- or probiotic therapies.
+*Clostridium difficile* infection (CDI) has become the largest single cause of hospital-acquired infection in the United States. A compromised gut microbiota, typically through recent antibiotic exposure, is a prerequisite feature of *C. difficile* colonization susceptibility. This has been described for multiple antibiotic classes in which many result in distinct gut communities, each presenting individual metabolic challenges to *C. difficile*. We hypothesized that *C. difficile* must adapt its physiology to nutrients availability within the gut. Utilizing an *in vivo* model of CDI, we demonstrated that *C. difficile* highly colonized the cecum of mice that received one of three antibiotic pretretments. We found levels of spore and toxin production varied between each antibiotic treatment group, and both processes are knwon to be regulated by specific nutrient concnetrations. To more closely investigate specific responses of *C. difficile* during infection, we performed transcriptional analysis of *C. difficile* from cecal content of infected mice. This revealed variation in expression of life-cycle switches and catabolic pathways for a variety of carbon sources. In order to assess which substrates *C. difficile* was exploiting, we further characterized the systems with transcriptomic-enabled genome-scale metabolic modeling and untargeted metabolomic analysis. Through the development of a novel metabolite scoring algorithm, leveraging the metabolic model architecture, we were able to infer that a given metabolite was acquired from the environment. Our results support the hypothesis that *C. difficile* indeed occupies alternative nutrient niches by metabolizing separate carbohydrate sources in each infection and these distinctions track with disparity seen in pathogenicity. Additionally, these data highlight conserved elements of *C. difficile*'s metabolic strategy across infections, including the consumption of N-acetyl-D-glucosamine and Stickland fermentation substrates. 
+
+###Importance
+
+In this study we demonstrate that not only does *C. difficile* alter pathogenesis between differentially sensitized hosts, but also exploits separate nutrient niches across environments. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect distinct hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by accessibility of specific carbohydrates utilized for growth during each infection. This work has implications for elucidating drivers of *C. difficile* pathogenesis and uncover specifics colonization resistance. This could lead to the discovery of targeted measures to prevent *C. difficile* colonization including potential pre- or probiotic therapies. Furthermore, the metabolite importance calculation workflow descibed here could provide a useful platform to enable more rapid discoveries for the nutrient requirements of bacteria to be made in the future.
 
 
 Overview
@@ -12,9 +16,9 @@ Overview
     |
     |- LICENSE         # Copyright information
     |
-    |- Jenior_Modeling_PNAS_2016.Rmd 	   # executable Rmarkdown for this study
+    |- Jenior_Modeling_mBio_2016.Rmd 	   # executable Rmarkdown for this study
     |
-    |- Jenior_Modeling_PNAS_2016.md 	   # Markdown version of manuscript
+    |- Jenior_Modeling_mBio_2016.md 	   # Markdown version of manuscript
     |
     |- manuscript_format.docx 	   # Text tyle-formatting file used for generated docx
     |
@@ -51,7 +55,7 @@ Overview
     |      |- figures/     # Supplementary figures
     |      +- tables/      # Text and excel versions of supplementary tables
     |
-    |- Jenior_Modeling_PNAS_2016_cache/
+    |- Jenior_Modeling_mBio_2016_cache/
     |  +- docx/  # files created during knitting of final docx from Rmd
 
 
