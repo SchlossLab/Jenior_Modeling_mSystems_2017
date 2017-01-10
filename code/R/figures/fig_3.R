@@ -143,7 +143,7 @@ legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 #text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
 #     labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
 mtext('A', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2)
-text(x=c(32.5,36,38,41.5,43.5,47,60,69), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+text(x=c(21.5,25,27,30.5,32.5,36,49,58), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Pathogenicity
 par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
