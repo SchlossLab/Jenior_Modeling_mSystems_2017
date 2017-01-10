@@ -129,7 +129,7 @@ legend('center', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamyc
        pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
       
 # Sporulation
-par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
+par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
 barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
 box()
@@ -138,15 +138,15 @@ text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
      srt=45, adj=1, xpd=TRUE, cex=1.5)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
-segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), 
-         x1=c(22,71), y1=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
-text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
-     labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
+#segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), 
+#         x1=c(22,71), y1=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
+#text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
+#     labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
 mtext('A', side=2, line=2, las=2, adj=3.3, padj=-13.5, cex=1.2)
 text(x=c(32.5,36,38,41.5,43.5,47,60,69), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Pathogenicity
-par(las=1, mar=c(7,5,1,1), mgp=c(3.9, 1, 0))
+par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab='', ylim=c(0,1), cex.lab=1.4)
 box()
