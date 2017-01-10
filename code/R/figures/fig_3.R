@@ -49,6 +49,10 @@ paloc_keep <- c('TcdE','TcdA','TcdB')
 sporulation_keep <- c('SpoIIAB','SpoIIE','SpoVS','SpoIVA','SpoVFB','SpoVB','SpoVG','CdeC','CotJB2','CotD',
                       'SspA','SspB')
 quorum_keep <- c('LuxS', 'AgrD', 'AgrB')
+
+# Need to add agr A and C
+
+
 select_genes <- c(sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
 
 # Pull of the genes of interest
@@ -94,10 +98,11 @@ sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulat
 rownames(sporulation) <- c('cdeC','cotD','cotJB2','spoIIAB','spoIIE',
                            'spoIVA','spoVB','spoVFB','spoVG','spoVS','sspA','sspB')
 sporulation <- t(sporulation)
-sporulation <- cbind(sporulation[,4], sporulation[,5], sporulation[,9], sporulation[,10], 
-                     rep(NA,4),
-                     sporulation[,1], sporulation[,2], sporulation[,3], sporulation[,6], sporulation[,7], sporulation[,8], sporulation[,11], sporulation[,12])
-colnames(sporulation) <- c('spoIIAB', 'spoIIE', 'spoVG', 'spoVS', '', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVFB', 'sspA', 'sspB')
+sporulation <- cbind(sporulation[,4], sporulation[,5], sporulation[,9], sporulation[,1], 
+                     sporulation[,2], sporulation[,3], sporulation[,6], sporulation[,7], 
+                     sporulation[,10], sporulation[,8], sporulation[,11], sporulation[,12])
+colnames(sporulation) <- c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 
+                           'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')
 sporulation[sporulation == 0] <- NA
 
 # Clean up
@@ -129,9 +134,8 @@ barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n',
         ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
 box()
 axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
-text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
-     labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'spoVS', '',
-                          'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVFB', 'sspA', 'sspB')), 
+text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
      srt=45, adj=1, xpd=TRUE, cex=1.5)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
 segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), 
