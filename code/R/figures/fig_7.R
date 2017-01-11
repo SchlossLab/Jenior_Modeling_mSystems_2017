@@ -129,7 +129,7 @@ glycine_p <- p.adjust(c(wilcox.test(subset(glycine, abx=='none')[,1], subset(gly
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_7.pdf'
 select_palette <- c('gray', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
-pdf(file=plot_file, width=5, height=12)
+pdf(file=plot_file, width=6, height=12)
 layout(matrix(c(1,
                 2,
                 3,
@@ -143,86 +143,81 @@ layout(matrix(c(1,
 #--------------------------------#
 
 # Acetylglucosamine
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,1,1), mgp=c(2.5,0.7,0))
 boxplot(Nacetylglucosamine_Nacetylgalactosamine~abx, data=acetylglucosamine, col=select_palette, ylim=c(0,14), whisklty=1, cex.lab=1.1,
            xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-mtext('A', side=2, line=2, las=2, adj=1.7, padj=-9, cex=1.1)
-legend('topleft', 'N-Acetylglucosamine + N-Acetylgalactosamine', bty='n', cex=1.1)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'N-Acetylglucosamine + N-Acetylgalactosamine', bty='n', cex=0.9)
 axis(2, at=seq(0,14,3.5), labels=c('0.0','3.5','7.0','10.5','14.0'))
 text(c(2,3,4,5), c(7,2.3,1.6,2.3), labels=c('*','*','*','*'), cex=2.5)
 
 #--------------------------------#
 
 # Salicylate
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(salicylate~abx, data=salicylate, col=select_palette, ylim=c(0,5.2), whisklty=1, cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-mtext('B', side=2, line=2, las=2, adj=1.7, padj=-9, cex=1.1)
-legend('topleft', 'Salicylate', bty='n', cex=1.1)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'Salicylate', bty='n', cex=0.9)
 axis(2, at=seq(0,5.2,1.3), labels=c('0.0','1.3','2.6','3.9','5.2'))
 text(c(2,3,4,5), c(2.8,1.8,1.9,0.6), labels=c('*','*','*','*'), cex=2.5)
 
 #--------------------------------#
 
 # Galactitol
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(galactitol~abx, data=galactitol, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-mtext('C', side=2, line=2, las=2, adj=1.4, padj=-9, cex=1.1)
-legend('topleft', 'Galactitol', bty='n', cex=1.1)
+mtext('C', side=2, line=2, las=2, adj=1.4, padj=-5)
+legend('topright', 'Galactitol', bty='n', cex=0.9)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(3,5), c(2.7,2.35), labels=c('*','*'), cex=2.5)
 
 #--------------------------------#
 
 # Mannitol - Sorbitol
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(mannitol_sorbitol~abx, data=mannitol_sorbitol, col=select_palette, ylim=c(0,50), whisklty=1, cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-mtext('D', side=2, line=2, las=2, adj=1.5, padj=-7, cex=1.1)
-legend('topleft', 'Mannitol + Sorbitol', bty='n', cex=1.1)
+mtext('D', side=2, line=2, las=2, adj=1.5, padj=-5)
+legend('topright', 'Mannitol + Sorbitol', bty='n', cex=0.9)
 axis(2, at=seq(0,50,12.5), labels=c('0.0','12.5','25.0','37.5','50.0'))
 text(c(3,5), c(47,43), labels=c('*','*'), cex=2.5)
 
 #--------------------------------#
 
 # Acetylneuriminate
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(Nacetylneuraminate~abx, data=acetylneuriminate, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-mtext('E', side=2, line=2, las=2, adj=1.7, padj=-7, cex=1.1)
-legend('topleft', 'N-Acetylneuriminate', bty='n', cex=1.1)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'N-Acetylneuriminate', bty='n', cex=0.9)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(3,5), c(2.2,2.3), labels=c('*','*'), cex=2.5)
 
 #--------------------------------#
 
 # Proline
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(proline~abx, data=proline, col=select_palette, whisklty=1, ylim=c(0,3), cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-legend('topleft', 'Proline', bty='n', cex=1.1)
-mtext('F', side=2, line=2, las=2, adj=1.3, padj=-7, cex=1.1)
+legend('topright', 'Proline', bty='n', cex=0.9)
+mtext('F', side=2, line=2, las=2, adj=1.3, padj=-5)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(2,3,4,5), c(3.0,2.8,2.3,2.85), labels=c('*','*','*','*'), cex=2.5)
 
 # Glycine
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
 boxplot(glycine~abx, data=glycine, col=select_palette, whisklty=1, ylim=c(0,3), cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
-legend('topleft', 'Glycine', bty='n', cex=1.1)
-mtext('G', side=2, line=2, las=2, adj=1.3, padj=-7, cex=1.1)
+legend('topright', 'Glycine', bty='n', cex=0.9)
+mtext('G', side=2, line=2, las=2, adj=1.3, padj=-5)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(3,5), c(2.5,2.1), labels=c('*','*'), cex=2.5)
 
-
-# empty plot for margin labels
-
-par(las=1, mar=c(0.1,3.5,1,1), mgp=c(2.5,0.7,0))
-
-mtext(c('No Antibiotics\nSPF','Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF'), side=1, at=c(1:5), cex=0.95, padj=1)
+mtext(c('No Antibiotics\nSPF','Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF'), side=1, at=c(1:5), cex=0.77, padj=1)
 mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
-mtext('Mice:', side=1, at=0.12, padj=3.5, cex=0.7)
+mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
 
 dev.off()
 

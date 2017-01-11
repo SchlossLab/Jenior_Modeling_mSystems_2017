@@ -11,7 +11,7 @@ for (dep in deps){
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-pdf(file=plot_file, width=9, height=9)
+pdf(file=plot_file, width=6, height=9)
 
 # Create layout for multi-plot
 layout(mat=matrix(c(1,
