@@ -64,7 +64,7 @@ Overview
 ```
 # Clone bigSMALL to Desktop
 git clone git@github.com:mjenior/bigsmall.git
-git clone git@github.com:SchlossLab/Jenior_Modeling_NatMicro_2016.git
+git clone git@github.com:SchlossLab/Jenior_Modeling_MBio_2016.git
 
 # Download raw transcriptomic sequencing reads from the SRA (PRJNA354635) to data/fastqs/
 
