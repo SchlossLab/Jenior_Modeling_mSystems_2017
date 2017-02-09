@@ -1,5 +1,4 @@
 Substrate	Max_Growth_Rate	Time_of_Max_Rate_in_Hours	Max_OD	Time_of_Max_OD_in_Hours	Rate_at_24_hours	Mean_Rate	AUC
-acetate	0.005	16	0.063	19	0	0.001	1.559
 acetylglucosamine	0.085	7	0.774	20	-0.027	0.012	15.549
 acetylneuraminate	0.024	9	0.439	24	0.003	0.009	10.99
 sorbitol	0.022	7	0.202	14.5	-0.001	0.004	3.323
