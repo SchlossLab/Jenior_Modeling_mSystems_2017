@@ -116,14 +116,14 @@ layout(matrix(c(1,
 # A.  Vegetative cell CFU
 par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.2,
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
            ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15)
 labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
-
 abline(h=2, col="black", lty=2, lwd=1.5) # LOD
-#arrows(x0=5.87, y0=2, x1=5.73, y1=2, lwd=2, length=0.1, angle=15, xpd=TRUE)
-#mtext('Limit of Detection', at=2, padj=2.5, side=4, cex=0.55, las=0)
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.5,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
+           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
 # Draw axis break
 axis.break(2, 1.5, style='slash')
@@ -142,10 +142,13 @@ mtext('A', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
 # B.  Spore CFU
 par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.2, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=1.5, col=select_palette,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
            ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 abline(h=2, col="black", lty=2, lwd=1.5)
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.5, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
+           ylab='Spore CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
 # Draw axis break
 axis.break(2, 1.5, style='slash') 
@@ -170,7 +173,12 @@ par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
-           method='jitter', jitter=0.15, cex=1.5)
+           method='jitter', jitter=0.15, cex=0)
+abline(h=2, lty=2, lwd=1.5) # LOD
+stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
+           method='jitter', jitter=0.15, cex=2, add=TRUE)
 mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.77)
 mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
 mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
@@ -180,8 +188,7 @@ axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 # Draw axis break
 axis.break(2, 1.75, style='slash') 
 
-# Draw limit of detection
-abline(h=2, lty=2, lwd=1.5)
+
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone

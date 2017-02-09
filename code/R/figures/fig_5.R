@@ -48,8 +48,7 @@ rm(example_sim_file)
 
 # Format simulated distribution
 score_density <- density(example_sim)
-score_iqr <- as.vector(quantile(example_sim))[2:4]
-# , c(.05, .5, .95)
+score_iqr <- as.vector(quantile(example_sim, c(.05, .5, .95)))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -278,7 +277,7 @@ abline(v=score_iqr[2], lty=2, lwd=2, col='black') # Median
 abline(v=c(score_iqr[1],score_iqr[3]), lty=2, lwd=2, col='red') # 0.95 IQR
 abline(v=7, lwd=2, col='blue') # Measured Score
 legend('topleft', legend=c('Simulated Score Median','Simulated Score IQR','Measured Metabolite Score'), 
-       col=c('black','red','blue'), lty=c(2,2,1), lwd=2, bty='n', cex=1.1)
+       col=c('black','red','blue'), lty=c(2,2,1), lwd=2, bg='white', cex=1.1)
 
 mtext('C', side=2, line=2, las=2, adj=2.5, padj=-6.5, cex=1.3)
 
