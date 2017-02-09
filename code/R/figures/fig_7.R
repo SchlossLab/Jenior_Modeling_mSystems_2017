@@ -219,6 +219,13 @@ mtext(c('No Antibiotics\nSPF','Streptomycin\nSPF','Cefoperazone\nSPF','Clindamyc
 mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
 mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
 
+
+
+
+# NEED A PANEL ADDRESSING CORRELATION WITH IMPORTANCE SCORES
+
+
+
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

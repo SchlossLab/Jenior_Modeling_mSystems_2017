@@ -15,6 +15,7 @@ set.seed(42)
 network_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/graph.tsv'
 ko_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/KO_mapping.tsv'
 layout_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/optimal_layout.tsv'
+example_sim_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/test_distribution.txt'
 
 # Read in metabolic network data
 network <- read.delim(network_file, header=FALSE, sep='\t')
@@ -38,6 +39,17 @@ print(length(as.vector(grep('C', V(largest_whole_graph)$name, value=TRUE)))) # 6
 # Find strongly-connected components
 largest_scc <- rownames(as.data.frame(clusters(largest_whole_graph, mode='strong')[1]))
 rm(decomp_whole_graph, largest_component)
+
+# Read in simulated score distribution
+example_sim <- read.delim(example_sim_file, header=FALSE)[,1]
+rm(example_sim_file)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Format simulated distribution
+score_density <- density(example_sim)
+score_iqr <- as.vector(quantile(example_sim))[2:4]
+# , c(.05, .5, .95)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -180,39 +192,53 @@ E(network)$color <- 'gray15' # Color edges
 
 # Set up plotting environment
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=10, height=7)
-layout(matrix(c(1,2,2,
-                3,2,2), nrow=2, ncol=3, byrow=TRUE))
+pdf(file=plot_file, width=7, height=12)
+layout(matrix(c(1,2,
+                3,3,
+                3,3,
+                4,4), nrow=4, ncol=2, byrow=TRUE))
 
 #---------------------------------------#
 
 # Large component of C. difficile 630 graph
-par(mar=c(0,1,1,1))
+par(mar=c(0,1,1,1), xpd=TRUE)
 plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.25, edge.arrow.width=0.4, vertex.frame.color='black')
-# Draw box
-rect(xleft=0.8, ybottom=0, xright=1.15, ytop=0.3, lwd=2)
+rect(xleft=0.4, ybottom=-0.7, xright=0.75, ytop=-0.4, lwd=2) # box
+
 text(x=-1, y=1, 'A', cex=2)
 
 #---------------------------------------#
 
-# Example network and importance calculation
-par(mar=c(0,0,0,1))
-plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
-text(x=-1.5, y=1.45, 'B', cex=2)
+# Importance calculation
 
-text(x=-0.95, y=1.11, labels='dAdo Aminohydrolase', font=2, cex=1.3) # Enzyme 1 name
+plot.new()
+text(x=0.2, y=0.65, expression(paste(bold('(I) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
+text(x=0.7, y=0.65, expression(paste(bold('(II) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
+text(x=0.46, y=0.35, expression(paste(bold('(III) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+
+
+
+
+#---------------------------------------#
+
+# Example network and importance calculation
+par(mar=c(0,0,0,1), xpd=FALSE)
+plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
+text(x=-1.5, y=1.35, 'B', cex=2)
+
+text(x=-0.93, y=1.11, labels='Sucrose Glucohydrolase', font=2, cex=1.3) # Enzyme 1 name
 text(x=-1, y=1, labels='7', col='white', cex=1.3) # Enzyme 1 transcription
-text(x=-0.5, y=-1.3, labels='ATP:dAdo 5\'-Phosphotransferase', font=2, cex=1.3) # Enzyme 2 name
-text(x=-0.5, y=-1, labels='94', col='white', cex=2.4) # Enzyme 2 transcription
-text(x=1, y=0.75, labels=expression(bold(paste('dAdo:', PO[4]^-3, ' Ribosyltransferase'))), cex=1.3) # Enzyme 3
-text(x=0.99, y=0.44, labels='115', col='white', cex=2.6) # Enzyme 3 transcription
+text(x=-0.5, y=-1.3, labels='Fructose Phosphotransferase', font=2, cex=1.3) # Enzyme 2 name
+text(x=-0.5, y=-1, labels='98', col='white', cex=2.4) # Enzyme 2 transcription
+text(x=1, y=0.75, labels='Fructose Dehydrogenase', font=2, cex=1.3) # Enzyme 3
+text(x=0.99, y=0.44, labels='165', col='white', cex=2.6) # Enzyme 3 transcription
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 
-text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('Deoxyadenosine (dAdo)','Importance = 6.554'), cex=1.5, font=c(2,1)) # Compound & calculated importance
+text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('D-Fructose','Importance = 7.0'), cex=1.5, font=c(2,1)) # Compound & calculated importance
 segments(x0=-1.15, y0=0, x1=-0.45, y1=0, lwd=2)
 
-legend(x=0.7, y=1.28, legend=c('Enzyme node', 'Metabolite node'),
+legend(x=0.6, y=1.28, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3.3, cex=1.7, bty='n')
 text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
 text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
@@ -227,8 +253,8 @@ segments(x0=0.63, y0=-0.45, x1=0.63, y1=-0.55, lwd=2)
 text(x=0.63, y=-0.63, '0', cex=1.8)
 text(x=0.12, y=-0.61, '-', cex=2.2)
 text(x=1.14, y=-0.61, '+', cex=2.2)
-text(x=1.15, y=-0.4, 'More likely consumed', cex=1.35)
-text(x=0.14, y=-0.4, 'More likely produced', cex=1.35)
+text(x=1.13, y=-0.4, 'More likely consumed', cex=1.35)
+text(x=0.15, y=-0.4, 'More likely produced', cex=1.35)
 text(x=0.63, y=-0.75, 'Importance Score', cex=1.5, font=2)
 
 # Continuation arrows
@@ -241,23 +267,31 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 
 #---------------------------------------#
 
-# Importance algorithm
+# Example simulated distribution
 
-plot.new()
-text(x=0.27, y=0.8, expression(paste(bold('(i) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
-text(x=0.27, y=0.6, expression(paste(bold('(ii) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
-text(x=0.55, y=0.4, expression(paste(bold('(iii) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+par(mar=c(5,6,1,3), las=1, mgp=c(3.5,1,0), xaxs='i', yaxs='i', xpd=FALSE)
+plot(score_density, xlim=c(-12,12), ylim=c(0,0.14), main='', xaxt='n', cex.lab=1.7, cex.axis=1.1,
+     xlab='Simulated Importance Score', ylab='Score Density') 
+axis(side=1, at=seq(-12,12,4), labels=seq(-12,12,4), cex.axis=1.2)
+polygon(score_density, col='gray80', border='black', lwd=1.5) 
+abline(v=score_iqr[2], lty=2, lwd=2, col='black') # Median
+abline(v=c(score_iqr[1],score_iqr[3]), lty=2, lwd=2, col='red') # 0.95 IQR
+abline(v=7, lwd=2, col='blue') # Measured Score
+legend('topleft', legend=c('Simulated Score Median','Simulated Score IQR','Measured Metabolite Score'), 
+       col=c('black','red','blue'), lty=c(2,2,1), lwd=2, bty='n', cex=1.1)
+
+mtext('C', side=2, line=2, las=2, adj=2.5, padj=-6.5, cex=1.3)
+
 
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(optimal_layout1, optimal_layout2, largest_simple_graph, network, plot_file)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
 }
-rm(dep, deps, pkg)
+rm(list=ls())
 gc()
 
