@@ -130,15 +130,10 @@ glycine_p <- p.adjust(c(wilcox.test(subset(glycine, abx=='none')[,1], subset(gly
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_7.pdf'
 select_palette <- c('gray', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
 pdf(file=plot_file, width=6, height=12)
-layout(matrix(c(1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8),
-              nrow=8, ncol=1, byrow = TRUE))
+layout(matrix(c(1,2,3,
+                4,5,6,
+                7,8,9),
+              nrow=3, ncol=3, byrow = TRUE))
 
 #--------------------------------#
 
@@ -219,12 +214,16 @@ mtext(c('No Antibiotics\nSPF','Streptomycin\nSPF','Cefoperazone\nSPF','Clindamyc
 mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
 mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
 
+#--------------------------------#
 
 
 
 # NEED A PANEL ADDRESSING CORRELATION WITH IMPORTANCE SCORES
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+plot(0, xlab='Metabolite Concentration', ylab='Importance Score')
 
 
+mtext('H', side=2, line=2, las=2, adj=1.3, padj=-5)
 
 dev.off()
 
