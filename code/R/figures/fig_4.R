@@ -69,39 +69,23 @@ summary(raw_graph)
 print(length(as.vector(grep('K', V(raw_graph)$name, value=TRUE))))
 print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
 
-# Find degrees of nodes
-graph_indegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='in'))
-graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
-graph_undirected <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
+# Find degree centrality
+graph_degree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
 
-# Calculate betweensness of entrire graph
+# Calculate betweensness centrality
 graph_betweenness <- as.data.frame(betweenness(raw_graph))
 
-# Calculate closeness of entrire graph
+# Calculate closeness centrality
 graph_closeness <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='all'))
 
-# Calculate closeness of largest, strongly-connected component
-occi <- as.data.frame(closeness(largest_whole_graph, vids=largest_scc, mode='all')) # Ma (2003)
-
 # Merge characteristic tables
-graph_topology <- merge(graph_outdegree, graph_indegree, by='row.names')
+graph_topology <- merge(graph_degree, graph_betweenness, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, graph_undirected, by='row.names')
-rownames(graph_topology) <- graph_topology$Row.names
-graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, graph_betweenness, by='row.names')
-rownames(graph_topology) <- graph_topology$Row.names
-graph_topology$Row.names <- NULL
-graph_topology$HBLC <- graph_topology[,4] / graph_topology[,3] # Calculate betweensness topolgy ratio, Joy et. al. (2005)
-graph_topology[,3] <- NULL
 graph_topology <- merge(graph_topology, graph_closeness, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
-graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, occi, by='row.names', all=TRUE)
-graph_topology[is.na(graph_topology)] <- 0
-colnames(graph_topology) <- c('KEGG_ID','Outdegree','Indegree','Betweenness', 'HBLC', 'Closeness', 'OCCI')
-rm(graph_indegree, graph_outdegree, graph_undirected, graph_betweenness, graph_closeness, occi, largest_scc, largest_whole_graph)
+colnames(graph_topology) <- c('KEGG_ID','Degree_centrality','Betweenness_centrality', 'Closeness_centrality')
+rm(graph_degree, graph_betweenness, graph_closeness, largest_scc, largest_whole_graph)
 
 # Read in KEGG code translation files
 kegg_substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/compound_names.tsv'
@@ -115,14 +99,12 @@ substrate_topology <- subset(graph_topology, grepl('C', graph_topology$KEGG_ID))
 rownames(substrate_topology) <- substrate_topology$KEGG_ID
 substrate_topology <- merge(substrate_topology, kegg_substrate, by='row.names')
 substrate_topology$Row.names <- NULL
-colnames(substrate_topology)[8] <- 'Common_name'
-substrate_topology <- substrate_topology[order(-substrate_topology$Betweenness),]
+colnames(substrate_topology)[5] <- 'Compound_name'
 enzyme_topology <- subset(graph_topology, grepl('K', graph_topology$KEGG_ID))
 rownames(enzyme_topology) <- enzyme_topology$KEGG_ID
 enzyme_topology <- merge(enzyme_topology, kegg_enzyme, by='row.names')
 enzyme_topology$Row.names <- NULL
-colnames(enzyme_topology)[8] <- 'Common_name'
-enzyme_topology <- enzyme_topology[order(-enzyme_topology$Betweenness),]
+colnames(enzyme_topology)[5] <- 'Compound_name'
 rm(kegg_substrate, kegg_enzyme)
 
 # Write tables to files, ranked by betweenness

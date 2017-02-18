@@ -13,7 +13,7 @@ concentrations <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetla
 metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
 # Read in data
-concentrations <- t(read.delim(concentrations, sep='\t', header=T, row.names=1))
+concentrations <- read.delim(concentrations, sep='\t', header=T, row.names=1)
 metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
 
 # Format and merge tables
@@ -21,21 +21,30 @@ metadata$cage <- NULL
 metadata$mouse <- NULL
 metadata$gender <- NULL
 metadata$type <- NULL
+concentrations$SUPER_PATHWAY <- NULL
+concentrations$KEGG <- NULL
+concentrations <- t(concentrations)
 concentrations <- merge(concentrations, metadata, by='row.names')
 rownames(concentrations) <- concentrations$Row.names
 concentrations$Row.names <- NULL
-concentrations <- subset(concentrations, infection != '630')
-concentrations$infection <- NULL
+rm(metadata)
 
-# Sort by treatment group
+# Sort by antibiotic treatment group
 concentrations$abx <- factor(concentrations$abx, levels=c('none','streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
+
+# Subset infection groups
+concentrations_630 <- subset(concentrations, infection == '630')
+concentrations_630$infection <- NULL
+concentrations_mock <- subset(concentrations, infection == 'mock')
+concentrations_mock$infection <- NULL
+rm(concentrations)
 
 # Subset each metabolites - main body
 acetylglucosamine <- concentrations[,c(1,14)]
 mannitol_sorbitol <- concentrations[,c(3,14)]
 galactitol <- concentrations[,c(4,14)]
 salicylate <- concentrations[,c(5,14)]
-acetylneuriminate <- concentrations[,c(6,14)]
+acetylneuraminate <- concentrations[,c(6,14)]
 
 # Subset each metabolites - supplement
 proline <- concentrations[,c(2,14)]
@@ -79,14 +88,14 @@ salicylate_p <- p.adjust(c(wilcox.test(subset(salicylate, abx=='none')[,1], subs
                            wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
                            wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='germfree')[,1], exact=FALSE)$p.value),
                          method='holm')
-acetylneuriminate_p <- p.adjust(c(wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
-                                              subset(acetylneuriminate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
-                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
-                                              subset(acetylneuriminate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
-                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
-                                              subset(acetylneuriminate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
-                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
-                                              subset(acetylneuriminate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+acetylneuraminate_p <- p.adjust(c(wilcox.test(subset(acetylneuraminate, abx=='none')[,1], 
+                                              subset(acetylneuraminate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuraminate, abx=='none')[,1], 
+                                              subset(acetylneuraminate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuraminate, abx=='none')[,1], 
+                                              subset(acetylneuraminate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuraminate, abx=='none')[,1], 
+                                              subset(acetylneuraminate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
 proline_p <- p.adjust(c(wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='streptomycin')[,1], exact=FALSE)$p.value,
                         wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
                         wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='clindamycin')[,1], exact=FALSE)$p.value,
@@ -181,12 +190,12 @@ text(c(3,5), c(47,43), labels=c('*','*'), cex=2.5)
 
 #--------------------------------#
 
-# Acetylneuriminate
+# Acetylneuraminate
 par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
-boxplot(Nacetylneuraminate~abx, data=acetylneuriminate, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
+boxplot(Nacetylneuraminate~abx, data=acetylneuraminate, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
         xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
 mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5)
-legend('topright', 'N-Acetylneuriminate', bty='n', cex=0.9)
+legend('topright', 'N-Acetylneuraminate', bty='n', cex=0.9)
 axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
 text(c(3,5), c(2.2,2.3), labels=c('*','*'), cex=2.5)
 
