@@ -1,65 +1,60 @@
 
-pdf(file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S5.pdf', width=14, height=5)
-layout(matrix(c(1,2), nrow=1, ncol=2, byrow = TRUE))
+# Load dependencies
+deps <- c('wesanderson');
+for (dep in deps){
+  if (dep %in% installed.packages()[,"Package"] == FALSE){
+    install.packages(as.character(dep), quiet=TRUE);
+  } 
+  library(dep, verbose=FALSE, character.only=TRUE)
+}
 
+# Select files
+acetate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cef_acetate_630.txt'
 
-# Read in score distribution file
-all_scores <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/test_distribution.txt', header=FALSE)
-metabolite_1 <- unique(all_scores[,1])
-metabolite_1_score <- 6.329
-metabolite_2 <- unique(all_scores[,2])
-metabolite_2_score <- -4.297
+# Read in data
+scfa <- read.delim(acetate_file, sep='\t', header=T)
+rm(acetate_file)
 
-# Create a curve for the sample distribution
-par(mar=c(4,4,1,1))
-d <- density(metabolite_1)
-plot(d, type='n', main='', xlab='Metabolite Importance Score', ylab='Score Frequency (Log10)', las=1, ylim=c(0,0.12))
-polygon(d, col='gray')
+# Format the data
+scfa$group <- factor(scfa$group, levels=c('mock', 'infected'))
+scfa$acetate <- as.numeric(as.character(scfa$acetate))
 
-# Calculate stats
-all_quantile = quantile(metabolite_1)
-score_median = all_quantile[3]
-iqr = as.numeric(all_quantile[4] - all_quantile[2])
-numerator = 1.25 * iqr
-denominator = 1.35 * sqrt(length(metabolite_1))
-range_factor = numerator / denominator
-range_95 = 1.6 * range_factor
-lower_95 = score_median - range_95
-upper_95 = score_median + range_95
+# Subset for stats
+mock <- as.numeric(scfa[scfa$group == 'mock', 2])
+infected <- as.numeric(scfa[scfa$group == 'infected', 2])
 
-# Summary lines
-abline(v=score_median, lwd=2, col='black') # Median
-abline(v=c(lower_95,upper_95), lty=2, lwd=2, col='red')
+# Calculate significance
+wilcox.test(mock, infected, exact=F)
+# p-value = 0.01219 *
 
-# Actual score for sorbitol
-arrows(x0=metabolite_1_score, y0=0.11, x1=metabolite_1_score, y1=0.089, col='blue', length=0.2, angle=20, lwd=3)
-mtext('A', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-#-----------------------------#
+# Set up multi-panel figure
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S4.pdf'
+pdf(file=plot_file, width=5, height=5)
 
-# Create a curve for the sample distribution
-par(mar=c(4,4,1,1))
-d <- density(metabolite_2)
-plot(d, type='n', main='', xlab='Metabolite Importance Score', ylab='Score Frequency (Log10)', las=1, ylim=c(0,0.12))
-polygon(d, col='gray')
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Calculate stats
-all_quantile = quantile(metabolite_2)
-score_median = all_quantile[3]
-iqr = all_quantile[4] - all_quantile[2]
-numerator = 1.25 * iqr
-denominator = 1.35 * sqrt(length(metabolite_2))
-range_factor = numerator / denominator
-range_95 = 1.6 * range_factor
-lower_95 = score_median - range_95
-upper_95 = score_median + range_95
+# Acetate
+par(las=1, mar=c(2,4,0.7,1), mgp=c(2.3,0.7,0), xpd=FALSE, yaxs='i')
+stripchart(acetate~group, data=scfa, vertical=T, pch=c(1,19), lwd=3,
+           ylim=c(0,10), xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1],
+           cex=1.8, ylab='nmol Acetate per mg Cecal Content', method='jitter', jitter=0.25)
+abline(h=c(2,4,6,8), lty=2)
+axis(side=1, at=c(1,2), c('Mock Infected', '630 Infected'), tick=FALSE)
+axis(side=2, at=seq(0,10,2), labels=c('0.0','2.0','4.0','6.0','8.0','10.0'))
+segments(x0=c(0.7,1.7), y0=c(median(mock),median(infected)), x1=c(1.3,2.3), y1=, lwd=3)
+text(2, median(infected) + 1.5, labels='*', font=2, cex=2)
+#legend('topright', legend=expression(paste(italic(p),'-value = 0.01219')), bty='n', pt.cex=0)
 
-# Summary lines
-abline(v=score_median, lwd=2, col='black') # Median
-abline(v=c(lower_95,upper_95), lty=2, lwd=2, col='red')
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Actual score for aspartate
-arrows(x0=metabolite_2_score, y0=0.095, x1=metabolite_2_score, y1=0.075, col='blue', length=0.2, angle=20, lwd=3)
-mtext('B', side=2, line=2, las=2, adj=3, padj=-15, cex=1.1)
-
+#Clean up
 dev.off()
+rm(scfa, mock, infected, plot_file)
+for (dep in deps){
+  pkg <- paste('package:', dep, sep='')
+  detach(pkg, character.only = TRUE)
+}
+rm(dep, deps, pkg)
+gc()

@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('shape', 'plotrix', 'wesanderson');
+deps <- c('shape', 'wesanderson', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -8,98 +8,210 @@ for (dep in deps){
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 
+# Select files
+cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
+toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
+
+# Read in data
+cfu <- read.delim(cfu_file, sep='\t', header=T)
+cfu_raw <- cfu
+toxin <- read.delim(toxin_file, sep='\t', header=T)
+toxin_raw <- toxin
+rm(cfu_file, toxin_file)
+
+# Format CFU data and collect summary statistics
+cfu[cfu == 0] <- 100
+cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
+cfu$cfu_spore <- log10(cfu$cfu_spore)
+cfu$mouse <- NULL
+cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
+cfu$cage <- NULL
+cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
+vegetative_cfu <- cfu
+vegetative_cfu$cfu_spore <- NULL
+spore_cfu <- cfu
+spore_cfu$cfu_vegetative <- NULL
+cef <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2]))
+strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2]))
+clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
+gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
+conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
+vege_medians <- c(strep, cef, clinda, gf, conv)
+vege_medians[vege_medians == 2.0] <- 1.6
+cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
+strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
+clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
+gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
+conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
+spore_medians <- c(strep, cef, clinda, gf, conv)
+spore_medians[spore_medians == 2.0] <- 1.6
+rm(cfu, cef, strep, clinda, gf, conv)
+vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
+vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
+spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
+
+# Format toxin data and find summary statistics
+toxin$mouse <- NULL
+toxin$cage <- NULL
+toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
+cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
+strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
+clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
+gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
+conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
+toxin_medians <- c(strep, cef, clinda, gf, conv)
+toxin_medians[toxin_medians <= 2.0] <- 1.9
+toxin$titer[toxin$titer <= 2.0] <- 1.9
+rm(cef, strep, clinda, gf, conv)
+
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
+# Calculate significant differences
+
+cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
+clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
+streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
+germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
+
+gf_vs_cef_tox_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
+gf_vs_clinda_tox_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
+gf_vs_strep_tox_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
+cef_vs_clinda_tox_p <- wilcox.test(cefoperazone, clindamycin, exact=F)$p.value
+cef_vs_strep_tox_p <- wilcox.test(cefoperazone, streptomycin, exact=F)$p.value
+clinda_vs_strep_tox_p <- wilcox.test(clindamycin, streptomycin, exact=F)$p.value
+
+#p_values <- c(,,,,,,,)
+#p_values <- p.adjust(p_values, method='holm')
+
+cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
+clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
+streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
+germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
+
+wilcox.test(germfree, cefoperazone, exact=F) # p-value = 3.807e-05, corrected = 0.00019035, ***
+wilcox.test(germfree, clindamycin, exact=F) # p-value = 3.09e-05, corrected = 0.0001854, ***
+wilcox.test(germfree, streptomycin, exact=F) # p-value = 4.304e-05, corrected = 0.00019035, ***
+wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
+wilcox.test(streptomycin, cefoperazone, exact=F) # p-value = 0.4618, corrected = 0.9927, n.s.
+wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
+rm(germfree, cefoperazone, clindamycin, streptomycin)
+
+p_values <- c(3.807e-05,3.09e-05,4.304e-05,0.3309,0.4618,0.3309)
+p.adjust(p_values, method='holm')
+rm(p_values)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-pdf(file=plot_file, width=6, height=9)
-
-# Create layout for multi-plot
-layout(mat=matrix(c(1,
-                    2,
-                    3,
-                    4,
-                    5), nrow=5, ncol=1, byrow=TRUE))
+select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
+pdf(file=plot_file, width=5.5, height=9)
+layout(matrix(c(1,
+                2,
+                3), 
+              nrow=3, ncol=1, byrow = TRUE))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-par(mar=c(0,0,0,0))
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+# A.  Vegetative cell CFU
+par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.2,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
+           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15)
+labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5) # LOD
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.5,
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
+           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
-# Legend
-legend('center', legend=expression('Untreated water', paste(italic('C. difficile'), ' gavage'), 'Euthanize & Necropsy'), 
-       pt.bg=c(wes_palette("Chevalier")[3],'darkorchid2','black'), cex=1.5,  pch=c(22,25,25), pt.cex=c(4,3,3), bty='n', ncol=3)
+# Draw axis break
+axis.break(2, 1.5, style='slash')
 
-#----------------------------#
+# Draw median
+segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
+segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
+segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
+segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
+segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
 
-# Strep in drinking water timeline
-rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[1], border='black')
-rect(xleft=1, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
-Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25), x1=c(-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25), lwd=2)
-text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-text(x=-3.35, y=0.7, 'Streptomycin (SPF)', cex=1.5)
-text(x=-4.5, y=0, 'A', cex=1.9)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+# B.  Spore CFU
+par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.2, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
+           ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+abline(h=2, col="black", lty=2, lwd=1.5)
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.5, 
+           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
+           ylab='Spore CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
-#----------------------------#
+# Draw axis break
+axis.break(2, 1.5, style='slash') 
 
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+# Draw median
+segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
+segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
+segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
+segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
+segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 
-# Cef in drinking water timeline
-rect(xleft=-4, ybottom=-0.4, xright=1, ytop=0.4, col=wes_palette("FantasticFox")[3], border='black')
-rect(xleft=1, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
-Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,1,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,1,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,0,2), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-text(x=-3.3, y=0.7, 'Cefoperazone (SPF)', cex=1.5)
-text(x=-4.5, y=0, 'B', cex=1.9)
+# Adding significance to plot
+segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
+text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 
-points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
 
-#----------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
+# C.  Toxin data
+par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
+stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
+           method='jitter', jitter=0.15, cex=0)
+abline(h=2, lty=2, lwd=1.5) # LOD
+stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
+           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
+           method='jitter', jitter=0.15, cex=2, add=TRUE)
+mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.77)
+mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
+mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
 
-# Clinda IP injection abx timeline
-rect(xleft=-4, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
-Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-points(x=2, y=1, pch=25, bg=c(wes_palette("FantasticFox")[5]), col='black', cex=3.4)
-text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-text(x=-2.85, y=0.7, 'Clindamycin IP Injection (SPF)', cex=1.5)
-text(x=-4.5, y=0, 'C', cex=1.9)
+axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
-points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+# Draw axis break
+axis.break(2, 1.75, style='slash') 
 
-#----------------------------#
 
-plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
-# No antibiotics and germ free timeline
-rect(xleft=-4, ybottom=-0.4, xright=3.75, ytop=0.4, col=wes_palette("Chevalier")[3], border='black')
-Arrows(x0=-4, y0=0, x1=4.8, y1=0, lwd=4, arr.type='triangle', arr.length=0.6, arr.width=0.2)
-segments(x0=c(-4,3,3.75), y0=c(0.5,0.5,0.5), x1=c(-4,3,3.75), y1=c(-0.5,-0.5,-0.5), lwd=4)
-segments(x0=c(-4,-3,-2,-1,0,1,2), y0=c(0.25,0.25,0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1,2), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
-text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-text(x=-1.1, y=0.7, 'SPF & GF No Antibiotics', cex=1.5)
-text(x=-4.5, y=0, 'D', cex=1.9)
+# Draw median
+segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
+segments(1.6, toxin_medians[2], 2.4, toxin_medians[2], lwd=3) # streptomycin
+segments(2.6, toxin_medians[3], 3.4, toxin_medians[3], lwd=3) # clindamycin
+segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
+segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 
-points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)
+# Adding significance to plot
+segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
+text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
+
+# Plot label
+mtext('C', side=2, line=2, las=2, adj=1.6, padj=-9, cex=1.1)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
 dev.off()
-rm(plot_file)
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
 }
-rm(dep, deps, pkg)
+rm(list=ls())
 gc()
+

@@ -1,379 +1,239 @@
 
 # Load dependencies
-deps <- c('vegan', 'ggplot2', 'shape', 'wesanderson', 'matrixStats', 'flux');
+deps <- c('wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  }
+  } 
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-set.seed(42)
 
-# Define function for mormatting growth curves for statistical analysis
-format_curve <- function(raw_exp_data, exp_group, raw_control_data){
-  formatted_data <- c()
-  control_data <- c()
-  for (time in 1:nrow(raw_exp_data)){
-    temp_exp <- cbind(exp_group, time, raw_exp_data[time,])
-    formatted_data <- rbind(formatted_data, temp_exp)
-    temp_control <- cbind('control', time, raw_control_data[time,])
-    control_data <- rbind(control_data, temp_control)
-  }
-  formatted_data <- as.data.frame(rbind(control_data, formatted_data))
-  colnames(formatted_data) <- c('substrate','time','od')
-  formatted_data$od <- as.numeric(as.character(formatted_data$od))
-  
-  return(formatted_data)
-}
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Read in substrate importance data
-cef_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/importances.tsv'
-clinda_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/importances.tsv'
-strep_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/importances.tsv'
-gf_importance_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree_630.bipartite.files/importances.tsv'
-
-cef_importance <- read.delim(cef_importance_file, header=TRUE, sep='\t', row.names=1)
-clinda_importance <- read.delim(clinda_importance_file, header=TRUE, sep='\t', row.names=1)
-strep_importance <- read.delim(strep_importance_file, header=TRUE, sep='\t', row.names=1)
-gf_importance <- read.delim(gf_importance_file, header=TRUE, sep='\t', row.names=1)
-rm(cef_importance_file, clinda_importance_file, strep_importance_file, gf_importance_file)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Format metabolite importance scores
-cef_importance$Metabolite_score <- as.numeric(as.character(cef_importance$Metabolite_score))
-clinda_importance$Metabolite_score <- as.numeric(as.character(clinda_importance$Metabolite_score))
-strep_importance$Metabolite_score <- as.numeric(as.character(strep_importance$Metabolite_score))
-gf_importance$Metabolite_score <- as.numeric(as.character(gf_importance$Metabolite_score))
-
-# Remove non-significant scores
-cef_importance <- as.data.frame(subset(cef_importance, (cef_importance[,3] != 'n.s.')))
-clinda_importance <- as.data.frame(subset(clinda_importance, (clinda_importance[,3] != 'n.s.')))
-strep_importance <- as.data.frame(subset(strep_importance, (strep_importance[,3] != 'n.s.')))
-gf_importance <- as.data.frame(subset(gf_importance, (gf_importance[,3] != 'n.s.')))
-
-# Sort for least important, subset, and format names
-cef_least_importance <- cef_importance[order(cef_importance$Metabolite_score),][c(1:10),]
-clinda_least_importance <- clinda_importance[order(clinda_importance$Metabolite_score),][c(1:10),]
-strep_least_importance <- strep_importance[order(strep_importance$Metabolite_score),][c(1:10),]
-gf_least_importance <- gf_importance[order(gf_importance$Metabolite_score),][c(1:10),]
-cef_least_importance$Compound_name <- gsub('_',' ',cef_least_importance$Compound_name)
-clinda_least_importance$Compound_name <- gsub('_',' ',clinda_least_importance$Compound_name)
-strep_least_importance$Compound_name <- gsub('_',' ',strep_least_importance$Compound_name)
-gf_least_importance$Compound_name <- gsub('_',' ',gf_least_importance$Compound_name)
-
-# Sort for most important
-cef_importance <- cef_importance[order(-cef_importance$Metabolite_score),]
-clinda_importance <- clinda_importance[order(-clinda_importance$Metabolite_score),]
-strep_importance <- strep_importance[order(-strep_importance$Metabolite_score),]
-gf_importance <- gf_importance[order(-gf_importance$Metabolite_score),]
-
-# Write significant ranked data to supplementary table
-write.table(cef_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3cef.tsv', quote=FALSE, sep='\t', row.names=TRUE)
-write.table(clinda_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3clinda.tsv', quote=FALSE, sep='\t', row.names=TRUE)
-write.table(strep_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3strep.tsv', quote=FALSE, sep='\t', row.names=TRUE)
-write.table(gf_importance, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S3gf.tsv', quote=FALSE, sep='\t', row.names=TRUE)
-# Assemble into multi-paneled Excel table downstream
-
-# Take top 50 scores
-cef_importance <- cef_importance[c(1:50),]
-clinda_importance <- clinda_importance[c(1:50),]
-strep_importance <- strep_importance[c(1:50),]
-gf_importance <- gf_importance[c(1:50),]
-
-# find shared important metabolites
-shared_importance <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% clinda_importance[,1])))
-shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% clinda_importance[,1])))
-shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% strep_importance[,1])))
-shared_importance <- as.data.frame(subset(shared_importance, (shared_importance[,1] %in% gf_importance[,1])))
-shared_importance <- shared_importance$Compound_name
-shared_cef <- as.data.frame(subset(cef_importance, (cef_importance[,1] %in% shared_importance)))
-shared_cef <- shared_cef[order(shared_cef$Compound_name),]
-shared_cef$Metabolite_score <- as.numeric(as.character(shared_cef$Metabolite_score))
-shared_clinda <- as.data.frame(subset(clinda_importance, (clinda_importance[,1] %in% shared_importance)))
-shared_clinda <- shared_clinda[order(shared_clinda$Compound_name),]
-shared_clinda$Metabolite_score <- as.numeric(as.character(shared_clinda$Metabolite_score))
-shared_strep <- as.data.frame(subset(strep_importance, (strep_importance[,1] %in% shared_importance)))
-shared_strep <- shared_strep[order(shared_strep$Compound_name),]
-shared_strep$Metabolite_score <- as.numeric(as.character(shared_strep$Metabolite_score))
-shared_gf <- as.data.frame(subset(gf_importance, (gf_importance[,1] %in% shared_importance)))
-shared_gf <- shared_gf[order(shared_gf$Compound_name),]
-shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
-
-score_median <- as.data.frame(apply(cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score), 1, median))
-shared_importance <- cbind(shared_cef$Compound_name, score_median)
-rownames(shared_importance) <- rownames(shared_cef)
-colnames(shared_importance) <- c('Compound_name','Metabolite_score')
-shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
-rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median)
-
-# Subset to most important, distinct metabolites
-cef_importance <- cef_importance[c(1:25),]
-clinda_importance <- clinda_importance[c(1:25),]
-strep_importance <- strep_importance[c(1:25),]
-gf_importance <- gf_importance[c(1:25),]
-cef_only_importance <- as.data.frame(subset(cef_importance, !(cef_importance[,1] %in% clinda_importance[,1])))
-cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance[,1])))
-cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance[,1])))
-clinda_only_importance <- as.data.frame(subset(clinda_importance, !(clinda_importance[,1] %in% cef_importance[,1])))
-clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance[,1])))
-clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance[,1])))
-strep_only_importance <- as.data.frame(subset(strep_importance, !(strep_importance[,1] %in% clinda_importance[,1])))
-strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance[,1])))
-strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance[,1])))
-gf_only_importance <- as.data.frame(subset(gf_importance, !(gf_importance[,1] %in% clinda_importance[,1])))
-gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance[,1])))
-gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance[,1])))
-rm(cef_importance, clinda_importance, strep_importance, gf_importance)
-cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
-clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Metabolite_score),]
-strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
-gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
-cef_only_importance$abx <- 'Cefoperazone (SPF)'
-clinda_only_importance$abx <- 'Clindamycin (SPF)'
-strep_only_importance$abx <- 'Streptomycin (SPF)'
-gf_only_importance$abx <- 'No Antibiotics (GF)'
-top_importances <- rbind(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
-top_importances$abx <- as.factor(top_importances$abx)
-top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
-rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
-
-# Format names to look better for the plot
-top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('monophosphate','p',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('alpha-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('beta-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('\\(R\\)\\-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('\\(S\\)\\-','',top_importances$Compound_name)
-top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR' # shorten a long name
-top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahydromethanopterin'] <- 'THMPT' # shorten a long name
-shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('alpha,alpha\'-','',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('\\(R\\)\\-','',shared_importance$Compound_name)
-shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- expression(CO[2])
-
-# Remove generic KEGG anotations
-top_importances <- as.data.frame(subset(top_importances, !(top_importances$Compound_name %in% c('Malonyl-[acp] methyl ester','Glutaryl-[acp] methyl ester'))))
-
-# Remove overlaps from distinct lists
-top_importances <- as.data.frame(subset(top_importances, !(top_importances$Compound_name %in% shared_importance$Compound_name)))
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# Read in growth rate data
-# Define variables
-growth_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cd630_growth.tsv'
+# Select files
+concentrations <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/ms_substrates.tsv'
+metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
 # Read in data
-growth <- read.delim(growth_file, sep='\t', header=TRUE, row.names=1)
-growth <- as.data.frame(t(growth))
-rm(growth_file)
+concentrations <- t(read.delim(concentrations, sep='\t', header=T, row.names=1))
+metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
 
-# Seperate to groups of each growth substrate and format
-fructose <- cbind(growth$fructose_1, growth$fructose_2, growth$fructose_3) - growth$fructose_blank
-fructose[fructose < 0] <- 0
-mannitol <- cbind(growth$mannitol_1, growth$mannitol_2, growth$mannitol_3) - growth$mannitol_blank
-mannitol[mannitol < 0] <- 0
-salicin <- cbind(growth$salicin_1, growth$salicin_2, growth$salicin_3) - growth$salicin_blank
-salicin[salicin < 0] <- 0
-galactitol <- cbind(growth$galactitol_1, growth$galactitol_2, growth$galactitol_3) - growth$galactitol_blank
-galactitol[galactitol < 0] <- 0
-acetylglucosamine <- cbind(growth$acetylglucosamine_1, growth$acetylglucosamine_2, growth$acetylglucosamine_3) - growth$acetylglucosamine_blank
-acetylglucosamine[acetylglucosamine < 0] <- 0
-acetylneuraminate <- cbind(growth$acetylneuraminate_1, growth$acetylneuraminate_2, growth$acetylneuraminate_3) - growth$acetylneuraminate_blank
-acetylneuraminate[acetylneuraminate < 0] <- 0
-no_carb <- cbind(growth$noCarb_1, growth$noCarb_2, growth$noCarb_3) - growth$noCarb_blank
-no_carb[no_carb < 0] <- 0
-no_aa <- cbind(growth$noAA_1, growth$noAA_2, growth$noAA_3) - growth$noAA_blank
-no_aa[no_aa < 0] <- 0
-bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
-bhi[bhi < 0] <- 0
-sorbitol <- cbind(growth$sorbitol_1, growth$sorbitol_2, growth$sorbitol_3) - growth$sorbitol_blank
-sorbitol[sorbitol < 0] <- 0
-rm(growth)
+# Format and merge tables
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+concentrations <- merge(concentrations, metadata, by='row.names')
+rownames(concentrations) <- concentrations$Row.names
+concentrations$Row.names <- NULL
+concentrations <- subset(concentrations, infection != '630')
+concentrations$infection <- NULL
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+# Sort by treatment group
+concentrations$abx <- factor(concentrations$abx, levels=c('none','streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
 
-# Format growth curves
+# Subset each metabolites - main body
+acetylglucosamine <- concentrations[,c(1,14)]
+mannitol_sorbitol <- concentrations[,c(3,14)]
+galactitol <- concentrations[,c(4,14)]
+salicylate <- concentrations[,c(5,14)]
+acetylneuriminate <- concentrations[,c(6,14)]
 
-# Find medians 
-fructose_median <-  apply(fructose, 1, median)
-mannitol_median <- apply(mannitol, 1, median)
-salicin_median <- apply(salicin, 1, median)
-acetylglucosamine_median <- apply(acetylglucosamine, 1, median)
-acetylneuraminate_median <- apply(acetylneuraminate, 1, median)
-galactitol_median <- apply(galactitol, 1, median)
-no_carb_median <- apply(no_carb, 1, median)
-bhi_median <- apply(bhi, 1, median)
-no_aa_median <- apply(no_aa, 1, median)
-sorbitol_median <- apply(sorbitol, 1, median)
+# Subset each metabolites - supplement
+proline <- concentrations[,c(2,14)]
+ribose <- concentrations[,c(7,14)]
+lysine <- concentrations[,c(8,14)]
+isoleucine <- concentrations[,c(9,14)]
+leucine <- concentrations[,c(10,14)]
+methionine <- concentrations[,c(11,14)]
+threonine <- concentrations[,c(12,14)]
+glycine <- concentrations[,c(13,14)]
 
-# Standard deviations
-acetylneuraminate_sd <- rowSds(acetylneuraminate)
-fructose_sd <-  rowSds(fructose)
-mannitol_sd <- rowSds(mannitol)
-salicin_sd <- rowSds(salicin)
-acetylglucosamine_sd <- rowSds(acetylglucosamine)
-no_carb_sd <- rowSds(no_carb)
-bhi_sd <- rowSds(bhi)
-no_aa_sd <- rowSds(no_aa)
-sorbitol_sd <- rowSds(sorbitol)
-galactitol_sd <- rowSds(galactitol)
-
-# Compile results
-growth_medians <- as.data.frame(cbind(acetylglucosamine_median, sorbitol_median, galactitol_median, 
-                                      acetylneuraminate_median, fructose_median, mannitol_median, salicin_median, no_carb_median, no_aa_median))
-growth_sds <- as.data.frame(cbind(acetylglucosamine_sd, acetylneuraminate_sd, sorbitol_sd, galactitol_sd, 
-                                  fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd))
+# Remove raw data
+rm(concentrations, metadata)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Analyze growth curves
-substrates <- c('acetylglucosamine','acetylneuraminate','sorbitol', 'galactitol','mannitol','salicin','bhi','no_amino_acids','no_carbohydrates')
-
-# Maximum growth rate
-max_rate <- round(c(diff(acetylglucosamine_median)[which.max(diff(acetylglucosamine_median))], 
-                    diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))],
-                    diff(sorbitol_median)[which.max(diff(sorbitol_median))], diff(galactitol_median)[which.max(diff(galactitol_median))],
-                    diff(mannitol_median)[which.max(diff(mannitol_median))], diff(salicin_median)[which.max(diff(salicin_median))], 
-                    diff(bhi_median)[which.max(diff(bhi_median))], diff(no_aa_median)[which.max(diff(no_aa_median))], 
-                    diff(no_carb_median)[which.max(diff(no_carb_median))]), digits=3)
-
-# Time of maximum growth rate
-time_max_rate <- round(c((which.max(diff(acetylglucosamine_median)) * 0.5),
-                         (which.max(diff(acetylneuraminate_median)) * 0.5), (which.max(diff(sorbitol_median)) * 0.5),
-                         (which.max(diff(galactitol_median)) * 0.5), (which.max(diff(mannitol_median)) * 0.5), (which.max(diff(salicin_median)) * 0.5), 
-                         (which.max(diff(bhi_median)) * 0.5), (which.max(diff(no_aa_median)) * 0.5), (which.max(diff(no_carb_median)) * 0.5)), digits=3) - 0.5
-# Maximum OD
-max_od <- round(c(max(acetylglucosamine_median), max(acetylneuraminate_median), max(sorbitol_median),
-                  max(galactitol_median), max(mannitol_median), max(salicin_median), max(bhi_median), max(no_aa_median), max(no_carb_median)), digits=3)
-
-# Time of max OD
-time_max_od <- round(c((which.max(acetylglucosamine_median) * 0.5),
-                       (which.max(acetylneuraminate_median) * 0.5), (which.max(sorbitol_median) * 0.5),
-                       (which.max(galactitol_median) * 0.5), (which.max(mannitol_median) * 0.5), (which.max(salicin_median) * 0.5), 
-                       (which.max(bhi_median) * 0.5), (which.max(no_aa_median) * 0.5), (which.max(no_carb_median) * 0.5)), digits=3) - 0.5
-
-# Growth rate at 24 hours
-rate_24_hrs <- round(c(diff(acetylglucosamine_median)[length(diff(acetylglucosamine_median))], diff(acetylneuraminate_median)[length(diff(acetylneuraminate_median))], 
-                       diff(sorbitol_median)[length(diff(sorbitol_median))], diff(galactitol_median)[length(diff(galactitol_median))], 
-                       diff(mannitol_median)[length(diff(mannitol_median))], diff(salicin_median)[length(diff(salicin_median))], 
-                       diff(bhi_median)[length(diff(bhi_median))], diff(no_aa_median)[length(diff(no_aa_median))], diff(no_carb_median)[length(diff(no_carb_median))]), digits=3)
-
-# Mean growth rate
-mean_rate <- round(c(mean(diff(acetylglucosamine_median)), mean(diff(acetylneuraminate_median)), mean(diff(sorbitol_median)),
-                     mean(diff(galactitol_median)), mean(diff(mannitol_median)), mean(diff(salicin_median)), mean(diff(bhi_median)), mean(diff(no_aa_median)), mean(diff(no_carb_median))), digits=3)
-
-# Area under curve
-area_under <- round(c(auc(acetylglucosamine_median, seq(1,49,1)),
-                      auc(acetylneuraminate_median, seq(1,49,1)), auc(sorbitol_median, seq(1,49,1)),  auc(galactitol_median, seq(1,49,1)),
-                      auc(mannitol_median, seq(1,49,1)), auc(salicin_median, seq(1,49,1)), auc(bhi_median, seq(1,49,1)), auc(no_aa_median, seq(1,49,1)), auc(no_carb_median, seq(1,49,1))), digits=3)
-
-# Assemble the table
-growth_summary <- cbind(substrates, max_rate, time_max_rate, max_od, time_max_od, rate_24_hrs, mean_rate, area_under)
-colnames(growth_summary) <- c('Substrate', 'Max_Growth_Rate', 'Time_of_Max_Rate_in_Hours', 'Max_OD', 'Time_of_Max_OD_in_Hours', 'Rate_at_24_hours', 'Mean_Rate', 'AUC')
-
-# Write growth summary data to supplementary table
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S4.tsv'
-write.table(growth_summary, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
-rm(table_file, growth_summary)
+# Calculate significant differences and correct p-values
+acetylglucosamine_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                         wilcox.test(subset(acetylglucosamine, acetylglucosamine$abx=='none')[,1], 
+                                     subset(acetylglucosamine, acetylglucosamine$abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+mannitol_sorbitol_p <- p.adjust(c(wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(mannitol_sorbitol, abx=='none')[,1], 
+                                              subset(mannitol_sorbitol, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+galactitol_p <- p.adjust(c(wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(galactitol, abx=='none')[,1], subset(galactitol, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+salicylate_p <- p.adjust(c(wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(salicylate, abx=='none')[,1], subset(salicylate, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+acetylneuriminate_p <- p.adjust(c(wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                                  wilcox.test(subset(acetylneuriminate, abx=='none')[,1], 
+                                              subset(acetylneuriminate, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+proline_p <- p.adjust(c(wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(proline, abx=='none')[,1], subset(proline, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+ribose_p <- p.adjust(c(wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(ribose, abx=='none')[,1], subset(ribose, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+lysine_p <- p.adjust(c(wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                       wilcox.test(subset(lysine, abx=='none')[,1], subset(lysine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+isoleucine_p <- p.adjust(c(wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(isoleucine, abx=='none')[,1], subset(isoleucine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+leucine_p <- p.adjust(c(wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                        wilcox.test(subset(leucine, abx=='none')[,1], subset(leucine, abx=='germfree')[,1], exact=FALSE)$p.value), method='holm')
+methionine_p <- p.adjust(c(wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                           wilcox.test(subset(methionine, abx=='none')[,1], subset(methionine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                         method='holm')
+threonine_p <- p.adjust(c(wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(threonine, abx=='none')[,1], subset(threonine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                        method='holm')
+glycine_p <- p.adjust(c(wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='streptomycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='clindamycin')[,1], exact=FALSE)$p.value,
+                          wilcox.test(subset(glycine, abx=='none')[,1], subset(glycine, abx=='germfree')[,1], exact=FALSE)$p.value),
+                        method='holm')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Set up plotting environment
+# Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=12, height=14.5)
-layout(matrix(c(1,1,2,2,
-                1,1,2,2,
-                3,3,3,3,
-                3,3,3,3), nrow=4, ncol=4, byrow=TRUE))
+select_palette <- c('gray', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
+pdf(file=plot_file, width=9, height=10)
+layout(matrix(c(1,2,3,
+                4,5,6,
+                7,8,8),
+              nrow=3, ncol=3, byrow = TRUE))
 
-#---------------------------------------#
+#--------------------------------#
 
-# Shared metabolite importances
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black',
-         xlab='Median Importance Score', xlim=c(0,10), pch=19, lwd=3)
-segments(x0=rep(0,10), y0=c(1:9), x1=rep(12,10), y1=c(1:9), lty=2) # Dotted lines
-mtext('A', side=2, line=2, las=2, adj=2.7, padj=-16, cex=1.5)
+# Acetylglucosamine
+par(las=1, mar=c(0.2,4,1,1), mgp=c(2.5,0.7,0))
+boxplot(Nacetylglucosamine_Nacetylgalactosamine~abx, data=acetylglucosamine, col=select_palette, ylim=c(0,14), whisklty=1, cex.lab=1.1,
+           xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'N-Acetylglucosamine + N-Acetylgalactosamine', bty='n', cex=0.9)
+axis(2, at=seq(0,14,3.5), labels=c('0.0','3.5','7.0','10.5','14.0'))
+text(c(2,3,4,5), c(7,2.3,1.6,2.3), labels=c('*','*','*','*'), cex=2.5)
 
-#---------------------------------------#
+#--------------------------------#
 
-# Distinct metabolite importances
-par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
-dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
-         lcolor=NA, cex=1.2, groups=top_importances$abx, color='black',
-         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
-         gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-mtext('B', side=2, line=2, las=2, adj=2.3, padj=-16, cex=1.5)
-segments(x0=rep(0, 15), y0=c(1:17, 20:21, 24:25, 28:30), x1=rep(12, 15), y1=c(1:17, 20:21, 24:25, 28:30), lty=2) # Dotted lines
+# Salicylate
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(salicylate~abx, data=salicylate, col=select_palette, ylim=c(0,5.2), whisklty=1, cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'Salicylate', bty='n', cex=0.9)
+axis(2, at=seq(0,5.2,1.3), labels=c('0.0','1.3','2.6','3.9','5.2'))
+text(c(2,3,4,5), c(2.8,1.8,1.9,0.6), labels=c('*','*','*','*'), cex=2.5)
 
-#---------------------------------------#
+#--------------------------------#
 
-# Growth on important carbohydrates
-par(mar=c(7,7,1.5,2), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(4,2,0))
-plot(0, type='n', xaxt='n', yaxt='n', xlim=c(0,50), ylim=c(-0.03,1.0), lwd=3, pch=15, xlab='Time (hours)', ylab=expression(OD[600]), cex=2.3)
-abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
-abline(v=seq(1,50,2), lty=3, col='gray68') # adding gridlines
-axis(1, at=seq(1,49,4), labels=seq(0,24,2), tck=-0.018)
-axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('C', side=2, line=2, las=2, adj=3, padj=-17, cex=1.5)
+# Galactitol
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(galactitol~abx, data=galactitol, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+mtext('C', side=2, line=2, las=2, adj=1.4, padj=-5)
+legend('topright', 'Galactitol', bty='n', cex=0.9)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(3,5), c(2.7,2.35), labels=c('*','*'), cex=2.5)
 
-# Shared
-lines(growth_medians$acetylglucosamine_median, type='o', col='black', lwd=2.5, pch=6, cex=2.3)
-segments(x0=seq(1,49,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1), y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='black')
+#--------------------------------#
 
-# Streptomycin
-lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
-segments(x0=seq(1,49,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+# Mannitol - Sorbitol
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(mannitol_sorbitol~abx, data=mannitol_sorbitol, col=select_palette, ylim=c(0,50), whisklty=1, cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+mtext('D', side=2, line=2, las=2, adj=1.5, padj=-5)
+legend('topright', 'Mannitol + Sorbitol', bty='n', cex=0.9)
+axis(2, at=seq(0,50,12.5), labels=c('0.0','12.5','25.0','37.5','50.0'))
+text(c(3,5), c(47,43), labels=c('*','*'), cex=2.5)
 
-# Cefoperazone
-lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2.5, pch=1, cex=2.7)
-segments(x0=seq(1,49,1), y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1), y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median+growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median+growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$mannitol_median-growth_sds$mannitol_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$mannitol_median-growth_sds$mannitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[3])
+#--------------------------------#
 
-# Clindamycin
-lines(growth_medians$salicin_median, type='o', col=wes_palette('FantasticFox')[5], lwd=2.5, pch=2, cex=2.5)
-segments(x0=seq(1,49,1), y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1), y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median+growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median+growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$salicin_median-growth_sds$salicin_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$salicin_median-growth_sds$salicin_sd, lwd=2.5, col=wes_palette('FantasticFox')[5])
+# Acetylneuriminate
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(Nacetylneuraminate~abx, data=acetylneuriminate, col=select_palette, ylim=c(0,3), whisklty=1, cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5)
+legend('topright', 'N-Acetylneuriminate', bty='n', cex=0.9)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(3,5), c(2.2,2.3), labels=c('*','*'), cex=2.5)
 
-# Gnotobiotic
-lines(growth_medians$acetylneuraminate_median, type='o', col='forestgreen', lwd=2.5, pch=5, cex=2.5)
-segments(x0=seq(1,49,1), y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1), y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median+growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$acetylneuraminate_median-growth_sds$acetylneuraminate_sd, lwd=2.5, col='forestgreen')
+#--------------------------------#
 
-# Control
-lines(growth_medians$no_carb_median, type='o', lwd=3, pch=16, cex=0, col='gray45')
-segments(x0=seq(1,49,1), y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1), y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, cex=2, col='gray45')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median+growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median+growth_sds$no_carb_sd, lwd=2.5, col='gray45')
-segments(x0=seq(1,49,1)-0.2, y0=growth_medians$no_carb_median-growth_sds$no_carb_sd, x1=seq(1,49,1)+0.2, y1=growth_medians$no_carb_median-growth_sds$no_carb_sd, lwd=2.5, col='gray45')
+# Proline
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(proline~abx, data=proline, col=select_palette, whisklty=1, ylim=c(0,3), cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', 'Proline', bty='n', cex=0.9)
+mtext('F', side=2, line=2, las=2, adj=1.3, padj=-5)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(2,3,4,5), c(3.0,2.8,2.3,2.85), labels=c('*','*','*','*'), cex=2.5)
 
-legend('topleft', legend=c('No Carbohydrates','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuriminate'), 
-       col=c('gray45','black',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(16,6,0,1,2,5), cex=1.8, pt.cex=c(0,3.4,3.4,3.4,3.4,3.4), lwd=3, bg='white')
+# Glycine
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+boxplot(glycine~abx, data=glycine, col=select_palette, whisklty=1, ylim=c(0,3), cex.lab=1.1,
+        xaxt='n', yaxt='n', ylab='Scaled Intensity', boxlwd=2, whisklwd=2, staplelwd=2, outline=FALSE, range=0, medlwd=2)
+legend('topright', 'Glycine', bty='n', cex=0.9)
+mtext('G', side=2, line=2, las=2, adj=1.3, padj=-5)
+axis(2, at=seq(0,3,0.75), labels=c('0.0','0.75','1.5','2.25','3.0'))
+text(c(3,5), c(2.5,2.1), labels=c('*','*'), cex=2.5)
+
+mtext(c('No Antibiotics\nSPF','Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF'), side=1, at=c(1:5), cex=0.77, padj=1)
+mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
+mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
+
+#--------------------------------#
+
+
+
+# NEED A PANEL ADDRESSING CORRELATION WITH IMPORTANCE SCORES
+par(las=1, mar=c(0.2,4,0.2,1), mgp=c(2.5,0.7,0))
+plot(1, xlab='Metabolite Concentration', ylab='Importance Score')
+
+
+mtext('H', side=2, line=2, las=2, adj=1.3, padj=-5)
 
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Clean up
+#Clean up
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
 }
 rm(list=ls())
 gc()
-
-
 

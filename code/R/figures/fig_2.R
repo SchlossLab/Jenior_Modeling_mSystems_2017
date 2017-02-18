@@ -1,217 +1,201 @@
 
 # Load dependencies
-deps <- c('shape', 'wesanderson', 'plotrix');
+deps <- c('wesanderson','vegan');
 for (dep in deps){
-  if (dep %in% installed.packages()[,"Package"] == FALSE){
+  if (dep %in% installed.packages()[,'Package'] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
-  } 
+  }
   library(dep, verbose=FALSE, character.only=TRUE)
 }
+set.seed(42)
 
-# Select files
-cfu_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
-toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/toxin_titer.dat'
+#--------------------------------------------------------------------------------------------------------------#
 
-# Read in data
-cfu <- read.delim(cfu_file, sep='\t', header=T)
-cfu_raw <- cfu
-toxin <- read.delim(toxin_file, sep='\t', header=T)
-toxin_raw <- toxin
-rm(cfu_file, toxin_file)
+# Define variables
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.txt'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.txt'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.txt'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.txt'
 
-# Format CFU data and collect summary statistics
-cfu[cfu == 0] <- 100
-cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
-cfu$cfu_spore <- log10(cfu$cfu_spore)
-cfu$mouse <- NULL
-cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
-cfu$cage <- NULL
-cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
-vegetative_cfu <- cfu
-vegetative_cfu$cfu_spore <- NULL
-spore_cfu <- cfu
-spore_cfu$cfu_vegetative <- NULL
-cef <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2]))
-strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2]))
-clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
-gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
-conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
-vege_medians <- c(strep, cef, clinda, gf, conv)
-vege_medians[vege_medians == 2.0] <- 1.6
-cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
-strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
-clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
-gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
-conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
-spore_medians <- c(strep, cef, clinda, gf, conv)
-spore_medians[spore_medians == 2.0] <- 1.6
-rm(cfu, cef, strep, clinda, gf, conv)
-vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
-vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
-spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
+# Open files
+cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE)
+colnames(cefoperazone) <- c('gene', 'Cefoperazone')
+clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE)
+colnames(clindamycin) <- c('gene', 'Clindamycin')
+streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE)
+colnames(streptomycin) <- c('gene', 'Streptomycin')
+germfree <- read.delim(germfree_file, sep='\t', header=FALSE)
+colnames(germfree) <- c('gene', 'Germfree')
 
-# Format toxin data and find summary statistics
-toxin$mouse <- NULL
-toxin$cage <- NULL
-toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
-cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
-strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
-clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
-gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
-conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
-toxin_medians <- c(strep, cef, clinda, gf, conv)
-toxin_medians[toxin_medians <= 2.0] <- 1.9
-toxin$titer[toxin$titer <= 2.0] <- 1.9
-rm(cef, strep, clinda, gf, conv)
+# Clean up
+rm(cefoperazone_file, clindamycin_file, streptomycin_file, germfree_file)
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+# Merge tables
+combined_mapping <- merge(streptomycin, cefoperazone, by='gene')
+combined_mapping <- merge(combined_mapping, clindamycin, by='gene')
+combined_mapping <- merge(combined_mapping, germfree, by='gene')
+combined_mapping$gene <- gsub('Clostridium_difficile_630\\|','', combined_mapping$gene)
+combined_mapping$gene <- gsub('ENA\\|CDT20869\\|CDT20869.1\\|Clostridium_difficile_putative_phage_replication_protein_','', combined_mapping$gene)
+combined_mapping$gene <- gsub('_',' ', combined_mapping$gene)
+rownames(combined_mapping) <- combined_mapping$gene
+combined_mapping$gene <- NULL
+rm(cefoperazone, clindamycin, streptomycin, germfree)
 
-# Calculate significant differences
+#--------------------------------------------------------------------------------------------------------------#
 
-cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
-clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
-streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
-germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
+# Define subsets of interest
+sigma_keep <- c('TcdR','TcdC','CdtR','SigK', 'SigF', 'CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex', 'SigG', 'SigA1')
+paloc_keep <- c('TcdE','TcdA','TcdB')
+sporulation_keep <- c('SpoIIAB','SpoIIE','SpoVS','SpoIVA','SpoVFB','SpoVB','SpoVG','CdeC','CotJB2','CotD',
+                      'SspA','SspB')
+quorum_keep <- c('LuxS', 'AgrD', 'AgrB', 'AgrA', 'AgrC')
 
-gf_vs_cef_tox_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
-gf_vs_clinda_tox_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
-gf_vs_strep_tox_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
-cef_vs_clinda_tox_p <- wilcox.test(cefoperazone, clindamycin, exact=F)$p.value
-cef_vs_strep_tox_p <- wilcox.test(cefoperazone, streptomycin, exact=F)$p.value
-clinda_vs_strep_tox_p <- wilcox.test(clindamycin, streptomycin, exact=F)$p.value
+# Need to add agr A and C
 
-#p_values <- c(,,,,,,,)
-#p_values <- p.adjust(p_values, method='holm')
 
-cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
-clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
-streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
-germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
+select_genes <- c(sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
 
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 3.807e-05, corrected = 0.00019035, ***
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 3.09e-05, corrected = 0.0001854, ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 4.304e-05, corrected = 0.00019035, ***
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
-wilcox.test(streptomycin, cefoperazone, exact=F) # p-value = 0.4618, corrected = 0.9927, n.s.
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
-rm(germfree, cefoperazone, clindamycin, streptomycin)
+# Pull of the genes of interest
+combined_mapping <- subset(combined_mapping, rownames(combined_mapping) %in% select_genes)
+rm(select_genes)
 
-p_values <- c(3.807e-05,3.09e-05,4.304e-05,0.3309,0.4618,0.3309)
-p.adjust(p_values, method='holm')
-rm(p_values)
+# Calculate relative abundance
+combined_mapping <- t(combined_mapping)
+combined_mapping <- sweep(combined_mapping, 1, rowSums(combined_mapping), '/') * 100
+combined_mapping[is.na(combined_mapping)] <- 0.0
+combined_mapping <- t(combined_mapping)
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------#
 
-# Set up multi-panel figure
+# Sigma factors
+# Integration of Metabolism and Virulence by Clostridium difficile CodY
+# Global transcriptional control by glucose and carbon regulator CcpA in Clostridium difficile.
+# Proline-Dependent Regulation of Clostridium difficile Stickland Metabolism
+# The Clostridium difficile spo0A Gene Is a Persistence and Transmission Factor
+sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
+rownames(sigma) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 
+                     'sigG', 'sigH', 'sigK', 'spo0A', 'tcdC', 'tcdR')
+sigma <- t(sigma)
+sigma <- cbind(sigma[,3], sigma[,1], sigma[,2], sigma[,12], sigma[,13], sigma[,11], 
+               sigma[,6], sigma[,7], sigma[,8], sigma[,9], sigma[,10], sigma[,5], sigma[,4])
+sigma[sigma == 0] <- NA
+
+# Pathogenicity
+paloc <- subset(combined_mapping, rownames(combined_mapping) %in% paloc_keep)
+rownames(paloc) <- c('tcdA', 'tcdB', 'tcdE')
+paloc <- t(paloc)
+paloc[paloc == 0] <- NA
+
+# Quorum sensing
+quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
+rownames(quorum) <- c('agrA', 'agrB', 'agrC', 'agrD', 'luxS')
+quorum <- t(quorum)
+quorum[quorum == 0] <- NA
+
+# Sporulation
+# Genes with >0.01 variance included in final analysis
+sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulation_keep)
+rownames(sporulation) <- c('cdeC','cotD','cotJB2','spoIIAB','spoIIE',
+                           'spoIVA','spoVB','spoVFB','spoVG','spoVS','sspA','sspB')
+sporulation <- t(sporulation)
+sporulation <- cbind(sporulation[,4], sporulation[,5], sporulation[,9], sporulation[,1], 
+                     sporulation[,2], sporulation[,3], sporulation[,6], sporulation[,7], 
+                     sporulation[,10], sporulation[,8], sporulation[,11], sporulation[,12])
+colnames(sporulation) <- c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 
+                           'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')
+sporulation[sporulation == 0] <- NA
+
+# Clean up
+rm(combined_mapping, sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
+
+#--------------------------------------------------------------------------------------------------------------#
+
+# Set the color palette and plotting environment
+select_palette <- c(wes_palette('FantasticFox')[1], wes_palette('FantasticFox')[3], wes_palette('FantasticFox')[5], 'forestgreen')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
-select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
-pdf(file=plot_file, width=5.5, height=9)
-layout(matrix(c(1,
-                2,
-                3), 
-              nrow=3, ncol=1, byrow = TRUE))
+make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
+pdf(file=plot_file, width=12, height=10)
+layout(matrix(c(1,1,2,
+                3,3,3),
+              nrow=2, ncol=3, byrow = TRUE))
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------------#
 
-# A.  Vegetative cell CFU
-par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.2,
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
-           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15)
-labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
-abline(h=2, col="black", lty=2, lwd=1.5) # LOD
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.5,
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
+# Legend plot
+#plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
+#legend('center', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No antibiotics (GF)'), pt.cex=3.5, cex=1.7,
+#       pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
+      
+# Sporulation
+par(las=1, mar=c(4.5,6,1,1), mgp=c(3.9, 1, 0))
+barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
+box()
+axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.5)
+legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
+#segments(x0=c(1.5,29), y0=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), 
+#         x1=c(22,71), y1=par()$usr[3]-0.16*(par()$usr[4]-par()$usr[3]), lwd=2, xpd=TRUE)
+#text(x=c(22,59), y=par()$usr[3]-0.2*(par()$usr[4]-par()$usr[3]), 
+#     labels=c('Early','Late'), adj=3, xpd=TRUE, cex=1.6)
+mtext('A', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
+text(x=c(21.5,25,27,30.5,32.5,54.5), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
-# Draw axis break
-axis.break(2, 1.5, style='slash')
+legend('topleft', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No antibiotics (GF)'), pt.cex=3.5, cex=1.7,
+       pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
 
-# Draw median
-segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
-segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
-segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
-segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
-segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
+# Pathogenicity
+par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
+barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,1), cex.lab=1.4)
+box()
+axis(side=2, at=c(0,0.333,0.666,1.0), c('0%','0.3%','0.6%','1.0%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
+mtext('B', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
+text(x=c(5,10.5,13,15,16), y=0.025, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
-mtext('A', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
+# Quorum sensing
+#par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
+#barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+#        ylab='Relative Transcript Abundance', ylim=c(0,2.5), cex.lab=1.4)
+#box()
+#axis(side=2, at=c(0,0.833,1.666,2.5), c('0%','0.83%','1.66%','2.5%'), tick=TRUE, las=1, cex.axis=1.3)
+#text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+#     labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
+#legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
+#mtext('C', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
+#text(x=c(4.5,14.5), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
-#-------------------------------------------------------------------------------------------------------------------------------------#
+# Sigma factors
+par(las=1, mar=c(4.5,6,1,1), mgp=c(3.9, 1, 0))
+barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,25), cex.lab=1.4)
+box()
+axis(side=2, at=c(0,8,17,25), c('0%','8%','17%','25%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 
+                          'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
+mtext('C', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
+text(x=c(21.5,23.5,24.5,25.5,26.5,71), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
-# B.  Spore CFU
-par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.2, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
-           ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
-abline(h=2, col="black", lty=2, lwd=1.5)
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.5, 
-           ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Spore CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
-
-# Draw axis break
-axis.break(2, 1.5, style='slash') 
-
-# Draw median
-segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
-segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
-segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
-segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
-segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
-
-# Adding significance to plot
-segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
-text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
-
-mtext('B', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-# C.  Toxin data
-par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
-stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
-           method='jitter', jitter=0.15, cex=0)
-abline(h=2, lty=2, lwd=1.5) # LOD
-stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
-           method='jitter', jitter=0.15, cex=2, add=TRUE)
-mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.77)
-mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
-mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
-
-axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
-
-# Draw axis break
-axis.break(2, 1.75, style='slash') 
-
-
-
-# Draw median
-segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
-segments(1.6, toxin_medians[2], 2.4, toxin_medians[2], lwd=3) # streptomycin
-segments(2.6, toxin_medians[3], 3.4, toxin_medians[3], lwd=3) # clindamycin
-segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
-segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
-
-# Adding significance to plot
-segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
-text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
-
-# Plot label
-mtext('C', side=2, line=2, las=2, adj=1.6, padj=-9, cex=1.1)
-
-#-------------------------------------------------------------------------------------------------------------------------------------#
-
-#Clean up
 dev.off()
-rm(labelsY, plot_file, toxin_medians, spore_medians, vege_medians, spore_cfu, toxin, vegetative_cfu, select_palette)
+
+
+#--------------------------------------------------------------------------------------------------------------#
+
+# Clean up
+rm(quorum, sigma, sporulation, paloc, 
+   plot_file, select_palette, make.italic)
 for (dep in deps){
-  pkg <- paste('package:', dep, sep='')
-  detach(pkg, character.only = TRUE)
+  pkg <- paste('package:', dep,sep='')
+   detach(pkg, character.only = TRUE)
 }
 rm(dep, deps, pkg)
 gc()
