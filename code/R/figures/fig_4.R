@@ -27,8 +27,11 @@ rm(network_file, ko_file, layout_file)
 raw_graph <- graph.data.frame(network, directed=TRUE)
 rm(network)
 
+# Simplify graph
+simple_graph <- simplify(raw_graph)
+
 # Decompose graph
-decomp_whole_graph <- decompose.graph(raw_graph)
+decomp_whole_graph <- decompose.graph(simple_graph)
 
 # Get largest component and get node information
 largest_component <- which.max(sapply(decomp_whole_graph, vcount))
@@ -47,7 +50,6 @@ rm(example_sim_file)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Format simulated distribution
-# Conover, W.J. (1980) Practical Nonparametric Statistics John Wiley and Sons, New York.  
 score_density <- density(example_sim)
 score_median <- median(example_sim)
 example_sim <- sort(unique(example_sim))
@@ -65,27 +67,28 @@ upper_95 <- example_sim[score_k]
 # Determine some statistics about graph
 
 # Print a summary of nodes and edges for entire graph
-summary(raw_graph)
-print(length(as.vector(grep('K', V(raw_graph)$name, value=TRUE))))
-print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
+summary(simple_graph)
+print(length(as.vector(grep('K', V(simple_graph)$name, value=TRUE))))
+print(length(as.vector(grep('C', V(simple_graph)$name, value=TRUE))))
 
 # Find degree centrality
-graph_degree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
+graph_degree <- as.data.frame(degree(simple_graph, v=V(simple_graph), mode='all'))
 
-# Calculate betweensness centrality
-graph_betweenness <- as.data.frame(betweenness(raw_graph))
+# Calculate betweenness centrality
+graph_betweenness <- as.data.frame(betweenness(simple_graph))
 
 # Calculate closeness centrality
-graph_closeness <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='all'))
+graph_closeness_in <- as.data.frame(closeness(simple_graph, vids=V(simple_graph), mode='in'))
+graph_closeness_out <- as.data.frame(closeness(simple_graph, vids=V(simple_graph), mode='out'))
+graph_closeness_total <- as.data.frame(closeness(simple_graph, vids=V(simple_graph), mode='total'))
 
 # Merge characteristic tables
 graph_topology <- merge(graph_degree, graph_betweenness, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
 graph_topology$Row.names <- NULL
-graph_topology <- merge(graph_topology, graph_closeness, by='row.names')
+graph_topology <- merge(graph_topology, graph_closeness_total, by='row.names')
 rownames(graph_topology) <- graph_topology$Row.names
-colnames(graph_topology) <- c('KEGG_ID','Degree_centrality','Betweenness_centrality', 'Closeness_centrality')
-rm(graph_degree, graph_betweenness, graph_closeness, largest_scc, largest_whole_graph)
+colnames(graph_topology) <- c('KEGG_ID','Degree_centrality','Betweenness_centrality','Closeness_centrality')
 
 # Read in KEGG code translation files
 kegg_substrate_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/compound_names.tsv'
@@ -107,6 +110,16 @@ enzyme_topology$Row.names <- NULL
 colnames(enzyme_topology)[5] <- 'Compound_name'
 rm(kegg_substrate, kegg_enzyme)
 
+# Get top ranking substrates from each
+top_enzyme_DC <- as.vector(enzyme_topology[order(-enzyme_topology$Degree_centrality),][1:10,5])
+top_enzyme_BC <- as.vector(enzyme_topology[order(-enzyme_topology$Betweenness_centrality),][1:10,5])
+top_enzyme_CC <- as.vector(enzyme_topology[order(-enzyme_topology$Closeness_centrality),][1:10,5])
+top_substrate_DC <- as.vector(substrate_topology[order(-substrate_topology$Degree_centrality),][1:10,5])
+top_substrate_BC <- as.vector(substrate_topology[order(-substrate_topology$Betweenness_centrality),][1:10,5])
+top_substrate_CC <- as.vector(substrate_topology[order(-substrate_topology$Closeness_centrality),][1:10,5])
+shared_enzyme <- intersect(top_enzyme_BC, top_enzyme_CC)
+shared_substrate <- intersect(top_substrate_BC, top_substrate_CC)
+
 # Write tables to files, ranked by betweenness
 table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/Table_S2_enzyme.tsv'
 write.table(enzyme_topology, file=table_file, quote=FALSE, sep='\t', row.names=FALSE)
@@ -118,15 +131,11 @@ rm(table_file, graph_topology, enzyme_topology, substrate_topology)
 
 # Transform largest component graph for plotting
 
-# Remove loops and multiple edges to make visualzation easier
-simple_graph <- simplify(raw_graph)
-decomp_simple_graph <- decompose.graph(simple_graph)
-largest_component <- which.max(sapply(decomp_simple_graph, vcount))
-largest_simple_graph <- decomp_simple_graph[[largest_component]]
-ko_simp <- as.vector(grep('K', V(largest_simple_graph)$name, value=TRUE))
-substrate_simp <- as.vector(grep('C', V(largest_simple_graph)$name, value=TRUE))
+# Get nodes for visualization
+ko_simp <- as.vector(grep('K', V(largest_whole_graph)$name, value=TRUE))
+substrate_simp <- as.vector(grep('C', V(largest_whole_graph)$name, value=TRUE))
 nodes <- c(ko_simp, substrate_simp)
-summary(largest_simple_graph)
+summary(largest_whole_graph)
 print(length(ko_simp))
 print(length(substrate_simp))
 
@@ -140,14 +149,14 @@ ko <- as.data.frame(subset(ko, ko[,1] %in% ko_simp))
 ko <- ko[match(ko_simp, ko$KO_code),]
 mappings <- c(as.vector(ko[,2] * 5), rep(2, length(substrate_simp)))
 node_size <- cbind.data.frame(nodes, mappings)
-node_size <- node_size[match(V(largest_simple_graph)$name, node_size$nodes),]
+node_size <- node_size[match(V(largest_whole_graph)$name, node_size$nodes),]
 node_size <- setNames(as.numeric(node_size[,2]), as.character(node_size[,1]))
-V(largest_simple_graph)$size <- as.matrix(node_size)
-rm(raw_graph, ko, ko_simp, substrate_simp, node_size, mappings, nodes, simple_graph, decomp_simple_graph, largest_component)
+V(largest_whole_graph)$size <- as.matrix(node_size)
+rm(raw_graph, ko, ko_simp, substrate_simp, node_size, mappings, nodes, simple_graph)
 
 # Color graph
-V(largest_simple_graph)$color <- ifelse(grepl('K', V(largest_simple_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
-E(largest_simple_graph)$color <- 'gray15' # Color edges
+V(largest_whole_graph)$color <- ifelse(grepl('K', V(largest_whole_graph)$name), adjustcolor('firebrick3', alpha.f=0.6), 'blue3') # Color nodes
+E(largest_whole_graph)$color <- 'gray15' # Color edges
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -193,7 +202,7 @@ layout(matrix(c(1,2,
 
 # Large component of C. difficile 630 graph
 par(mar=c(0,1,1,1), xpd=TRUE)
-plot(largest_simple_graph, vertex.label=NA, layout=optimal_layout1,
+plot(largest_whole_graph, vertex.label=NA, layout=optimal_layout1,
      edge.arrow.size=0.25, edge.arrow.width=0.4, vertex.frame.color='black')
 rect(xleft=0.4, ybottom=-0.7, xright=0.75, ytop=-0.4, lwd=2) # box
 
@@ -204,9 +213,9 @@ text(x=-1, y=1, 'A', cex=2)
 # Importance calculation
 
 plot.new()
-text(x=0.2, y=0.65, expression(paste(bold('(I) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
-text(x=0.7, y=0.65, expression(paste(bold('(II) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
-text(x=0.46, y=0.35, expression(paste(bold('(III) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+text(x=0.2, y=0.65, expression(paste(bold('( I ) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
+text(x=0.7, y=0.65, expression(paste(bold('( II ) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
+text(x=0.46, y=0.35, expression(paste(bold('( III ) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
 
 #---------------------------------------#
 

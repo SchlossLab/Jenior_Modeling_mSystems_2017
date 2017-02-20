@@ -67,6 +67,9 @@ set.seed(42)
 
 In this study we demonstrate that not only does *C. difficile* alter pathogenesis between differentially sensitized hosts, but also exploits separate nutrient niches across environments. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect distinct hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by accessibility of specific carbohydrates utilized for growth during each infection. This work has implications for elucidating drivers of *C. difficile* pathogenesis and uncover specifics colonization resistance. This could lead to the discovery of targeted measures to prevent *C. difficile* colonization including potential pre- or probiotic therapies. Furthermore, the metabolite importance calculation workflow descibed here could provide a useful platform to enable more rapid discoveries for the nutrient requirements of bacteria to be made in the future.
 
+Also provides a tool to the field to study the ecology of pathogens or communities based on transcription...
+
+
 
 ###Introduction
 
@@ -178,11 +181,7 @@ Due to the connection between metabolism, sporulation, and toxin production in *
 
 ***C. difficile* adapts the expression of genes for virulence and key sigma factors that are under the control of environmental nutrient concentrations.**
 
-To more closely investigate the responses of *C. difficile* to colonizing distinct susceptible gut environments, we performed whole transcriptome analysis of *C. difficile* during infection of the antibiotic treatment models. As *C. difficile* represents <0.001% of the bacterial load in the ceca of antibiotic-treated SPF mice (Fig. S2C), and rRNA depletion eliminating >90% of each raw RNA isolation [@ONeil2013], it was necessary to pool samples within each treatment group. Furthermore, this also required a high degree of sequencing depth per sample in order to yeild sufficient numbers of reads that mapped to *C. difficile* str. 630 (4019 genes and putative ORFs; KEGG 2016) with 100% fidelity. Approximately 300 million raw paired-end reads were sequenced per pooled sample, with an average of \~167 thousand reads attributed to *C. dificile* following all curation steps (outlined in Methods). This corresponded to an average of \~42x coverage across the *C. difficile* str. 630 reference used, while low compared to some transcriptional studies of *in vitro* bacterial monoculture or *in vivo* gnotobiotic monoassociation [@Antunes2012;@Janoir2013], is not feasible in the context of a diverse bacterial community. Because of these factors the read abundances for *C. difficile* reported here were unavoidable, however these levels have been shown to be largely acceptable for our type of analysis due to the focus on large-scale differences in specific annotated genes [@Haas2012].
-
-Need to generate supplemental figure to calculate c diff load per ceca by 16S abundance
-
-4.48%	62.93%	16.67%	14.9% C. diff genes with no reads in each sample
+To more closely investigate the responses of *C. difficile* to colonizing distinct susceptible gut environments, we performed whole transcriptome analysis of *C. difficile* during infection of the antibiotic treatment models. As *C. difficile* represents <0.001% of the bacterial load in the ceca of antibiotic-treated SPF mice (Fig. S2C), with rRNA depletion also eliminating >90% of each raw RNA isolation [@ONeil2013], it was necessary to pool samples within each treatment group. Moreover, this also required a high degree of sequencing depth per sample in order to yeild sufficient numbers of reads that mapped to *C. difficile* str. 630 (4019 genes and putative ORFs; KEGG 2016) with 100% fidelity. Approximately 300 million raw paired-end reads were sequenced per pooled sample, with an average of \~167 thousand reads attributed to *C. dificile* following all curation steps (outlined in Methods). This corresponded to an average of \~42x coverage across the *C. difficile* str. 630 reference used, while low compared to some transcriptional studies of *in vitro* bacterial monoculture or *in vivo* gnotobiotic monoassociation [@Antunes2012;@Janoir2013], is not feasible in the context of a diverse bacterial community. Because of these factors the read abundances for *C. difficile* reported here were unavoidable, however these levels have been shown to be largely acceptable for our type of analysis due to the focus on large-scale differences in specific annotated genes [@Haas2012]. Furthermore, microarray-based gene expression analysis was also not a viable alternative as the amount of background transcription from other bacterial species would contribute greatly to background non-specific binding of orthologous transcipt and eliminate any true *C. difficile* signal.
 
 We initially focused our analysis to focus on genes that control or code for functions that have been linked to nutrient concentrations in the intestines during CDI. After observing differences in spore load, we first examined transcription of the most highly expressed genes in the *C. difficile* sporulation pathway [@Putnam2013;@Underwood2009a;@Fimlaid2013;@Saujet2014] (Fig. 2a). Across the four conditions where *C. difficile* colonized, we observed transcriptional profiles consistent with observed spore levels (Fig. 1b). The mice treated with cefoperazone had the lowest spore density and had the highest level of expression for the anti-sigma factor *spoVG*. The produts of these genes are involved in suppressing expression of genes found later in the sporulation pathway [@Matsuno1999]. Streptomycin-treated mice had the next highest density of spores and the highest expression of genes associated with sporulation activation (*spoIIAB*/*spoIIE*), but they also had relatively high levels of expression of *sspA* and *sspB*, which are genes that code for effectors that protect DNA from damage during dormancy. Next, in mice treated with clindamycin, *C. difficile* expressed genes associated with late stages of sporulation, including those for spore coat components (*cdeC*, *cotD*, and *cotJB2*), spore formation (*spoIVA*, *spoVB*, *spoVS*,and *spoVFB*), and *sspA* and *sspB*. Finally, GF mice harbored the highest density of spores and those *C. difficile* primarily expressed the dormancy genes linked with the latest stages sporulation. Together these data demonstrate that *C. difficile* differentially expressed genes associated with sporulation that corresponded to the presence of spores in the cecum. Interestingly, the levels of expression for genes associated with toxin production did not match the toxin titers observed in the animals. These results suggest that the relationship between toxin titer and the expression of genes for toxin production is even more complex than current models indicate.
 
@@ -233,13 +232,12 @@ graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
 graph_undirected <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
 
 # Calculate betweensness of entrire graph
-graph_betweenness <- as.data.frame(betweenness(raw_graph))
+graph_betweenness <- as.data.frame(betweenness(raw_graph, normalized=TRUE))
 
 # Calculate closeness of entrire graph
-graph_closeness <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='all'))
-
-# Calculate closeness of largest, strongly-connected component
-occi <- as.data.frame(closeness(largest_whole_graph, vids=largest_scc, mode='all')) # Ma (2003)
+graph_closeness_in <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='in', normalized=TRUE))
+graph_closeness_out <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='out', normalized=TRUE))
+graph_closeness_total <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='total', normalized=TRUE))
 
 ```
 
@@ -260,74 +258,13 @@ acetate_p <- wilcox.test(mock, infected, exact=F)$p.value
 ```
 
 **Structure of genome-scale bipartite metabolic model underscores known bacterial metabolism.** 
-To further investigate which metabolites were differentially utilized between conditions, we represented the metabolic network of *C. difficile* as a directed bipartite graph using the genome annotation. Enzymes and metabolites were represented by nodes and their interaction by the edge between the nodes (Fig. 4a). To validate our metabolic network, we calculated degree centrality (DC), betweenness centrality (BC), and closeness centrality (CC) for all enzyme and metabolite nodes in the bipartite metabolic network of *C. difficile* generated for this study (Table S2). 
+To further investigate which metabolites were differentially utilized between conditions, we represented the metabolic network of *C. difficile* as a directed bipartite graph using the genome annotation. Enzymes and metabolites were represented by nodes, and their interactions by directed connecting edges (Fig. 4a). To validate our metabolic network, we analyzed network topology by calculating two metrics of centrality, betweenness centrality (BC) and closeness centrality (CC), to assess for those nodes which are critical to the structure of the metabolic network and if these patterns reflect known patterns in *C. difficile* or bacterial metabolism (Table S2). BC is the *quantity* of shortest paths connecting all other member nodes of a network that pass through a given node. In biological terms, this refers to the amount of influence a given hub has on the overall flow of metabolism through the network [@Potapov2005]. Similarly, CC is instead a calculation for the reciprocal sum of the *lengths* of those shortest paths quantified by the BC. This value demonstrates how essential a given node is the the overall structure of the metabolic network [@Koschutzki2008]. Together, these metrics allow for the assessment of how much a network reflects known principles of highly central biological processes.
 
-In biological terms, DC measures the
-
-Conversely, BC reflects the amount of influence a given hub has on the overall flow of metabolism through the network [@Potapov2005]. Finally, CC more ...
-
-
-DC
-Acetyl-CoA
-Pyruvate
-2-Oxoglutarate
-Tetrahydrofolate
-L-Aspartate
-aldehyde_dehydrogenase_(NAD+)_[EC:1.2.1.3]
-alcohol_dehydrogenase_[EC:1.1.1.1]
-3-oxoacyl-[acyl-carrier_protein]_reductase_[EC:1.1.1.100]
-aspartate_aminotransferase_[EC:2.6.1.1]
-aspartate_aminotransferase_[EC:2.6.1.1]
-
-
-
-Those enzymes with the highest BC values were 
-pyruvate kinase
-1-deoxy-D-xylulose-5-phosphate synthase
-transketolase
-2-dehydro-3-deoxyphosphogluconate aldolase / 4-hydroxy-2-oxoglutarate aldolase
-formate C-acetyltransferase
-
-these are involved in glycolysis, fermentation, and amino acid synthesis.
-
-
-Substrates with high BC values were 
-Pyruvate
-Acetyl-CoA
-D-Glyceraldehyde 3-phosphate
-Tetrahydrofolate
-beta-D-Fructose 6-phosphate
-
-Similar to enzymes, these substrates are also involved in...
-
-
-CC
-Pyruvate
-Acetyl-CoA
-2-Oxoglutarate
-D-4-Hydroxy-2-oxoglutarate
-D-Glyceraldehyde_3-phosphate
-2-dehydro-3-deoxyphosphogluconate_aldolase_/_4-hydroxy-2-oxoglutarate_aldolase_[EC:4.1.2.14_4.1.3.16]
-aspartate_aminotransferase_[EC:2.6.1.1]
-aspartate_aminotransferase_[EC:2.6.1.1]
-putative_pyruvate-flavodoxin_oxidoreductase_[EC:1.2.7.-]
-cystathione_beta-lyase_[EC:4.4.1.8]
-
-
-
-What does it actually mean if something scores highly in both
-
-Enzymes that scored highly in both metrics included pyruvate kinase, aspartate aminotransferase, and formate C-acetyltransferase 
-
-
-substrates consistently scoring most highly were pyruvate, acetyl-CoA, D-glyceraldehyde 3-phosphate. This indicated to us that the topology of the network reflects established bacterial physiology. 
+Combining both analyses to find those nodes that are not only central control points, but also important to the structure of the entire network, we found 5 of the top 10 enzymes according to both BC and CC were most critical to metabolism based on topology (2-dehydro-3-deoxyphosphogluconate aldolase, aspartate aminotransferase, pyruvate-flavodoxin oxidoreductase, formate C-acetyltransferase, and 1-deoxy-D-xylulose-5-phosphate synthase). Many of these enzymes participate in core processes including glycolysis, the pentose phosphate pathway, or the citric acid cycle. Upon analysis of the other 15 high-scoring enzymes, the majority are also distinct components of these pathways as well as several for the metabolism of amino acids (Table S2) Similarly, the intersection of those substrates with high both BC and CC values revealed 6 metabolites as central nodes to the metabolism of *C. difficile* (pyruvate, acetyl-CoA, 2-oxoglutarate, D-4-hydroxy-2-oxoglutarate, D-glyceraldehyde 3-phosphate, and L-glutamate). Not only are these members of glycolysis and the citric acid cycle, but pyruvate, acetyl-CoA, and L-glutamate contribute to numerous intracellular pathways as forms of biological "currency" [@Ma2003]. Interestingly, both ATP and GTP were not included in the top 10 of either listed, which may be a byproduct of the KEGG reference used for network construction (reaction_mapformula.lst) focusing on smaller molecules and excludes the sysnthesis of large macromolecules (ex. DNA, Proteins, etc.) which require higher input energy. While this feature may limit certain analyses, ours was not effected as the interest of this study was in those simple nutrients acquired from the environment. Together, these results indicated that the topology of the overall network reflects established bacterial physiology and amino acid catabolism is a central strategy of *C. difficile* str. 630 based on the structure of its metabolic network. 
 
 
 **Metabolite importance algorithm reveals adaptive nutritional strategies of *C. difficile* during infection across distinct environments.**
-Moving into analysis of the *C. difficile* metabolic network, we sought to utilize transcriptomic data to infer which metabolites *C. difficile* is most likely to obtain from its environment in each condition. To accomplish this we mapped normalized transcript abundances to the enzyme nodes in the network. Due to the coupling of transcription and translation in bacteria, we were able to use this information as a proxy for enzyme levels. The importance of each metabolite was measured as the log-transformed difference between the average transcript levels of enzymes that use the metabolite as a substrate and those that generate it as a product (Fig. 4b). A metabolite with a high importance score is most likely obtained from the environment because the expression of genes for enzymes that produce the metabolite are low. Then, using a Monte Carlo-style simulation, we generated a random transcript abundance distribution for each enzyme node to then calculate new metabolite importance scores for each iteration. 
-
-
-We then created a confidence interval of scores for each metabolite that would likely result from random noise [@McGill1978]. This provided a standard of comparison for actual importance scores from single timepoint measurments, and ultimately allow for computing the significance level that a given score has a high probability of being excluded from its associated null hypothesis score distribution.
+Moving into analysis of the *C. difficile* metabolic network, we sought to utilize transcriptomic data to infer which metabolites *C. difficile* is most likely to obtain from its environment in each condition. To accomplish this we mapped normalized transcript abundances to the enzyme nodes in the network. As transcription and translation are coupled in bacteria, we hypothesized that we could incorporate whole transcriptome sequencing results into the metabolic model in order to impute active metabolism. Concordantly, several models of bacterial protein expression determinants also suggest that intracellular concentration of mRNA is the strongest predictor for abundance of the corresponding protein products [@Guimaraes2014]. Because of this, we were reasonably confident in utilizing normalized transcript abundance as a proxy for enzyme levels. The importance of each metabolite was measured as the log-transformed difference between the average transcript levels of enzymes that use the metabolite as a substrate and those that generate it as a product (Fig. 4a). A metabolite with a high importance score is most likely obtained from the environment because the expression of genes for enzymes that produce the metabolite are low. Due to the fact that separate sequencing efforts for each individual mouse in each group was impossible, we instead adopted a Monte Carlo-style simulation in order to achieve some degree of statistical validation to our findings. To accomplish this, we first calculated metabolite importance scores for 10,000 iterations of random transcript abundance reassignment of all enzyme nodes in the network. Next we used these distributions to calculate a 95% confidence interval for each metabolite and create comparators that represent random noise [@Bonett2002]. This ultimately allowed for computing the significance level that a given score had a high probability of being excluded from its associated null hypothesis score distribution.
 
 Applying these methods to the *C. difficile* transcriptomic data collected from the *in vivo* CDI models, we sought to assess differential patterns of metabolite importance. We first ranked the importance scores to identify the most important metabolites for each treatment group (Table S3). To identify the core metabolites that are essential to *C. difficile* in any condition, we compared the highest 50 scoring, significant metabolites from each treatment group (*P* < 0.05) (Fig. 5a). The host derived amino sugar N-acetyl-D-glucosamine was found to be consistently important. Components of the Stickland fermentation pathway were also found to be important to *C. difficile* in all conditions tested including proline, 3−hydroxybutanoyl−CoA, and formate [@Aboulnaga2013;@Fonknechten2010;@Jackson2006]. This indicated that these metabolites may be an integral component of the nutrient niche for *C. difficile* in any infection condition. Additionally, acetate was found to be important in all conditions, but was just below the significance cutoff in GF mice (Table S3). It has been shown that *C. difficile* metabolizes acetate for use in glycolysis [@Karlsson2008]. We directly tested the relative concentration of acetate in cefoperazone-treated *C. difficile*-infected mice versus mock-infected mice. We found that *C. difficile* colonization led to a significant decrease in the levels of acetate (Fig. S4) suggesting that *C. difficile* was utilizing acetate in the cecum. These findings provided validation for our metabolite importance algorithm as well as supporting known elements of *C. difficile* metabolism.
 
