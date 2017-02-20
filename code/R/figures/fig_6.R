@@ -11,10 +11,12 @@ for (dep in deps){
 # Select files
 concentrations <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/ms_substrates.tsv'
 metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
+importances <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/select_importances.tsv'
 
 # Read in data
 concentrations <- read.delim(concentrations, sep='\t', header=T, row.names=1)
 metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
+importances <- read.delim(importances, sep='\t', header=T, row.names=1)
 
 # Format and merge tables
 metadata$cage <- NULL
@@ -28,6 +30,14 @@ concentrations <- merge(concentrations, metadata, by='row.names')
 rownames(concentrations) <- concentrations$Row.names
 concentrations$Row.names <- NULL
 rm(metadata)
+
+# Combine importance with medians from corresponding concentration
+
+
+
+
+
+
 
 # Sort by antibiotic treatment group
 concentrations$abx <- factor(concentrations$abx, levels=c('none','streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
