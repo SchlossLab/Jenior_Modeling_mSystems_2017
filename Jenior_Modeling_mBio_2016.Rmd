@@ -65,10 +65,7 @@ set.seed(42)
 
 ###Importance
 
-In this study we demonstrate that not only does *C. difficile* alter pathogenesis between differentially sensitized hosts, but also exploits separate nutrient niches across environments. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect distinct hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by accessibility of specific carbohydrates utilized for growth during each infection. This work has implications for elucidating drivers of *C. difficile* pathogenesis and uncover specifics colonization resistance. This could lead to the discovery of targeted measures to prevent *C. difficile* colonization including potential pre- or probiotic therapies. Furthermore, the metabolite importance calculation workflow descibed here could provide a useful platform to enable more rapid discoveries for the nutrient requirements of bacteria to be made in the future.
-
-Also provides a tool to the field to study the ecology of pathogens or communities based on transcription...
-
+In this study we demonstrate that not only does *C. difficile* alter pathogenesis between differentially sensitized hosts, but also exploits separate nutrient niches across environments. Our results support that *C. difficile* possesses a highly plastic nutrient niche space, allowing it to successfully infect distinct hosts and ultimately cause disease. This work also provides evidence that *C. difficile* virulence may be driven by accessibility of specific carbohydrates utilized for growth during each infection. This work has implications for elucidating drivers of *C. difficile* pathogenesis and uncover specifics colonization resistance. This could lead to the discovery of targeted measures to prevent *C. difficile* colonization including potential pre- or probiotic therapies. Furthermore, the metabolite importance calculation platform developed here provides a tool to enable identification of the nutrient requirements for diverse bacterial species through strictly transcriptomic analysis.
 
 
 ###Introduction
@@ -423,6 +420,14 @@ glycine_p <- c(0.88731411, 0.01684264, 0.88731411, 0.01470245)
 
 **Metabolomic analysis supported network-based results for metabolic adaptation and uncovered additional aspects of *C. difficile*’s nutrient niche.**
 In order to validate results from transcriptomic and metabolic modeling analyses, we utilized untargeted mass-specrometry (Table S5) to measure the relative *in vivo* concentrations of metabolites highlighted by network-based importance scores. We compared cecal content from mock *C. difficile*-infected susceptible and resistant mice at the same 18 hour time point as the previous analyses. Initially N-acetylglucosamine + N-acetylgalactosamine (Fig. 6a) and salicylate (Fig. 6b) were found to be significantly decreased in all susceptible treatment groups compared to resistant controls (*P* < 0.05). Additionally, we found that galactitol (Fig. 6c), mannitol + sorbitol (Fig. 6d), and N-acetylneuraminate (Fig. 6e) were significantly increased in both cefoperazone-treated SPF and GF mice (*P* < 0.05). Finally, these assays also revealed that proline (Fig. 6f) was significantly increased in all *C. difficile* susceptible conditions (*P* < 0.05), while glycine (Fig. 6g) was found to also be concordantly increased. These amino acids are required together for *C. difficile* to perform Stickland fermentation. Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
+
+Hierarchy:
+acetylglucosamine > proline/glycine > acetylneuraminate/salicin > mannitol > sorbitol/galactitol
+
+
+
+
+
 
 
 ###Discussion
