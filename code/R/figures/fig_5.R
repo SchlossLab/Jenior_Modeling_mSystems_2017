@@ -332,7 +332,8 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('B', side=2, line=2, las=2, adj=2.3, padj=-16, cex=1.5)
-segments(x0=rep(0, 15), y0=c(1:17, 20:21, 24:25, 28:30), x1=rep(12, 15), y1=c(1:17, 20:21, 24:25, 28:30), lty=2) # Dotted lines
+segments(x0=rep(0, 15), y0=c(1:17, 20:21, 24:25, 28:30), 
+         x1=rep(12, 15), y1=c(1:17, 20:21, 24:25, 28:30), lty=2) # Dotted lines
 
 #---------------------------------------#
 

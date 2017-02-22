@@ -152,7 +152,7 @@ rm(concentrations_630, concentrations_mock, metadata)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Calculate significant differences and correct p-values
+# Calculate significant differences for concentrations and correct p-values
 acetylglucosamine_mockV630_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine_mock, abx=='none')[,1], subset(acetylglucosamine_630, abx=='streptomycin')[,1], exact=FALSE)$p.value,
                                            wilcox.test(subset(acetylglucosamine_mock, abx=='none')[,1], subset(acetylglucosamine_630, abx=='cefoperazone')[,1], exact=FALSE)$p.value,
                                            wilcox.test(subset(acetylglucosamine_mock, abx=='none')[,1], subset(acetylglucosamine_630, abx=='clindamycin')[,1], exact=FALSE)$p.value,
