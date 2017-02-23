@@ -22,6 +22,8 @@ metabolome$SUPER_PATHWAY <- NULL
 metabolome$SUB_PATHWAY <- NULL
 metabolome$PUBCHEM <- NULL
 metabolome <- subset(metabolome, KEGG != 'NA')
+metabolome <- subset(metabolome, KEGG != 'C00337') ###
+metabolome <- subset(metabolome, KEGG != 'C00438') ###
 metabolome <- metabolome[match(unique(metabolome$KEGG), metabolome$KEGG),]
 rownames(metabolome) <- metabolome$KEGG
 metabolome$KEGG <- NULL
@@ -41,7 +43,7 @@ metabolome_630$mouse <- NULL
 metabolome_630$gender <- NULL
 metabolome_630$type <- NULL
 metabolome_630$infection <- NULL
-metabolome_630 <- aggregate(metabolome_630[, 1:398], list(metabolome_630$abx), median)
+metabolome_630 <- aggregate(metabolome_630[, 1:396], list(metabolome_630$abx), median)
 rownames(metabolome_630) <- metabolome_630$Group.1
 metabolome_630$Group.1 <- NULL
 metabolome_630 <- as.data.frame(t(metabolome_630))
@@ -52,7 +54,7 @@ metabolome_mock$mouse <- NULL
 metabolome_mock$gender <- NULL
 metabolome_mock$type <- NULL
 metabolome_mock$infection <- NULL
-metabolome_mock <- aggregate(metabolome_mock[, 1:398], list(metabolome_mock$abx), median)
+metabolome_mock <- aggregate(metabolome_mock[, 1:396], list(metabolome_mock$abx), median)
 rownames(metabolome_mock) <- metabolome_mock$Group.1
 metabolome_mock$Group.1 <- NULL
 metabolome_mock <- as.data.frame(t(metabolome_mock))
@@ -167,7 +169,7 @@ segments(x0=c(2.6,2.47,3.6), y0=c(-3.5686,-4.57,-4.3),
 
 
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-10,8), ylim=c(-10,60), col=wes_palette("FantasticFox")[3], xaxt='n') 
+     pch=19, cex=0.9, xlim=c(-10,8), ylim=c(-4,4), col=wes_palette("FantasticFox")[3], xaxt='n') 
 axis(side=1, at=seq(-10,8,2), labels=seq(-10,8,2))
 abline(v=0, lty=2, col='gray30')
 abline(h=0, lty=2, col='gray30')
@@ -176,11 +178,11 @@ mtext('B', side=2, line=2, las=2, adj=1.7, padj=-7, cex=1.2)
 legend('topleft', legend=c(expression(paste(italic('r'),' = 0.051')), expression(paste(italic('P'),' = 0.643'))), pt.cex=0, bty='n', cex=1.1)
 # Label outliers
 points(cef_outliers[,1], cef_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[3], cex=1.5, lwd=2)
-text(x=c(6.4,4,5.2,2,4), 
-     y=c(6,14,-4,9,49), 
-     cef_outliers$name, cex=0.8)
-segments(x0=c(2,4.1,4.9), y0=c(7,12,-0.5), 
-         x1=c(3.4,4.1,5.1), y1=c(4,5,-2.5))
+#text(x=c(6.4,4,5.2,2,4), 
+#     y=c(6,14,-4,9,49), 
+#     cef_outliers$name, cex=0.8)
+#segments(x0=c(2,4.1,4.9), y0=c(7,12,-0.5), 
+#         x1=c(3.4,4.1,5.1), y1=c(4,5,-2.5))
 
 
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
