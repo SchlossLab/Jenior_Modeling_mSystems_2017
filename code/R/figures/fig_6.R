@@ -117,6 +117,12 @@ germfree$name <- combined$Compound_name
 germfree <- subset(germfree, germfree[,1] != 0)
 rm(combined)
 
+# Subset those metabolites with only positive values
+cef <- subset(cef, score > 0 & conc > 0)
+clinda <- subset(clinda, score > 0 & conc > 0)
+strep <- subset(strep, score > 0 & conc > 0)
+germfree <- subset(germfree, score > 0 & conc > 0)
+
 # Calculate Spearman correlation
 p.adjust(c(cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$p.value, 
            cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$p.value, 
@@ -128,14 +134,14 @@ c(cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$estimate,
   cor.test(germfree[,1], germfree[,2], method='spearman', exact=FALSE)$estimate)
 
 # Identify outliers with a positive importance score
-cef_outliers <- rbind(subset(cef, conc >= (as.numeric(quantile(cef$conc)[4]) + (1.5 * IQR(cef$conc))) & score > 0), 
-                      subset(cef, conc <= (as.numeric(quantile(cef$conc)[2]) - (1.5 * IQR(cef$conc))) & score > 0))
-clinda_outliers <- rbind(subset(clinda, conc >= (as.numeric(quantile(clinda$conc)[4]) + (1.5 * IQR(clinda$conc))) & score > 0), 
-                         subset(clinda, conc <= (as.numeric(quantile(clinda$conc)[2]) - (1.5 * IQR(clinda$conc))) & score > 0))
-strep_outliers <- rbind(subset(strep, conc >= (as.numeric(quantile(strep$conc)[4]) + (1.5 * IQR(strep$conc))) & score > 0), 
-                        subset(strep, conc <= (as.numeric(quantile(strep$conc)[2]) - (1.5 * IQR(strep$conc))) & score > 0))
-germfree_outliers <- rbind(subset(germfree, conc >= (as.numeric(quantile(germfree$conc)[4]) + (1.5 * IQR(germfree$conc))) & score > 0), 
-                           subset(germfree, conc <= (as.numeric(quantile(germfree$conc)[2]) - (1.5 * IQR(germfree$conc))) & score > 0))
+cef_outliers <- rbind(subset(cef, conc >= (as.numeric(quantile(cef$conc)[4]) + (1.5 * IQR(cef$conc)))), 
+                      subset(cef, conc <= (as.numeric(quantile(cef$conc)[2]) - (1.5 * IQR(cef$conc)))))
+clinda_outliers <- rbind(subset(clinda, conc >= (as.numeric(quantile(clinda$conc)[4]) + (1.5 * IQR(clinda$conc)))), 
+                         subset(clinda, conc <= (as.numeric(quantile(clinda$conc)[2]) - (1.5 * IQR(clinda$conc)))))
+strep_outliers <- rbind(subset(strep, conc >= (as.numeric(quantile(strep$conc)[4]) + (1.5 * IQR(strep$conc)))), 
+                        subset(strep, conc <= (as.numeric(quantile(strep$conc)[2]) - (1.5 * IQR(strep$conc)))))
+germfree_outliers <- rbind(subset(germfree, conc >= (as.numeric(quantile(germfree$conc)[4]) + (1.5 * IQR(germfree$conc)))), 
+                           subset(germfree, conc <= (as.numeric(quantile(germfree$conc)[2]) - (1.5 * IQR(germfree$conc)))))
 
 #----------------------------------------#
 
@@ -152,8 +158,7 @@ par(las=1, mar=c(3,4,1,1), mgp=c(2,0.7,0), xaxs='i', yaxs='i')
 
 # Plot the data and correlations
 plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-9,9), ylim=c(-8,6), col=wes_palette("FantasticFox")[1], xaxt='n')
-axis(side=1, at=seq(-9,9,3), labels=seq(-9,9,3))
+     pch=19, cex=0.9, xlim=c(-1,9), ylim=c(-1,6), col=wes_palette("FantasticFox")[1])
 abline(v=0, lty=2, col='gray30')
 abline(h=0, lty=2, col='gray30')
 abline(lm(conc ~ score, data=strep), col='black', lwd=2)
@@ -161,16 +166,15 @@ mtext('A', side=2, line=2, las=2, adj=1.7, padj=-7, cex=1.2)
 legend('topleft', legend=c(expression(paste(italic('r'),' = 0.108')), expression(paste(italic('P'),' = 0.406'))), pt.cex=0, bty='n', cex=1.1)
 # Label outliers
 points(strep_outliers[,1], strep_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[1], cex=1.5, lwd=2)
-text(x=c(4.5,5.2,5.8,3.5,7,4,-1.5,6.2), 
-     y=c(1.9862,4.6330,-2.5686,-7.1469,-3.5686,-5.8,-2.3,-4.8), 
-     strep_outliers$name, cex=0.8)
-segments(x0=c(2.6,2.47,3.6), y0=c(-3.5686,-4.57,-4.3), 
-         x1=c(5.2,3,4.2), y1=c(-3.5686,-5.6,-4.6))
+#text(x=c(4.5,5.2,5.8,3.5,7,4,-1.5,6.2), 
+#     y=c(1.9862,4.6330,-2.5686,-7.1469,-3.5686,-5.8,-2.3,-4.8), 
+#     strep_outliers$name, cex=0.8)
+#segments(x0=c(2.6,2.47,3.6), y0=c(-3.5686,-4.57,-4.3), 
+#         x1=c(5.2,3,4.2), y1=c(-3.5686,-5.6,-4.6))
 
 
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-10,8), ylim=c(-4,4), col=wes_palette("FantasticFox")[3], xaxt='n') 
-axis(side=1, at=seq(-10,8,2), labels=seq(-10,8,2))
+     pch=19, cex=0.9, xlim=c(-1,8), ylim=c(-1,4), col=wes_palette("FantasticFox")[3]) 
 abline(v=0, lty=2, col='gray30')
 abline(h=0, lty=2, col='gray30')
 abline(lm(conc ~ score, data=cef), col='black', lwd=2)
@@ -186,8 +190,7 @@ points(cef_outliers[,1], cef_outliers[,2], pch=21, bg=wes_palette("FantasticFox"
 
 
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-10,8), ylim=c(-4,2), col=wes_palette("FantasticFox")[5], xaxt='n')
-axis(side=1, at=seq(-10,8,2), labels=seq(-10,8,2))
+     pch=19, cex=0.9, xlim=c(-1,8), ylim=c(-1,2), col=wes_palette("FantasticFox")[5])
 abline(v=0, lty=2, col='gray30')
 abline(h=0, lty=2, col='gray30')
 abline(lm(conc ~ score, data=clinda), col='black', lwd=2)
@@ -195,16 +198,14 @@ mtext('C', side=2, line=2, las=2, adj=1.7, padj=-7, cex=1.2)
 legend('topleft', legend=c(expression(paste(italic('r'),' = 0.268')), expression(paste(italic('P'),' = 0.022*'))), pt.cex=0, bty='n', cex=1.1)
 # Label outliers
 points(clinda_outliers[,1], clinda_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[5], cex=1.5, lwd=2)
-text(x=c(6.3,-4,1,3.9,1.585,4.4,-3.1), 
-     y=c(1.5,0.75,1.3,-1.45,-2,-0.7,-0.7368), 
-     clinda_outliers$name, cex=0.8)
-segments(x0=c(-0.4,3,1.6), y0=c(0.75,1.15,-1.1), 
-         x1=c(0.7,3.9,1.6), y1=c(0.65,0.75,-1.8))
+#text(x=c(6.3,-4,1,3.9,1.585,4.4,-3.1), 
+#     y=c(1.5,0.75,1.3,-1.45,-2,-0.7,-0.7368), 
+#     clinda_outliers$name, cex=0.8)
+#segments(x0=c(-0.4,3,1.6), y0=c(0.75,1.15,-1.1), 
+#         x1=c(0.7,3.9,1.6), y1=c(0.65,0.75,-1.8))
 
 plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-6,8), ylim=c(-6,15), col='forestgreen', yaxt='n')
-axis(side=2, at=seq(-6,15,3), labels=seq(-6,15,3))
-
+     pch=19, cex=0.9, xlim=c(-1,8), ylim=c(-1,15), col='forestgreen')
 abline(v=0, lty=2, col='gray30')
 abline(h=0, lty=2, col='gray30')
 abline(lm(conc ~ score, data=germfree), col='black', lwd=2)
@@ -212,9 +213,9 @@ mtext('D', side=2, line=2, las=2, adj=1.7, padj=-7, cex=1.2)
 legend('topleft', legend=c(expression(paste(italic('r'),' = 0.371')), expression(paste(italic('P'),' = 0.022*'))), pt.cex=0, bty='n', cex=1.1)
 # Label outliers
 points(germfree_outliers[,1], germfree_outliers[,2], pch=21, bg='forestgreen', cex=1.5, lwd=2) # color outliers
-text(x=c(1.950,4.2,3.358,3,3.4), 
-     y=c(4,3.2,6.7,9.7564,12.0140), 
-     germfree_outliers$name, cex=0.8)
+#text(x=c(1.950,4.2,3.358,3,3.4), 
+#     y=c(4,3.2,6.7,9.7564,12.0140), 
+#     germfree_outliers$name, cex=0.8)
 
 dev.off()
 
