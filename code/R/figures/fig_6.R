@@ -22,8 +22,6 @@ metabolome$SUPER_PATHWAY <- NULL
 metabolome$SUB_PATHWAY <- NULL
 metabolome$PUBCHEM <- NULL
 metabolome <- subset(metabolome, KEGG != 'NA')
-metabolome <- subset(metabolome, KEGG != 'C00337') ###
-metabolome <- subset(metabolome, KEGG != 'C00438') ###
 metabolome <- metabolome[match(unique(metabolome$KEGG), metabolome$KEGG),]
 rownames(metabolome) <- metabolome$KEGG
 metabolome$KEGG <- NULL
