@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('wesanderson');
+deps <- c('wesanderson','car');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -134,12 +134,39 @@ germfree$conc <- as.numeric(as.vector(germfree$conc))
 germfree <- subset(germfree, germfree[,1] != 0)
 combined <- rbind(cef, clinda, strep, germfree)
 
+# Fit to general linear models and identify outliers (L1 regression)
+strep_fit <- glm(conc ~ score, data=strep, family=Gamma(link='log'))
+strep$residuals <- residuals(strep_fit)
+strep$residuals <- (strep$residuals / sd(strep$residuals))^2
+strep_outliers <- strep[strep$residuals > 3, ]
+cef_fit <- glm(conc ~ score, data=cef, family=Gamma(link='log'))
+cef$residuals <- residuals(cef_fit)
+cef$residuals <- (cef$residuals / sd(cef$residuals))^2
+cef_outliers <- cef[cef$residuals > 3, ]
+clinda_fit <- glm(conc ~ score, data=clinda, family=Gamma(link='log'))
+clinda$residuals <- residuals(clinda_fit)
+clinda$residuals <- (clinda$residuals / sd(clinda$residuals))^2
+clinda_outliers <- clinda[clinda$residuals > 3, ]
+germfree_fit <- glm(conc ~ score, data=germfree, family=Gamma(link='log'))
+germfree$residuals <- residuals(germfree_fit)
+germfree$residuals <- (germfree$residuals / sd(germfree$residuals))^2
+germfree_outliers <- germfree[germfree$residuals > 3, ]
+combined_fit <- glm(conc ~ score, data=combined, family=Gamma(link='log'))
+combined$residuals <- residuals(combined_fit)
+combined$residuals <- (combined$residuals / sd(combined$residuals))^2
+
+
+combined_outliers <- combined[combined$residuals > 3, ] # Might need more stringent cutoff
+
+
+
+
 # Calculate stats
-test <- as.data.frame(cbind(round(c(lm(conc ~ score, data=strep)$coefficients[[2]],
-                                    lm(conc ~ score, data=cef)$coefficients[[2]],
-                                    lm(conc ~ score, data=clinda)$coefficients[[2]],
-                                    lm(conc ~ score, data=germfree)$coefficients[[2]],
-                                    lm(conc ~ score, data=combined)$coefficients[[2]]), digits=3),
+test <- as.data.frame(cbind(round(c(strep_fit$coefficients[[2]],
+                                    cef_fit$coefficients[[2]],
+                                    clinda_fit$coefficients[[2]],
+                                    germfree_fit$coefficients[[2]],
+                                    combined_fit$coefficients[[2]]), digits=3),
                             round(c(cor.test(strep[,1], strep[,2], method='spearman', exact=FALSE)$estimate,
                                     cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$estimate,
                                     cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$estimate,
@@ -153,44 +180,10 @@ test <- as.data.frame(cbind(round(c(lm(conc ~ score, data=strep)$coefficients[[2
 rownames(test) <- c('streptomycin','cefoperazone','clindamycin','germfree','combined')
 colnames(test) <- c('m','r', 'p')
 
-# Rank data for plotting
-#cef <- cef[order(cef$score),] 
-#cef$score_rank <- seq(1,length(cef$score),1)
-#cef <- cef[order(cef$conc),] 
-#cef$conc_rank <- seq(1,length(cef$conc),1)
-#clinda <- clinda[order(clinda$score),] 
-#clinda$score_rank <- seq(1,length(clinda$score),1)
-#clinda <- clinda[order(clinda$conc),] 
-#clinda$conc_rank <- seq(1,length(clinda$conc),1)
-#strep <- strep[order(strep$score),] 
-#strep$score_rank <- seq(1,length(strep$score),1)
-#strep <- strep[order(strep$conc),] 
-#strep$conc_rank <- seq(1,length(strep$conc),1)
-#germfree <- germfree[order(germfree$score),] 
-#germfree$score_rank <- seq(1,length(germfree$score),1)
-#germfree <- germfree[order(germfree$conc),] 
-#germfree$conc_rank <- seq(1,length(germfree$conc),1)
-#combined <- combined[order(combined$score),] 
-#combined$score_rank <- seq(1,length(combined$score),1)
-#combined <- combined[order(combined$conc),] 
-#combined$conc_rank <- seq(1,length(combined$conc),1)
 
-# Identify outliers with a positive importance score, screen for those 
-cef_outliers <- rbind(subset(cef, conc >= (as.numeric(quantile(cef$conc)[4]) + (1.5 * IQR(cef$conc)))), 
-                      subset(cef, conc <= (as.numeric(quantile(cef$conc)[2]) - (1.5 * IQR(cef$conc)))))
-cef_outliers <- subset(cef_outliers, score > 0)
-clinda_outliers <- rbind(subset(clinda, conc >= (as.numeric(quantile(clinda$conc)[4]) + (1.5 * IQR(clinda$conc)))), 
-                         subset(clinda, conc <= (as.numeric(quantile(clinda$conc)[2]) - (1.5 * IQR(clinda$conc)))))
-clinda_outliers <- subset(clinda_outliers, score > 0)
-strep_outliers <- rbind(subset(strep, conc >= (as.numeric(quantile(strep$conc)[4]) + (1.5 * IQR(strep$conc)))), 
-                        subset(strep, conc <= (as.numeric(quantile(strep$conc)[2]) - (1.5 * IQR(strep$conc)))))
-strep_outliers <- subset(strep_outliers, score > 0)
-germfree_outliers <- rbind(subset(germfree, conc >= (as.numeric(quantile(germfree$conc)[4]) + (1.5 * IQR(germfree$conc)))), 
-                           subset(germfree, conc <= (as.numeric(quantile(germfree$conc)[2]) - (1.5 * IQR(germfree$conc)))))
-germfree_outliers <- subset(germfree_outliers, score > 0)
-#germfree_outliers <- subset(germfree_outliers, conc > 3.910228)
-combined_outliers <- rbind(subset(combined, conc >= (as.numeric(quantile(combined$conc)[4]) + (1.5 * IQR(combined$conc)))), 
-                           subset(combined, conc <= (as.numeric(quantile(combined$conc)[2]) - (1.5 * IQR(combined$conc)))))
+
+
+
 
 #----------------------------------------#
 
@@ -207,15 +200,7 @@ combined_palette <- c('chartreuse1', 'blue3', 'brown3', 'darkorchid2', 'gold', '
 # Plot the data and correlations
 plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, cex=1.1, xlim=c(-10,10), ylim=c(-1,15), col='gray30')
-abline(lm(conc ~ score, data=combined), col='black', lwd=2)
-outlier_line <- combined
-outlier_line$conc <- outlier_line$conc + as.numeric(quantile(outlier_line$conc)[4])+(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (upper)
-outlier_line$score <- outlier_line$score + as.numeric(quantile(outlier_line$score)[4])+(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (upper)
-abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (upper)
-outlier_line <- combined
-outlier_line$conc <- outlier_line$conc - as.numeric(quantile(outlier_line$conc)[2])-(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (lower)
-outlier_line$score <- outlier_line$score - as.numeric(quantile(outlier_line$score)[2])-(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (lower)
-abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (lower)
+abline(glm(conc ~ score, data=combined), col='black', lwd=2)
 mtext('A', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
 points(combined_outliers[,1], combined_outliers[,2], pch=21, col='gray30', bg=combined_palette, cex=1.7, lwd=2)
 legend('topleft', legend=as.vector(unique(combined$pathway)), 
@@ -224,19 +209,12 @@ legend('topleft', legend=as.vector(unique(combined$pathway)),
 legend('topright', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[5])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[5]),'*')))), pt.cex=0, bty='n', cex=1.2)
 
+
 # streptomycin alone
 plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,9), col=wes_palette("FantasticFox")[1])
 abline(v=0, lty=2, col='gray30')
-abline(lm(conc ~ score, data=strep), col='black', lwd=2)
-#outlier_line <- strep
-#outlier_line$conc <- outlier_line$conc + as.numeric(quantile(outlier_line$conc)[4])+(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (upper)
-#outlier_line$score <- outlier_line$score + as.numeric(quantile(outlier_line$score)[4])+(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (upper)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (upper)
-#outlier_line <- strep
-#outlier_line$conc <- outlier_line$conc - as.numeric(quantile(outlier_line$conc)[2])-(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (lower)
-#outlier_line$score <- outlier_line$score - as.numeric(quantile(outlier_line$score)[2])-(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (lower)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (lower)
+abline(glm(conc ~ score, data=strep), col='black', lwd=2)
 mtext('B', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[1])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[1]))))), pt.cex=0, bty='n', cex=1.1)
@@ -252,15 +230,7 @@ segments(x0=c(2.5,-0.8,2.3), y0=c(4.3,2.6,2),
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
 abline(v=0, lty=2, col='gray30')
-abline(lm(conc ~ score, data=cef), col='black', lwd=2)
-#outlier_line <- cef
-#outlier_line$conc <- outlier_line$conc + as.numeric(quantile(outlier_line$conc)[4])+(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (upper)
-#outlier_line$score <- outlier_line$score + as.numeric(quantile(outlier_line$score)[4])+(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (upper)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (upper)
-#outlier_line <- cef
-#outlier_line$conc <- outlier_line$conc - as.numeric(quantile(outlier_line$conc)[2])-(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (lower)
-#outlier_line$score <- outlier_line$score - as.numeric(quantile(outlier_line$score)[2])-(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (lower)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (lower)
+abline(glm(conc ~ score, data=cef), col='black', lwd=2)
 mtext('C', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[2])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[2]))))), pt.cex=0, bty='n', cex=1.1)
@@ -275,15 +245,7 @@ segments(x0=1, y0=3.5, x1=2.5, y1=4.6)
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
 abline(v=0, lty=2, col='gray30')
-abline(lm(conc ~ score, data=clinda), col='black', lwd=2)
-#outlier_line <- clinda
-#outlier_line$conc <- outlier_line$conc + as.numeric(quantile(outlier_line$conc)[4])+(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (upper)
-#outlier_line$score <- outlier_line$score + as.numeric(quantile(outlier_line$score)[4])+(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (upper)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (upper)
-#outlier_line <- clinda
-#outlier_line$conc <- outlier_line$conc - as.numeric(quantile(outlier_line$conc)[2])-(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (lower)
-#outlier_line$score <- outlier_line$score - as.numeric(quantile(outlier_line$score)[2])-(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (lower)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (lower)
+abline(glm(conc ~ score, data=clinda), col='black', lwd=2)
 mtext('D', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[3])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[3]),'*')))), pt.cex=0, bty='n', cex=1.1)
@@ -299,15 +261,7 @@ plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(
      pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
 axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))
 abline(v=0, lty=2, col='gray30')
-abline(lm(conc ~ score, data=germfree), col='black', lwd=2)
-#outlier_line <- germfree
-#outlier_line$conc <- outlier_line$conc + as.numeric(quantile(outlier_line$conc)[4])+(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (upper)
-#outlier_line$score <- outlier_line$score + as.numeric(quantile(outlier_line$score)[4])+(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (upper)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (upper)
-#outlier_line <- germfree
-#outlier_line$conc <- outlier_line$conc - as.numeric(quantile(outlier_line$conc)[2])-(1.5*IQR(outlier_line$conc)) # Adjust points for outlier line (lower)
-#outlier_line$score <- outlier_line$score - as.numeric(quantile(outlier_line$score)[2])-(1.5*IQR(outlier_line$score)) # Adjust points for outlier line (lower)
-#abline(lm(conc ~ score, data=outlier_line), col='gray60', lwd=2) # Outlier cutoff line (lower)
+abline(glm(conc ~ score, data=germfree), col='black', lwd=2)
 mtext('E', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[4])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[4]),'*')))), pt.cex=0, bty='n', cex=1.1)
