@@ -196,19 +196,19 @@ layout(matrix(c(1,1,
                 2,3,
                 4,5), 
               nrow=3, ncol=2, byrow=TRUE))
-par(las=1, mar=c(3,4,1,1), mgp=c(1.8,0.7,0))
+par(las=1, mar=c(3,3,1,1), mgp=c(1.8,0.7,0))
 
 # Plot the data and correlations
 plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, cex=1.1, xlim=c(-10,10), ylim=c(-1,15), col='gray30')
-abline(v=0, lty=2, col='gray30')
+abline(v=0, lty=2, col='gray75')
 abline(combined_fit, col='black', lwd=2)
 mtext('A', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 points(combined_outliers[,1], combined_outliers[,2], pch=21, col='gray30', bg=combined_outliers$color, cex=2, lwd=2)
 legend('topleft', legend=as.vector(unique(combined_outliers$pathway)), 
        pt.bg=c('chartreuse1', 'darkorchid2', 'gold'), col='gray30',
        pch=21, pt.lwd=2, pt.cex=2, cex=1.2)
-legend('topright', legend=c('All Treatment Groups'), pt.cex=0, bty='n', cex=1.2)
+legend('topright', legend=c('All Treatment Groups'), pt.cex=0, bty='n', cex=1.2, col='black')
 text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$r[5])),
                                           paste(italic('P'),' = ',.(test$p[5]),'*  ')))), cex=1.2)
 
@@ -216,66 +216,66 @@ text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$
 plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,13), col=wes_palette("FantasticFox")[1])
 points(strep_acetylglucosamine[,1], strep_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[1], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray30')
+abline(v=0, lty=2, col='gray75')
 abline(strep_fit, col='black', lwd=2)
 mtext('B', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-legend('topright', legend='Streptomycin', bty='n', cex=1.1)
+legend('topright', legend='Streptomycin', bty='n', cex=1.1, col='black')
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[1])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[1]))))), pt.cex=0, bty='n', cex=1.1)
 points(strep_outliers[,1], strep_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[1], cex=1.7, lwd=2)
 text(x=c(5.5,3.7,5.6), 
      y=c(10.6,7.875043,3.8), 
-     strep_outliers$name, cex=0.9)
+     strep_outliers$name, cex=0.9, col='gray35')
 
 # cefoperazone alone
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
 points(cef_acetylglucosamine[,1], cef_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[3], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray30')
+abline(v=0, lty=2, col='gray75')
 abline(cef_fit, col='black', lwd=2)
 mtext('C', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[2])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[2]))))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Cefoperazone', bty='n', cex=1.1)
+legend('topright', legend='Cefoperazone', bty='n', cex=1.1, col='black')
 points(cef_outliers[,1], cef_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[3], cex=1.7, lwd=2)
 text(x=c(8,5,-6,7,5.7,5,-5.5), 
      y=c(2.8829322,6,2.6819865,7.9,4.7,-0.3,3.7199615), 
-     cef_outliers$name, cex=0.9)
+     cef_outliers$name, cex=0.9, col='gray35')
 segments(x0=c(2.8,0.9,5.1), y0=c(2.9,3.5,3.8), 
-         x1=c(5.3,3,5.6), y1=c(2.9,5.7,4.4))
+         x1=c(5.3,3,5.6), y1=c(2.9,5.7,4.4), col='gray35')
 
 # clindamycin alone
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
 points(clinda_acetylglucosamine[,1], clinda_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[5], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray30')
+abline(v=0, lty=2, col='gray75')
 abline(clinda_fit, col='black', lwd=2)
 mtext('D', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[3])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[3]),'*')))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Clindamycin', bty='n', cex=1.1)
+legend('topright', legend='Clindamycin', bty='n', cex=1.1, col='black')
 points(clinda_outliers[,1], clinda_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[5], cex=1.7, lwd=2)
 text(x=c(6.4,-3.8,4.9,7.6,6.3,-4,-7,5.8,5.2,6.1), 
      y=c(-0.1,1.8708661,2.2279556,4,1.85,-1,2.6433240,-0.6,3.2,0.4666667), 
-     clinda_outliers$name, cex=0.9)
+     clinda_outliers$name, cex=0.9, col='gray35')
 segments(x0=c(-4.3,1.1,3.2), y0=c(-0.8,0,0.3), 
-         x1=c(-3.3,1.6,4.2), y1=c(-0.05,-0.4,0))
+         x1=c(-3.3,1.6,4.2), y1=c(-0.05,-0.4,0), col='gray35')
 
 # germfree alone
 plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
 points(germfree_acetylglucosamine[,1], germfree_acetylglucosamine[,2], pch=21, col='forestgreen', bg='white', cex=1.2, lwd=1.7)
 axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))
-abline(v=0, lty=2, col='gray30')
+abline(v=0, lty=2, col='gray75')
 abline(germfree_fit, col='black', lwd=2)
 mtext('E', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[4])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[4]),'*')))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Gnotobiotic', bty='n', cex=1.1)
+legend('topright', legend='Gnotobiotic', bty='n', cex=1.1, col='black')
 points(germfree_outliers[,1], germfree_outliers[,2], pch=21, bg='forestgreen', cex=1.5, lwd=2) # color outliers
 text(x=c(3.3,6,6), 
      y=c(5.924171,14.439394,11.890565), 
-     germfree_outliers$name, cex=0.9)
+     germfree_outliers$name, cex=0.9, col='gray35')
 
 dev.off()
 

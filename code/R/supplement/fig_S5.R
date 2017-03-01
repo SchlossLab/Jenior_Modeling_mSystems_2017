@@ -30,7 +30,7 @@ wilcox.test(mock, infected, exact=F)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S4.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S5.pdf'
 pdf(file=plot_file, width=5, height=5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

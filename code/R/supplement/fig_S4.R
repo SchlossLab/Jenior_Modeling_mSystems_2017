@@ -1,6 +1,6 @@
 
 
-pdf(file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S3.pdf', width=10, height=10)
+pdf(file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S4.pdf', width=10, height=10)
 
 par(mar=c(0,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
