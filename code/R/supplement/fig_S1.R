@@ -10,7 +10,7 @@ for (dep in deps){
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S1.pdf'
 pdf(file=plot_file, width=6, height=9)
 
 # Create layout for multi-plot

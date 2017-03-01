@@ -75,14 +75,14 @@ taxonomy_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/16S_an
 
 # Load in data
 nmds <- read.delim(nmds_file, sep='\t', header=T, row.names=1)
-nmds <- nmds[!rownames(nmds) %in% c('CefC5M2'), ] # Remove contaminated sample
+nmds <- nmds[!rownames(nmds) %in% c('CefC5M2','StrepC4M1'), ] # Remove contaminated sample
 metadata <- read.delim(metadata_file, sep='\t', header=T, row.names=1)
-metadata <- metadata[!rownames(metadata) %in% c('CefC5M2'), ] # Remove contaminated sample
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove contaminated sample
 summary <- read.delim(summary_file, sep='\t', header=T, row.names=2)
-summary <- summary[!rownames(summary) %in% c('CefC5M2'), ] # Remove contaminated sample
+summary <- summary[!rownames(summary) %in% c('CefC5M2','StrepC4M1'), ] # Remove contaminated sample
 taxonomy <- read.delim(taxonomy_file, sep='\t', header=T, row.names=1)
 shared <- read.delim(shared_file, sep='\t', header=T, row.names=2)
-shared <- shared[!rownames(shared) %in% c('CefC5M2'), ]  # Remove contaminated sample
+shared <- shared[!rownames(shared) %in% c('CefC5M2','StrepC4M1'), ]  # Remove contaminated sample
 shared$numOtus <- NULL
 shared$label <- NULL
 rm(nmds_file, summary_file, metadata_file, shared_file, taxonomy_file)
@@ -117,7 +117,6 @@ shared$gender <- NULL
 shared <- subset(shared, type != 'germfree')
 shared$type <- NULL
 strep_shared <- subset(shared, abx == 'streptomycin')
-strep_shared <- strep_shared[!rownames(strep_shared) %in% c('StrepC4M1'), ]
 strep_shared <- collect_cdiff(strep_shared, 'streptomycin') 
 strep_630 <- subset(strep_shared, infection == '630')
 strep_mock <- subset(strep_shared, infection == 'mock')
@@ -229,7 +228,7 @@ mtext(c('Infected','Mock','Infected','Mock','Infected','Mock','Mock'), side=1, a
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, at=c(3,10,17,22.5), padj=3)
 minor.ticks.axis(2, 10, mn=0, mx=4)
 abline(v=c(6.5,13.5,20.5), lty=2)
-text(x=c(1.5,4.5,7.5,11.5,15.5,18.5,22.5), y=4, labels=percent_diff, font=2)
+text(x=c(1.5,4.5,8.5,11.5,15.5,18.5,22.5), y=4, labels=percent_diff, font=2)
 text(x=c(2,9,16), y=c(3.6,3.6,3.6), labels=c('*','*','*'), font=2, cex=2)
 mtext('C', side=2, line=2, las=2, adj=1.3, padj=-7.5, cex=1.5)
 
