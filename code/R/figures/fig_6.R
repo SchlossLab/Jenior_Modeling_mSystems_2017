@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('wesanderson','car');
+deps <- c('wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -134,32 +134,34 @@ germfree$conc <- as.numeric(as.vector(germfree$conc))
 germfree <- subset(germfree, germfree[,1] != 0)
 combined <- rbind(cef, clinda, strep, germfree)
 
+# Subset N-acetylglucosamine
+strep_acetylglucosamine <- subset(strep, rownames(strep) %in% c('C00140'))
+cef_acetylglucosamine <- subset(cef, rownames(cef) %in% c('C00140'))
+clinda_acetylglucosamine <- subset(clinda, rownames(clinda) %in% c('C00140'))
+germfree_acetylglucosamine <- subset(germfree, rownames(germfree) %in% c('C00140'))
+combined_acetylglucosamine <- subset(combined, rownames(combined) %in% c('C00140'))
+
 # Fit to general linear models and identify outliers (L1 regression)
-strep_fit <- glm(conc ~ score, data=strep, family=Gamma(link='log'))
+strep_fit <- glm(conc ~ score, data=strep)
 strep$residuals <- residuals(strep_fit)
 strep$residuals <- (strep$residuals / sd(strep$residuals))^2
-strep_outliers <- strep[strep$residuals > 3, ]
-cef_fit <- glm(conc ~ score, data=cef, family=Gamma(link='log'))
+strep_outliers <- strep[strep$residuals > 1.5, ]
+cef_fit <- glm(conc ~ score, data=cef)
 cef$residuals <- residuals(cef_fit)
 cef$residuals <- (cef$residuals / sd(cef$residuals))^2
-cef_outliers <- cef[cef$residuals > 3, ]
-clinda_fit <- glm(conc ~ score, data=clinda, family=Gamma(link='log'))
+cef_outliers <- cef[cef$residuals > 1.5, ]
+clinda_fit <- glm(conc ~ score, data=clinda)
 clinda$residuals <- residuals(clinda_fit)
 clinda$residuals <- (clinda$residuals / sd(clinda$residuals))^2
-clinda_outliers <- clinda[clinda$residuals > 3, ]
-germfree_fit <- glm(conc ~ score, data=germfree, family=Gamma(link='log'))
+clinda_outliers <- clinda[clinda$residuals > 1.5, ]
+germfree_fit <- glm(conc ~ score, data=germfree)
 germfree$residuals <- residuals(germfree_fit)
 germfree$residuals <- (germfree$residuals / sd(germfree$residuals))^2
-germfree_outliers <- germfree[germfree$residuals > 3, ]
-combined_fit <- glm(conc ~ score, data=combined, family=Gamma(link='log'))
+germfree_outliers <- germfree[germfree$residuals > 1.5, ]
+combined_fit <- glm(conc ~ score, data=combined)
 combined$residuals <- residuals(combined_fit)
 combined$residuals <- (combined$residuals / sd(combined$residuals))^2
-
-
-combined_outliers <- combined[combined$residuals > 3, ] # Might need more stringent cutoff
-
-
-
+combined_outliers <- combined[combined$residuals > 1.5, ]
 
 # Calculate stats
 test <- as.data.frame(cbind(round(c(strep_fit$coefficients[[2]],
@@ -180,10 +182,10 @@ test <- as.data.frame(cbind(round(c(strep_fit$coefficients[[2]],
 rownames(test) <- c('streptomycin','cefoperazone','clindamycin','germfree','combined')
 colnames(test) <- c('m','r', 'p')
 
-
-
-
-
+# Add column for colors to combined outliers
+index <- as.vector(unique(combined_outliers$pathway))
+values <- c('chartreuse1', 'darkorchid2', 'gold')
+combined_outliers$color <- values[match(combined_outliers$pathway, index)]
 
 #----------------------------------------#
 
@@ -195,80 +197,84 @@ layout(matrix(c(1,1,
                 4,5), 
               nrow=3, ncol=2, byrow=TRUE))
 par(las=1, mar=c(3,4,1,1), mgp=c(1.8,0.7,0))
-combined_palette <- c('chartreuse1', 'blue3', 'brown3', 'darkorchid2', 'gold', 'white', 'black')
 
 # Plot the data and correlations
 plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, cex=1.1, xlim=c(-10,10), ylim=c(-1,15), col='gray30')
-abline(glm(conc ~ score, data=combined), col='black', lwd=2)
-mtext('A', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
-points(combined_outliers[,1], combined_outliers[,2], pch=21, col='gray30', bg=combined_palette, cex=1.7, lwd=2)
-legend('topleft', legend=as.vector(unique(combined$pathway)), 
-       pt.bg=combined_palette, col='gray30',
+abline(v=0, lty=2, col='gray30')
+abline(combined_fit, col='black', lwd=2)
+mtext('A', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
+points(combined_outliers[,1], combined_outliers[,2], pch=21, col='gray30', bg=combined_outliers$color, cex=2, lwd=2)
+legend('topleft', legend=as.vector(unique(combined_outliers$pathway)), 
+       pt.bg=c('chartreuse1', 'darkorchid2', 'gold'), col='gray30',
        pch=21, pt.lwd=2, pt.cex=2, cex=1.2)
-legend('topright', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[5])))), 
-                           as.expression(bquote(paste(italic('P'),' = ',.(test$p[5]),'*')))), pt.cex=0, bty='n', cex=1.2)
-
+legend('topright', legend=c('All Treatment Groups'), pt.cex=0, bty='n', cex=1.2)
+text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$r[5])),
+                                          paste(italic('P'),' = ',.(test$p[5]),'*  ')))), cex=1.2)
 
 # streptomycin alone
 plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
-     pch=19, xlim=c(-10,10), ylim=c(-1,9), col=wes_palette("FantasticFox")[1])
+     pch=19, xlim=c(-10,10), ylim=c(-1,13), col=wes_palette("FantasticFox")[1])
+points(strep_acetylglucosamine[,1], strep_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[1], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray30')
-abline(glm(conc ~ score, data=strep), col='black', lwd=2)
-mtext('B', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
+abline(strep_fit, col='black', lwd=2)
+mtext('B', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
+legend('topright', legend='Streptomycin', bty='n', cex=1.1)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[1])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[1]))))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Streptomycin', bty='n', cex=1.1)
 points(strep_outliers[,1], strep_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[1], cex=1.7, lwd=2)
-text(x=c(8,7,5.5,5,-5.7), 
-     y=c(1.8,7.3,3,4.6,2.6), 
+text(x=c(5.5,3.7,5.6), 
+     y=c(10.6,7.875043,3.8), 
      strep_outliers$name, cex=0.9)
-segments(x0=c(2.5,-0.8,2.3), y0=c(4.3,2.6,2), 
-         x1=c(1.3,1,5.6), y1=c(3.5,2.3,1.9))
 
 # cefoperazone alone
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
+points(cef_acetylglucosamine[,1], cef_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[3], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray30')
-abline(glm(conc ~ score, data=cef), col='black', lwd=2)
-mtext('C', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
+abline(cef_fit, col='black', lwd=2)
+mtext('C', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[2])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[2]))))), pt.cex=0, bty='n', cex=1.1)
 legend('topright', legend='Cefoperazone', bty='n', cex=1.1)
 points(cef_outliers[,1], cef_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[3], cex=1.7, lwd=2)
-text(x=c(5,8,7.3), 
-     y=c(5,7.9,3.409411), 
+text(x=c(8,5,-6,7,5.7,5,-5.5), 
+     y=c(2.8829322,6,2.6819865,7.9,4.7,-0.3,3.7199615), 
      cef_outliers$name, cex=0.9)
-segments(x0=1, y0=3.5, x1=2.5, y1=4.6)
+segments(x0=c(2.8,0.9,5.1), y0=c(2.9,3.5,3.8), 
+         x1=c(5.3,3,5.6), y1=c(2.9,5.7,4.4))
 
 # clindamycin alone
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
+points(clinda_acetylglucosamine[,1], clinda_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[5], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray30')
-abline(glm(conc ~ score, data=clinda), col='black', lwd=2)
-mtext('D', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
+abline(clinda_fit, col='black', lwd=2)
+mtext('D', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[3])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[3]),'*')))), pt.cex=0, bty='n', cex=1.1)
 legend('topright', legend='Clindamycin', bty='n', cex=1.1)
 points(clinda_outliers[,1], clinda_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[5], cex=1.7, lwd=2)
-text(x=c(4.7,7.2,-5,5.7,5.5), 
-     y=c(2.2279556,4,2.2,3.2,-0.1677397), 
+text(x=c(6.4,-3.8,4.9,7.6,6.3,-4,-7,5.8,5.2,6.1), 
+     y=c(-0.1,1.8708661,2.2279556,4,1.85,-1,2.6433240,-0.6,3.2,0.4666667), 
      clinda_outliers$name, cex=0.9)
-segments(x0=-0.5, y0=2.2, x1=0.6, y1=2)
+segments(x0=c(-4.3,1.1,3.2), y0=c(-0.8,0,0.3), 
+         x1=c(-3.3,1.6,4.2), y1=c(-0.05,-0.4,0))
 
 # germfree alone
 plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
      pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
+points(germfree_acetylglucosamine[,1], germfree_acetylglucosamine[,2], pch=21, col='forestgreen', bg='white', cex=1.2, lwd=1.7)
 axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))
 abline(v=0, lty=2, col='gray30')
-abline(glm(conc ~ score, data=germfree), col='black', lwd=2)
-mtext('E', side=2, line=2, las=2, adj=1.2, padj=-8, cex=1.2)
+abline(germfree_fit, col='black', lwd=2)
+mtext('E', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
 legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[4])))), 
                            as.expression(bquote(paste(italic('P'),' = ',.(test$p[4]),'*')))), pt.cex=0, bty='n', cex=1.1)
 legend('topright', legend='Gnotobiotic', bty='n', cex=1.1)
 points(germfree_outliers[,1], germfree_outliers[,2], pch=21, bg='forestgreen', cex=1.5, lwd=2) # color outliers
-text(x=c(4,3.3,6,6), 
-     y=c(4.523075,5.924171,14.439394,11.890565), 
+text(x=c(3.3,6,6), 
+     y=c(5.924171,14.439394,11.890565), 
      germfree_outliers$name, cex=0.9)
 
 dev.off()
