@@ -19,7 +19,7 @@ minor.ticks.axis <- function(ax,n,t.ratio=0.5,mn,mx,...){
   if(missing(mx)) mx <- max(major.ticks)
   
   major.ticks <- c(mn:mx)
-  labelsY <- parse(text=paste(rep(10,mx), '^', seq(mn,mx,1), sep=''))
+  labelsY <- c(0,parse(text=paste(rep(10,mx), '^', seq(mn+1,mx,1), sep='')))
   axis(ax,at=major.ticks, labels=labelsY, las=1)
   
   n <- n+2
@@ -146,13 +146,13 @@ shared_mock$other <- log10(shared_mock$other + 1)
 shared_mock$abx <- factor(shared_mock$abx, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'none'))
 
 # Percentages of C diff reads to all others
-percent_diff <- c(paste('~', as.character(round((as.numeric(mean(strep_630[,1])) / mean(quantile(strep_630[,2]))) * 100, digits=2)), '%', sep=''), 
-                  paste('~', as.character(round((as.numeric(mean(strep_mock[,1])) / mean(quantile(strep_mock[,2]))) * 100, digits=2)), '%', sep=''), 
-                  paste('~', as.character(round((as.numeric(mean(cef_630[,1])) / mean(quantile(cef_630[,2]))) * 100, digits=2)), '%', sep=''),
-                  paste('~', as.character(round((as.numeric(mean(cef_mock[,1])) / mean(quantile(cef_mock[,2]))) * 100, digits=2)), '%', sep=''),
-                  paste('~', as.character(round((as.numeric(mean(clinda_630[,1])) / mean(quantile(clinda_630[,2]))) * 100, digits=2)), '%', sep=''),
-                  paste('~', as.character(round((as.numeric(mean(clinda_mock[,1])) / mean(quantile(clinda_mock[,2]))) * 100, digits=2)), '%', sep=''),
-                  paste('~', as.character(round((as.numeric(mean(conv_mock[,1])) / mean(quantile(conv_mock[,2]))) * 100, digits=2)), '%', sep=''))
+percent_diff <- c(paste('~', as.character(round((mean(strep_630[,1]) / (mean(quantile(strep_630[,2]))+mean(strep_630[,1]))) * 100, digits=3)), '%', sep=''), 
+                  paste('~', as.character(round((mean(strep_mock[,1]) / (mean(quantile(strep_mock[,2]))+mean(strep_mock[,1]))) * 100, digits=3)), '%', sep=''), 
+                  paste('~', as.character(round((mean(cef_630[,1]) / (mean(quantile(cef_630[,2]))+mean(strep_630[,1]))) * 100, digits=3)), '%', sep=''), 
+                  paste('~', as.character(round((mean(cef_mock[,1]) / (mean(quantile(cef_mock[,2]))+mean(cef_mock[,1]))) * 100, digits=3)), '%', sep=''),
+                  paste('~', as.character(round((mean(clinda_630[,1]) / (mean(quantile(strep_630[,2]))+mean(clinda_630[,1]))) * 100, digits=3)), '%', sep=''), 
+                  paste('~', as.character(round((mean(clinda_mock[,1]) / (mean(quantile(strep_mock[,2]))+mean(clinda_mock[,1]))) * 100, digits=3)), '%', sep=''),
+                  paste('~', as.character(round((mean(conv_mock[,1]) / (mean(quantile(conv_mock[,2]))+mean(conv_mock[,1]))) * 100, digits=3)), '%', sep=''))
 rm(strep_630, cef_630, clinda_630, strep_mock, cef_mock, clinda_mock, conv_mock)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -241,5 +241,5 @@ for (dep in deps) {
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only=TRUE)
 }
-rm(list=ls())
-gc()
+#rm(list=ls())
+#gc()
