@@ -237,8 +237,8 @@ segments(x0=-1.15, y0=0, x1=-0.45, y1=0, lwd=2)
 
 legend(x=0.6, y=1.28, legend=c('Enzyme node', 'Metabolite node'),
        pt.bg=c('firebrick3', 'blue3'), col='black', pch=21, pt.cex=3.3, cex=1.7, bty='n')
-text(x=-0.5, y=-1.12, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
-text(x=0.99, y=0.32, expression(t[i]), col='white', cex=2)
+text(x=-0.5, y=-1.14, expression(t[i]), col='white', cex=2) # labeled transcription for input reactions
+text(x=0.99, y=0.28, expression(t[i]), col='white', cex=2)
 text(x=-1, y=0.87, expression(t[o]), col='black', cex=2) # labeled transcription for output reactions
 text(x=-0.6, y=0.7, expression(e[i]), col='black', cex=2) # labeled indegree
 text(x=-0.4, y=-0.3, expression(e[o]), col='black', cex=2) # labeled outdegree
