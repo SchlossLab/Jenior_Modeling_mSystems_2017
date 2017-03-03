@@ -124,9 +124,15 @@ clinda_shared_mock <- cbind(pop_var(clinda_shared_mock), rep('clinda_shared_mock
 clinda_shared_630 <- cbind(pop_var(clinda_shared_630), rep('clinda_shared_630', ncol(clinda_shared_630)))
 conv_shared_mock <- cbind(pop_var(conv_shared_mock), rep('conv_shared_mock', ncol(conv_shared_mock)))
 
-
-
-
+# Assemble tables of plotting
+metabolome_mock <- rbind(strep_metabolome_mock, cef_metabolome_mock, clinda_metabolome_mock, conv_metabolome_mock)
+colnames(metabolome_mock) <-  c('pop_variance','treatment')
+metabolome_630 <- rbind(strep_metabolome_630, cef_metabolome_630, clinda_metabolome_630, conv_metabolome_630)
+colnames(metabolome_630) <-  c('pop_variance','treatment')
+shared_mock <- rbind(strep_shared_mock, cef_shared_mock, clinda_shared_mock, conv_shared_mock)
+colnames(shared_mock) <-  c('pop_variance','treatment')
+shared_630 <- rbind(strep_shared_630, cef_shared_630, clinda_shared_630, conv_metabolome_630)
+colnames(shared_630) <-  c('pop_variance','treatment')
 
 # Calculate differences
 #pvalues_mock <- p.adjust(c(wilcox.test(strep_metabolome_mock, cef_metabolome_mock, exact=F)$p.value,
@@ -142,43 +148,36 @@ conv_shared_mock <- cbind(pop_var(conv_shared_mock), rep('conv_shared_mock', nco
 #                          wilcox.test(cef_metabolome_630, conv_metabolome_630, exact=F)$p.value,
 #                          wilcox.test(clinda_metabolome_630, conv_metabolome_630, exact=F)$p.value), method='BH')
 
-# Compile final tables
-
-
-
-metabolome_var <- t(rbind(strep_metabolome_mock, strep_metabolome_630, cef_metabolome_mock, cef_metabolome_630, 
-                        clinda_metabolome_mock, clinda_metabolome_630, conv_metabolome_mock))
-rownames(metabolome_var) <- metabolites
-rm(strep_metabolome_mock, strep_metabolome_630, cef_metabolome_mock, cef_metabolome_630, 
-   clinda_metabolome_mock, clinda_metabolome_630, conv_metabolome_mock)
-shared_var <- t(rbind(strep_shared_mock, strep_shared_630, cef_shared_mock, cef_shared_630, 
-                    clinda_shared_mock, clinda_shared_630, conv_shared_mock))
-rownames(shared_var) <- otus
-rm(strep_shared_mock, strep_shared_630, cef_shared_mock, cef_shared_630, 
-   clinda_shared_mock, clinda_shared_630, conv_shared_mock)
-rm(metabolites, otus)
-
 #----------------------------------------#
 
 # Generate plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
-pdf(file=plot_file, width=6, height=4)
+pdf(file=plot_file, width=7, height=4)
 layout(matrix(c(1,2), nrow=1, ncol=2, byrow=TRUE))
-
-# C. difficile read abundance relative to community
 par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0))
-boxplot(strep_metabolome_mock[,1], data=shared_var, cex=0, lwd=2.5, xlim=c(1,5), at=c(1),
+
+
+# still need to define ylim for both plots
+
+# Metabolome
+boxplot(pop_variance~treatment, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(1,4,7,10),
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
         ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
-
-
+boxplot(pop_variance~treatment, data=shared_630, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(2,5,8,11),
+        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
+        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
+axis(side=1, labels=c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), at=c(1.5,4.5,7.5,10.5), cex=1.2)
 legend('topleft', legend='16S Abundance', bty='n', cex=1.2)
 mtext('A', side=2, line=2, las=2, adj=1.3, padj=-7.5, cex=1.5)
 
-
-boxplot(cdifficile~abx, data=metabolome_var, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(1,8,15),
+# 16S
+boxplot(pop_variance~treatment, data=metabolome_mock, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(1,4,7,10),
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
         ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
+boxplot(pop_variance~treatment, data=metabolome_630, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(2,5,8,11),
+        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
+        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
+axis(side=1, labels=c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), at=c(1.5,4.5,7.5,10.5), cex=1.2)
 legend('topleft', legend='Metabolome', bty='n', cex=1.2)
 mtext('B', side=2, line=2, las=2, adj=1.3, padj=-7.5, cex=1.5)
 
