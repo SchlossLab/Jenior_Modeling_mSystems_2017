@@ -222,9 +222,9 @@ boxplot(cdifficile~abx, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim
 boxplot(other~abx, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(5,12,19,23),
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'gray50'),
         ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
-mtext(c('CDI:','+','-','+','-','+','-','+','-','+','-','+','-','+','-'), 
-      side=1, at=c(-0.5,1,2,4,5,8,9,11,12,15,16,18,19,22,23), padj=0.2, cex=0.7)
-mtext(c('Infected','Mock','Infected','Mock','Infected','Mock','Mock'), side=1, at=c(1.5,4.5,8.5,11.5,15.5,18.5,22.5), padj=1.7, cex=0.8)
+mtext(c('630','Other','630','Other','630','Other','630','Other','630','Other','630','Other','630','Other'), # define symbols
+      side=1, at=c(1,2,4,5,8,9,11,12,15,16,18,19,22,23), padj=0.2, cex=0.7)
+mtext(c('Infected','Mock','Infected','Mock','Infected','Mock','Mock'), side=1, at=c(1.5,4.5,8.5,11.5,15.5,18.5,22.5), padj=1.8, cex=0.8)
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, at=c(3,10,17,22.5), padj=3)
 minor.ticks.axis(2, 10, mn=0, mx=4)
 abline(v=c(6.5,13.5,20.5), lty=2)
@@ -241,5 +241,5 @@ for (dep in deps) {
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only=TRUE)
 }
-#rm(list=ls())
-#gc()
+rm(list=ls())
+gc()

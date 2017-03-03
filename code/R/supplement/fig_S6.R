@@ -1,6 +1,6 @@
 
 # Load dependencies
-deps <- c('wesanderson');
+deps <- c('wesanderson', 'plotrix');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -109,77 +109,94 @@ rm(strep, cef, clinda, conv)
 #----------------------------------------#
 
 # Calculate population variance
-strep_metabolome_mock <- cbind(pop_var(strep_metabolome_mock), rep('strep_metabolome_mock', ncol(strep_metabolome_mock)))
-strep_metabolome_630 <- cbind(pop_var(strep_metabolome_630), rep('strep_metabolome_630', ncol(strep_metabolome_630)))
-cef_metabolome_mock <- cbind(pop_var(cef_metabolome_mock), rep('cef_metabolome_mock', ncol(cef_metabolome_mock)))
-cef_metabolome_630 <- cbind(pop_var(cef_metabolome_630), rep('cef_metabolome_630', ncol(cef_metabolome_630)))
-clinda_metabolome_mock <- cbind(pop_var(clinda_metabolome_mock), rep('clinda_metabolome_mock', ncol(clinda_metabolome_mock)))
-clinda_metabolome_630 <- cbind(pop_var(clinda_metabolome_630), rep('clinda_metabolome_630', ncol(clinda_metabolome_630)))
-conv_metabolome_mock <- cbind(pop_var(conv_metabolome_mock), rep('conv_metabolome_mock', ncol(conv_metabolome_mock)))
-strep_shared_mock <- cbind(pop_var(strep_shared_mock), rep('strep_shared_mock', ncol(strep_shared_mock)))
-strep_shared_630 <- cbind(pop_var(strep_shared_630), rep('strep_shared_630', ncol(strep_shared_630)))
-cef_shared_mock <- cbind(pop_var(cef_shared_mock), rep('cef_shared_mock', ncol(cef_shared_mock)))
-cef_shared_630 <- cbind(pop_var(cef_shared_630), rep('cef_shared_630', ncol(cef_shared_630)))
-clinda_shared_mock <- cbind(pop_var(clinda_shared_mock), rep('clinda_shared_mock', ncol(clinda_shared_mock)))
-clinda_shared_630 <- cbind(pop_var(clinda_shared_630), rep('clinda_shared_630', ncol(clinda_shared_630)))
-conv_shared_mock <- cbind(pop_var(conv_shared_mock), rep('conv_shared_mock', ncol(conv_shared_mock)))
-
-# Assemble tables of plotting
-metabolome_mock <- rbind(strep_metabolome_mock, cef_metabolome_mock, clinda_metabolome_mock, conv_metabolome_mock)
-colnames(metabolome_mock) <-  c('pop_variance','treatment')
-metabolome_630 <- rbind(strep_metabolome_630, cef_metabolome_630, clinda_metabolome_630, conv_metabolome_630)
-colnames(metabolome_630) <-  c('pop_variance','treatment')
-shared_mock <- rbind(strep_shared_mock, cef_shared_mock, clinda_shared_mock, conv_shared_mock)
-colnames(shared_mock) <-  c('pop_variance','treatment')
-shared_630 <- rbind(strep_shared_630, cef_shared_630, clinda_shared_630, conv_metabolome_630)
-colnames(shared_630) <-  c('pop_variance','treatment')
+strep_metabolome_mock <- pop_var(strep_metabolome_mock)
+strep_metabolome_630 <- pop_var(strep_metabolome_630)
+cef_metabolome_mock <- pop_var(cef_metabolome_mock)
+cef_metabolome_630 <- pop_var(cef_metabolome_630)
+clinda_metabolome_mock <- pop_var(clinda_metabolome_mock)
+clinda_metabolome_630 <- pop_var(clinda_metabolome_630)
+conv_metabolome_mock <- pop_var(conv_metabolome_mock)
+strep_shared_mock <- pop_var(strep_shared_mock)
+strep_shared_630 <- pop_var(strep_shared_630)
+cef_shared_mock <- pop_var(cef_shared_mock)
+cef_shared_630 <- pop_var(cef_shared_630)
+clinda_shared_mock <- pop_var(clinda_shared_mock)
+clinda_shared_630 <- pop_var(clinda_shared_630)
+conv_shared_mock <- pop_var(conv_shared_mock)
 
 # Calculate differences
-#pvalues_mock <- p.adjust(c(wilcox.test(strep_metabolome_mock, cef_metabolome_mock, exact=F)$p.value,
-#                           wilcox.test(strep_metabolome_mock, clinda_metabolome_mock, exact=F)$p.value,
-#                           wilcox.test(strep_metabolome_mock, conv_metabolome_mock, exact=F)$p.value,
-#                           wilcox.test(cef_metabolome_mock, clinda_metabolome_mock, exact=F)$p.value,
-#                           wilcox.test(cef_metabolome_mock, conv_metabolome_mock, exact=F)$p.value,
-#                           wilcox.test(clinda_metabolome_mock, conv_metabolome_mock, exact=F)$p.value), method='BH')
-#pvalues_630 <- p.adjust(c(wilcox.test(strep_metabolome_630, cef_metabolome_630, exact=F)$p.value,
-#                          wilcox.test(strep_metabolome_630, clinda_metabolome_630, exact=F)$p.value,
-#                          wilcox.test(strep_metabolome_630, conv_metabolome_630, exact=F)$p.value,
-#                          wilcox.test(cef_metabolome_630, clinda_metabolome_630, exact=F)$p.value,
-#                          wilcox.test(cef_metabolome_630, conv_metabolome_630, exact=F)$p.value,
-#                          wilcox.test(clinda_metabolome_630, conv_metabolome_630, exact=F)$p.value), method='BH')
+#pvalues_16S <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
+#pvalues_metabolome <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
+
+# Calculate summary stats for barplots
+metabolome <- rbind(quantile(strep_metabolome_mock)[2:4],
+                    quantile(strep_metabolome_630)[2:4],
+                    quantile(cef_metabolome_mock)[2:4],
+                    quantile(cef_metabolome_630)[2:4],
+                    quantile(clinda_metabolome_mock)[2:4],
+                    quantile(clinda_metabolome_630)[2:4],
+                    quantile(conv_metabolome_mock)[2:4])
+metabolome <- as.data.frame(metabolome)
+colnames(metabolome) <- c('q25','median','q75')
+rownames(metabolome) <- c('strep_mock','strep_630','cef_mock','cef_630',
+                          'clinda_mock','clinda_630','conv_mock')
+metabolome$q75[nrow(metabolome)] <- 0.86
+shared <- rbind(quantile(strep_shared_mock)[2:4],
+                quantile(strep_shared_630)[2:4],
+                quantile(cef_shared_mock)[2:4],
+                quantile(cef_shared_630)[2:4],
+                quantile(clinda_shared_mock)[2:4],
+                quantile(clinda_shared_630)[2:4],
+                quantile(conv_shared_mock)[2:4])
+shared <- as.data.frame(shared)
+colnames(shared) <- c('q25','median','q75')
+rownames(shared) <- c('strep_mock','strep_630','cef_mock','cef_630',
+                          'clinda_mock','clinda_630','conv_mock')
+shared$q75[nrow(shared)] <- 0.00095
+
+rm(strep_metabolome_moc,strep_metabolome_630,cef_metabolome_mock,cef_metabolome_630,
+   clinda_metabolome_mock,clinda_metabolome_630,conv_metabolome_mock,strep_shared_mock,
+   strep_shared_630,cef_shared_mock,cef_shared_630,clinda_shared_mock,clinda_shared_630,conv_shared_mock)
 
 #----------------------------------------#
 
 # Generate plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
-pdf(file=plot_file, width=7, height=4)
-layout(matrix(c(1,2), nrow=1, ncol=2, byrow=TRUE))
-par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0))
-
-
-# still need to define ylim for both plots
-
-# Metabolome
-boxplot(pop_variance~treatment, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(1,4,7,10),
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
-boxplot(pop_variance~treatment, data=shared_630, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(2,5,8,11),
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
-axis(side=1, labels=c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), at=c(1.5,4.5,7.5,10.5), cex=1.2)
-legend('topleft', legend='16S Abundance', bty='n', cex=1.2)
-mtext('A', side=2, line=2, las=2, adj=1.3, padj=-7.5, cex=1.5)
+pdf(file=plot_file, width=6, height=8)
+layout(matrix(c(1,2), nrow=2, ncol=1, byrow=TRUE))
+par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
 
 # 16S
-boxplot(pop_variance~treatment, data=metabolome_mock, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(1,4,7,10),
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
-boxplot(pop_variance~treatment, data=metabolome_630, cex=0, lwd=2.5, xlim=c(0.5,11.5), at=c(2,5,8,11),
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5], 'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
-axis(side=1, labels=c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), at=c(1.5,4.5,7.5,10.5), cex=1.2)
-legend('topleft', legend='Metabolome', bty='n', cex=1.2)
-mtext('B', side=2, line=2, las=2, adj=1.3, padj=-7.5, cex=1.5)
+barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Median Population Variance',
+        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
+segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=shared$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=shared$q75)
+mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
+mtext(c('+','-','+','-','+','-','-'), side=1, 
+      at=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), padj=0.2, cex=1.5)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, 
+      at=c(1.3,3.7,6.1,7.9), padj=2, cex=0.9)
+abline(v=c(2.5,4.9,7.3), lty=2)
+axis(side=2, at=c(0,0.0002,0.0004,0.0006,0.001), labels=c('0.0','0.0002','0.0004','0.0006','0.004'), cex.axis=0.8)
+axis.break(2, 0.0008, style='slash') 
+rect(xleft=7.7, xright=8.1, ytop=0.00081, ybottom=0.00079, col='white', border='white')
+segments(x0=c(-1,-1,8.72),y0=c(0,0.001,0),x1=c(10,10,8.72),y1=c(0,0.001,0.001), lwd=2)
+mtext('A', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
+
+# Metabolome
+barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Median Population Variance',
+        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
+segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=metabolome$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=metabolome$q75)
+mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
+mtext(c('+','-','+','-','+','-','-'), side=1, 
+      at=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), padj=0.2, cex=1.5)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, 
+      at=c(1.3,3.7,6.1,7.9), padj=2, cex=0.9)
+abline(v=c(2.5,4.9,7.3), lty=2)
+axis(side=2, at=c(0,0.2,0.4,0.6,0.9), labels=c('0.0','0.2','0.4','0.6','9.0'))
+axis.break(2, 0.8, style='slash') 
+segments(x0=c(-1,-1,8.72),y0=c(0,0.9,0),x1=c(10,10,8.72),y1=c(0,0.9,0.9), lwd=2)
+rect(xleft=7.7, xright=8.1, ytop=0.81, ybottom=0.79, col='white', border='white')
+mtext('B', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
 
 dev.off()
 
@@ -190,5 +207,5 @@ for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
 }
-#rm(list=ls())
-#gc()
+rm(list=ls())
+gc()

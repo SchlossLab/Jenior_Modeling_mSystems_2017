@@ -194,18 +194,7 @@ bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
 bhi[bhi < 0] <- 0
 sorbitol <- cbind(growth$sorbitol_1, growth$sorbitol_2, growth$sorbitol_3) - growth$sorbitol_blank
 sorbitol[sorbitol < 0] <- 0
-
-
-trehalose <- cbind(growth$trehalose_1, growth$trehalose_2, growth$trehalose_3) - growth$trehalose_blank ###
-trehalose[trehalose < 0] <- 0 ###
-
-hydroxybutanoate <- cbind(growth$hydroxybutanoate_1, growth$hydroxybutanoate_2, growth$hydroxybutanoate_3) - growth$hydroxybutanoate_blank ###
-hydroxybutanoate[hydroxybutanoate < 0] <- 0 ###
-
 rm(growth)
-
-
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -222,8 +211,6 @@ no_carb_median <- apply(no_carb, 1, median)
 bhi_median <- apply(bhi, 1, median)
 no_aa_median <- apply(no_aa, 1, median)
 sorbitol_median <- apply(sorbitol, 1, median)
-trehalose_median <- apply(trehalose, 1, median) ###
-hydroxybutanoate_median <- apply(hydroxybutanoate, 1, median) ###
 
 # Standard deviations
 acetylneuraminate_sd <- rowSds(acetylneuraminate)
@@ -236,14 +223,11 @@ bhi_sd <- rowSds(bhi)
 no_aa_sd <- rowSds(no_aa)
 sorbitol_sd <- rowSds(sorbitol)
 galactitol_sd <- rowSds(galactitol)
-trehalose_sd <- rowSds(trehalose) ###
-hydroxybutanoate_sd <- rowSds(hydroxybutanoate) ###
-
 
 # Compile results
-growth_medians <- as.data.frame(cbind(acetylglucosamine_median, sorbitol_median, galactitol_median, trehalose_median, hydroxybutanoate_median,
+growth_medians <- as.data.frame(cbind(acetylglucosamine_median, sorbitol_median, galactitol_median, 
                                       acetylneuraminate_median, fructose_median, mannitol_median, salicin_median, no_carb_median, no_aa_median))
-growth_sds <- as.data.frame(cbind(acetylglucosamine_sd, acetylneuraminate_sd, sorbitol_sd, galactitol_sd, trehalose_sd, hydroxybutanoate_sd,
+growth_sds <- as.data.frame(cbind(acetylglucosamine_sd, acetylneuraminate_sd, sorbitol_sd, galactitol_sd, 
                                   fructose_sd, mannitol_sd, salicin_sd, no_carb_sd, no_aa_sd))
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -345,9 +329,9 @@ abline(v=seq(1,37,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,37,2), labels=seq(0,18,1), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
 mtext('C', side=2, line=2, las=2, adj=3, padj=-17, cex=1.5)
-legend('topleft', legend=c('No Carbohydrates','No Amino Acids','No Proline or Glycine','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuriminate'), 
-       col=c('black','black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(15,19,17,6,0,1,2,5), cex=1.8, pt.cex=c(2.5,2.5,2.5,3.2,3.4,3.4,3.2,3.2), lwd=3, bg='white')
+legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuriminate'), 
+       col=c('black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
+       pch=c(15,19,6,0,1,2,5), cex=1.8, pt.cex=c(2.5,2.5,3.2,3.4,3.4,3.2,3.2), lwd=3, bg='white')
 
 # Controls
 lines(growth_medians$no_carb_median, type='o', lwd=3, pch=15, cex=1.8, col='black') # Carbohydrates
@@ -365,22 +349,6 @@ segments(x0=seq(1,37,1)-0.2, y0=growth_medians$no_aa_median+growth_sds$no_aa_sd,
 segments(x0=seq(1,37,1)-0.2, y0=growth_medians$no_aa_median-growth_sds$no_aa_sd, 
          x1=seq(1,37,1)+0.2, y1=growth_medians$no_aa_median-growth_sds$no_aa_sd, lwd=2.5, col='black')
 
-
-lines(growth_medians$hydroxybutanoate_median, type='o', lwd=3, pch=17, cex=1.8, col='black') # Amino Acids
-segments(x0=seq(1,37,1), y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, 
-         x1=seq(1,37,1), y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, cex=2, col='black')
-segments(x0=seq(1,37,1)-0.2, y0=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, 
-         x1=seq(1,37,1)+0.2, y1=growth_medians$hydroxybutanoate_median+growth_sds$hydroxybutanoate_sd, lwd=2.5, col='black')
-segments(x0=seq(1,37,1)-0.2, y0=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, 
-         x1=seq(1,37,1)+0.2, y1=growth_medians$hydroxybutanoate_median-growth_sds$hydroxybutanoate_sd, lwd=2.5, col='black')
-
-
-
-
-# Possibly need no proline + glycine control
-
-
-
 # Shared
 lines(growth_medians$acetylglucosamine_median, type='o', col='darkmagenta', lwd=2.5, pch=6, cex=2.3)
 segments(x0=seq(1,37,1), y0=growth_medians$acetylglucosamine_median+growth_sds$acetylglucosamine_sd, 
@@ -391,22 +359,13 @@ segments(x0=seq(1,37,1)-0.2, y0=growth_medians$acetylglucosamine_median-growth_s
          x1=seq(1,37,1)+0.2, y1=growth_medians$acetylglucosamine_median-growth_sds$acetylglucosamine_sd, lwd=2.5, col='darkmagenta')
 
 # Streptomycin
-#lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
-#segments(x0=seq(1,37,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, 
-#         x1=seq(1,37,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-#segments(x0=seq(1,37,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, 
-#         x1=seq(1,37,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-#segments(x0=seq(1,37,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, 
-#         x1=seq(1,37,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-lines(growth_medians$trehalose_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
-segments(x0=seq(1,37,1), y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, 
-         x1=seq(1,37,1), y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,37,1)-0.2, y0=growth_medians$trehalose_median+growth_sds$trehalose_sd, 
-         x1=seq(1,37,1)+0.2, y1=growth_medians$trehalose_median+growth_sds$trehalose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-segments(x0=seq(1,37,1)-0.2, y0=growth_medians$trehalose_median-growth_sds$trehalose_sd, 
-         x1=seq(1,37,1)+0.2, y1=growth_medians$trehalose_median-growth_sds$trehalose_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
-
-
+lines(growth_medians$sorbitol_median, type='o', col=wes_palette('FantasticFox')[1], lwd=2.5, pch=0, cex=2.6)
+segments(x0=seq(1,37,1), y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, 
+         x1=seq(1,37,1), y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,37,1)-0.2, y0=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, 
+         x1=seq(1,37,1)+0.2, y1=growth_medians$sorbitol_median+growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
+segments(x0=seq(1,37,1)-0.2, y0=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, 
+         x1=seq(1,37,1)+0.2, y1=growth_medians$sorbitol_median-growth_sds$sorbitol_sd, lwd=2.5, col=wes_palette('FantasticFox')[1])
 
 # Cefoperazone
 lines(growth_medians$mannitol_median, type='o', col=wes_palette('FantasticFox')[3], lwd=2.5, pch=1, cex=2.7)
