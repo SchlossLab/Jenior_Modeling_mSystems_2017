@@ -12,10 +12,10 @@ set.seed(42)
 #--------------------------------------------------------------------------------------------------------------#
 
 # Define variables
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.tsv'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.tsv'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.tsv'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.tsv'
 
 # Open files
 cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE)
@@ -122,7 +122,7 @@ layout(matrix(c(1,1,2,
 #--------------------------------------------------------------------------------------------------------------#
 
 # Sporulation
-par(las=1, mar=c(4.5,6,1,1), mgp=c(3.9, 1, 0))
+par(las=1, mar=c(4.5,6,1,1), mgp=c(4, 1, 0))
 barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
 box()
@@ -131,14 +131,13 @@ text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
      srt=45, adj=1, xpd=TRUE, cex=1.5)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
-mtext('A', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
-text(x=c(21.5,25,27,30.5,32.5,54.5), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+mtext('A', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+text(x=c(21.5,25,27,30.6,32.6,54.5), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 legend('topleft', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No antibiotics (GF)'), pt.cex=3.5, cex=1.7,
        pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
 
 # Pathogenicity
-par(las=1, mar=c(4.5,5,1,1), mgp=c(3.9, 1, 0))
 barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
         ylab='Relative Transcript Abundance', ylim=c(0,1), cex.lab=1.4)
 box()
@@ -147,23 +146,21 @@ text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
-mtext('B', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
+mtext('B', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
 text(x=c(5,10.5,13,15,16), y=0.025, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Quorum sensing
-par(las=1, mar=c(4.5,5.5,1,1), mgp=c(3.9, 1, 0))
 barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
         ylab='Relative Transcript Abundance', ylim=c(0,2.5), cex.lab=1.4)
 box()
 axis(side=2, at=c(0,0.833,1.666,2.5), c('0%','0.83%','1.66%','2.5%'), tick=TRUE, las=1, cex.axis=1.3)
-text(x=c(2.7,8.2,13.7), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+text(x=c(2.7,8.2,13.7,18.7,23.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
-mtext('C', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
-text(x=c(4.5,14.5), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+mtext('C', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+text(x=c(9.6,12.6,13.4,24.6), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Sigma factors
-par(las=1, mar=c(4.5,6,1,1), mgp=c(3.9, 1, 0))
 barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
         ylab='Relative Transcript Abundance', ylim=c(0,25), cex.lab=1.4)
 box()
@@ -173,8 +170,8 @@ text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
                           'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
      srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
-mtext('D', side=2, line=2, las=2, adj=3.3, padj=-14.5, cex=1.2)
-text(x=c(21.5,23.5,24.5,25.5,26.5,71), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+mtext('D', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+text(x=c(21.7,23.5,24.5,25.5,26.5,71.3), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 dev.off()
 
