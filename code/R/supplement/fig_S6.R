@@ -1,4 +1,8 @@
 
+# Start with a blank slate
+rm(list=ls())
+gc()
+
 # Load dependencies
 deps <- c('wesanderson', 'plotrix');
 for (dep in deps){
@@ -8,11 +12,20 @@ for (dep in deps){
   library(dep, verbose=FALSE, character.only=TRUE)
 }
 
-# Function for population variance of columns in matrix
+# Function for population variance of columns in a matrix
 pop_var <- function(data) {
   vars <- c()
   for (x in 1:ncol(data)){
     vars[x] <- sum((data[,x] - mean(data[,x]))^2) / length(data[,x])
+  }
+  return(vars)
+}
+
+# Function for sample variance of columns in a matrix
+samp_var <- function(data) {
+  vars <- c()
+  for (x in 1:ncol(data)){
+    vars[x] <- var(data[,x])
   }
   return(vars)
 }
@@ -109,20 +122,36 @@ rm(strep, cef, clinda, conv)
 #----------------------------------------#
 
 # Calculate population variance
-strep_metabolome_mock <- pop_var(strep_metabolome_mock)
-strep_metabolome_630 <- pop_var(strep_metabolome_630)
-cef_metabolome_mock <- pop_var(cef_metabolome_mock)
-cef_metabolome_630 <- pop_var(cef_metabolome_630)
-clinda_metabolome_mock <- pop_var(clinda_metabolome_mock)
-clinda_metabolome_630 <- pop_var(clinda_metabolome_630)
-conv_metabolome_mock <- pop_var(conv_metabolome_mock)
-strep_shared_mock <- pop_var(strep_shared_mock)
-strep_shared_630 <- pop_var(strep_shared_630)
-cef_shared_mock <- pop_var(cef_shared_mock)
-cef_shared_630 <- pop_var(cef_shared_630)
-clinda_shared_mock <- pop_var(clinda_shared_mock)
-clinda_shared_630 <- pop_var(clinda_shared_630)
-conv_shared_mock <- pop_var(conv_shared_mock)
+#strep_metabolome_mock <- pop_var(strep_metabolome_mock)
+#strep_metabolome_630 <- pop_var(strep_metabolome_630)
+#cef_metabolome_mock <- pop_var(cef_metabolome_mock)
+#cef_metabolome_630 <- pop_var(cef_metabolome_630)
+#clinda_metabolome_mock <- pop_var(clinda_metabolome_mock)
+#clinda_metabolome_630 <- pop_var(clinda_metabolome_630)
+#conv_metabolome_mock <- pop_var(conv_metabolome_mock)
+#strep_shared_mock <- pop_var(strep_shared_mock)
+#strep_shared_630 <- pop_var(strep_shared_630)
+#cef_shared_mock <- pop_var(cef_shared_mock)
+#cef_shared_630 <- pop_var(cef_shared_630)
+#clinda_shared_mock <- pop_var(clinda_shared_mock)
+#clinda_shared_630 <- pop_var(clinda_shared_630)
+#conv_shared_mock <- pop_var(conv_shared_mock)
+
+# Calculate sample variance
+strep_metabolome_mock <- samp_var(strep_metabolome_mock)
+strep_metabolome_630 <- samp_var(strep_metabolome_630)
+cef_metabolome_mock <- samp_var(cef_metabolome_mock)
+cef_metabolome_630 <- samp_var(cef_metabolome_630)
+clinda_metabolome_mock <- samp_var(clinda_metabolome_mock)
+clinda_metabolome_630 <- samp_var(clinda_metabolome_630)
+conv_metabolome_mock <- samp_var(conv_metabolome_mock)
+strep_shared_mock <- samp_var(strep_shared_mock)
+strep_shared_630 <- samp_var(strep_shared_630)
+cef_shared_mock <- samp_var(cef_shared_mock)
+cef_shared_630 <- samp_var(cef_shared_630)
+clinda_shared_mock <- samp_var(clinda_shared_mock)
+clinda_shared_630 <- samp_var(clinda_shared_630)
+conv_shared_mock <- samp_var(conv_shared_mock)
 
 # Calculate differences
 #pvalues_16S <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
@@ -167,7 +196,7 @@ layout(matrix(c(1,2), nrow=2, ncol=1, byrow=TRUE))
 par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
 
 # 16S
-barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Median Population Variance',
+barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Within-group Sample Variance',
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
 segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=shared$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=shared$q75)
 mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
@@ -183,7 +212,7 @@ segments(x0=c(-1,-1,8.72),y0=c(0,0.001,0),x1=c(10,10,8.72),y1=c(0,0.001,0.001), 
 mtext('A', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
 
 # Metabolome
-barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Median Population Variance',
+barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Within-group Sample Variance',
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
 segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=metabolome$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=metabolome$q75)
 mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)

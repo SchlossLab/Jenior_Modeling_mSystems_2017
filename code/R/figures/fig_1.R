@@ -60,8 +60,8 @@ clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(strep, cef, clinda, gf, conv)
-toxin_medians[toxin_medians <= 2.0] <- 1.9
-toxin$titer[toxin$titer <= 2.0] <- 1.9
+toxin_medians[toxin_medians <= 2.0] <- 2.0
+toxin$titer[toxin$titer <= 2.0] <- 2.0
 rm(cef, strep, clinda, gf, conv)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -173,7 +173,7 @@ stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=0)
-abline(h=2, lty=2, lwd=1.5) # LOD
+abline(h=2.3, lty=2, lwd=1.5) # LOD
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
            ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
@@ -186,8 +186,6 @@ axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
 
 # Draw axis break
 axis.break(2, 1.75, style='slash') 
-
-
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
