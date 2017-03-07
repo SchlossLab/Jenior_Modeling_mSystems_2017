@@ -1,4 +1,8 @@
 
+# Start with clean environment
+rm(list=ls())
+gc()
+
 # Load dependencies
 deps <- c('vegan', 'ggplot2', 'shape', 'wesanderson', 'matrixStats', 'flux');
 for (dep in deps){
@@ -328,7 +332,7 @@ abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,37,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,37,2), labels=seq(0,18,1), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('C', side=2, line=2, las=2, adj=3, padj=-17, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=3.5, padj=-17, cex=1.5)
 legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuriminate'), 
        col=c('black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
        pch=c(15,19,6,0,1,2,5), cex=1.8, pt.cex=c(2.5,2.5,3.2,3.4,3.4,3.2,3.2), lwd=3, bg='white')
@@ -405,6 +409,3 @@ for (dep in deps){
 }
 rm(list=ls())
 gc()
-
-
-
