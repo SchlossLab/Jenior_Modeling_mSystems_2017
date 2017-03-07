@@ -1,4 +1,8 @@
 
+# Clear environment
+rm(list=ls())
+gc()
+
 # Load dependencies
 deps <- c('wesanderson','vegan');
 for (dep in deps){
@@ -131,7 +135,7 @@ text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
      srt=45, adj=1, xpd=TRUE, cex=1.5)
 legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
-mtext('A', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=2.9, padj=-11, cex=1.5)
 text(x=c(21.5,25,27,30.6,32.6,54.5), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 legend('topleft', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No antibiotics (GF)'), pt.cex=3.5, cex=1.7,
@@ -157,7 +161,7 @@ axis(side=2, at=c(0,0.833,1.666,2.5), c('0%','0.83%','1.66%','2.5%'), tick=TRUE,
 text(x=c(2.7,8.2,13.7,18.7,23.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
      labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
 legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
-mtext('C', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=2.7, padj=-11, cex=1.5)
 text(x=c(9.6,12.6,13.4,24.6), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 # Sigma factors
@@ -179,12 +183,10 @@ dev.off()
 #--------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-rm(quorum, sigma, sporulation, paloc, 
-   plot_file, select_palette, make.italic)
 for (dep in deps){
   pkg <- paste('package:', dep,sep='')
    detach(pkg, character.only = TRUE)
 }
-rm(dep, deps, pkg)
+rm(list=ls())
 gc()
 

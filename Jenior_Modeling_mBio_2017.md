@@ -1,62 +1,9 @@
----
-title: "*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut communities"
-csl: mbio.csl
-output:
- word_document:
-  keep_md: true
-  reference_docx: manuscript_format.docx
-bibliography: references.bib
----
+# *Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut communities
 
 **Authors:** Matthew L. Jenior, Jhansi L. Leslie, Vincent B. Young, and Patrick D. Schloss^\*^
 
 
-```{r startup, echo=F, message=F, warning=F, cache=T}
 
-# Load dependencies
-deps <- c('shape', 'vegan', 'klaR', 'igraph', 'matrixStats', 'flux', 'knitr')
-for (dep in deps){
- if (dep %in% installed.packages()[,"Package"] == FALSE){
-  install.packages(as.character(dep), quiet=TRUE);
- }
- library(dep, verbose=FALSE, character.only=TRUE)
-}
-
-# Define function for formatting growth curves for statistical analysis
-format_curve <- function(raw_exp_data, exp_group, raw_control_data){
- formatted_data <- c()
- control_data <- c()
- for (time in 1:nrow(raw_exp_data)){
-  temp_exp <- cbind(exp_group, time, raw_exp_data[time,])
-  formatted_data <- rbind(formatted_data, temp_exp)
-  temp_control <- cbind('control', time, raw_control_data[time,])
-  control_data <- rbind(control_data, temp_control)
- }
- formatted_data <- as.data.frame(rbind(control_data, formatted_data))
- colnames(formatted_data) <- c('substrate','time','od')
- formatted_data$od <- as.numeric(as.character(formatted_data$od))
-
- return(formatted_data)
-}
-
-# Get data files
-# Figure 2 data
-cfu <- read.delim('data/wetlab_assays/cfu.dat', sep='\t', header=T)
-toxin <- read.delim('data/wetlab_assays/toxin_titer.dat', sep='\t', header=T)
-# Figure 5 data
-network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/graph.tsv', header=FALSE, sep='\t')
-# Figure 6 data
-growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
-# Figure 7 data
-metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
-concentrations <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=TRUE, row.names=1)
-# Figure S2 data
-scfa <- read.delim('data/wetlab_assays/cef_acetate_630.txt', sep='\t', header=T)
-
-# Set a seed to the answer to the ultimate question of life, the universe, and everything
-set.seed(42)
-
-```
 
 
 ###Abstract
@@ -88,102 +35,17 @@ Need to add something about why this matters at all
 
 ###Results
 
-```{r figure_2, echo=F, warning=F, message=F, results='hide', cache=T}
-
-cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
-cfu_raw <- cfu
-toxin_raw <- toxin
-
-# Format CFU data and collect summary statistics
-cfu[cfu == 0] <- 100
-cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
-cfu$cfu_spore <- log10(cfu$cfu_spore)
-cfu$mouse <- NULL
-cfu$cage <- NULL
-cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
-vegetative_cfu <- cfu
-vegetative_cfu$cfu_spore <- NULL
-spore_cfu <- cfu
-spore_cfu$cfu_vegetative <- NULL
-cef <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2]))
-strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2]))
-clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
-gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
-conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
-vege_medians <- c(strep, cef, clinda, gf, conv)
-vege_medians[vege_medians == 2.0] <- 1.6
-cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
-strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
-clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
-gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
-conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
-spore_medians <- c(strep, cef, clinda, gf, conv)
-spore_medians[spore_medians == 2.0] <- 1.6
-vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
-vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
-spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
-
-# Format toxin data and find summary statistics
-toxin$mouse <- NULL
-toxin$cage <- NULL
-toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
-cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
-strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
-clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
-gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
-conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
-toxin_medians <- c(strep, cef, clinda, gf, conv)
-toxin_medians[toxin_medians <= 2.0] <- 1.9
-toxin$titer[toxin$titer <= 2.0] <- 1.9
-
-#----------------------------#
-
-# Calculate significant differences and correct p values
-
-# Toxin
-tox_p_values <- round(p.adjust(c(wilcox.test(subset(toxin_raw, treatment == 'Germfree')$titer, subset(toxin_raw, treatment == 'Cefoperazone')$titer, exact=F)$p.value,
-                 wilcox.test(subset(toxin_raw, treatment == 'Germfree')$titer, subset(toxin_raw, treatment == 'Clindamycin')$titer, exact=F)$p.value,
-                 wilcox.test(subset(toxin_raw, treatment == 'Germfree')$titer, subset(toxin_raw, treatment == 'Streptomycin')$titer, exact=F)$p.value,
-                 wilcox.test(subset(toxin_raw, treatment == 'Cefoperazone')$titer, subset(toxin_raw, treatment == 'Clindamycin')$titer, exact=F)$p.value,
-                 wilcox.test(subset(toxin_raw, treatment == 'Cefoperazone')$titer, subset(toxin_raw, treatment == 'Streptomycin')$titer, exact=F)$p.value,
-                 wilcox.test(subset(toxin_raw, treatment == 'Clindamycin')$titer, subset(toxin_raw, treatment == 'Streptomycin')$titer, exact=F)$p.value), method='holm'), digits=3)
-gf_vs_cef_tox_p <- tox_p_values[1]
-gf_vs_clinda_tox_p <- tox_p_values[2]
-gf_vs_strep_tox_p <- tox_p_values[3]
-cef_vs_clinda_tox_p <- tox_p_values[4]
-cef_vs_strep_tox_p <- tox_p_values[5]
-clinda_vs_strep_tox_p <- tox_p_values[6]
-
-# Spores
-spore_p_values <- round(p.adjust(c(wilcox.test(subset(cfu_raw, treatment == 'germfree')$cfu_spore, subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore, exact=F)$p.value,
-                  wilcox.test(subset(cfu_raw, treatment == 'germfree')$cfu_spore, subset(cfu_raw, treatment == 'clindamycin')$cfu_spore, exact=F)$p.value,
-                  wilcox.test(subset(cfu_raw, treatment == 'germfree')$cfu_spore, subset(cfu_raw, treatment == 'streptomycin')$cfu_spore, exact=F)$p.value,
-                  wilcox.test(subset(cfu_raw, treatment == 'clindamycin')$cfu_spore, subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore, exact=F)$p.value,
-                  wilcox.test(subset(cfu_raw, treatment == 'streptomycin')$cfu_spore, subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore, exact=F)$p.value,
-                  wilcox.test(subset(cfu_raw, treatment == 'streptomycin')$cfu_spore, subset(cfu_raw, treatment == 'clindamycin')$cfu_spore, exact=F)$p.value), method='holm'), digits=3)
-gf_vs_cef_spore_p <- spore_p_values[1]
-gf_vs_clinda_spore_p <- spore_p_values[2]
-gf_vs_strep_spore_p <- spore_p_values[3]
-clinda_vs_cef_spore_p <- spore_p_values[4]
-strep_vs_cef_spore_p <- spore_p_values[5]
-strep_vs_clinda_spore_p <- spore_p_values[6]
-
-```
 
 
 **Levels of *C. difficile* sporulation and toxin activity vary between antibiotic-treated specific pathogen free and germfree mice.**
-
-Due to the connection between metabolism, sporulation, and toxin production in *C. difficile*, we measured sporulation and toxin production at 18 hours post infection in each group. There was not a significant difference in the number of vegetative cells between any susceptible condition tested (Fig. 1a). All antibiotic treated (Table 1) specific pathogen free (SPF) and germfree (GF) animals were colonized to ~1×10^8^ colony forming units (c.f.u.) per gram of content, while untreated SPF mice maintained colonization resistance to *C. difficile*. Despite having the same number of vegetative *C. difficile* cells, large differences were detected in the density of *C. difficile* spores. Significantly more spores (*P* = `r gf_vs_strep_spore_p`, `r gf_vs_cef_spore_p`, `r gf_vs_clinda_spore_p`) were detected in ex-GF mice than in the antibiotic treated mice (Fig. 1b). The spore densities in both streptomycin and clindamycin-treated mice were also generally higher than that in cefoperazone-treated mice. There was significantly more toxin activity in ex-GF animals than any other colonized group (all *P* <= `r min(c(gf_vs_strep_tox_p, gf_vs_cef_tox_p, gf_vs_clinda_tox_p))`), but toxin titer also varied between antibiotic treatment groups (Fig. 1c). Although similar toxin activity was found in both the cefoperazone and clindamycin-treated groups, toxin titer was below the limit of detection in most streptomycin-treated animals. These results indicate that *C. difficile* was able to colonize different communities to a consistently high level, but that the density of spores and toxin titer varied by treatment.
-
+Due to the connection between metabolism, sporulation, and toxin production in *C. difficile*, we measured sporulation and toxin production at 18 hours post infection in each group. There was not a significant difference in the number of vegetative cells between any susceptible condition tested (Fig. 1a). All antibiotic treated (Table 1) specific pathogen free (SPF) and germfree (GF) animals were colonized to ~1×10^8^ colony forming units (c.f.u.) per gram of content, while untreated SPF mice maintained colonization resistance to *C. difficile*. Despite having the same number of vegetative *C. difficile* cells, large differences were detected in the density of *C. difficile* spores. Significantly more spores (*P* = 0.005, 0.008, 0.003) were detected in ex-GF mice than in the antibiotic treated mice (Fig. 1b). The spore densities in both streptomycin and clindamycin-treated mice were also generally higher than that in cefoperazone-treated mice. There was significantly more toxin activity in ex-GF animals than any other colonized group (all *P* <= 0.001), but toxin titer also varied between antibiotic treatment groups (Fig. 1c). Although similar toxin activity was found in both the cefoperazone and clindamycin-treated groups, toxin titer was below the limit of detection in most streptomycin-treated animals. These results indicate that *C. difficile* was able to colonize different communities to a consistently high level, but that the density of spores and toxin titer varied by treatment.
 
 ***C. difficile* adapts the expression of genes for virulence and key sigma factors that are under the control of environmental nutrient concentrations.**
 To more closely investigate the responses of *C. difficile* to colonizing distinct susceptible gut environments, we performed whole transcriptome analysis of *C. difficile* during infection of the antibiotic treatment models. As *C. difficile* represents <0.001% of the bacterial load in the ceca of antibiotic-treated SPF mice (By read abundance; Fig. S2C), with rRNA depletion also eliminating >90% of each raw RNA isolation [@ONeil2013], it was necessary to pool samples within each treatment group. Moreover, this also required a high degree of sequencing depth per sample in order to yeild sufficient numbers of reads that mapped to *C. difficile* str. 630 (4019 genes and putative ORFs; KEGG 2016) with 100% fidelity. Approximately 300 million raw paired-end reads were sequenced per pooled sample, with an average of \~167 thousand reads attributed to *C. dificile* following all curation steps (outlined in Methods). This corresponded to an average of \~42x coverage across the *C. difficile* str. 630 reference used, while low compared to some transcriptional studies of *in vitro* bacterial monoculture or *in vivo* gnotobiotic monoassociation [@Antunes2012;@Janoir2013], is not feasible in the context of a diverse bacterial community. Because of these factors the read abundances for *C. difficile* reported here were unavoidable, however these levels have been shown to be largely acceptable for our type of analysis due to the focus on large-scale differences in specific annotated genes [@Haas2012]. Furthermore, microarray-based gene expression analysis was also not a viable alternative as the amount of background transcription from other bacterial species would contribute greatly to background non-specific binding of orthologous transcript and eliminate any true *C. difficile* signal.
 
 We initially focused our analysis to focus on genes that control or code for functions that have been linked to nutrient concentrations in the intestines during CDI. After observing differences in spore load, we first examined transcription of the most highly expressed genes in the *C. difficile* sporulation pathway [@Putnam2013;@Underwood2009a;@Fimlaid2013;@Saujet2014] (Fig. 2a). Across the four conditions where *C. difficile* colonized, we observed transcriptional profiles consistent with observed spore levels (Fig. 1b). The mice treated with cefoperazone had the lowest spore density and had the highest level of expression for the anti-sigma factor *spoVG*. The products of these genes are involved in suppressing expression of genes found later in the sporulation pathway [@Matsuno1999]. Streptomycin-treated mice had the next highest density of spores and the highest expression of genes associated with sporulation activation (*spoIIAB*/*spoIIE*), but they also had relatively high levels of expression of *sspA* and *sspB*, which are genes that code for effectors that protect DNA from damage during dormancy. Next, in mice treated with clindamycin, *C. difficile* expressed genes associated with late stages of sporulation, including those for spore coat components (*cdeC*, *cotD*, and *cotJB2*), spore formation (*spoIVA*, *spoVB*, *spoVS*,and *spoVFB*), and *sspA* and *sspB*. Finally, GF mice harbored the highest density of spores and those *C. difficile* primarily expressed the dormancy genes linked with the latest stages sporulation. Together these data demonstrate that *C. difficile* differentially expressed genes associated with sporulation that corresponded to the presence of spores in the cecum. Interestingly, the levels of expression for genes associated with toxin production did not match the toxin titers observed in the animals. These results suggest that the relationship between toxin titer and the expression of genes for toxin production is even more complex than current models indicate.
 
-re-add quorum sensing and map to remaining agr genes
-
-
+Expression of genes for quorum sensing and pathogenicity have been linked to changes in the nutrients that can be found in the environment of *C. difficile*. Both the *agr* locus and *luxS* gene are thought to be associated with inducing the expression of *C. difficile* virulence in several strains [@Lee2005;@Martin2013]. Considering the link between quorum sensing genes and toxin production, we expected the expression of genes for quorum sensing and toxin production and toxin titer to be concordant. Based on this model, we expected GF mice to have the highest levels of expression of genes for toxin production (Fig. 3b) and quorum sensing (Fig. 3c); however, these transcripts were not found in the GF mice. We also observed the highest level of expression for quorum sensing genes in cefoperazone-treated mice, but *tcdA* expression in these animals was not the highest among the different treatment groups. Interestingly, the levels of expression for genes associated with toxin production did not match the toxin titers observed in the animals. These results suggest that the relationship between toxin titer and the expression of genes for toxin production is even more complex than current models indicate. 
 
 Moving upstream, we next focused on the regulators of metabolic pathways. Specific sigma factors are master regulators and a subset have been shown to integrate signals from intra- and extracellular nutrient concentrations [@Antunes2012;@Fimlaid2013;@Bouillaut2015;@Donnelly2016]. The transcription of the global repressor *codY* is responsive to intracellular concentrations of *C. difficile* energy sources [@Dineen2007]. Highest transcription for this gene was found in cefoperazone-treated and GF mice (Fig. 2d). The regulation networks of CodY and CcpA are highly interconnected, with the expression of *ccpA* specifically linked to local concentration of rapidly metabolizable carbon sources [@Martin-Verstraete2016]. Cefoperazone-treated mice also exhibited increased transcription of *ccpA*, but the GF condition did not follow the same pattern. CcpA acts directly on *spo0A* (Fig. 2d), which positively regulates initiation of the sporulation pathway in *C. difficile*. Transcripts for *spo0A* were highly abundant in all conditions tested except for clindamycin-treated mice, where it was still moderately detectable. The sig-family of sigma factors is under the control of spo0A and regulate different stages of sporulation. The genes from this family with the highest total transcription (*sigA1*, *sigF*, *sigG*, *sigH*, and *sigK*) each demonstrated a unique pattern of expression between conditions. These results indicate that complete expression of sporulation likely integrates multiple levels of signaling and is more complex than a single metabolic switch. Both CcpA and Spo0A also control pathogenicity by regulating toxin production (Fig. 2d). We found expression of the toxin negative regulator *tcdC* in all of the antibiotic-treated groups, but no detectable transcripts for the positive toxin A/B regulator *tcdR* were seen in any treatment. In addition to its effects on sporulation and virulence, CcpA also regulates the expression of other sigma factors that generally mediate distinct forms of *C. difficile* metabolism as needed. These targets include *rex* (general fermentation regulator) and *prdR* (Stickland fermentation regulator) (Fig. 2d). Although the expression of both has been shown to be linked to environmental proline concentrations, *rex* integrates additional signals from the intracellular NADH/NAD+ ratio to also control carbohydrate fermentation. Low-level transcription of *prdR* was found across all conditions, however *C. difficile* expression the *rex* gene highly in both cefoperazone-treated and GF mice. Combined, the variable expression of these sigma factors support the hypothesis that *C. difficile* adapts expression metabolism to fit its needs between colonized environments.
 
@@ -195,62 +57,10 @@ To more clearly indentify associations of gene sets with each condition, we also
 Aside from those gene sets that were equally expressed across conditions, there were also large scale differences in expression of certain pathways between groups of mice. We chose to assess sugar transport systems have been associated with adaptive expression of phosphotransferase systems (PTS) and ABC transporters with many known differences in substrate specificities [@Kansau2016]. Among the genes classified as PTS transporters were overrepresented in both clindamycin and streptomycin-treated mice, while ABC sugar transporters were overrepresented in the cefoparazone-treated mice. The most stark differences were seen in transcription for genes involved in sugar alcohol catabolism. Expression of these genes was entirely absent from clindamycin-treated mice and expression of genes for mannitol utilization (*mtl* operon) were overrepresented in cefoparazone-treated mice and expression of genes for sorbitol utilization (*srl* operon) were overrepresented in streptomycin-treated mice. Concordant patterns also emerged in genes associated with fermentation end steps and polysaccharide degradation. Short chain fatty acids (SCFAs) and alcohols are the end products of both carbohydrate and amino acid fermentation in *C. difficile* through separate pathways with shared terminal steps. Transcripts for genes involved in *C. difficile* butyrate/butanol metabolism (*ptb*, *buk1*, *cat2*, and *adhE*) were more abundant in clindamycin-treated mice. Additionally, alpha/beta-galactosidase genes (*aglB* and *bglA*) were also overrepresented in clindamycin-treated mice. Together these patterns suggested that polysaccharide fermentation occurred this condition. More subtle differences were seen in those gene associated with glycolysis. This category includes genes for not only the steps of glycolysis, but also several genes that mediate entry points of monosaccharides to glycolysis. Transcripts for several genes in this group (*eno*, *gapA*, *gpmI*, *tpi*, and *pyk*) were overrepresented in cefoparazone-treated mice, however *fruK* was overrepresented in streptomycin-treated mice which catalyzes the committed step of glycolysis. Overall, these results support the hypothesis that *C. difficile* is able to adapt its metabolism to fit the nutrient availability across different susceptible environments.
 
 
-```{r figure_5, echo=F, warning=F, message=F, results='hide', cache=T}
-
-# Format directed graph
-raw_graph <- graph.data.frame(network, directed=TRUE)
-
-# Decompose graph
-decomp_whole_graph <- decompose.graph(raw_graph)
-
-# Get largest component and get node information
-largest_component <- which.max(sapply(decomp_whole_graph, vcount))
-largest_whole_graph <- decomp_whole_graph[[largest_component]]
-print(length(as.vector(grep('K', V(largest_whole_graph)$name, value=TRUE)))) # 404
-print(length(as.vector(grep('C', V(largest_whole_graph)$name, value=TRUE)))) # 666
-
-# Find strongly-connected components
-largest_scc <- rownames(as.data.frame(clusters(largest_whole_graph, mode='strong')[1]))
-
-#----------------------------#
-
-# Determine some statistics about graph
-
-# Print a summary of nodes and edges for entire graph
-summary(raw_graph)
-print(length(as.vector(grep('K', V(raw_graph)$name, value=TRUE))))
-print(length(as.vector(grep('C', V(raw_graph)$name, value=TRUE))))
-
-# Find degrees of nodes
-graph_indegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='in'))
-graph_outdegree <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='out'))
-graph_undirected <- as.data.frame(degree(raw_graph, v=V(raw_graph), mode='all'))
-
-# Calculate betweensness of entrire graph
-graph_betweenness <- as.data.frame(betweenness(raw_graph, normalized=TRUE))
-
-# Calculate closeness of entrire graph
-graph_closeness_in <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='in', normalized=TRUE))
-graph_closeness_out <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='out', normalized=TRUE))
-graph_closeness_total <- as.data.frame(closeness(raw_graph, vids=V(raw_graph), mode='total', normalized=TRUE))
-
-```
 
 
-```{r figure_S2, echo=F, warning=F, message=F, results='hide', cache=T}
 
-# Format the data
-scfa$group <- factor(scfa$group, levels=c('mock', 'infected'))
-scfa$acetate <- as.numeric(as.character(scfa$acetate))
 
-# Subset for stats
-mock <- as.numeric(scfa[scfa$group == 'mock', 2])
-infected <- as.numeric(scfa[scfa$group == 'infected', 2])
-
-# Calculate significance
-acetate_p <- wilcox.test(mock, infected, exact=F)$p.value
-
-```
 
 **Structure of genome-scale bipartite metabolic model underscores known bacterial metabolism.** 
 To further investigate which metabolites were differentially utilized between conditions, we represented the metabolic network of *C. difficile* as a directed bipartite graph using the genome annotation. Enzymes and metabolites were represented by nodes, and their interactions by directed connecting edges (Fig. 4a). To validate our metabolic network, we analyzed network topology by calculating two metrics of centrality, betweenness centrality (BC) and closeness centrality (CC), to assess for those nodes which are critical to the structure of the metabolic network and if these patterns reflect known patterns in *C. difficile* or bacterial metabolism (Table S2). BC is the *quantity* of shortest paths connecting all other member nodes of a network that pass through a given node. In biological terms, this refers to the amount of influence a given hub has on the overall flow of metabolism through the network [@Potapov2005]. Similarly, CC is instead a calculation for the reciprocal sum of the *lengths* of those shortest paths quantified by the BC. This value demonstrates how essential a given node is the the overall structure of the metabolic network [@Koschutzki2008]. Together, these metrics allow for the assessment of how much a network reflects known principles of highly central biological processes.
@@ -259,116 +69,24 @@ Combining both analyses to find those nodes that are not only central control po
 
 
 **Metabolite importance algorithm reveals adaptive nutritional strategies of *C. difficile* during infection across distinct environments.**
-Moving into analysis of the *C. difficile* metabolic network, we sought to utilize transcriptomic data to infer which metabolites *C. difficile* is most likely to obtain from its environment in each condition. To accomplish this we mapped normalized transcript abundances to the enzyme nodes in the network. As transcription and translation are coupled in bacteria, we hypothesized that we could incorporate whole transcriptome sequencing results into the metabolic model in order to impute active metabolism. Concordantly, several models of bacterial protein expression determinants also suggest that intracellular concentration of mRNA is the strongest predictor for abundance of the corresponding protein products [@Guimaraes2014]. Because of this, we were reasonably confident in utilizing normalized transcript abundance as a proxy for enzyme levels. The importance of each metabolite was measured as the log-transformed difference between the average transcript levels of enzymes that use the metabolite as a substrate and those that generate it as a product (Fig. 4a). A metabolite with a high importance score is most likely obtained from the environment because the expression of genes for enzymes that produce the metabolite are low. Due to the fact that separate sequencing efforts for each individual mouse in each group was impossible, we instead adopted a Monte Carlo-style simulation in order to achieve some degree of statistical validation to our findings. To accomplish this, we first calculated metabolite importance scores for 10,000 iterations of random transcript abundance reassignment of all enzyme nodes in the network. Next we used these distributions to calculate a 95% confidence interval for each metabolite and create comparators that represent random noise [@Bonett2002]. This ultimately allowed for computing the significance level that a given score had a high probability of being excluded from its associated null hypothesis score distribution.
+Moving into analysis of the *C. difficile* metabolic network, we sought to utilize transcriptomic data to infer which metabolites *C. difficile* is most likely to obtain from its environment in each condition. To accomplish this we mapped normalized transcript abundances to the enzyme nodes in the network. As transcription and translation are coupled in bacteria, we hypothesized that we could incorporate whole transcriptome sequencing results into the metabolic model in order to impute active metabolism. Concordantly, several models of bacterial protein expression determinants also suggest that intracellular concentration of mRNA is the strongest predictor for abundance of the corresponding protein products [@Guimaraes2014]. Because of this, we were reasonably confident in utilizing normalized transcript abundance as a proxy for enzyme levels. The importance of each metabolite was measured as the log~2~-transformed difference between the average transcript levels of enzymes that use the metabolite as a substrate and those that generate it as a product (Fig. 4A & 4B). A metabolite with a high importance score is most likely obtained from the environment because the expression of genes for enzymes that produce the metabolite are low. Due to the fact that separate sequencing efforts for each individual mouse in each group was impossible, we instead adopted a Monte Carlo-style simulation in order to achieve some degree of statistical validation to our findings. To accomplish this, we first calculated metabolite importance scores for 10,000 iterations of random transcript abundance reassignment of all enzyme nodes in the network. Next we used these distributions to calculate a 95% confidence interval for each metabolite and create comparators that represent random noise [@Bonett2002]. This ultimately allowed for computing the significance level that a given score had a high probability of being excluded from its associated null hypothesis score distribution (Fig. 4C).
 
 Applying these methods to the *C. difficile* transcriptomic data collected from the *in vivo* CDI models, we sought to assess differential patterns of metabolite importance. We first ranked the importance scores to identify the most important metabolites for each treatment group (Table S3). To identify the core metabolites that are essential to *C. difficile* in any condition, we compared the highest 50 scoring, significant metabolites from each treatment group (*P* < 0.05) (Fig. 5a). The host derived amino sugar N-acetyl-D-glucosamine was found to be consistently important. Components of the Stickland fermentation pathway were also found to be important to *C. difficile* in all conditions tested including proline, 3−hydroxybutanoyl−CoA, and formate [@Aboulnaga2013;@Fonknechten2010;@Jackson2006]. This indicated that these metabolites may be an integral component of the nutrient niche for *C. difficile* in any infection condition. Additionally, acetate was found to be important in all conditions, but was just below the significance cutoff in GF mice (Table S3). It has been shown that *C. difficile* metabolizes acetate for use in glycolysis [@Karlsson2008]. We directly tested the relative concentration of acetate in cefoperazone-treated *C. difficile*-infected mice versus mock-infected mice. We found that *C. difficile* colonization led to a significant decrease in the levels of acetate (Fig. S4) suggesting that *C. difficile* was utilizing acetate in the cecum. These findings provided validation for our metabolite importance algorithm as well as supporting known elements of *C. difficile* metabolism.
 
 Returning to our hypothesis that *C. difficile* adapts its metabolism to fit the surrounding community, we identified those metabolites that were uniquely important to each condition in which *C. difficile* colonized. We cross-referenced the top 25 positively scoring, significant substrates (*P* < 0.05) between treatment groups to uncover the most important patterns of nutrient utilization by *C. difficile* in each (Fig. 5b). Each group of metabolites contained at least one known carbohydrate growth substrate of *C. difficile* [@Ng2013;@Theriot2014]. This included sorbitol, galactitol, mannitol, N-acetylneuraminic acid, and salicin. Furthermore, in GF mice where no other competitors are present, our model indicated that *C. difficile* was more likely to acquire numerous amino acids from the environment instead of expending energy to produce them itself. These data support the hypothesis that *C. difficile* may exploit alternative nutrient sources between the susceptible environments it colonizes.
 
 
-```{r figure_6, echo=F, warning=F, message=F, results='hide', cache=T}
 
-growth <- as.data.frame(t(growth))
 
-# Seperate to groups of each growth substrate and format
-sorbitol <- cbind(growth$sorbitol_1, growth$sorbitol_2, growth$sorbitol_3) - growth$sorbitol_blank
-sorbitol[sorbitol < 0] <- 0
-galactitol <- cbind(growth$galactitol_1, growth$galactitol_2, growth$galactitol_3) - growth$galactitol_blank
-galactitol[galactitol < 0] <- 0
-mannitol <- cbind(growth$mannitol_1, growth$mannitol_2, growth$mannitol_3) - growth$mannitol_blank
-mannitol[mannitol < 0] <- 0
-salicin <- cbind(growth$salicin_1, growth$salicin_2, growth$salicin_3) - growth$salicin_blank
-salicin[salicin < 0] <- 0
-acetate <- cbind(growth$acetate_1, growth$acetate_2, growth$acetate_3) - growth$acetate_blank
-acetate[acetate < 0] <- 0
-acetylglucosamine <- cbind(growth$acetylglucosamine_1, growth$acetylglucosamine_2, growth$acetylglucosamine_3) - growth$acetylglucosamine_blank
-acetylglucosamine[acetylglucosamine < 0] <- 0
-acetylneuraminate <- cbind(growth$acetylneuraminate_1, growth$acetylneuraminate_2, growth$acetylneuraminate_3) - growth$acetylneuraminate_blank
-acetylneuraminate[acetylneuraminate < 0] <- 0
-no_carb <- cbind(growth$noCarb_1, growth$noCarb_2, growth$noCarb_3) - growth$noCarb_blank
-no_carb[no_carb < 0] <- 0
-no_aa <- cbind(growth$noAA_1, growth$noAA_2, growth$noAA_3) - growth$noAA_blank
-no_aa[no_aa < 0] <- 0
-bhi <- cbind(growth$bhi_1, growth$bhi_2, growth$bhi_3) - growth$bhi_blank
-bhi[bhi < 0] <- 0
 
-# Prepare data for statistical tests
-sorbitol_test <- format_curve(sorbitol, 'sorbitol', no_carb)
-galactitol_test <- format_curve(galactitol, 'sorbitol', no_carb)
-mannitol_test <- format_curve(mannitol, 'mannitol', no_carb)
-salicin_test <- format_curve(salicin, 'salicin', no_carb)
-acetate_test <- format_curve(acetate, 'salicin', no_carb)
-acetylglucosamine_test <- format_curve(acetylglucosamine, 'acetylglucosamine', no_carb)
-acetylneuraminate_test <- format_curve(acetylneuraminate, 'acetylneuraminate', no_carb)
-bhi_test <- format_curve(bhi, 'bhi', no_carb)
-no_aa_test <- format_curve(no_aa, 'no_amino_acids', no_carb)
 
-# Calculate differences and correct p values
-sorbitol_p <- summary(aov(formula=od ~ substrate * time, data=sorbitol_test))[[1]][["Pr(>F)"]][3]
-galactitol_p <- summary(aov(formula=od ~ substrate * time, data=galactitol_test))[[1]][["Pr(>F)"]][3]
-mannitol_p <- summary(aov(formula=od ~ substrate * time, data=mannitol_test))[[1]][["Pr(>F)"]][3]
-salicin_p <- summary(aov(formula=od ~ substrate * time, data=salicin_test))[[1]][["Pr(>F)"]][3]
-acetate_p <- summary(aov(formula=od ~ substrate * time, data=acetate_test))[[1]][["Pr(>F)"]][3]
-acetylglucosamine_p <- summary(aov(formula=od ~ substrate * time, data=acetylglucosamine_test))[[1]][["Pr(>F)"]][3]
-acetylneuraminate_p <- summary(aov(formula=od ~ substrate * time, data=acetylneuraminate_test))[[1]][["Pr(>F)"]][3]
-bhi_p <- summary(aov(formula=od ~ substrate * time, data=bhi_test))[[1]][["Pr(>F)"]][3]
-no_aa_p <- summary(aov(formula=od ~ substrate * time, data=no_aa_test))[[1]][["Pr(>F)"]][3]
-aov_p_values <- c(sorbitol_p,galactitol_p,mannitol_p,salicin_p,acetate_p,acetylglucosamine_p,acetylneuraminate_p,bhi_p,no_aa_p)
-aov_p_values <- p.adjust(aov_p_values, method='holm')
-sorbitol_cp <- aov_p_values[1]
-galactitol_cp <- aov_p_values[2]
-mannitol_cp <- aov_p_values[3]
-salicin_cp <- aov_p_values[4]
-acetate_cp <- aov_p_values[5]
-acetylglucosamine_cp <- aov_p_values[6]
-acetylneuraminate_cp <- aov_p_values[7]
-bhi_cp <- aov_p_values[8]
-no_aa_cp <- aov_p_values[9]
 
-# Find medians
-sorbitol_median <- apply(sorbitol, 1, median)
-galactitol_median <- apply(galactitol, 1, median)
-mannitol_median <- apply(mannitol, 1, median)
-salicin_median <- apply(salicin, 1, median)
-acetate_median <- apply(acetate, 1, median)
-acetylglucosamine_median <- apply(acetylglucosamine, 1, median)
-acetylneuraminate_median <- apply(acetylneuraminate, 1, median)
-no_carb_median <- apply(no_carb, 1, median)
-bhi_median <- apply(bhi, 1, median)
-no_aa_median <- apply(no_aa, 1, median)
 
-#----------------------------#
-
-# Analyze growth curves
-
-# Maximum positive growth rate
-sorbitol_max_rate <- round(diff(sorbitol_median)[which.max(diff(sorbitol_median))], digits=3)
-galactitol_max_rate <- round(diff(galactitol_median)[which.max(diff(galactitol_median))], digits=3)
-acetylglucosamine_max_rate <- round(diff(acetylglucosamine_median)[which.max(diff(acetylglucosamine_median))], digits=3)
-acetylneuraminate_max_rate <- round(diff(acetylneuraminate_median)[which.max(diff(acetylneuraminate_median))], digits=3)
-mannitol_max_rate <- round(diff(mannitol_median)[which.max(diff(mannitol_median))], digits=3)
-salicin_max_rate <- round(diff(salicin_median)[which.max(diff(salicin_median))], digits=3)
-bhi_max_rate <- round(diff(bhi_median)[which.max(diff(bhi_median))], digits=3)
-no_aa_max_rate <- round(diff(no_aa_median)[which.max(diff(no_aa_median))], digits=3)
-no_carb_max_rate <- round(diff(no_carb_median)[which.max(diff(no_carb_median))], digits=3)
-
-# Maximum OD
-sorbitol_max_od <- round(max(sorbitol_median), digits=3)
-galactitol_max_od <- round(max(galactitol_median), digits=3)
-acetylglucosamine_max_od <- round(max(acetylglucosamine_median), digits=3)
-acetylneuraminate_max_od <- round(max(acetylneuraminate_median), digits=3)
-mannitol_max_od <- round(max(mannitol_median), digits=3)
-salicin_max_od <- round(max(salicin_median), digits=3)
-bhi_max_od <- round(max(bhi_median), digits=3)
-no_aa_max_od <- round(max(no_aa_median), digits=3)
-no_carb_max_od <- round(max(no_carb_median), digits=3)
-
-```
 
 **Carbohydrates predicted to be important using network-based approach differentially supported *C. difficile* growth *in vitro*.**
 To validate the biological relevance of substrates identified as uniquely important to *C. difficile* metabolism through our network-based analysis, we tested whether *C. difficile* was able to utilize each substrate for *in vitro* growth (Fig. 5C). This was performed using a modified defined *C. difficile* minimal media [@Theriot2014], supplemented individually with the selected carbohydrates implicated by high importance scores. Because *C. difficile* is auxotrophic for several amino acids, it was necessary to include amino acids in the minimal media despite the capability to achieve modest growth through Stickland fermentation of these substrates. This focused our analysis on carbohydtrates and made the most effective negative control growth in media lacking carbohydrates but containing amino acids.
 
-Relying on network-based analysis a single carbohydrate source, N-acetyl-D-glucosamine, was found to be important to *C. difficile* in each condition tested (Fig. 5a). When tested for improved growth, significantly more growth (Max OD~600~ = `r acetylglucosamine_max_od`) was observed compared to negative controls (*P* < 0.001). This provided evidence that N-acetyl-D-glucosamine, derived from the host mucus layer, may be a central component of the *C. difficile* nutritional niche during infection. Upon analysis of carbon sources identified as distinctly important across treatment groups, we found that at least one substrate from cefoperazone-treated, clindamycin-treated, and GF groups provided high levels of *C. difficile* growth relative to negative controls (*P* < 0.001). This included mannitol (cefoperazone; Max OD~600~ = `r mannitol_max_od`), salicin (clindamycin; Max OD~600~ = `r salicin_max_od`), and N-acetylneuraminate (GF; Max OD~600~ = `r acetylneuraminate_max_od`). Distinctly important from streptomycin-treated mice, D-sorbitol (streptomycin; Max OD~600~ = `r sorbitol_max_od`) and galactitol (streptomycin; Max OD~600~ = `r galactitol_max_od`), significantly altered growth compared to negative controls (*P* < 0.001), however did not overall growth rate (Table S4). Maximum growth rate analysis for each carbohydrate also indicated potential hierarchy in carbohydrate preference (Table S4) which is as follows: N-acetyl-D-glucosamine (*k* = `r acetylglucosamine_max_rate` hr^-1^), salicin (*k* = `r salicin_max_rate` hr^-1^), mannitol (*k* = `r mannitol_max_rate` hr^-1^), N-acetylneuraminate (*k* = `r acetylneuraminate_max_rate` hr^-1^), sorbitol (*k* = `r sorbitol_max_rate` hr^-1^), and finally galactitol (*k* = `r galactitol_max_rate` hr^-1^). Although not a carbohydrate, we also tested acetate for the ability to support *C. difficile* growth *in vitro*, but showed no improvement over negative controls (Fig. S5). These data suggested that *C. difficile* was well-suited to adapt its metabolism toward nutrient sources that were differentially available across susceptible mouse ceca.
+Relying on network-based analysis a single carbohydrate source, N-acetyl-D-glucosamine, was found to be important to *C. difficile* in each condition tested (Fig. 5a). When tested for improved growth, significantly more growth (Max OD~600~ = 0.744) was observed compared to negative controls (*P* < 0.001). This provided evidence that N-acetyl-D-glucosamine, derived from the host mucus layer, may be a central component of the *C. difficile* nutritional niche during infection. Upon analysis of carbon sources identified as distinctly important across treatment groups, we found that at least one substrate from cefoperazone-treated, clindamycin-treated, and GF groups provided high levels of *C. difficile* growth relative to negative controls (*P* < 0.001). This included mannitol (cefoperazone; Max OD~600~ = 0.461), salicin (clindamycin; Max OD~600~ = 0.869), and N-acetylneuraminate (GF; Max OD~600~ = 0.375). Distinctly important from streptomycin-treated mice, D-sorbitol (streptomycin; Max OD~600~ = 0.351) and galactitol (streptomycin; Max OD~600~ = 0.211), significantly altered growth compared to negative controls (*P* < 0.001), however did not overall growth rate (Table S4). Maximum growth rate analysis for each carbohydrate also indicated potential hierarchy in carbohydrate preference (Table S4) which is as follows: N-acetyl-D-glucosamine (*k* = 0.085 hr^-1^), salicin (*k* = 0.077 hr^-1^), mannitol (*k* = 0.044 hr^-1^), N-acetylneuraminate (*k* = 0.024 hr^-1^), sorbitol (*k* = 0.044 hr^-1^), and finally galactitol (*k* = 0.02 hr^-1^). Although not a carbohydrate, we also tested acetate for the ability to support *C. difficile* growth *in vitro*, but showed no improvement over negative controls (Fig. S5). These data suggested that *C. difficile* was well-suited to adapt its metabolism toward nutrient sources that were differentially available across susceptible mouse ceca.
 
 
 **Metabolomic analysis supported network-based results for metabolic adaptation and uncovered additional aspects of *C. difficile*’s nutrient niche.**
@@ -380,8 +98,9 @@ We compared cecal content from mock *C. difficile*-infected susceptible and resi
 
 Initially N-acetylglucosamine + N-acetylgalactosamine (Fig. 6a) and salicylate (Fig. 6b) were found to be significantly decreased in all susceptible treatment groups compared to resistant controls (*P* < 0.05). Additionally, we found that galactitol (Fig. 6c), mannitol + sorbitol (Fig. 6d), and N-acetylneuraminate (Fig. 6e) were significantly increased in both cefoperazone-treated SPF and GF mice (*P* < 0.05). Finally, these assays also revealed that proline (Fig. 6f) was significantly increased in all *C. difficile* susceptible conditions (*P* < 0.05), while glycine (Fig. 6g) was found to also be concordantly increased. These amino acids are required together for *C. difficile* to perform Stickland fermentation. Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
 
-Hierarchy:
-proline + glycine > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
+
+
+proline > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
 
 
 
@@ -468,7 +187,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Figure 3 | *C. difficile* expression of gene sets for carbon metabolism pathways across antibiotic pretreatments.** Ternary plot indicating the relative abundance of transcripts for all *C. difficile* str. 630 genes across the three colonized antibiotic-treated conditions (gray points). Raw transcript abundances were iteratively rarefied and the median expression of each gene was calculated (\~24x coverage). Each point represents a unique gene from the annotated genome of *C. difficile* str. 630 with position reflecting the ratio of transcription for that gene in all three antibiotic pretreatments. Transcripts for genes that are over-represented in a single condition are placed more proximal to the corner associated with that treatment group. Points placed near the center are equally expressed across all of the conditions measured at 18 hours post-infection. Points are colored based on inclusion in specific carbon metabolic pathways, and point sizes within groups of interest were determined based on the highest expression value for each gene from a single condition. Gene groups from are shown individually below without abundance information for ease of comparison. Genes included in each group with normalized transcript abundances can be found in Table S1, and refer to Fig. S3 for additional explanation of figure interpretation.
 
-**Figure 4 | Genome-scale bipartite metabolic modeling results using the transcriptome of *C. difficile* str. 630 in each colonized environment.** **(A)** Largest component from the bipartite genome-scale metabolic model of *C. difficile* str. 630. The complete network contains 447 enzymes and 758 metabolites, with 2135 directed edges. Size of enzyme nodes is relative to the number of normalized reads mapped to the corresponding gene. The sizes shown reflect the transcriptome of *C. difficile* str. 630 during infection of cefoperazone-treated mice after 18 hours of infection. Below the representative network is the metabolite importance algorithm separated into 3 components; (i) relative transcription of reactions consuming a metabolite, (ii) relative transcription of reactions consuming a metabolite, and (iii) difference of consumption and creation of the given metabolite. **(B)** The expanded window displays an example of a single metabolite importance calculation based on local enzyme gene transcription. White values in the red nodes represent the number of normalized transcript reads mapping to the gene sequence for each enzyme node. Average expression of input and output reactions surrounding metabolite **m** are calculated at then the difference of these values found to get the relative importance of **m**. Log~2~ transformation is then performed for uniform comparison between metabolites. **(C)** Example Mont-Carlo simulation results for a single metabolite.Shown here are the distributions resulting from 10000-fold Monte-Carlo simulation of transcript randomization for enzymes interacting with select metabolites. These scores were derived from transcriptome of *C. difficile* colonizing streptomycin-treated mice. The black solid line represents the median of the distribution, the red dotted lines denote the 95% confidence interval, and the blue arrow indicates the actual measured score for each metabolite. 
+**Figure 4 | Genome-scale bipartite metabolic modeling results using the transcriptome of *C. difficile* str. 630 in each colonized environment.** **(A)** Largest component from the bipartite genome-scale metabolic model of *C. difficile* str. 630. The complete network contains 447 enzymes and 758 metabolites, with 2135 directed edges. Size of enzyme nodes is relative to the number of normalized reads mapped to the corresponding gene. The sizes shown reflect the transcriptome of *C. difficile* str. 630 during infection of cefoperazone-treated mice after 18 hours of infection. Below the representative network is the metabolite importance algorithm separated into 3 components; (I) relative transcription of reactions consuming a metabolite, (II) relative transcription of reactions consuming a metabolite, and (III) difference of consumption and creation of the given metabolite. **(B)** The expanded window displays an example of a single metabolite importance calculation based on local enzyme gene transcription. White values in the red nodes represent the number of normalized transcript reads mapping to the gene sequence for each enzyme node. Average expression of input and output reactions surrounding metabolite **m** are calculated at then the difference of these values found to get the relative importance of **m**. Log~2~ transformation is then performed for uniform comparison between metabolites. **(C)** Example Mont-Carlo simulation results for a single metabolite. Shown here are the distributions resulting from 10000-fold Monte-Carlo simulation of transcript randomization for enzymes interacting with select metabolites. These scores were derived from transcriptome of *C. difficile* colonizing streptomycin-treated mice. The black solid line represents the median of the distribution, the red dotted lines denote the 95% confidence interval, and the blue arrow indicates the actual measured score for each metabolite. 
 
 **Figure 5 | Results from network-based metabolite importance calculation and *in vitro* growth with important carbohydrates.** Prior to importance calculation, transcript abundances for each condition were evenly rarefied for even comparison across colonized environments (\~18x coverage). **(A)** Median shared significant metabolites among the 50 highest scoring metabolites from each condition (*P* < 0.05). Median importance scores and pooled random distribution were recalculated per metabolite using the scores from each condition tested. **(B)** Distinctly important significant metabolites from each treatment group (*P* < 0.05). The top 25 scoring metabolites from each group was cross-referenced against each other group resulting in metabolites that are differentially important between environments. **(C)** *in vitro* growth curves validating identified growth nutrients from network analysis. One metabolite that is consistently important to *C. difficile* and at least one metabolite indicated as distinctly important from each group supported growth significantly more (*P* < 0.001) than no carbohydrate control (+ amino acids, gray line). Only those carbon sources that significantly improved *C. difficile* growth over control are displayed (remainder are located in Table S4). Significant differences were calculated using 2-Way ANOVA with Benjamini-Hochberg correction.
 
@@ -485,8 +204,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Supplementary Figure 5 | Change in *in vivo* concentrations following *C. difficile* infection of select metabolites indicated as important by metabolic modeling algorithm.** Comparison of relative concentrations of select metabolites from untargeted UPLC analysis of *C. difficile* vs mock-infected mouse cecal content. **(A)** N−acetylglucosamine / N−acetylgalactosamine, **(B)** Proline, **(C)** Mannitol / Sorbitol, **(D)** Components of Salicin: (I) Salicylate and (II) Glucose, **(E)** N−acetylneuraminate, and **(F)** Acetate. N−acetylglucosamine + N−acetylgalactosamine and Mannitol + Sorbitol were measured in pairs as they only differ by chirality and cannot be differentiated through peaked-based analysis. Salicin was not a member of the untargeted panel employed in this study however the component molecules, Salicylate and Glucose, were included thus are reported here. Increases in their concentrations may indicate concordant increases in cleavage of salicin by *C. difficile*. Absolute concentrations for acetate were measured in a separate analysis using GC-MS. Significance was determined using Wilcoxon signed-rank test with Benjamini-Hochberg correction when appropriate.
 
-
-**Supplementary Figure 6 | Within-group median sample variance for multiple levels of data with replicates.** Shown are the median and interquartile range of the sample variance for all fields in each experimental group. This was done in order to demonstrate consistant measurements in multiple levels of data, and further support our approach to pooled transcriptomic sequncing. **(A)** OTU abundances from 16S rRNA gene sequencing, sample variances for each OTU were calculated individually prior to sumary statistic calculations. **(B)** Scaled intensities from untargeted metabolomic analysis, sample variances for each metabolite were calculated individually prior to sumary statistic calculations. In both groups of calculations all median sample variances are >1, indicating extremely low levels of variability between samples of the same type.
+**Supplementary Figure 6 | Within-group median sample variance for community-level data with replication.** Shown are the median and interquartile range of the sample variance for all fields in each experimental group. This was done in order to demonstrate consistant measurements in multiple levels of data, and further support our approach to pooled transcriptomic sequncing. **(A)** OTU abundances from 16S rRNA gene sequencing, sample variances for each OTU were calculated individually prior to sumary statistic calculations. **(B)** Scaled intensities from untargeted metabolomic analysis, sample variances for each metabolite were calculated individually prior to sumary statistic calculations. In both groups of calculations all median sample variances are >1, indicating extremely low levels of variability between samples of the same type.
 
 
 **Supplementary Table 1 | Sets of genes included in Figure 4 with normalized abundances and citations.**
