@@ -349,7 +349,7 @@ We went on to test each important carbohydrate metabolite to ensure that growth 
 
 
 
-Combined metabolomic 
+Combined untargeted metabolomic and network-based analyses support predictive...
 **Metabolomic analysis supported network-based results for metabolic adaptation and uncovered additional aspects of *C. difficile*’s nutrient niche.**
 
 
