@@ -190,7 +190,7 @@ combined_outliers$color <- values[match(combined_outliers$pathway, index)]
 #----------------------------------------#
 
 # Set up multi-panel figure
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
 pdf(file=plot_file, width=6.3, height=9)
 layout(matrix(c(1,1,
                 2,3,
