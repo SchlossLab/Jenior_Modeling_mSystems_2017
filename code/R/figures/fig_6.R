@@ -190,7 +190,7 @@ combined_outliers$color <- values[match(combined_outliers$pathway, index)]
 #----------------------------------------#
 
 # Set up multi-panel figure
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S6.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
 pdf(file=plot_file, width=6.3, height=9)
 layout(matrix(c(1,1,
                 2,3,
@@ -199,7 +199,7 @@ layout(matrix(c(1,1,
 par(las=1, mar=c(3,3,1,1), mgp=c(1.8,0.7,0))
 
 # Plot the data and correlations
-plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
+plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, cex=1.1, xlim=c(-10,10), ylim=c(-1,15), col='gray30')
 abline(v=0, lty=2, col='gray75')
 abline(combined_fit, col='black', lwd=2)
@@ -213,7 +213,7 @@ text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$
                                           paste(italic('P'),' = ',.(test$p[5]),'*  ')))), cex=1.2)
 
 # streptomycin alone
-plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
+plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,13), col=wes_palette("FantasticFox")[1])
 points(strep_acetylglucosamine[,1], strep_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[1], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
@@ -228,7 +228,7 @@ text(x=c(5.5,3.7,5.6),
      strep_outliers$name, cex=0.9, col='gray35')
 
 # cefoperazone alone
-plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
+plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
 points(cef_acetylglucosamine[,1], cef_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[3], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
@@ -245,7 +245,7 @@ segments(x0=c(2.8,0.9,5.1), y0=c(2.9,3.5,3.8),
          x1=c(5.3,3,5.6), y1=c(2.9,5.7,4.4), col='gray35')
 
 # clindamycin alone
-plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
+plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
 points(clinda_acetylglucosamine[,1], clinda_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[5], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
@@ -262,7 +262,7 @@ segments(x0=c(-4.3,1.1,3.2), y0=c(-0.8,0,0.3),
          x1=c(-3.3,1.6,4.2), y1=c(-0.05,-0.4,0), col='gray35')
 
 # germfree alone
-plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Scaled Intensity')), 
+plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
 points(germfree_acetylglucosamine[,1], germfree_acetylglucosamine[,2], pch=21, col='forestgreen', bg='white', cex=1.2, lwd=1.7)
 axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))

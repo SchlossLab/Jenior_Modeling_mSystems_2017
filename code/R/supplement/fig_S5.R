@@ -58,8 +58,6 @@ acetylglucosamine_gf <- subset(acetylglucosamine, abx == 'germfree')
 acetylglucosamine_gf$abx <- NULL
 colnames(acetylglucosamine_gf) <- c('infection', 'substrate')
 rm(acetylglucosamine)
-
-
 glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
 glycine_cef <- subset(glycine, abx == 'cefoperazone')
 glycine_cef$abx <- NULL
@@ -74,9 +72,6 @@ glycine_gf <- subset(glycine, abx == 'germfree')
 glycine_gf$abx <- NULL
 colnames(glycine_gf) <- c('infection', 'substrate')
 rm(glycine)
-
-
-
 proline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('proline')))]
 proline_cef <- subset(proline, abx == 'cefoperazone')
 proline_cef$abx <- NULL
