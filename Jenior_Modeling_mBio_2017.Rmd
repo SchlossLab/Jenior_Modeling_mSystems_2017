@@ -778,22 +778,18 @@ colnames(corr_test) <- c('m','r', 'p')
 
 
 **Integrated multi-omic analysis reveals high predictive value for networking approach in identifying additional novel patterns of metabolism.**
-Moving beyond specific metabolite analysis, we wanted to determine how well metabolite importance scores related to the relative concentration of all metabolites in a given environment.
+Moving beyond specific metabolite analysis, we wanted to determine how well metabolite importance scores related to the relative concentration of all metabolites in a given environment. To most effectively combine metabolite importance scores with the affiliated concentration data, we decided to calculate the median change in relative concentration for each metabolite measured between corresponding mock and *C. difficile*-infected conditions. This was accomplished by dividing 
+to yield Delta...
 
-Calculated change in 
+In this way, larger values indicated those metabolites more likely consumed by *C. diffile* with higher concentrations in mock-infected animals.
 
-(Fig. 7A)
-(Fig. 7B)
-(Fig. 7C)
-(Fig. 7D)
-(Fig. 7E)
+This ultimately provided 2 dataset, linear correlation...
 
-
-
-
-proline > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
-
-
+all groups together (Fig. 7A)
+streptomycin-pretreatment (Fig. 7B)
+cefoperazone-pretreatment (Fig. 7C)
+clindamycin-pretreatment (Fig. 7D)
+gnotobiotic (Fig. 7E)
 
 Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
 
@@ -822,6 +818,7 @@ In light of these findings, our metabolic network platform may also prove inform
 
 
 
+proline > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
 
 
 add also about how models are valuable for looking at entire community, setting up next paper
