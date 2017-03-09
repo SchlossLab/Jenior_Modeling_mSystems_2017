@@ -122,26 +122,26 @@ par(las=1, mgp=c(2.3,0.7,0))
 
 # N-acetylglucosamine
 par(mar=c(3,5,1,1))
-stripchart(substrate~infection, data=acetylglucosamine_strep, vertical=T, pch=c(1,19), lwd=3, at=c(1,2),
+stripchart(substrate~infection, data=acetylglucosamine_strep, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,6), xlim=c(0,12),
-           cex=1.8, ylab='Scaled Intesity', method='jitter', jitter=0.25)
-stripchart(substrate~infection, data=acetylglucosamine_cef, vertical=T, pch=c(1,19), lwd=3, at=c(4,5),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=acetylglucosamine_cef, vertical=T, pch=19, at=c(4,5),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,6), xlim=c(0,12),
-           cex=1.8, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-stripchart(substrate~infection, data=acetylglucosamine_clinda, vertical=T, pch=c(1,19), lwd=3, at=c(7,8),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=acetylglucosamine_clinda, vertical=T, pch=19, at=c(7,8),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,6), xlim=c(0,12),
-           cex=1.8, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-stripchart(substrate~infection, data=acetylglucosamine_gf, vertical=T, pch=c(1,19), lwd=3, at=c(10,11),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=acetylglucosamine_gf, vertical=T, pch=19, at=c(10,11),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,6), xlim=c(0,12),
-           cex=1.8, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-axis(side=2, at=c(0:6), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:6), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-','+','-','+','-'), side=1, 
       at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
       at=c(1.5,4.5,7.5,10.6), padj=2)
-mtext('A', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
-legend('topright', legend='N-acetylglucosamine / N-acetylgalactosamine', pt.cex=0, bty='n', cex=1.2)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
+legend('topright', legend='N-Acetylglucosamine / N-Acetylgalactosamine', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
          y0=c(median(subset(acetylglucosamine_strep, infection=='630')[,2]), median(subset(acetylglucosamine_strep, infection=='mock')[,2]),
               median(subset(acetylglucosamine_cef, infection=='630')[,2]), median(subset(acetylglucosamine_cef, infection=='mock')[,2]),
@@ -164,23 +164,23 @@ text(x=10, y=2, '*', font=2, cex=2.5)
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=proline_strep, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
 stripchart(substrate~infection, data=proline_cef, vertical=T, pch=19, at=c(4,5),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 stripchart(substrate~infection, data=proline_clinda, vertical=T, pch=19, at=c(7,8),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 stripchart(substrate~infection, data=proline_gf, vertical=T, pch=19, at=c(10,11),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-','+','-','+','-'), side=1, 
       at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
       at=c(1.5,4.5,7.5,10.6), padj=2)
-mtext('B', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
 legend('topright', legend='Proline', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
          y0=c(median(subset(proline_strep, infection=='630')[,2]), median(subset(proline_strep, infection=='mock')[,2]),
@@ -204,23 +204,23 @@ text(x=c(1,4,7,10), y=c(1,1.5,2,1), '*', font=2, cex=2.5)
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=glycine_strep, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
 stripchart(substrate~infection, data=glycine_cef, vertical=T, pch=19, at=c(4,5),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 stripchart(substrate~infection, data=glycine_clinda, vertical=T, pch=19, at=c(7,8),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 stripchart(substrate~infection, data=glycine_gf, vertical=T, pch=19, at=c(10,11),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0,12),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-','+','-','+','-'), side=1, 
       at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
       at=c(1.5,4.5,7.5,10.6), padj=2)
-mtext('C', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('C', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
 legend('topright', legend='Glycine', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
          y0=c(median(subset(glycine_strep, infection=='630')[,2]), median(subset(glycine_strep, infection=='mock')[,2]),
@@ -244,17 +244,17 @@ text(x=4, y=1.5, '*', font=2, cex=2.5)
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=mannitolsorbitol_strep, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,65), xlim=c(0,6),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
 stripchart(substrate~infection, data=mannitolsorbitol_cef, vertical=T, pch=19, at=c(4,5),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,65), xlim=c(0,6),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, add=TRUE)
-axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0','10','20','30','40','50','60'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0','10','20','30','40','50','60'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-'), side=1, 
       at=c(1,2,4,5), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone'), side=1, 
       at=c(1.5,4.5), padj=2)
-mtext('D', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('D', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
 legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6,3.6,4.6), x1=c(1.4,2.4,4.4,5.4),
          y0=c(median(subset(mannitolsorbitol_strep, infection=='630')[,2]), median(subset(mannitolsorbitol_strep, infection=='mock')[,2]),
@@ -271,15 +271,15 @@ p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], sub
 par(mar=c(3,4,1,1))
 stripchart(salicylate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,7), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
-axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
 mtext(c('Clindamycin'), side=1, 
       at=c(1.5), padj=2)
 text(x=0.6, y=6.8, 'I', cex=1.5)
-mtext('E', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
 legend('topright', legend='Salicylate', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
          y0=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])), 
@@ -288,8 +288,8 @@ segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
 par(mar=c(3,4,1,1))
 stripchart(glucose~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,6), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
-axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
@@ -310,16 +310,16 @@ p.adjust(c(wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(sali
 par(mar=c(4,5,1,1))
 stripchart(substrate~infection, data=acetylneuraminate_gf, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25)
-axis(side=2, at=c(0:3), labels=c('0','1.0','2.0','3.0'))
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:3), labels=c('0','1.0','2.0','3.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
 mtext(c('Gnotobiotic'), side=1, 
       at=c(1.5), padj=2)
-mtext('F', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
-legend('topright', legend='N-acetylneuraminate', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
+mtext('F', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
+legend('topright', legend='N-Acetylneuraminate', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
          y0=c(median(subset(acetylneuraminate_gf, infection=='630')[,2]), median(subset(acetylneuraminate_gf, infection=='mock')[,2])), 
          y1=c(median(subset(acetylneuraminate_gf, infection=='630')[,2]), median(subset(acetylneuraminate_gf, infection=='mock')[,2])),
          lwd=3)
@@ -332,16 +332,16 @@ text(x=1, y=1.2, '*', font=2, cex=2.5)
 par(mar=c(4,4,1,1))
 stripchart(acetate~group, data=scfa, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,10), xlim=c(0.5,2.5),
-           cex=1.5, ylab='nmol per mg', method='jitter', jitter=0.25)
-axis(side=2, at=c(0,2,4,6,8,10), labels=c('0','2.0','4.0','6.0','8.0','10.0'))
+           cex=1.5, ylab='nmol per mg', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0,2,4,6,8,10), labels=c('0','2.0','4.0','6.0','8.0','10.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
 mtext(c('Cefoperazone'), side=1, 
       at=c(1.5), padj=2)
-mtext('G', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('G', side=2, line=2, las=2, adj=1.7, padj=-4, cex=1.3)
 legend('topright', legend='Acetate', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
+segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
          y0=c(median(subset(scfa, group=='infected')[,2]), median(subset(scfa, group=='mock')[,2])), 
          y1=c(median(subset(scfa, group=='infected')[,2]), median(subset(scfa, group=='mock')[,2])),
          lwd=3)
