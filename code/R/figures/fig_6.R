@@ -244,9 +244,9 @@ p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], sub
 # Salicin
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,7), xlim=c(0.5,2.5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,4), xlim=c(0.5,2.5),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=c(0:7), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
+axis(side=2, at=c(0:4), labels=c('0.0','1.0','2.0','3.0','4.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
