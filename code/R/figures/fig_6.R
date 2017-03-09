@@ -1,292 +1,295 @@
 
-# Load dependencies
-deps <- c('wesanderson');
-for (dep in deps){
-  if (dep %in% installed.packages()[,"Package"] == FALSE){
-    install.packages(as.character(dep), quiet=TRUE);
-  } 
-  library(dep, verbose=FALSE, character.only=TRUE)
-}
-
-# Define files
-metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
-cef_importances <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/cefoperazone_630.bipartite.files/importances.tsv'
-strep_importances <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/streptomycin_630.bipartite.files/importances.tsv'
-clinda_importances <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/clindamycin_630.bipartite.files/importances.tsv'
-gf_importances <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/germfree_630.bipartite.files/importances.tsv'
-metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
-
-# Metabolomic data
-metabolome <- read.delim(metabolome, sep='\t', header=T)
-annotation <- metabolome[,1:5]
-metabolome$SUPER_PATHWAY <- NULL
-metabolome$SUB_PATHWAY <- NULL
-metabolome$PUBCHEM <- NULL
-metabolome <- subset(metabolome, KEGG != 'NA')
-metabolome <- metabolome[match(unique(metabolome$KEGG), metabolome$KEGG),]
-rownames(metabolome) <- metabolome$KEGG
-metabolome$KEGG <- NULL
-metabolome$BIOCHEMICAL <- NULL
-annotation <- subset(annotation, KEGG != 'NA')
-annotation <- annotation[match(unique(annotation$KEGG), annotation$KEGG),]
-rownames(annotation) <- annotation$KEGG
-annotation$KEGG <- NULL
-annotation$SUB_PATHWAY <- NULL
-annotation$PUBCHEM <- NULL
-annotation$BIOCHEMICAL <- NULL
-annotation$SUPER_PATHWAY <- gsub('_',' ', annotation$SUPER_PATHWAY)
-
-# Combine with metadata
-metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
-metabolome <- merge(t(metabolome), metadata, by='row.names')
-rm(metadata)
-rownames(metabolome) <- metabolome$Row.names
-metabolome$Row.names <- NULL
-metabolome <- subset(metabolome, abx != 'none')
-metabolome_630 <- subset(metabolome, infection == '630')
-metabolome_630$cage <- NULL
-metabolome_630$mouse <- NULL
-metabolome_630$gender <- NULL
-metabolome_630$type <- NULL
-metabolome_630$infection <- NULL
-metabolome_630 <- aggregate(metabolome_630[, 1:399], list(metabolome_630$abx), median)
-rownames(metabolome_630) <- metabolome_630$Group.1
-metabolome_630$Group.1 <- NULL
-metabolome_630 <- as.data.frame(t(metabolome_630))
-colnames(metabolome_630) <- c('cef_630','clinda_630','gf_630','strep_630')
-metabolome_mock <- subset(metabolome, infection == 'mock')
-metabolome_mock$cage <- NULL
-metabolome_mock$mouse <- NULL
-metabolome_mock$gender <- NULL
-metabolome_mock$type <- NULL
-metabolome_mock$infection <- NULL
-metabolome_mock <- aggregate(metabolome_mock[, 1:399], list(metabolome_mock$abx), median)
-rownames(metabolome_mock) <- metabolome_mock$Group.1
-metabolome_mock$Group.1 <- NULL
-metabolome_mock <- as.data.frame(t(metabolome_mock))
-colnames(metabolome_mock) <- c('cef_mock','clinda_mock','gf_mock','strep_mock')
-metabolome <- metabolome_mock / metabolome_630
-metabolome <- merge(metabolome, annotation, by='row.names')
-rownames(metabolome) <- metabolome$Row.names
-metabolome$Row.names <- NULL
-colnames(metabolome) <- c('cefoperazone_conc', 'clindamycin_conc', 'germfree_conc', 'streptomycin_conc', 'pathway')
-rm(annotation, metabolome_mock, metabolome_630)
-
-# Merge importances to one table
-cef_importances <- read.delim(cef_importances, sep='\t', header=T, row.names=1)
-cef_importances$p_value <- NULL
-clinda_importances <- read.delim(clinda_importances, sep='\t', header=T, row.names=1)
-clinda_importances$p_value <- NULL
-clinda_importances$Compound_name <- NULL
-strep_importances <- read.delim(strep_importances, sep='\t', header=T, row.names=1)
-strep_importances$p_value <- NULL
-strep_importances$Compound_name <- NULL
-gf_importances <- read.delim(gf_importances, sep='\t', header=T, row.names=1)
-gf_importances$p_value <- NULL
-gf_importances$Compound_name <- NULL
-importances <- merge(cef_importances, clinda_importances, by='row.names')
-rownames(importances) <- importances$Row.names
-importances$Row.names <- NULL
-importances <- merge(importances, strep_importances, by='row.names')
-rownames(importances) <- importances$Row.names
-importances$Row.names <- NULL
-importances <- merge(importances, gf_importances, by='row.names')
-rownames(importances) <- importances$Row.names
-importances$Row.names <- NULL
-colnames(importances) <- c('Compound_name', 'cefoperazone_score', 'clindamycin_score', 'streptomycin_score', 'germfree_score')
-importances$Compound_name <- gsub('_',' ', importances$Compound_name)
-rm(cef_importances, clinda_importances, strep_importances, gf_importances)
-
-# Merge metabolome medians and importance values
-combined <- merge(importances, metabolome, by='row.names')
-rownames(combined) <- combined$Row.names
-combined$Row.names <- NULL
-rm(importances, metabolome)
-
-# Separate treatment groups
-cef <- as.data.frame(cbind(combined$cefoperazone_score, combined$cefoperazone_conc, combined$pathway))
-rownames(cef) <- rownames(combined)
-colnames(cef) <- c('score', 'conc', 'pathway')
-cef$name <- combined$Compound_name
-cef$score <- as.numeric(as.vector(cef$score))
-cef$conc <- as.numeric(as.vector(cef$conc))
-cef <- subset(cef, cef[,1] != 0) # remove metabolites with 0 importance
-clinda <- as.data.frame(cbind(combined$clindamycin_score, combined$clindamycin_conc, combined$pathway))
-rownames(clinda) <- rownames(combined)
-colnames(clinda) <- c('score', 'conc', 'pathway')
-clinda$name <- combined$Compound_name
-clinda$score <- as.numeric(as.vector(clinda$score))
-clinda$conc <- as.numeric(as.vector(clinda$conc))
-clinda <- subset(clinda, clinda[,1] != 0) # remove metabolites with 0 importance
-strep <- as.data.frame(cbind(combined$streptomycin_score, combined$streptomycin_conc, combined$pathway))
-rownames(strep) <- rownames(combined)
-colnames(strep) <- c('score', 'conc', 'pathway')
-strep$name <- combined$Compound_name
-strep$score <- as.numeric(as.vector(strep$score))
-strep$conc <- as.numeric(as.vector(strep$conc))
-strep <- subset(strep, strep[,1] != 0) # remove metabolites with 0 importance
-germfree <- as.data.frame(cbind(combined$germfree_score, combined$germfree_conc, combined$pathway))
-rownames(germfree) <- rownames(combined)
-colnames(germfree) <- c('score', 'conc', 'pathway')
-germfree$name <- combined$Compound_name
-germfree$score <- as.numeric(as.vector(germfree$score))
-germfree$conc <- as.numeric(as.vector(germfree$conc))
-germfree <- subset(germfree, germfree[,1] != 0)
-combined <- rbind(cef, clinda, strep, germfree)
-
-# Subset N-acetylglucosamine
-strep_acetylglucosamine <- subset(strep, rownames(strep) %in% c('C00140'))
-cef_acetylglucosamine <- subset(cef, rownames(cef) %in% c('C00140'))
-clinda_acetylglucosamine <- subset(clinda, rownames(clinda) %in% c('C00140'))
-germfree_acetylglucosamine <- subset(germfree, rownames(germfree) %in% c('C00140'))
-combined_acetylglucosamine <- subset(combined, rownames(combined) %in% c('C00140'))
-
-# Fit to general linear models and identify outliers (L1 regression)
-strep_fit <- glm(conc ~ score, data=strep)
-strep$residuals <- residuals(strep_fit)
-strep$residuals <- (strep$residuals / sd(strep$residuals))^2
-strep_outliers <- strep[strep$residuals > 1.5, ]
-cef_fit <- glm(conc ~ score, data=cef)
-cef$residuals <- residuals(cef_fit)
-cef$residuals <- (cef$residuals / sd(cef$residuals))^2
-cef_outliers <- cef[cef$residuals > 1.5, ]
-clinda_fit <- glm(conc ~ score, data=clinda)
-clinda$residuals <- residuals(clinda_fit)
-clinda$residuals <- (clinda$residuals / sd(clinda$residuals))^2
-clinda_outliers <- clinda[clinda$residuals > 1.5, ]
-germfree_fit <- glm(conc ~ score, data=germfree)
-germfree$residuals <- residuals(germfree_fit)
-germfree$residuals <- (germfree$residuals / sd(germfree$residuals))^2
-germfree_outliers <- germfree[germfree$residuals > 1.5, ]
-combined_fit <- glm(conc ~ score, data=combined)
-combined$residuals <- residuals(combined_fit)
-combined$residuals <- (combined$residuals / sd(combined$residuals))^2
-combined_outliers <- combined[combined$residuals > 1.5, ]
-
-# Calculate stats
-test <- as.data.frame(cbind(round(c(strep_fit$coefficients[[2]],
-                                    cef_fit$coefficients[[2]],
-                                    clinda_fit$coefficients[[2]],
-                                    germfree_fit$coefficients[[2]],
-                                    combined_fit$coefficients[[2]]), digits=3),
-                            round(c(cor.test(strep[,1], strep[,2], method='spearman', exact=FALSE)$estimate,
-                                    cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$estimate,
-                                    cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$estimate,
-                                    cor.test(germfree[,1], germfree[,2], method='spearman', exact=FALSE)$estimate,
-                                    cor.test(combined[,1], combined[,2], method='spearman', exact=FALSE)$estimate), digits=3),
-                            round(c(cor.test(strep[,1], strep[,2], method='spearman', exact=FALSE)$p.value,
-                                             cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$p.value,
-                                             cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$p.value,
-                                             cor.test(germfree[,1], germfree[,2], method='spearman', exact=FALSE)$p.value,
-                                             cor.test(combined[,1], combined[,2], method='spearman', exact=FALSE)$p.value), digits=3)))
-rownames(test) <- c('streptomycin','cefoperazone','clindamycin','germfree','combined')
-colnames(test) <- c('m','r', 'p')
-
-# Add column for colors to combined outliers
-index <- as.vector(unique(combined_outliers$pathway))
-values <- c('chartreuse1', 'darkorchid2', 'gold')
-combined_outliers$color <- values[match(combined_outliers$pathway, index)]
-
-#----------------------------------------#
-
-# Set up multi-panel figure
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
-pdf(file=plot_file, width=6.3, height=9)
-layout(matrix(c(1,1,
-                2,3,
-                4,5), 
-              nrow=3, ncol=2, byrow=TRUE))
-par(las=1, mar=c(3,3,1,1), mgp=c(1.8,0.7,0))
-
-# Plot the data and correlations
-plot(combined[,1], combined[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
-     pch=19, cex=1.1, xlim=c(-10,10), ylim=c(-1,15), col='gray30')
-abline(v=0, lty=2, col='gray75')
-abline(combined_fit, col='black', lwd=2)
-mtext('A', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-points(combined_outliers[,1], combined_outliers[,2], pch=21, col='gray30', bg=combined_outliers$color, cex=2, lwd=2)
-legend('topleft', legend=as.vector(unique(combined_outliers$pathway)), 
-       pt.bg=c('chartreuse1', 'darkorchid2', 'gold'), col='gray30',
-       pch=21, pt.lwd=2, pt.cex=2, cex=1.2)
-legend('topright', legend=c('All Treatment Groups'), pt.cex=0, bty='n', cex=1.2, col='black')
-text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$r[5])),
-                                          paste(italic('P'),' = ',.(test$p[5]),'*  ')))), cex=1.2)
-
-# streptomycin alone
-plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
-     pch=19, xlim=c(-10,10), ylim=c(-1,13), col=wes_palette("FantasticFox")[1])
-points(strep_acetylglucosamine[,1], strep_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[1], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray75')
-abline(strep_fit, col='black', lwd=2)
-mtext('B', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-legend('topright', legend='Streptomycin', bty='n', cex=1.1, col='black')
-legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[1])))), 
-                           as.expression(bquote(paste(italic('P'),' = ',.(test$p[1]))))), pt.cex=0, bty='n', cex=1.1)
-points(strep_outliers[,1], strep_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[1], cex=1.7, lwd=2)
-text(x=c(5.5,3.7,5.6), 
-     y=c(10.6,7.875043,3.8), 
-     strep_outliers$name, cex=0.9, col='gray35')
-
-# cefoperazone alone
-plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
-     pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
-points(cef_acetylglucosamine[,1], cef_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[3], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray75')
-abline(cef_fit, col='black', lwd=2)
-mtext('C', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[2])))), 
-                           as.expression(bquote(paste(italic('P'),' = ',.(test$p[2]))))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Cefoperazone', bty='n', cex=1.1, col='black')
-points(cef_outliers[,1], cef_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[3], cex=1.7, lwd=2)
-text(x=c(8,5,-6,7,5.7,5,-5.5), 
-     y=c(2.8829322,6,2.6819865,7.9,4.7,-0.3,3.7199615), 
-     cef_outliers$name, cex=0.9, col='gray35')
-segments(x0=c(2.8,0.9,5.1), y0=c(2.9,3.5,3.8), 
-         x1=c(5.3,3,5.6), y1=c(2.9,5.7,4.4), col='gray35')
-
-# clindamycin alone
-plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
-     pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
-points(clinda_acetylglucosamine[,1], clinda_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[5], bg='white', cex=1.2, lwd=1.7)
-abline(v=0, lty=2, col='gray75')
-abline(clinda_fit, col='black', lwd=2)
-mtext('D', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[3])))), 
-                           as.expression(bquote(paste(italic('P'),' = ',.(test$p[3]),'*')))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Clindamycin', bty='n', cex=1.1, col='black')
-points(clinda_outliers[,1], clinda_outliers[,2], pch=21, bg=wes_palette("FantasticFox")[5], cex=1.7, lwd=2)
-text(x=c(6.4,-3.8,4.9,7.6,6.3,-4,-7,5.8,5.2,6.1), 
-     y=c(-0.1,1.8708661,2.2279556,4,1.85,-1,2.6433240,-0.6,3.2,0.4666667), 
-     clinda_outliers$name, cex=0.9, col='gray35')
-segments(x0=c(-4.3,1.1,3.2), y0=c(-0.8,0,0.3), 
-         x1=c(-3.3,1.6,4.2), y1=c(-0.05,-0.4,0), col='gray35')
-
-# germfree alone
-plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
-     pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
-points(germfree_acetylglucosamine[,1], germfree_acetylglucosamine[,2], pch=21, col='forestgreen', bg='white', cex=1.2, lwd=1.7)
-axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))
-abline(v=0, lty=2, col='gray75')
-abline(germfree_fit, col='black', lwd=2)
-mtext('E', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
-legend('topleft', legend=c(as.expression(bquote(paste(italic('rho'),' = ',.(test$r[4])))), 
-                           as.expression(bquote(paste(italic('P'),' = ',.(test$p[4]),'*')))), pt.cex=0, bty='n', cex=1.1)
-legend('topright', legend='Gnotobiotic', bty='n', cex=1.1, col='black')
-points(germfree_outliers[,1], germfree_outliers[,2], pch=21, bg='forestgreen', cex=1.5, lwd=2) # color outliers
-text(x=c(3.3,6,6), 
-     y=c(5.924171,14.439394,11.890565), 
-     germfree_outliers$name, cex=0.9, col='gray35')
-
-dev.off()
-
-#----------------------------------------#
-
-#Clean up
-for (dep in deps){
-  pkg <- paste('package:', dep, sep='')
-  detach(pkg, character.only = TRUE)
-}
-test
+# Start with blank slate
 rm(list=ls())
 gc()
 
+# Load dependency
+if ('wesanderson' %in% installed.packages()[,"Package"] == FALSE){
+  install.packages(as.character('wesanderson'), quiet=TRUE);
+}
+library('wesanderson', verbose=FALSE, character.only=TRUE)
+
+
+# Select files
+scfa <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cef_acetate_630.txt'
+metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
+metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
+
+# Read in data
+scfa <- read.delim(scfa, sep='\t', header=T)
+metabolome <- read.delim(metabolome, sep='\t', header=T, row.names=1)
+metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
+metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+
+# Format the data
+scfa$group <- factor(scfa$group, levels=c('infected','mock'))
+scfa$acetate <- as.numeric(as.character(scfa$acetate))
+
+# Subset for stats
+mock <- as.numeric(scfa[scfa$group == 'mock', 2])
+infected <- as.numeric(scfa[scfa$group == 'infected', 2])
+
+# Subset untargeted metabolomics
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+metabolome$SUPER_PATHWAY <- NULL
+metabolome$SUB_PATHWAY <- NULL
+metabolome$PUBCHEM <- NULL
+metabolome$KEGG <- NULL
+metabolome <- as.data.frame(t(metabolome))
+metabolome <- merge(metadata, metabolome, by='row.names')
+rownames(metabolome) <- metabolome$Row.names
+metabolome$Row.names <- NULL
+rm(metadata)
+acetylglucosamine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylglucosamine/N-acetylgalactosamine')))]
+acetylglucosamine_cef <- subset(acetylglucosamine, abx == 'cefoperazone')
+acetylglucosamine_cef$abx <- NULL
+colnames(acetylglucosamine_cef) <- c('infection', 'substrate')
+acetylglucosamine_strep <- subset(acetylglucosamine, abx == 'streptomycin')
+acetylglucosamine_strep$abx <- NULL
+colnames(acetylglucosamine_strep) <- c('infection', 'substrate')
+acetylglucosamine_clinda <- subset(acetylglucosamine, abx == 'clindamycin')
+acetylglucosamine_clinda$abx <- NULL
+colnames(acetylglucosamine_clinda) <- c('infection', 'substrate')
+acetylglucosamine_gf <- subset(acetylglucosamine, abx == 'germfree')
+acetylglucosamine_gf$abx <- NULL
+colnames(acetylglucosamine_gf) <- c('infection', 'substrate')
+rm(acetylglucosamine)
+glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
+glycine_cef <- subset(glycine, abx == 'cefoperazone')
+glycine_cef$abx <- NULL
+colnames(glycine_cef) <- c('infection', 'substrate')
+glycine_strep <- subset(glycine, abx == 'streptomycin')
+glycine_strep$abx <- NULL
+colnames(glycine_strep) <- c('infection', 'substrate')
+glycine_clinda <- subset(glycine, abx == 'clindamycin')
+glycine_clinda$abx <- NULL
+colnames(glycine_clinda) <- c('infection', 'substrate')
+glycine_gf <- subset(glycine, abx == 'germfree')
+glycine_gf$abx <- NULL
+colnames(glycine_gf) <- c('infection', 'substrate')
+rm(glycine)
+proline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('proline')))]
+proline_cef <- subset(proline, abx == 'cefoperazone')
+proline_cef$abx <- NULL
+colnames(proline_cef) <- c('infection', 'substrate')
+proline_strep <- subset(proline, abx == 'streptomycin')
+proline_strep$abx <- NULL
+colnames(proline_strep) <- c('infection', 'substrate')
+proline_clinda <- subset(proline, abx == 'clindamycin')
+proline_clinda$abx <- NULL
+colnames(proline_clinda) <- c('infection', 'substrate')
+proline_gf <- subset(proline, abx == 'germfree')
+proline_gf$abx <- NULL
+colnames(proline_gf) <- c('infection', 'substrate')
+rm(proline)
+mannitolsorbitol <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('mannitol/sorbitol')))]
+mannitolsorbitol_cef <- subset(mannitolsorbitol, abx == 'cefoperazone')
+mannitolsorbitol_cef$abx <- NULL
+colnames(mannitolsorbitol_cef) <- c('infection', 'substrate')
+mannitolsorbitol_strep <- subset(mannitolsorbitol, abx == 'streptomycin')
+mannitolsorbitol_strep$abx <- NULL
+colnames(mannitolsorbitol_strep) <- c('infection', 'substrate')
+rm(mannitolsorbitol)
+salicin <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('salicylate','glucose')))]
+salicin_clinda <- subset(salicin, abx == 'clindamycin')
+salicin_clinda$abx <- NULL
+colnames(salicin_clinda) <- c('infection', 'salicylate','glucose')
+rm(salicin)
+acetylneuraminate <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylneuraminate')))]
+acetylneuraminate_gf <- subset(acetylneuraminate, abx == 'germfree')
+acetylneuraminate_gf$abx <- NULL
+colnames(acetylneuraminate_gf) <- c('infection', 'substrate')
+rm(acetylneuraminate)
+rm(metabolome)
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# Set up multi-panel figure
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_6.pdf'
+pdf(file=plot_file, width=7, height=9)
+layout(matrix(c(1,1,
+                2,2,
+                3,4,
+                5,6), nrow=4, ncol=2, byrow=TRUE))
+par(las=1, mgp=c(2.3,0.7,0))
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+# N-acetylglucosamine
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=acetylglucosamine_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,6), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=acetylglucosamine_cef, vertical=T, pch=19, at=c(4,5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,6), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=acetylglucosamine_clinda, vertical=T, pch=19, at=c(7,8),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,6), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=acetylglucosamine_gf, vertical=T, pch=19, at=c(10,11),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,6), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:6), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
+mtext(c('+','-','+','-','+','-','+','-'), side=1, 
+      at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
+      at=c(1.5,4.5,7.5,10.6), padj=2)
+mtext('A', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='N-Acetylglucosamine / N-Acetylgalactosamine', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
+         y0=c(median(subset(acetylglucosamine_strep, infection=='630')[,2]), median(subset(acetylglucosamine_strep, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_cef, infection=='630')[,2]), median(subset(acetylglucosamine_cef, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_clinda, infection=='630')[,2]), median(subset(acetylglucosamine_clinda, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_gf, infection=='630')[,2]), median(subset(acetylglucosamine_gf, infection=='mock')[,2])), 
+         y1=c(median(subset(acetylglucosamine_strep, infection=='630')[,2]), median(subset(acetylglucosamine_strep, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_cef, infection=='630')[,2]), median(subset(acetylglucosamine_cef, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_clinda, infection=='630')[,2]), median(subset(acetylglucosamine_clinda, infection=='mock')[,2]),
+              median(subset(acetylglucosamine_gf, infection=='630')[,2]), median(subset(acetylglucosamine_gf, infection=='mock')[,2])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(acetylglucosamine_strep, infection=='630')[,2], subset(acetylglucosamine_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_cef, infection=='630')[,2], subset(acetylglucosamine_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_clinda, infection=='630')[,2], subset(acetylglucosamine_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_gf, infection=='630')[,2], subset(acetylglucosamine_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+text(x=10, y=2, '*', font=2, cex=2.5)
+
+#------------------#
+
+# Proline
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=proline_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=proline_cef, vertical=T, pch=19, at=c(4,5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=proline_clinda, vertical=T, pch=19, at=c(7,8),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=proline_gf, vertical=T, pch=19, at=c(10,11),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
+mtext(c('+','-','+','-','+','-','+','-'), side=1, 
+      at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
+      at=c(1.5,4.5,7.5,10.6), padj=2)
+mtext('B', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='Proline', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
+         y0=c(median(subset(proline_strep, infection=='630')[,2]), median(subset(proline_strep, infection=='mock')[,2]),
+              median(subset(proline_cef, infection=='630')[,2]), median(subset(proline_cef, infection=='mock')[,2]),
+              median(subset(proline_clinda, infection=='630')[,2]), median(subset(proline_clinda, infection=='mock')[,2]),
+              median(subset(proline_gf, infection=='630')[,2]), median(subset(proline_gf, infection=='mock')[,2])), 
+         y1=c(median(subset(proline_strep, infection=='630')[,2]), median(subset(proline_strep, infection=='mock')[,2]),
+              median(subset(proline_cef, infection=='630')[,2]), median(subset(proline_cef, infection=='mock')[,2]),
+              median(subset(proline_clinda, infection=='630')[,2]), median(subset(proline_clinda, infection=='mock')[,2]),
+              median(subset(proline_gf, infection=='630')[,2]), median(subset(proline_gf, infection=='mock')[,2])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(proline_strep, infection=='630')[,2], subset(proline_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_cef, infection=='630')[,2], subset(proline_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_clinda, infection=='630')[,2], subset(proline_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_gf, infection=='630')[,2], subset(proline_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+text(x=c(1,4,7,10), y=c(1,1.5,2,1), '*', font=2, cex=2.5)
+
+#------------------#
+
+# Salicin
+par(mar=c(3,5,1,1))
+stripchart(salicylate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,7), xlim=c(0.5,2.5),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
+mtext(c('+','-'), side=1, 
+      at=c(1,2), padj=0.5, cex=1.2)
+mtext(c('Clindamycin'), side=1, 
+      at=c(1.5), padj=2)
+mtext('C', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='Salicylate', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
+         y0=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])), 
+         y1=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])),
+         lwd=3)
+
+par(mar=c(3,5,1,1))
+stripchart(glucose~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,6), xlim=c(0.5,2.5),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
+mtext(c('+','-'), side=1, 
+      at=c(1,2), padj=0.5, cex=1.2)
+mtext(c('Clindamycin'), side=1, 
+      at=c(1.5), padj=2)
+mtext('D', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='Glucose', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
+         y0=c(median(subset(salicin_clinda, infection=='630')[,3]), median(subset(salicin_clinda, infection=='mock')[,3])), 
+         y1=c(median(subset(salicin_clinda, infection=='630')[,3]), median(subset(salicin_clinda, infection=='mock')[,3])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(salicin_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(salicin_clinda, infection=='630')[,3], subset(salicin_clinda, infection=='mock')[,3], exact=F)$p.value), method='BH')
+
+#------------------#
+
+# Mannitol / Sorbitol
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=mannitolsorbitol_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,65), xlim=c(0,6),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=mannitolsorbitol_cef, vertical=T, pch=19, at=c(4,5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,65), xlim=c(0,6),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0','10','20','30','40','50','60'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
+mtext(c('+','-','+','-'), side=1, 
+      at=c(1,2,4,5), padj=0.5, cex=1.2)
+mtext(c('Streptomycin','Cefoperazone'), side=1, 
+      at=c(1.5,4.5), padj=2)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6,3.6,4.6), x1=c(1.4,2.4,4.4,5.4),
+         y0=c(median(subset(mannitolsorbitol_strep, infection=='630')[,2]), median(subset(mannitolsorbitol_strep, infection=='mock')[,2]),
+              median(subset(mannitolsorbitol_cef, infection=='630')[,2]), median(subset(mannitolsorbitol_cef, infection=='mock')[,2])), 
+         y1=c(median(subset(mannitolsorbitol_strep, infection=='630')[,2]), median(subset(mannitolsorbitol_strep, infection=='mock')[,2]),
+              median(subset(mannitolsorbitol_cef, infection=='630')[,2]), median(subset(mannitolsorbitol_cef, infection=='mock')[,2])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], subset(mannitolsorbitol_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(mannitolsorbitol_cef, infection=='630')[,2], subset(mannitolsorbitol_cef, infection=='mock')[,2], exact=F)$p.value), method='BH')
+
+#------------------#
+
+# N-acetylneuraminate
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=acetylneuraminate_gf, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0.5,2.5),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:3), labels=c('0','1.0','2.0','3.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
+mtext(c('+','-'), side=1, 
+      at=c(1,2), padj=0.5, cex=1.2)
+mtext(c('Gnotobiotic'), side=1, 
+      at=c(1.5), padj=2)
+mtext('F', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='N-Acetylneuraminate', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
+         y0=c(median(subset(acetylneuraminate_gf, infection=='630')[,2]), median(subset(acetylneuraminate_gf, infection=='mock')[,2])), 
+         y1=c(median(subset(acetylneuraminate_gf, infection=='630')[,2]), median(subset(acetylneuraminate_gf, infection=='mock')[,2])),
+         lwd=3)
+wilcox.test(subset(acetylneuraminate_gf, infection=='630')[,2], subset(acetylneuraminate_gf, infection=='mock')[,2], exact=F)$p.value
+text(x=1, y=1.2, '*', font=2, cex=2.5)
+
+dev.off()
+
+#-------------------------------------------------------------------------------------------------------------------------------------#
+
+#Clean up
+detach('package:wesanderson', character.only = TRUE)
+rm(list=ls())
+gc()
