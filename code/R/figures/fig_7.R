@@ -215,7 +215,6 @@ text(x=-8.75, y=9.3, as.expression(bquote(atop(paste(italic('rho'),' = ',.(test$
 # streptomycin alone
 plot(strep[,1], strep[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,13), col=wes_palette("FantasticFox")[1])
-points(strep_acetylglucosamine[,1], strep_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[1], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
 abline(strep_fit, col='black', lwd=2)
 mtext('B', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
@@ -230,7 +229,6 @@ text(x=c(5.5,3.7,5.6),
 # cefoperazone alone
 plot(cef[,1], cef[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,11), col=wes_palette("FantasticFox")[3]) 
-points(cef_acetylglucosamine[,1], cef_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[3], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
 abline(cef_fit, col='black', lwd=2)
 mtext('C', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
@@ -247,7 +245,6 @@ segments(x0=c(2.8,0.9,5.1), y0=c(2.9,3.5,3.8),
 # clindamycin alone
 plot(clinda[,1], clinda[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, xlim=c(-10,10), ylim=c(-1,5), col=wes_palette("FantasticFox")[5])
-points(clinda_acetylglucosamine[,1], clinda_acetylglucosamine[,2], pch=21, col=wes_palette("FantasticFox")[5], bg='white', cex=1.2, lwd=1.7)
 abline(v=0, lty=2, col='gray75')
 abline(clinda_fit, col='black', lwd=2)
 mtext('D', side=2, line=2, las=2, adj=0.8, padj=-8, cex=1.2)
@@ -264,7 +261,6 @@ segments(x0=c(-4.3,1.1,3.2), y0=c(-0.8,0,0.3),
 # germfree alone
 plot(germfree[,1], germfree[,2], xlab='Importance Score', ylab=expression(paste(Delta,' Median Scaled Intensity')), 
      pch=19, cex=0.9, xlim=c(-8,8), ylim=c(-1,17), col='forestgreen', xaxt='n')
-points(germfree_acetylglucosamine[,1], germfree_acetylglucosamine[,2], pch=21, col='forestgreen', bg='white', cex=1.2, lwd=1.7)
 axis(side=1, at=c(-8,-4,0,4,8), labels=c(-8,-4,0,4,8))
 abline(v=0, lty=2, col='gray75')
 abline(germfree_fit, col='black', lwd=2)

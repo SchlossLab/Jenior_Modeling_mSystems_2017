@@ -86,6 +86,7 @@ R code/R/figures/fig_3.R
 R code/R/figures/fig_4.R
 R code/R/figures/fig_5.R
 R code/R/figures/fig_6.R
+R code/R/supplement/fig_7.R
 
 R code/R/supplement/fig_S1.R
 R code/R/supplement/fig_S2.R

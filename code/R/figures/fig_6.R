@@ -9,26 +9,15 @@ if ('wesanderson' %in% installed.packages()[,"Package"] == FALSE){
 }
 library('wesanderson', verbose=FALSE, character.only=TRUE)
 
-
 # Select files
-scfa <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cef_acetate_630.txt'
 metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
 metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
 # Read in data
-scfa <- read.delim(scfa, sep='\t', header=T)
 metabolome <- read.delim(metabolome, sep='\t', header=T, row.names=1)
 metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
 metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
 metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
-
-# Format the data
-scfa$group <- factor(scfa$group, levels=c('infected','mock'))
-scfa$acetate <- as.numeric(as.character(scfa$acetate))
-
-# Subset for stats
-mock <- as.numeric(scfa[scfa$group == 'mock', 2])
-infected <- as.numeric(scfa[scfa$group == 'infected', 2])
 
 # Subset untargeted metabolomics
 metadata$cage <- NULL
@@ -94,16 +83,21 @@ mannitolsorbitol_strep <- subset(mannitolsorbitol, abx == 'streptomycin')
 mannitolsorbitol_strep$abx <- NULL
 colnames(mannitolsorbitol_strep) <- c('infection', 'substrate')
 rm(mannitolsorbitol)
-salicin <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('salicylate','glucose')))]
+salicin <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('salicylate')))]
 salicin_clinda <- subset(salicin, abx == 'clindamycin')
 salicin_clinda$abx <- NULL
-colnames(salicin_clinda) <- c('infection', 'salicylate','glucose')
+colnames(salicin_clinda) <- c('infection', 'substrate')
 rm(salicin)
 acetylneuraminate <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylneuraminate')))]
 acetylneuraminate_gf <- subset(acetylneuraminate, abx == 'germfree')
 acetylneuraminate_gf$abx <- NULL
 colnames(acetylneuraminate_gf) <- c('infection', 'substrate')
 rm(acetylneuraminate)
+galactitol <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('galactitol_(dulcitol)')))]
+galactitol_strep <- subset(galactitol, abx == 'streptomycin')
+galactitol_strep$abx <- NULL
+colnames(galactitol_strep) <- c('infection', 'substrate')
+rm(galactitol)
 rm(metabolome)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -199,60 +193,42 @@ text(x=c(1,4,7,10), y=c(1,1.5,2,1), '*', font=2, cex=2.5)
 
 #------------------#
 
-# Salicin
+# Galactitol
 par(mar=c(3,5,1,1))
-stripchart(salicylate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,7), xlim=c(0.5,2.5),
+stripchart(substrate~infection, data=galactitol_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,2), xlim=c(0.5,2.5),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
+axis(side=2, at=seq(0,2,0.5), labels=c('0.0','0.5','1.0','1.5','2.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)
-mtext(c('Clindamycin'), side=1, 
+mtext(c('Streptomycin'), side=1, 
       at=c(1.5), padj=2)
 mtext('C', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='Salicylate', pt.cex=0, bty='n', cex=1.2)
+legend('topright', legend='Galactitol', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
-         y0=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])), 
-         y1=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])),
+         y0=c(median(subset(galactitol_strep, infection=='630')[,2]), median(subset(galactitol_strep, infection=='mock')[,2])), 
+         y1=c(median(subset(galactitol_strep, infection=='630')[,2]), median(subset(galactitol_strep, infection=='mock')[,2])),
          lwd=3)
-
-par(mar=c(3,5,1,1))
-stripchart(glucose~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,6), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=c(0:7), labels=c('0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
-mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
-mtext(c('+','-'), side=1, 
-      at=c(1,2), padj=0.5, cex=1.2)
-mtext(c('Clindamycin'), side=1, 
-      at=c(1.5), padj=2)
-mtext('D', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='Glucose', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
-         y0=c(median(subset(salicin_clinda, infection=='630')[,3]), median(subset(salicin_clinda, infection=='mock')[,3])), 
-         y1=c(median(subset(salicin_clinda, infection=='630')[,3]), median(subset(salicin_clinda, infection=='mock')[,3])),
-         lwd=3)
-p.adjust(c(wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(salicin_clinda, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(salicin_clinda, infection=='630')[,3], subset(salicin_clinda, infection=='mock')[,3], exact=F)$p.value), method='BH')
+wilcox.test(subset(galactitol_strep, infection=='630')[,2], subset(galactitol_strep, infection=='mock')[,2], exact=F)$p.value
 
 #------------------#
 
 # Mannitol / Sorbitol
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=mannitolsorbitol_strep, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,65), xlim=c(0,6),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,60), xlim=c(0,6),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
 stripchart(substrate~infection, data=mannitolsorbitol_cef, vertical=T, pch=19, at=c(4,5),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,65), xlim=c(0,6),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0','10','20','30','40','50','60'), cex.axis=1.2)
+axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0.0','10','20','30','40','50','60'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-'), side=1, 
       at=c(1,2,4,5), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone'), side=1, 
       at=c(1.5,4.5), padj=2)
-mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+mtext('D', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
 legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,1.6,3.6,4.6), x1=c(1.4,2.4,4.4,5.4),
          y0=c(median(subset(mannitolsorbitol_strep, infection=='630')[,2]), median(subset(mannitolsorbitol_strep, infection=='mock')[,2]),
@@ -265,12 +241,33 @@ p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], sub
 
 #------------------#
 
+# Salicin
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,7), xlim=c(0.5,2.5),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0:7), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0','7.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
+mtext(c('+','-'), side=1, 
+      at=c(1,2), padj=0.5, cex=1.2)
+mtext(c('Clindamycin'), side=1, 
+      at=c(1.5), padj=2)
+mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
+legend('topright', legend='Salicylate', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6), x1=c(1.4,2.4),
+         y0=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])), 
+         y1=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])),
+         lwd=3)
+wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(salicin_clinda, infection=='mock')[,2], exact=F)$p.value
+
+#------------------#
+
 # N-acetylneuraminate
 par(mar=c(3,5,1,1))
 stripchart(substrate~infection, data=acetylneuraminate_gf, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0.5,2.5),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=c(0:3), labels=c('0','1.0','2.0','3.0'), cex.axis=1.2)
+axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
 mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
 mtext(c('+','-'), side=1, 
       at=c(1,2), padj=0.5, cex=1.2)

@@ -1,51 +1,36 @@
 
-# Start with a blank slate
+# Start with blank slate
 rm(list=ls())
 gc()
 
-# Load dependencies
-deps <- c('wesanderson', 'plotrix');
-for (dep in deps){
-  if (dep %in% installed.packages()[,"Package"] == FALSE){
-    install.packages(as.character(dep), quiet=TRUE);
-  } 
-  library(dep, verbose=FALSE, character.only=TRUE)
+# Load dependency
+if ('wesanderson' %in% installed.packages()[,"Package"] == FALSE){
+  install.packages(as.character('wesanderson'), quiet=TRUE);
 }
+library('wesanderson', verbose=FALSE, character.only=TRUE)
 
-# Function for population variance of columns in a matrix
-pop_var <- function(data) {
-  vars <- c()
-  for (x in 1:ncol(data)){
-    vars[x] <- sum((data[,x] - mean(data[,x]))^2) / length(data[,x])
-  }
-  return(vars)
-}
 
-# Function for sample variance of columns in a matrix
-samp_var <- function(data) {
-  vars <- c()
-  for (x in 1:ncol(data)){
-    vars[x] <- var(data[,x])
-  }
-  return(vars)
-}
-
-# Define files
-metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
+# Select files
+scfa <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cef_acetate_630.txt'
 metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
-shared <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/16S_analysis/all_treatments.0.03.unique_list.0.03.filter.0.03.subsample.shared'
+metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
-#----------------------------------------#
-
-# Read data
-metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
-metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+# Read in data
+scfa <- read.delim(scfa, sep='\t', header=T)
 metabolome <- read.delim(metabolome, sep='\t', header=T, row.names=1)
 metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
-shared <- read.delim(shared, sep='\t', header=T, row.names=2)
-shared <- shared[!rownames(shared) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
 
-# Format data
+# Format the data
+scfa$group <- factor(scfa$group, levels=c('infected','mock'))
+scfa$acetate <- as.numeric(as.character(scfa$acetate))
+
+# Subset for stats
+mock <- as.numeric(scfa[scfa$group == 'mock', 2])
+infected <- as.numeric(scfa[scfa$group == 'infected', 2])
+
+# Subset untargeted metabolomics
 metadata$cage <- NULL
 metadata$mouse <- NULL
 metadata$gender <- NULL
@@ -55,186 +40,157 @@ metabolome$SUB_PATHWAY <- NULL
 metabolome$PUBCHEM <- NULL
 metabolome$KEGG <- NULL
 metabolome <- as.data.frame(t(metabolome))
-metabolites <- colnames(metabolome)
-shared$label <- NULL
-shared$numOtus <- NULL
-shared <- log10(shared + 10)
-otus <- colnames(shared)
-
-# Merge datasets
-shared <- merge(metadata, shared, by='row.names')
-rownames(shared) <- shared$Row.names
-shared$Row.names <- NULL
 metabolome <- merge(metadata, metabolome, by='row.names')
 rownames(metabolome) <- metabolome$Row.names
 metabolome$Row.names <- NULL
 rm(metadata)
-
-# Subset datasets
-strep <- subset(metabolome, abx == 'streptomycin')
-strep$abx <- NULL
-strep_metabolome_mock <- subset(strep, infection == 'mock')
-strep_metabolome_mock$infection <- NULL
-strep_metabolome_630 <- subset(strep, infection == '630')
-strep_metabolome_630$infection <- NULL
-cef <- subset(metabolome, abx == 'cefoperazone')
-cef$abx <- NULL
-cef_metabolome_mock <- subset(cef, infection == 'mock')
-cef_metabolome_mock$infection <- NULL
-cef_metabolome_630 <- subset(cef, infection == '630')
-cef_metabolome_630$infection <- NULL
-clinda <- subset(metabolome, abx == 'clindamycin')
-clinda$abx <- NULL
-clinda_metabolome_mock <- subset(clinda, infection == 'mock')
-clinda_metabolome_mock$infection <- NULL
-clinda_metabolome_630 <- subset(clinda, infection == '630')
-clinda_metabolome_630$infection <- NULL
-conv <- subset(metabolome, abx == 'none')
-conv$abx <- NULL
-conv_metabolome_mock <- subset(conv, infection == 'mock')
-conv_metabolome_mock$infection <- NULL
+glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
+glycine_cef <- subset(glycine, abx == 'cefoperazone')
+glycine_cef$abx <- NULL
+colnames(glycine_cef) <- c('infection', 'substrate')
+glycine_strep <- subset(glycine, abx == 'streptomycin')
+glycine_strep$abx <- NULL
+colnames(glycine_strep) <- c('infection', 'substrate')
+glycine_clinda <- subset(glycine, abx == 'clindamycin')
+glycine_clinda$abx <- NULL
+colnames(glycine_clinda) <- c('infection', 'substrate')
+glycine_gf <- subset(glycine, abx == 'germfree')
+glycine_gf$abx <- NULL
+colnames(glycine_gf) <- c('infection', 'substrate')
+rm(glycine)
+hydroxyproline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('trans-4-hydroxyproline')))]
+hydroxyproline_cef <- subset(hydroxyproline, abx == 'cefoperazone')
+hydroxyproline_cef$abx <- NULL
+colnames(hydroxyproline_cef) <- c('infection', 'substrate')
+hydroxyproline_strep <- subset(hydroxyproline, abx == 'streptomycin')
+hydroxyproline_strep$abx <- NULL
+colnames(hydroxyproline_strep) <- c('infection', 'substrate')
+hydroxyproline_clinda <- subset(hydroxyproline, abx == 'clindamycin')
+hydroxyproline_clinda$abx <- NULL
+colnames(hydroxyproline_clinda) <- c('infection', 'substrate')
+hydroxyproline_gf <- subset(hydroxyproline, abx == 'germfree')
+hydroxyproline_gf$abx <- NULL
+colnames(hydroxyproline_gf) <- c('infection', 'substrate')
+rm(hydroxyproline)
 rm(metabolome)
-strep <- subset(shared, abx == 'streptomycin')
-strep$abx <- NULL
-strep_shared_mock <- subset(strep, infection == 'mock')
-strep_shared_mock$infection <- NULL
-strep_shared_630 <- subset(strep, infection == '630')
-strep_shared_630$infection <- NULL
-cef <- subset(shared, abx == 'cefoperazone')
-cef$abx <- NULL
-cef_shared_mock <- subset(cef, infection == 'mock')
-cef_shared_mock$infection <- NULL
-cef_shared_630 <- subset(cef, infection == '630')
-cef_shared_630$infection <- NULL
-clinda <- subset(shared, abx == 'clindamycin')
-clinda$abx <- NULL
-clinda_shared_mock <- subset(clinda, infection == 'mock')
-clinda_shared_mock$infection <- NULL
-clinda_shared_630 <- subset(clinda, infection == '630')
-clinda_shared_630$infection <- NULL
-conv <- subset(shared, abx == 'none')
-conv$abx <- NULL
-conv_shared_mock <- subset(conv, infection == 'mock')
-conv_shared_mock$infection <- NULL
-rm(shared)
-rm(strep, cef, clinda, conv)
 
-#----------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Calculate population variance
-#strep_metabolome_mock <- pop_var(strep_metabolome_mock)
-#strep_metabolome_630 <- pop_var(strep_metabolome_630)
-#cef_metabolome_mock <- pop_var(cef_metabolome_mock)
-#cef_metabolome_630 <- pop_var(cef_metabolome_630)
-#clinda_metabolome_mock <- pop_var(clinda_metabolome_mock)
-#clinda_metabolome_630 <- pop_var(clinda_metabolome_630)
-#conv_metabolome_mock <- pop_var(conv_metabolome_mock)
-#strep_shared_mock <- pop_var(strep_shared_mock)
-#strep_shared_630 <- pop_var(strep_shared_630)
-#cef_shared_mock <- pop_var(cef_shared_mock)
-#cef_shared_630 <- pop_var(cef_shared_630)
-#clinda_shared_mock <- pop_var(clinda_shared_mock)
-#clinda_shared_630 <- pop_var(clinda_shared_630)
-#conv_shared_mock <- pop_var(conv_shared_mock)
-
-# Calculate sample variance
-strep_metabolome_mock <- samp_var(strep_metabolome_mock)
-strep_metabolome_630 <- samp_var(strep_metabolome_630)
-cef_metabolome_mock <- samp_var(cef_metabolome_mock)
-cef_metabolome_630 <- samp_var(cef_metabolome_630)
-clinda_metabolome_mock <- samp_var(clinda_metabolome_mock)
-clinda_metabolome_630 <- samp_var(clinda_metabolome_630)
-conv_metabolome_mock <- samp_var(conv_metabolome_mock)
-strep_shared_mock <- samp_var(strep_shared_mock)
-strep_shared_630 <- samp_var(strep_shared_630)
-cef_shared_mock <- samp_var(cef_shared_mock)
-cef_shared_630 <- samp_var(cef_shared_630)
-clinda_shared_mock <- samp_var(clinda_shared_mock)
-clinda_shared_630 <- samp_var(clinda_shared_630)
-conv_shared_mock <- samp_var(conv_shared_mock)
-
-# Calculate differences
-#pvalues_16S <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
-#pvalues_metabolome <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
-
-# Calculate summary stats for barplots
-metabolome <- rbind(quantile(strep_metabolome_mock)[2:4],
-                    quantile(strep_metabolome_630)[2:4],
-                    quantile(cef_metabolome_mock)[2:4],
-                    quantile(cef_metabolome_630)[2:4],
-                    quantile(clinda_metabolome_mock)[2:4],
-                    quantile(clinda_metabolome_630)[2:4],
-                    quantile(conv_metabolome_mock)[2:4])
-metabolome <- as.data.frame(metabolome)
-colnames(metabolome) <- c('q25','median','q75')
-rownames(metabolome) <- c('strep_mock','strep_630','cef_mock','cef_630',
-                          'clinda_mock','clinda_630','conv_mock')
-metabolome$q75[nrow(metabolome)] <- 0.86
-shared <- rbind(quantile(strep_shared_mock)[2:4],
-                quantile(strep_shared_630)[2:4],
-                quantile(cef_shared_mock)[2:4],
-                quantile(cef_shared_630)[2:4],
-                quantile(clinda_shared_mock)[2:4],
-                quantile(clinda_shared_630)[2:4],
-                quantile(conv_shared_mock)[2:4])
-shared <- as.data.frame(shared)
-colnames(shared) <- c('q25','median','q75')
-rownames(shared) <- c('strep_mock','strep_630','cef_mock','cef_630',
-                          'clinda_mock','clinda_630','conv_mock')
-shared$q75[nrow(shared)] <- 0.00095
-
-rm(strep_metabolome_moc,strep_metabolome_630,cef_metabolome_mock,cef_metabolome_630,
-   clinda_metabolome_mock,clinda_metabolome_630,conv_metabolome_mock,strep_shared_mock,
-   strep_shared_630,cef_shared_mock,cef_shared_630,clinda_shared_mock,clinda_shared_630,conv_shared_mock)
-
-#----------------------------------------#
-
-# Generate plot
+# Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S7.pdf'
-pdf(file=plot_file, width=6, height=8)
-layout(matrix(c(1,2), nrow=2, ncol=1, byrow=TRUE))
-par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
+pdf(file=plot_file, width=7, height=7)
+layout(matrix(c(1,
+                2,
+                3), nrow=3, ncol=1, byrow=TRUE))
+par(las=1, mgp=c(2.3,0.7,0))
 
-# 16S
-barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Within-group Sample Variance',
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
-segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=shared$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=shared$q75)
-mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
-mtext(c('+','-','+','-','+','-','-'), side=1, 
-      at=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), padj=0.2, cex=1.5)
-mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, 
-      at=c(1.3,3.7,6.1,7.9), padj=2, cex=0.9)
-abline(v=c(2.5,4.9,7.3), lty=2)
-axis(side=2, at=c(0,0.0002,0.0004,0.0006,0.001), labels=c('0.0','0.0002','0.0004','0.0006','0.004'), cex.axis=0.8)
-axis.break(2, 0.0008, style='slash') 
-rect(xleft=7.7, xright=8.1, ytop=0.00081, ybottom=0.00079, col='white', border='white')
-segments(x0=c(-1,-1,8.72),y0=c(0,0.001,0),x1=c(10,10,8.72),y1=c(0,0.001,0.001), lwd=2)
-mtext('A', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
-# Metabolome
-barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Within-group Sample Variance',
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
-segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=metabolome$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=metabolome$q75)
-mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
-mtext(c('+','-','+','-','+','-','-'), side=1, 
-      at=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), padj=0.2, cex=1.5)
-mtext(c('Streptomycin','Cefoperazone','Clindamycin','No Antibiotics'), side=1, 
-      at=c(1.3,3.7,6.1,7.9), padj=2, cex=0.9)
-abline(v=c(2.5,4.9,7.3), lty=2)
-axis(side=2, at=c(0,0.2,0.4,0.6,0.9), labels=c('0.0','0.2','0.4','0.6','9.0'))
-axis.break(2, 0.8, style='slash') 
-segments(x0=c(-1,-1,8.72),y0=c(0,0.9,0),x1=c(10,10,8.72),y1=c(0,0.9,0.9), lwd=2)
-rect(xleft=7.7, xright=8.1, ytop=0.81, ybottom=0.79, col='white', border='white')
-mtext('B', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
+# Glycine
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=glycine_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=glycine_cef, vertical=T, pch=19, at=c(4,5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=glycine_clinda, vertical=T, pch=19, at=c(7,8),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=glycine_gf, vertical=T, pch=19, at=c(10,11),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
+mtext(c('+','-','+','-','+','-','+','-'), side=1, 
+      at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
+      at=c(1.5,4.5,7.5,10.6), padj=2)
+mtext('A', side=2, line=2, las=2, adj=2, padj=-4, cex=1.6)
+legend('topright', legend='Glycine', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
+         y0=c(median(subset(glycine_strep, infection=='630')[,2]), median(subset(glycine_strep, infection=='mock')[,2]),
+              median(subset(glycine_cef, infection=='630')[,2]), median(subset(glycine_cef, infection=='mock')[,2]),
+              median(subset(glycine_clinda, infection=='630')[,2]), median(subset(glycine_clinda, infection=='mock')[,2]),
+              median(subset(glycine_gf, infection=='630')[,2]), median(subset(glycine_gf, infection=='mock')[,2])), 
+         y1=c(median(subset(glycine_strep, infection=='630')[,2]), median(subset(glycine_strep, infection=='mock')[,2]),
+              median(subset(glycine_cef, infection=='630')[,2]), median(subset(glycine_cef, infection=='mock')[,2]),
+              median(subset(glycine_clinda, infection=='630')[,2]), median(subset(glycine_clinda, infection=='mock')[,2]),
+              median(subset(glycine_gf, infection=='630')[,2]), median(subset(glycine_gf, infection=='mock')[,2])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(glycine_strep, infection=='630')[,2], subset(glycine_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_cef, infection=='630')[,2], subset(glycine_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_clinda, infection=='630')[,2], subset(glycine_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_gf, infection=='630')[,2], subset(glycine_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+text(x=4, y=1.5, '*', font=2, cex=2.5)
+
+#-----------------#
+
+# Hydroxyproline
+par(mar=c(3,5,1,1))
+stripchart(substrate~infection, data=hydroxyproline_strep, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,4), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
+stripchart(substrate~infection, data=hydroxyproline_cef, vertical=T, pch=19, at=c(4,5),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,4), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=hydroxyproline_clinda, vertical=T, pch=19, at=c(7,8),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,4), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+stripchart(substrate~infection, data=hydroxyproline_gf, vertical=T, pch=19, at=c(10,11),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,4), xlim=c(0,12),
+           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
+axis(side=2, at=c(0:4), labels=c('0.0','1.0','2.0','3.0','4.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
+mtext(c('+','-','+','-','+','-','+','-'), side=1, 
+      at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
+      at=c(1.5,4.5,7.5,10.6), padj=2)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-4, cex=1.6)
+legend('topright', legend='Trans-4-Hydroxyproline', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
+         y0=c(median(subset(hydroxyproline_strep, infection=='630')[,2]), median(subset(hydroxyproline_strep, infection=='mock')[,2]),
+              median(subset(hydroxyproline_cef, infection=='630')[,2]), median(subset(hydroxyproline_cef, infection=='mock')[,2]),
+              median(subset(hydroxyproline_clinda, infection=='630')[,2]), median(subset(hydroxyproline_clinda, infection=='mock')[,2]),
+              median(subset(hydroxyproline_gf, infection=='630')[,2]), median(subset(hydroxyproline_gf, infection=='mock')[,2])), 
+         y1=c(median(subset(hydroxyproline_strep, infection=='630')[,2]), median(subset(hydroxyproline_strep, infection=='mock')[,2]),
+              median(subset(hydroxyproline_cef, infection=='630')[,2]), median(subset(hydroxyproline_cef, infection=='mock')[,2]),
+              median(subset(hydroxyproline_clinda, infection=='630')[,2]), median(subset(hydroxyproline_clinda, infection=='mock')[,2]),
+              median(subset(hydroxyproline_gf, infection=='630')[,2]), median(subset(hydroxyproline_gf, infection=='mock')[,2])),
+         lwd=3)
+p.adjust(c(wilcox.test(subset(hydroxyproline_strep, infection=='630')[,2], subset(hydroxyproline_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_cef, infection=='630')[,2], subset(hydroxyproline_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_clinda, infection=='630')[,2], subset(hydroxyproline_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_gf, infection=='630')[,2], subset(hydroxyproline_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+text(x=c(1,4,7,10), y=c(3.5,2,2.5,1), '*', font=2, cex=2.5)
+
+#-----------------#
+
+# Acetate - absolute concentration
+par(mar=c(3,5,1,1))
+stripchart(acetate~group, data=scfa, vertical=T, pch=19, at=c(1,2),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,10), xlim=c(0.5,2.5),
+           cex=1.5, ylab='nmol per mg', method='jitter', jitter=0.25, cex.lab=1.2)
+axis(side=2, at=c(0,2,4,6,8,10), labels=c('0','2.0','4.0','6.0','8.0','10.0'), cex.axis=1.2)
+mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
+mtext(c('+','-'), side=1, 
+      at=c(1,2), padj=0.5, cex=1.2)
+mtext(c('Cefoperazone'), side=1, 
+      at=c(1.5), padj=2)
+mtext('C', side=2, line=2, las=2, adj=2, padj=-4, cex=1.6)
+legend('topright', legend='Acetate', pt.cex=0, bty='n', cex=1.2)
+segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
+         y0=c(median(subset(scfa, group=='infected')[,2]), median(subset(scfa, group=='mock')[,2])), 
+         y1=c(median(subset(scfa, group=='infected')[,2]), median(subset(scfa, group=='mock')[,2])),
+         lwd=3)
+wilcox.test(mock, infected, exact=F)$p.value
+text(x=1, y=4, '*', font=2, cex=2.5)
 
 dev.off()
 
-#----------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
-for (dep in deps){
-  pkg <- paste('package:', dep, sep='')
-  detach(pkg, character.only = TRUE)
-}
+detach('package:wesanderson', character.only = TRUE)
 rm(list=ls())
 gc()

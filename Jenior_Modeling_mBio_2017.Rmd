@@ -14,7 +14,7 @@ bibliography: references.bib
 ```{r startup, echo=F, message=F, warning=F, cache=T}
 
 # Load dependencies
-deps <- c('shape', 'vegan', 'klaR', 'igraph', 'matrixStats', 'flux', 'knitr')
+deps <- c('shape', 'vegan', 'klaR', 'igraph', 'matrixStats', 'flux', 'knitr','plyr')
 for (dep in deps){
  if (dep %in% installed.packages()[,"Package"] == FALSE){
   install.packages(as.character(dep), quiet=TRUE);
@@ -49,8 +49,6 @@ toxin <- read.delim('data/wetlab_assays/toxin_titer.dat', sep='\t', header=T)
 network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/graph.tsv', header=FALSE, sep='\t')
 # Figure 5 data
 growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
-# Figure 6 data
-metabolome <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=TRUE)
 
 # Set a seed to the answer to the ultimate question of life, the universe, and everything
 set.seed(42)
@@ -333,6 +331,295 @@ We went on to test each important possible growth substrates to ensure that grow
 
 ```{r figure_6, echo=F, warning=F, message=F, results='hide', cache=T}
 
+metabolome <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=TRUE, row.names=1)
+metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
+metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+metabolome$SUPER_PATHWAY <- NULL
+metabolome$SUB_PATHWAY <- NULL
+metabolome$PUBCHEM <- NULL
+metabolome$KEGG <- NULL
+metabolome <- as.data.frame(t(metabolome))
+metabolome <- merge(metadata, metabolome, by='row.names')
+rownames(metabolome) <- metabolome$Row.names
+metabolome$Row.names <- NULL
+rm(metadata)
+acetylglucosamine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylglucosamine/N-acetylgalactosamine')))]
+acetylglucosamine_cef <- subset(acetylglucosamine, abx == 'cefoperazone')
+acetylglucosamine_cef$abx <- NULL
+colnames(acetylglucosamine_cef) <- c('infection', 'substrate')
+acetylglucosamine_strep <- subset(acetylglucosamine, abx == 'streptomycin')
+acetylglucosamine_strep$abx <- NULL
+colnames(acetylglucosamine_strep) <- c('infection', 'substrate')
+acetylglucosamine_clinda <- subset(acetylglucosamine, abx == 'clindamycin')
+acetylglucosamine_clinda$abx <- NULL
+colnames(acetylglucosamine_clinda) <- c('infection', 'substrate')
+acetylglucosamine_gf <- subset(acetylglucosamine, abx == 'germfree')
+acetylglucosamine_gf$abx <- NULL
+colnames(acetylglucosamine_gf) <- c('infection', 'substrate')
+rm(acetylglucosamine)
+glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
+glycine_cef <- subset(glycine, abx == 'cefoperazone')
+glycine_cef$abx <- NULL
+colnames(glycine_cef) <- c('infection', 'substrate')
+glycine_strep <- subset(glycine, abx == 'streptomycin')
+glycine_strep$abx <- NULL
+colnames(glycine_strep) <- c('infection', 'substrate')
+glycine_clinda <- subset(glycine, abx == 'clindamycin')
+glycine_clinda$abx <- NULL
+colnames(glycine_clinda) <- c('infection', 'substrate')
+glycine_gf <- subset(glycine, abx == 'germfree')
+glycine_gf$abx <- NULL
+colnames(glycine_gf) <- c('infection', 'substrate')
+rm(glycine)
+proline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('proline')))]
+proline_cef <- subset(proline, abx == 'cefoperazone')
+proline_cef$abx <- NULL
+colnames(proline_cef) <- c('infection', 'substrate')
+proline_strep <- subset(proline, abx == 'streptomycin')
+proline_strep$abx <- NULL
+colnames(proline_strep) <- c('infection', 'substrate')
+proline_clinda <- subset(proline, abx == 'clindamycin')
+proline_clinda$abx <- NULL
+colnames(proline_clinda) <- c('infection', 'substrate')
+proline_gf <- subset(proline, abx == 'germfree')
+proline_gf$abx <- NULL
+colnames(proline_gf) <- c('infection', 'substrate')
+rm(proline)
+mannitolsorbitol <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('mannitol/sorbitol')))]
+mannitolsorbitol_cef <- subset(mannitolsorbitol, abx == 'cefoperazone')
+mannitolsorbitol_cef$abx <- NULL
+colnames(mannitolsorbitol_cef) <- c('infection', 'substrate')
+mannitolsorbitol_strep <- subset(mannitolsorbitol, abx == 'streptomycin')
+mannitolsorbitol_strep$abx <- NULL
+colnames(mannitolsorbitol_strep) <- c('infection', 'substrate')
+rm(mannitolsorbitol)
+salicin <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('salicylate')))]
+salicin_clinda <- subset(salicin, abx == 'clindamycin')
+salicin_clinda$abx <- NULL
+colnames(salicin_clinda) <- c('infection', 'substrate')
+rm(salicin)
+acetylneuraminate <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylneuraminate')))]
+acetylneuraminate_gf <- subset(acetylneuraminate, abx == 'germfree')
+acetylneuraminate_gf$abx <- NULL
+colnames(acetylneuraminate_gf) <- c('infection', 'substrate')
+rm(acetylneuraminate)
+galactitol <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('galactitol_(dulcitol)')))]
+galactitol_strep <- subset(galactitol, abx == 'streptomycin')
+galactitol_strep$abx <- NULL
+colnames(galactitol_strep) <- c('infection', 'substrate')
+rm(galactitol)
+rm(metabolome)
+
+acetylglucosamine_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine_strep, infection=='630')[,2], subset(acetylglucosamine_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_cef, infection=='630')[,2], subset(acetylglucosamine_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_clinda, infection=='630')[,2], subset(acetylglucosamine_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine_gf, infection=='630')[,2], subset(acetylglucosamine_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+
+proline_p <- p.adjust(c(wilcox.test(subset(proline_strep, infection=='630')[,2], subset(proline_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_cef, infection=='630')[,2], subset(proline_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_clinda, infection=='630')[,2], subset(proline_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline_gf, infection=='630')[,2], subset(proline_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+
+galactitol_p <- wilcox.test(subset(galactitol_strep, infection=='630')[,2], subset(galactitol_strep, infection=='mock')[,2], exact=F)$p.value
+
+mannitolsorbitol_p <- p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], subset(mannitolsorbitol_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(mannitolsorbitol_cef, infection=='630')[,2], subset(mannitolsorbitol_cef, infection=='mock')[,2], exact=F)$p.value), method='BH')
+
+
+salicin_p <- wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(salicin_clinda, infection=='mock')[,2], exact=F)$p.value
+
+
+acetylneuraminate_p <- wilcox.test(subset(acetylneuraminate_gf, infection=='630')[,2], subset(acetylneuraminate_gf, infection=='mock')[,2], exact=F)$p.value
+
+```
+
+
+```{r figure_S6, echo=F, warning=F, message=F, results='hide', cache=T}
+
+# Read in data
+scfa <- read.delim('data/wetlab_assays/cef_acetate_630.txt', sep='\t', header=T)
+metabolome <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=T, row.names=1)
+metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
+metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+
+# Format the data
+scfa$group <- factor(scfa$group, levels=c('infected','mock'))
+scfa$acetate <- as.numeric(as.character(scfa$acetate))
+
+# Subset for stats
+mock <- as.numeric(scfa[scfa$group == 'mock', 2])
+infected <- as.numeric(scfa[scfa$group == 'infected', 2])
+
+# Subset untargeted metabolomics
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+metabolome$SUPER_PATHWAY <- NULL
+metabolome$SUB_PATHWAY <- NULL
+metabolome$PUBCHEM <- NULL
+metabolome$KEGG <- NULL
+metabolome <- as.data.frame(t(metabolome))
+metabolome <- merge(metadata, metabolome, by='row.names')
+rownames(metabolome) <- metabolome$Row.names
+metabolome$Row.names <- NULL
+rm(metadata)
+glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
+glycine_cef <- subset(glycine, abx == 'cefoperazone')
+glycine_cef$abx <- NULL
+colnames(glycine_cef) <- c('infection', 'substrate')
+glycine_strep <- subset(glycine, abx == 'streptomycin')
+glycine_strep$abx <- NULL
+colnames(glycine_strep) <- c('infection', 'substrate')
+glycine_clinda <- subset(glycine, abx == 'clindamycin')
+glycine_clinda$abx <- NULL
+colnames(glycine_clinda) <- c('infection', 'substrate')
+glycine_gf <- subset(glycine, abx == 'germfree')
+glycine_gf$abx <- NULL
+colnames(glycine_gf) <- c('infection', 'substrate')
+rm(glycine)
+hydroxyproline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('trans-4-hydroxyproline')))]
+hydroxyproline_cef <- subset(hydroxyproline, abx == 'cefoperazone')
+hydroxyproline_cef$abx <- NULL
+colnames(hydroxyproline_cef) <- c('infection', 'substrate')
+hydroxyproline_strep <- subset(hydroxyproline, abx == 'streptomycin')
+hydroxyproline_strep$abx <- NULL
+colnames(hydroxyproline_strep) <- c('infection', 'substrate')
+hydroxyproline_clinda <- subset(hydroxyproline, abx == 'clindamycin')
+hydroxyproline_clinda$abx <- NULL
+colnames(hydroxyproline_clinda) <- c('infection', 'substrate')
+hydroxyproline_gf <- subset(hydroxyproline, abx == 'germfree')
+hydroxyproline_gf$abx <- NULL
+colnames(hydroxyproline_gf) <- c('infection', 'substrate')
+rm(hydroxyproline)
+rm(metabolome)
+glycine_p <- p.adjust(c(wilcox.test(subset(glycine_strep, infection=='630')[,2], subset(glycine_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_cef, infection=='630')[,2], subset(glycine_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_clinda, infection=='630')[,2], subset(glycine_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine_gf, infection=='630')[,2], subset(glycine_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+hydroxyproline_p <- p.adjust(c(wilcox.test(subset(hydroxyproline_strep, infection=='630')[,2], subset(hydroxyproline_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_cef, infection=='630')[,2], subset(hydroxyproline_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_clinda, infection=='630')[,2], subset(hydroxyproline_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline_gf, infection=='630')[,2], subset(hydroxyproline_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+acetate_p <- wilcox.test(mock, infected, exact=F)$p.value
+
+```
+
+
+```{r figure_S7, echo=F, warning=F, message=F, results='hide', cache=T}
+
+# Read in data
+metabolome <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=TRUE, row.names=1)
+metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
+metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
+metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
+
+# Merge
+metadata$cage <- NULL
+metadata$mouse <- NULL
+metadata$gender <- NULL
+metadata$type <- NULL
+metabolome$SUPER_PATHWAY <- NULL
+metabolome$SUB_PATHWAY <- NULL
+metabolome$PUBCHEM <- NULL
+metabolome$KEGG <- NULL
+metabolome <- as.data.frame(t(metabolome))
+metabolome <- merge(metadata, metabolome, by='row.names')
+rownames(metabolome) <- metabolome$Row.names
+metabolome$Row.names <- NULL
+rm(metadata)
+
+# Subset metabolomics
+metabolome <- subset(metabolome, infection == 'mock')
+metabolome$infection <- NULL
+acetylglucosamine <- metabolome[, c(1,which(colnames(metabolome) %in% c('N-acetylglucosamine/N-acetylgalactosamine')))]
+colnames(acetylglucosamine) <- c('abx', 'substrate')
+acetylglucosamine$abx <- factor(acetylglucosamine$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+glycine <- metabolome[, c(1,which(colnames(metabolome) %in% c('glycine')))]
+colnames(glycine) <- c('abx', 'substrate')
+glycine$abx <- factor(glycine$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+proline <- metabolome[, c(1,which(colnames(metabolome) %in% c('proline')))]
+colnames(proline) <- c('abx', 'substrate')
+proline$abx <- factor(proline$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+mannitolsorbitol <- metabolome[, c(1,which(colnames(metabolome) %in% c('mannitol/sorbitol')))]
+colnames(mannitolsorbitol) <- c('abx', 'substrate')
+mannitolsorbitol$abx <- factor(mannitolsorbitol$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+salicin <- metabolome[, c(1,which(colnames(metabolome) %in% c('salicylate')))]
+salicin$abx <- factor(salicin$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+acetylneuraminate <- metabolome[, c(1,which(colnames(metabolome) %in% c('N-acetylneuraminate')))]
+colnames(acetylneuraminate) <- c('abx', 'substrate')
+acetylneuraminate$abx <- factor(acetylneuraminate$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+galactitol <- metabolome[, c(1,which(colnames(metabolome) %in% c('galactitol_(dulcitol)')))]
+colnames(galactitol) <- c('abx', 'substrate')
+galactitol$abx <- factor(galactitol$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+hydroxyproline <- metabolome[, c(1,which(colnames(metabolome) %in% c('trans-4-hydroxyproline')))]
+colnames(hydroxyproline) <- c('abx', 'substrate')
+hydroxyproline$abx <- factor(hydroxyproline$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+rm(metabolome)
+acetylglucosamine_mock_p <- p.adjust(c(wilcox.test(subset(acetylglucosamine, abx=='none')[,2], subset(acetylglucosamine, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine, abx=='none')[,2], subset(acetylglucosamine, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine, abx=='none')[,2], subset(acetylglucosamine, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylglucosamine, abx=='none')[,2], subset(acetylglucosamine, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+acetylneuraminate_mock_p <- p.adjust(c(wilcox.test(subset(acetylneuraminate, abx=='none')[,2], subset(acetylneuraminate, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylneuraminate, abx=='none')[,2], subset(acetylneuraminate, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylneuraminate, abx=='none')[,2], subset(acetylneuraminate, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(acetylneuraminate, abx=='none')[,2], subset(acetylneuraminate, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+proline_mock_p <- p.adjust(c(wilcox.test(subset(proline, abx=='none')[,2], subset(proline, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline, abx=='none')[,2], subset(proline, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline, abx=='none')[,2], subset(proline, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(proline, abx=='none')[,2], subset(proline, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+glycine_mock_p <- p.adjust(c(wilcox.test(subset(glycine, abx=='none')[,2], subset(glycine, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine, abx=='none')[,2], subset(glycine, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine, abx=='none')[,2], subset(glycine, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(glycine, abx=='none')[,2], subset(glycine, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+hydroxyproline_mock_p <- p.adjust(c(wilcox.test(subset(hydroxyproline, abx=='none')[,2], subset(hydroxyproline, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline, abx=='none')[,2], subset(hydroxyproline, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline, abx=='none')[,2], subset(hydroxyproline, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(hydroxyproline, abx=='none')[,2], subset(hydroxyproline, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+salicin_mock_p <- p.adjust(c(wilcox.test(subset(salicin, abx=='none')[,2], subset(salicin, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(salicin, abx=='none')[,2], subset(salicin, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(salicin, abx=='none')[,2], subset(salicin, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(salicin, abx=='none')[,2], subset(salicin, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+mannitolsorbitol_mock_p <- p.adjust(c(wilcox.test(subset(mannitolsorbitol, abx=='none')[,2], subset(mannitolsorbitol, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(mannitolsorbitol, abx=='none')[,2], subset(mannitolsorbitol, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(mannitolsorbitol, abx=='none')[,2], subset(mannitolsorbitol, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(mannitolsorbitol, abx=='none')[,2], subset(mannitolsorbitol, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+galactitol_mock_p <- p.adjust(c(wilcox.test(subset(galactitol, abx=='none')[,2], subset(galactitol, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(galactitol, abx=='none')[,2], subset(galactitol, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(galactitol, abx=='none')[,2], subset(galactitol, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(galactitol, abx=='none')[,2], subset(galactitol, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+
+```
+
+
+**Metabolomic analysis supports that *C. difficile* consumes metabolites indicated as important by metabolic modeling and implicates proline as a critical component of its nutrient niche across models of infection.**
+
+In order to support conclusions from transcriptional network-based analysis we employed untargeted UPLC to measure the relative *in vivo* concentrations of metabolites in the conditions investigated, with special attention to those highlighted by large importance scores (Metabolon, Durham NC). We first wanted to assess variablility in the datasets generated in this study with replicates to infer levels of consistency in transriptomic sequencing efforts. In summary, extremely low and consistent sample variance was found in across all 16S and metabolomic replicates (Fig. S5). This reassured our conclusions at the various levels of seperate analysis, and by incorporating multiple sets of omics data describing the same system provided even greater confidence in the overall biological trends.
+
+With repect the modeling results, we then 
+Initially N-acetylglucosamine + N-acetylgalactosamine (Fig. S6a) and salicylate (Fig. S6b) were found to be significantly decreased in all susceptible treatment groups compared to resistant controls (*P* < 0.05). Additionally, we found that mannitol + sorbitol (Fig. S6d), and N-acetylneuraminate (Fig. S6e) were significantly increased in both cefoperazone-treated SPF and GF mice (*P* < 0.05). Finally, these assays also revealed that proline (Fig. S6f) was significantly increased in all *C. difficile* susceptible conditions (*P* < 0.05), while glycine (Fig. S6g) was found to also be concordantly increased. These amino acids are required together for *C. difficile* to perform Stickland fermentation. Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
+
+Finally, we looked to see if these metabolites decreased in the presence of *C. difficile*
+
+Fig 6
+
+These results most strongly support proline as the primary carbon source of *C. difficile* during infection (Fig. 6B). In agreement glycine also decreases in each condition following infection, but not all of these relationships are significant (Fig. SA).
+
+
+Additionally, acetate was found to be important in all conditions, but was just below the significance cutoff in GF mice (Table S3). It has been shown that *C. difficile* metabolizes acetate for use in glycolysis [@Karlsson2008]. We directly tested the absolute concentration of acetate in cefoperazone-treated *C. difficile*-infected mice versus mock-infected mice. We found that *C. difficile* colonization led to a significant decrease in the levels of acetate (Fig. S4) suggesting that *C. difficile* was utilizing acetate in the cecum. These findings provided validation for our metabolite importance algorithm as well as supporting known elements of *C. difficile* metabolism. Returning to our hypothesis that *C. difficile* adapts its metabolism to fit the surrounding community, we identified those metabolites that were uniquely important to each condition in which *C. difficile* colonized. 
+
+
+```{r figure_7, echo=F, warning=F, message=F, results='hide', cache=T}
+
+# Metabolomic data
+metabolome <- read.delim('data/wetlab_assays/metabolomics.tsv', sep='\t', header=T)
+annotation <- metabolome[,1:5]
 metabolome$SUPER_PATHWAY <- NULL
 metabolome$SUB_PATHWAY <- NULL
 metabolome$PUBCHEM <- NULL
@@ -341,7 +628,20 @@ metabolome <- metabolome[match(unique(metabolome$KEGG), metabolome$KEGG),]
 rownames(metabolome) <- metabolome$KEGG
 metabolome$KEGG <- NULL
 metabolome$BIOCHEMICAL <- NULL
+annotation <- subset(annotation, KEGG != 'NA')
+annotation <- annotation[match(unique(annotation$KEGG), annotation$KEGG),]
+rownames(annotation) <- annotation$KEGG
+annotation$KEGG <- NULL
+annotation$SUB_PATHWAY <- NULL
+annotation$PUBCHEM <- NULL
+annotation$BIOCHEMICAL <- NULL
+annotation$SUPER_PATHWAY <- gsub('_',' ', annotation$SUPER_PATHWAY)
+
+# Combine with metadata
+metadata <- read.delim('data/metadata.tsv', sep='\t', header=T, row.names=1)
 metabolome <- merge(t(metabolome), metadata, by='row.names')
+rm(metadata)
+rownames(metabolome) <- metabolome$Row.names
 metabolome$Row.names <- NULL
 metabolome <- subset(metabolome, abx != 'none')
 metabolome_630 <- subset(metabolome, infection == '630')
@@ -350,38 +650,140 @@ metabolome_630$mouse <- NULL
 metabolome_630$gender <- NULL
 metabolome_630$type <- NULL
 metabolome_630$infection <- NULL
+metabolome_630 <- aggregate(metabolome_630[, 1:399], list(metabolome_630$abx), median)
+rownames(metabolome_630) <- metabolome_630$Group.1
+metabolome_630$Group.1 <- NULL
+metabolome_630 <- as.data.frame(t(metabolome_630))
+colnames(metabolome_630) <- c('cef_630','clinda_630','gf_630','strep_630')
 metabolome_mock <- subset(metabolome, infection == 'mock')
 metabolome_mock$cage <- NULL
 metabolome_mock$mouse <- NULL
 metabolome_mock$gender <- NULL
 metabolome_mock$type <- NULL
 metabolome_mock$infection <- NULL
+metabolome_mock <- aggregate(metabolome_mock[, 1:399], list(metabolome_mock$abx), median)
+rownames(metabolome_mock) <- metabolome_mock$Group.1
+metabolome_mock$Group.1 <- NULL
+metabolome_mock <- as.data.frame(t(metabolome_mock))
+colnames(metabolome_mock) <- c('cef_mock','clinda_mock','gf_mock','strep_mock')
+metabolome <- metabolome_mock / metabolome_630
+metabolome <- merge(metabolome, annotation, by='row.names')
+rownames(metabolome) <- metabolome$Row.names
+metabolome$Row.names <- NULL
+colnames(metabolome) <- c('cefoperazone_conc', 'clindamycin_conc', 'germfree_conc', 'streptomycin_conc', 'pathway')
+rm(annotation, metabolome_mock, metabolome_630)
+
+# Merge importances to one table
+cef_importances <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/importances.tsv', sep='\t', header=T, row.names=1)
+cef_importances$p_value <- NULL
+clinda_importances <- read.delim('data/metabolic_models/clindamycin_630.bipartite.files/importances.tsv', sep='\t', header=T, row.names=1)
+clinda_importances$p_value <- NULL
+clinda_importances$Compound_name <- NULL
+strep_importances <- read.delim('data/metabolic_models/streptomycin_630.bipartite.files/importances.tsv', sep='\t', header=T, row.names=1)
+strep_importances$p_value <- NULL
+strep_importances$Compound_name <- NULL
+gf_importances <- read.delim('data/metabolic_models/germfree_630.bipartite.files/importances.tsv', sep='\t', header=T, row.names=1)
+gf_importances$p_value <- NULL
+gf_importances$Compound_name <- NULL
+importances <- merge(cef_importances, clinda_importances, by='row.names')
+rownames(importances) <- importances$Row.names
+importances$Row.names <- NULL
+importances <- merge(importances, strep_importances, by='row.names')
+rownames(importances) <- importances$Row.names
+importances$Row.names <- NULL
+importances <- merge(importances, gf_importances, by='row.names')
+rownames(importances) <- importances$Row.names
+importances$Row.names <- NULL
+colnames(importances) <- c('Compound_name', 'cefoperazone_score', 'clindamycin_score', 'streptomycin_score', 'germfree_score')
+importances$Compound_name <- gsub('_',' ', importances$Compound_name)
+rm(cef_importances, clinda_importances, strep_importances, gf_importances)
+
+# Merge metabolome medians and importance values
+combined <- merge(importances, metabolome, by='row.names')
+rownames(combined) <- combined$Row.names
+combined$Row.names <- NULL
+rm(importances, metabolome)
+
+# Separate treatment groups
+cef <- as.data.frame(cbind(combined$cefoperazone_score, combined$cefoperazone_conc, combined$pathway))
+rownames(cef) <- rownames(combined)
+colnames(cef) <- c('score', 'conc', 'pathway')
+cef$name <- combined$Compound_name
+cef$score <- as.numeric(as.vector(cef$score))
+cef$conc <- as.numeric(as.vector(cef$conc))
+cef <- subset(cef, cef[,1] != 0) # remove metabolites with 0 importance
+clinda <- as.data.frame(cbind(combined$clindamycin_score, combined$clindamycin_conc, combined$pathway))
+rownames(clinda) <- rownames(combined)
+colnames(clinda) <- c('score', 'conc', 'pathway')
+clinda$name <- combined$Compound_name
+clinda$score <- as.numeric(as.vector(clinda$score))
+clinda$conc <- as.numeric(as.vector(clinda$conc))
+clinda <- subset(clinda, clinda[,1] != 0) # remove metabolites with 0 importance
+strep <- as.data.frame(cbind(combined$streptomycin_score, combined$streptomycin_conc, combined$pathway))
+rownames(strep) <- rownames(combined)
+colnames(strep) <- c('score', 'conc', 'pathway')
+strep$name <- combined$Compound_name
+strep$score <- as.numeric(as.vector(strep$score))
+strep$conc <- as.numeric(as.vector(strep$conc))
+strep <- subset(strep, strep[,1] != 0) # remove metabolites with 0 importance
+germfree <- as.data.frame(cbind(combined$germfree_score, combined$germfree_conc, combined$pathway))
+rownames(germfree) <- rownames(combined)
+colnames(germfree) <- c('score', 'conc', 'pathway')
+germfree$name <- combined$Compound_name
+germfree$score <- as.numeric(as.vector(germfree$score))
+germfree$conc <- as.numeric(as.vector(germfree$conc))
+germfree <- subset(germfree, germfree[,1] != 0)
+combined <- rbind(cef, clinda, strep, germfree)
+
+# Subset N-acetylglucosamine
+strep_acetylglucosamine <- subset(strep, rownames(strep) %in% c('C00140'))
+cef_acetylglucosamine <- subset(cef, rownames(cef) %in% c('C00140'))
+clinda_acetylglucosamine <- subset(clinda, rownames(clinda) %in% c('C00140'))
+germfree_acetylglucosamine <- subset(germfree, rownames(germfree) %in% c('C00140'))
+combined_acetylglucosamine <- subset(combined, rownames(combined) %in% c('C00140'))
+
+# Fit to general linear models and identify outliers (L1 regression)
+strep_fit <- glm(conc ~ score, data=strep)
+strep$residuals <- residuals(strep_fit)
+strep$residuals <- (strep$residuals / sd(strep$residuals))^2
+strep_outliers <- strep[strep$residuals > 1.5, ]
+cef_fit <- glm(conc ~ score, data=cef)
+cef$residuals <- residuals(cef_fit)
+cef$residuals <- (cef$residuals / sd(cef$residuals))^2
+cef_outliers <- cef[cef$residuals > 1.5, ]
+clinda_fit <- glm(conc ~ score, data=clinda)
+clinda$residuals <- residuals(clinda_fit)
+clinda$residuals <- (clinda$residuals / sd(clinda$residuals))^2
+clinda_outliers <- clinda[clinda$residuals > 1.5, ]
+germfree_fit <- glm(conc ~ score, data=germfree)
+germfree$residuals <- residuals(germfree_fit)
+germfree$residuals <- (germfree$residuals / sd(germfree$residuals))^2
+germfree_outliers <- germfree[germfree$residuals > 1.5, ]
+combined_fit <- glm(conc ~ score, data=combined)
+combined$residuals <- residuals(combined_fit)
+combined$residuals <- (combined$residuals / sd(combined$residuals))^2
+combined_outliers <- combined[combined$residuals > 1.5, ]
+
+# Calculate stats
+corr_test <- as.data.frame(cbind(round(c(strep_fit$coefficients[[2]],
+                                    cef_fit$coefficients[[2]],
+                                    clinda_fit$coefficients[[2]],
+                                    germfree_fit$coefficients[[2]],
+                                    combined_fit$coefficients[[2]]), digits=3),
+                            round(c(cor.test(strep[,1], strep[,2], method='spearman', exact=FALSE)$estimate,
+                                    cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$estimate,
+                                    cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$estimate,
+                                    cor.test(germfree[,1], germfree[,2], method='spearman', exact=FALSE)$estimate,
+                                    cor.test(combined[,1], combined[,2], method='spearman', exact=FALSE)$estimate), digits=3),
+                            round(c(cor.test(strep[,1], strep[,2], method='spearman', exact=FALSE)$p.value,
+                                             cor.test(cef[,1], cef[,2], method='spearman', exact=FALSE)$p.value,
+                                             cor.test(clinda[,1], clinda[,2], method='spearman', exact=FALSE)$p.value,
+                                             cor.test(germfree[,1], germfree[,2], method='spearman', exact=FALSE)$p.value,
+                                             cor.test(combined[,1], combined[,2], method='spearman', exact=FALSE)$p.value), digits=3)))
+rownames(corr_test) <- c('streptomycin','cefoperazone','clindamycin','germfree','combined')
+colnames(corr_test) <- c('m','r', 'p')
 
 ```
-
-```{r figure_S5, echo=F, warning=F, message=F, results='hide', cache=T}
-
-
-
-```
-
-```{r figure_S6, echo=F, warning=F, message=F, results='hide', cache=T}
-
-
-
-```
-
-
-**Mass-spectrometry analysis supports that *C. difficile* consumes metabolites indicated as important by metabolic modeling and supports alternative nutrients niches between models of infection.**
-
-Initially N-acetylglucosamine + N-acetylgalactosamine (Fig. S6a) and salicylate (Fig. S6b) were found to be significantly decreased in all susceptible treatment groups compared to resistant controls (*P* < 0.05). Additionally, we found that mannitol + sorbitol (Fig. S6d), and N-acetylneuraminate (Fig. S6e) were significantly increased in both cefoperazone-treated SPF and GF mice (*P* < 0.05). Finally, these assays also revealed that proline (Fig. S6f) was significantly increased in all *C. difficile* susceptible conditions (*P* < 0.05), while glycine (Fig. S6g) was found to also be concordantly increased. These amino acids are required together for *C. difficile* to perform Stickland fermentation. Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
-
-Fig 6
-
-...glycine also decreases but relationships are not significant
-
-
-Additionally, acetate was found to be important in all conditions, but was just below the significance cutoff in GF mice (Table S3). It has been shown that *C. difficile* metabolizes acetate for use in glycolysis [@Karlsson2008]. We directly tested the absolute concentration of acetate in cefoperazone-treated *C. difficile*-infected mice versus mock-infected mice. We found that *C. difficile* colonization led to a significant decrease in the levels of acetate (Fig. S4) suggesting that *C. difficile* was utilizing acetate in the cecum. These findings provided validation for our metabolite importance algorithm as well as supporting known elements of *C. difficile* metabolism. Returning to our hypothesis that *C. difficile* adapts its metabolism to fit the surrounding community, we identified those metabolites that were uniquely important to each condition in which *C. difficile* colonized. 
 
 
 **Global correlation of all metabolites in combined analysis reveals networking approach is also predicting of additional niche components.**
@@ -395,6 +797,7 @@ Comparison of concentrations of important metabolites alone between *C. difficil
 We compared cecal content from mock *C. difficile*-infected susceptible and resistant mice at the same 18 hour time point as the previous analyses. 
 
 proline > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
+
 
 
 
@@ -421,7 +824,6 @@ In light of these findings, our metabolic network platform may also prove inform
 
 
 
-Extremely low variation is both 16S and metabolomic replicates demonstrated that variability between individuals at all levels is likely very low and provided further evidence that RNA-Seq efforts accurately captured the differential transcriptional profile of *C. difficile* in each condition tested (Fig. S7).
 
 
 add also about how models are valuable for looking at entire community, setting up next paper
@@ -458,7 +860,7 @@ add also about how models are valuable for looking at entire community, setting 
 
 **Quantification of *in vivo* metabolite relative concentrations.** Metabolomic analysis performed by Metabolon (Durham, NC), a brief description of their methods is as follows. All methods utilized a Waters ACQUITY ultra-performance liquid chromatography (UPLC) and a Thermo Scientific Q-Exactive high resolution/accurate mass spectrometer interfaced with a heated electrospray ionization (HESI-II) source and Orbitrap mass analyzer at 35,000 mass resolution. Samples were dried then reconstituted in solvents compatible to each of the four methods. The first, in acidic positive conditions using a C18 column (Waters UPLC BEH C18-2.1x100 mm, 1.7 µm) using water and methanol, containing 0.05% perfluoropentanoic acid (PFPA) and 0.1% formic acid (FA). The second method was identical to the first but was chromatographically optimized for more hydrophobic compounds. The third approach utilized a basic negative ion optimized conditions using a separate dedicated C18 column. Basic extracts were gradient eluted from the column using methanol and water, however with 6.5mM Ammonium Bicarbonate at pH 8. Finally, samples were analyzed via negative ionization following elution from a hydrophilic interaction chromatography column (Waters UPLC BEH Amide 2.1x150 mm, 1.7 µm) using a gradient consisting of water and acetonitrile with 10mM Ammonium Formate, pH 10.8. The MS analysis alternated between MS and data-dependent MS n scans using dynamic exclusion. The scan range varied slighted between methods but covered 70-1000 m/z. Library matches for each compound were checked for each sample and corrected if necessary. Peaks were quantified using area under the curve.
 
-**Statistical methods.** All statistical analyses were performed using R (v.3.2.0). Significant differences between community structure of treatment groups from 16S rRNA gene sequencing were determined with AMOVA in the mothur software package. Significant differences of Inv. Simpson diversity, CFU, toxin titer, and acetate concentration were determined by Wilcoxon rank-abundance test with Benjamini-Hochberg correction. Significant differences for growth curves compared to no carbohydrate control (+ amino acids) were calculated using 2-way ANOVA with Benjamini-Hochberg correction. Significance for metabolite importance scores was determined as described above. Wilcoxon rank-abundance test with Benjamini-Hochberg correction was also used to calculate significant differences is relative metabolite concentrations from mass-spectrometry data.
+**Statistical methods.** All statistical analyses were performed using R (v.3.2.0). Significant differences between community structure of treatment groups from 16S rRNA gene sequencing were determined with AMOVA in the mothur software package. Significant differences of Inv. Simpson diversity, CFU, toxin titer, and metabolite concentrations were determined by Wilcoxon rank-abundance test with Benjamini-Hochberg correction. Significant differences for growth curves compared to no carbohydrate control (+ amino acids) were calculated using 2-way ANOVA with Benjamini-Hochberg correction. Significance for metabolite importance scores was determined as described above.
 
 
 ###Funding Information
@@ -500,7 +902,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Supplementary Figure 6 | Change in *in vivo* concentrations following *C. difficile* infection of select metabolites indicated as important by metabolic modeling algorithm.** Comparison of relative concentrations of select metabolites from untargeted UPLC analysis of *C. difficile* vs mock-infected mouse cecal content. **(A)** N−acetylglucosamine / N−acetylgalactosamine, **(B)** Proline, Components of Salicin: **(C)** Salicylate and **(D)** Glucose, **(E)** Mannitol / Sorbitol, and **(F)** N−acetylneuraminate. N−acetylglucosamine + N−acetylgalactosamine and Mannitol + Sorbitol were measured in pairs as they only differ by chirality and cannot be differentiated through peaked-based analysis. Although only one relationship for glicyine was found to be significant, its concentration does decrease in all *C. difficile* infected conditions compared to mock-infection. Salicin was not a member of the untargeted panel employed in this study however the component molecules, Salicylate and Glucose. Significant differences (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon signed-rank test with Benjamini-Hochberg correction when appropriate.
 
-**Figure 7 | Correlation of change in metabolite concentration following *C. difficile* colonization and importance scores derived from transcript-informed metabolic modeling.** Spearman correlations for combined metabolome and metabolic model output in each condition with least squared-residuals analysis to identify outlier metabolites. \( \Delta \) median scaled intensity was calculated by dividing the median log10-scaled intensity of each metabolite from GS-MS in mock-infected mice by its corresponding intensity in *C. difficile*-infected mice (n = 9 per group). Larger values represent metabolites which decrease in concentration upon infection. These values are shown here relative to their calculated importance score in each condition separately using the algortihm outlined in Fig. 4B. **(A)** Results from all treatment groups pooled for single analysis (*P* < 0.05). Importance scores were first paired with their matching \( \Delta \) median scaled intensity within each treatment group prior to combining datasets. Outliers are labelled by their KEGG metabolite family annotation and were defined as those points with a \( \Delta \) median scaled intensity squared residual >1.5. Correlations and outliers were recalculated for each component condition as follows: **(B)** Streptomycin pretreatment, **(C)** Cefoperazone pretreatment, **(D)** Clindamycin pretreatment (*P* < 0.05), **(E)** and Gnotobiotic mice (*P* < 0.05). Unless shown as an outlier, the point for N-acetyl-D-glucosamine is shown in each panel as an open circle.
+**Figure 7 | Correlation of change in metabolite concentration following *C. difficile* colonization and importance scores derived from transcript-informed metabolic modeling.** Spearman correlations for combined metabolome and metabolic model output in each condition with least squared-residuals analysis to identify outlier metabolites. \( \Delta \) median scaled intensity was calculated by dividing the median log10-scaled intensity of each metabolite from GS-MS in mock-infected mice by its corresponding intensity in *C. difficile*-infected mice (n = 9 per group). Larger values represent metabolites which decrease in concentration upon infection. These values are shown here relative to their calculated importance score in each condition separately using the algortihm outlined in Fig. 4B. **(A)** Results from all treatment groups pooled for single analysis (*P* < 0.05). Importance scores were first paired with their matching \( \Delta \) median scaled intensity within each treatment group prior to combining datasets. Outliers are labelled by their KEGG metabolite family annotation and were defined as those points with a \( \Delta \) median scaled intensity squared residual >1.5. Correlations and outliers were recalculated for each component condition as follows: **(B)** Streptomycin pretreatment, **(C)** Cefoperazone pretreatment, **(D)** Clindamycin pretreatment (*P* < 0.05), **(E)** and Gnotobiotic mice (*P* < 0.05).
 
 
 **Supplementary Figure 1 | Experimental time lines for mouse model pretreatments and *C. difficile* infection.** 9 wild-type C57BL/6 mice across 3 cages were included in each treatment group. **(A)** Streptomycin or **(B)** cefoperazone administered *ad libitum* in drinking water for 5 days with 2 days recovery with untreated drinking water before infection, **(C)** a single clindamycin intraperitoneal injection one day prior to infection, or **(D)** no antibiotic pretreatment (for both SPF control and GF mice). If no antibiotics were administered in the drinking water, mice were given untreated drinking water for the duration of the experiment beginning 7 days prior to infection. At the time of infection, mice were challenged with 1×10^3^ *C. difficile* str. 630 spores at the time of infection. Sacrifice and necropsy was done 18 hours post-challenge and cecal content was then collected.
@@ -511,11 +913,12 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Supplementary Figure 4 | Additional explanation for Figure 4 interpretation.** Relative abundance of transcription for *C. difficile* 630 genes during infection across the 3 antibiotic pretreatment models used during this study. Points that are located closer to a corner are more highly transcribed in the condition associated with that corner compared to the others. As this shows a 3-dimensional data set in 2 dimensions, there is an amount of distortion proximal to each corner. Simply put for points that are nearer to an edge, a greater percentage of their total transcription was contributed by *C. difficile* colonizing those mice. **(A)** This point represents the transcription for a gene that is overrepresented in cefoperazone-treated mice. **(B)** This point represents a gene in which transcripts are equally detectable in all 3 conditions. **(C)** Transcripts for this gene are only underrepresented in only cefoperazone-treated mice, and are equally detectable in clindamycin and streptomycin-treated animals.
 
-**Supplementary Figure 5 | Change in *in vivo* concentrations following *C. difficile* infection of select metabolites indicated as important by metabolic modeling algorithm.** Comparison of relative concentrations of select metabolites from untargeted UPLC analysis of *C. difficile* vs mock-infected mouse cecal content. **(A)** Glycine and **(B)** Acetate. Absolute concentrations for acetate were measured in a separate analysis using GC-MS. Significant differences (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon signed-rank test with Benjamini-Hochberg correction when appropriate.
+**Supplementary Figure 5 | Within-group median sample variance for community-level data with replication.** Shown are the median and interquartile range of the sample variance for all fields in each experimental group. This was done in order to demonstrate consistant measurements in multiple levels of data, and further support our approach to pooled transcriptomic sequncing. **(A)** OTU abundances from 16S rRNA gene sequencing, sample variances for each OTU were calculated individually prior to sumary statistic calculations. **(B)** Scaled intensities from untargeted metabolomic analysis, sample variances for each metabolite were calculated individually prior to sumary statistic calculations. In both groups of calculations all median sample variances are >1, indicating extremely low levels of variability between samples of the same type.
 
-**Supplementary Figure 6 | Relative *in vivo* concentrations of metabolites highlighted through network-based analysis in uninfected mice** Select metabolite concentrations using normalized untargeted UPLC-MS quantification from cecal content of *C. difficile* susceptible mice compared to resistant controls. Samples were collected at the same 18 hour timepoint as the analyses performed in infection experiments (n = 9 mice per group). Highlighted carbohydrates indlude: **(A)** N−Acetylglucosamine + N−Acetylgalactosamine, **(B)** N−Acetylneuraminate, **(C)** Proline, **(D)** Glycine, **(E)** Salicylate, **(F)** Glucose, and **(G)** Mannitol + Sorbitol. Paired metabolites were quantified simultaneously as the only differ by chirality making differentiation impossible. Significant differences between experimental, susceptible groups and resistant SPF mice (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon rank-abundance test with Holm-Bonferroni correction. 
+**Supplementary Figure 6 | Relative *in vivo* concentrations of metabolites highlighted through network-based analysis in uninfected mice** Select metabolite concentrations using normalized untargeted UPLC-MS quantification from cecal content of *C. difficile* susceptible mice compared to resistant controls. Samples were collected at the same 18 hour timepoint as the analyses performed in infection experiments (n = 9 mice per group). Highlighted carbohydrates indlude: **(A)** N−Acetylglucosamine + N−Acetylgalactosamine, **(B)** N−Acetylneuraminate, **(C)** Proline, **(D)** Glycine, **(E)** Salicylate, **(F)** Mannitol + Sorbitol, and **(G)** Galactitol. Paired metabolites were quantified simultaneously as the only differ by chirality making differentiation impossible. Significant differences between experimental, susceptible groups and resistant SPF mice (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon rank-abundance test with Holm-Bonferroni correction.
 
-**Supplementary Figure 7 | Within-group median sample variance for community-level data with replication.** Shown are the median and interquartile range of the sample variance for all fields in each experimental group. This was done in order to demonstrate consistant measurements in multiple levels of data, and further support our approach to pooled transcriptomic sequncing. **(A)** OTU abundances from 16S rRNA gene sequencing, sample variances for each OTU were calculated individually prior to sumary statistic calculations. **(B)** Scaled intensities from untargeted metabolomic analysis, sample variances for each metabolite were calculated individually prior to sumary statistic calculations. In both groups of calculations all median sample variances are >1, indicating extremely low levels of variability between samples of the same type.
+**Supplementary Figure 7 | Change in *in vivo* concentrations following *C. difficile* infection of select metabolites indicated as important by metabolic modeling algorithm.** Comparison of relative concentrations of select metabolites from untargeted UPLC analysis of *C. difficile* vs mock-infected mouse cecal content. **(A)** Glycine and **(B)** Acetate. Relative concentrations of glycine were quantified as in Figure 6 with untargeted UPLC analysis. Absolute concentrations for acetate were measured in a separate analysis using GC-MS. Significant differences (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon signed-rank test with Benjamini-Hochberg correction when appropriate.
+
 
 **Supplementary Table 1 | Sets of genes included in Figure 4 with normalized abundances and citations.**
 

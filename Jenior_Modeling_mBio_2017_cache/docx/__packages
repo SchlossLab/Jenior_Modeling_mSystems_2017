@@ -10,3 +10,4 @@ matrixStats
 caTools
 flux
 knitr
+plyr
