@@ -777,19 +777,17 @@ colnames(corr_test) <- c('m','r', 'p')
 ```
 
 
-**Integrated multi-omic analysis reveals high predictive value for networking approach in identifying additional novel patterns of metabolism.**
-Moving beyond specific metabolite analysis, we wanted to determine how well metabolite importance scores related to the relative concentration of all metabolites in a given environment. To most effectively combine metabolite importance scores with the affiliated concentration data, we decided to calculate the median change in relative concentration for each metabolite measured between corresponding mock and *C. difficile*-infected conditions. This was accomplished by dividing 
-to yield Delta...
+**Integrated multi-omic analysis reveals strong predictive value for networking approach in identifying additional novel patterns of metabolism.**
+Moving beyond specific metabolite analysis, we wanted to determine how well metabolite importance scores related to the relative concentration of all metabolites in a given environment. To most effectively combine metabolite importance scores with the affiliated concentration data, we decided to calculate the median change in relative concentration for each metabolite measured between corresponding mock and *C. difficile*-infected conditions. This was accomplished by dividing the median log10-scaled intensity of each metabolite in mock-infected mice by its corresponding intensity in *C. difficile*-infected mice to give the \( \Delta \) median scaled intensity for each metabolite. In this way, larger values indicated those metabolites that decrease in concentration when *C. diffile* colonizes. Additionally this resulted in a single value we could combine with importance scores for each metabolite and perform a linear correlation analysis. Positive correlations would therefore indicate that the metabolites predicted to be consumed by *C. difficile* through transcipt-informed metabolic networks have a concomitant decrease in the metabolome. This relationship would also imply that those metabolites with negative importance scores and increasedd concentration in infected animals are being produced by *C. difficile*. 
 
-In this way, larger values indicated those metabolites more likely consumed by *C. diffile* with higher concentrations in mock-infected animals.
+We applied this approach first to a pooled analysis of all groups in order to maximize our ability to validate the predictive capacity of the modeling algorithm (Fig. 7A). Excitingly, this indeed revealed a significant positive correlation (*P* < 0.01) and supported our method for identifying metabolites that are most likely to be consumed by *C. difficile* based on transcriptional activity. Furthermore, this technique also allowed us to analyze outliers from the generalized linear model to assess if they are explained by other known patterns of *C. difficile* biology. In this instance, 16 outlier metabolites were present and fell into only 3 separate KEGG annotation categories; amino acids, carbohydrates, and nucleotides. Interestingly, 12 of these points were 
 
-This ultimately provided 2 dataset, linear correlation...
 
-all groups together (Fig. 7A)
-streptomycin-pretreatment (Fig. 7B)
-cefoperazone-pretreatment (Fig. 7C)
-clindamycin-pretreatment (Fig. 7D)
-gnotobiotic (Fig. 7E)
+We then directed the analysis toward each individual infection condition tested. In streptomycin-pretreatment (Fig. 7B) and cefoperazone-pretreatment (Fig. 7C) the correlations did not achieve significance, but remained positive. However, analysis of outliers revealed that 
+
+Conversely, both clindamycin-pretreatment (Fig. 7D) gnotobiotic mice (Fig. 7E) demonstrated a significant correlation between importance scores and \( \Delta \) median scaled intensity (*P* < 0.01). Clindamycin-pretreatment had the greast number of outliers of any single group. 
+
+Proline was ... further supporting it as a...
 
 Together metabolomic results further supported network-derived importance scores and our hypothesis that *C. difficile* adapts its metabolic strategy in distinct susceptible environments.
 
@@ -816,6 +814,7 @@ Supported by untargeted metabolomic analysis...
 
 In light of these findings, our metabolic network platform may also prove informative for generating hypotheses through reverse ecology that could ultimately lead to uncovering new interaction between species that ultimately impact host health [@Levy2012]. In conclusion, *C. difficile* is is able to optimize its nutritional strategy for each colonized gut environment. Our results implicate that further considerations are needed when attempting to design targeted prebiotic and probiotic therapies for the prevention or elimination of *C. difficile* from the human gut.
 
+Combining genomics, transcriptomics, and metabolomics...
 
 
 proline > acetylglucosamine > acetylneuraminate or salicin > mannitol > sorbitol
@@ -897,7 +896,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Supplementary Figure 6 | Change in *in vivo* concentrations following *C. difficile* infection of select metabolites indicated as important by metabolic modeling algorithm.** Comparison of relative concentrations of select metabolites from untargeted UPLC analysis of *C. difficile* vs mock-infected mouse cecal content. **(A)** N−acetylglucosamine / N−acetylgalactosamine, **(B)** Proline, Components of Salicin: **(C)** Salicylate and **(D)** Glucose, **(E)** Mannitol / Sorbitol, and **(F)** N−acetylneuraminate. N−acetylglucosamine + N−acetylgalactosamine and Mannitol + Sorbitol were measured in pairs as they only differ by chirality and cannot be differentiated through peaked-based analysis. Although only one relationship for glicyine was found to be significant, its concentration does decrease in all *C. difficile* infected conditions compared to mock-infection. Salicin was not a member of the untargeted panel employed in this study however the component molecules, Salicylate and Glucose. Significant differences (*P* < 0.05) are denoted by a single asterisk (\*) and were determined using Wilcoxon signed-rank test with Benjamini-Hochberg correction when appropriate.
 
-**Figure 7 | Correlation of change in metabolite concentration following *C. difficile* colonization and importance scores derived from transcript-informed metabolic modeling.** Spearman correlations for combined metabolome and metabolic model output in each condition with outlier metabolites identified through squared-residual analysis. \( \Delta \) median scaled intensity was calculated by dividing the median log10-scaled intensity of each metabolite from GS-MS in mock-infected mice by its corresponding intensity in *C. difficile*-infected mice (n = 9 per group). Larger values represent metabolites which decrease in concentration upon infection. These values are shown here relative to their calculated importance score in each condition separately using the algortihm outlined in Fig. 4B. **(A)** Results from all treatment groups pooled for single analysis (*P* < 0.05). Importance scores were first paired with their matching \( \Delta \) median scaled intensity within each treatment group prior to combining datasets. Outliers are labelled by their KEGG metabolite family annotation and were defined as those points with a \( \Delta \) median scaled intensity squared residual >1.5. Correlations and outliers were recalculated for each component condition as follows: **(B)** Streptomycin pretreatment, **(C)** Cefoperazone pretreatment, **(D)** Clindamycin pretreatment (*P* < 0.05), **(E)** and Gnotobiotic mice (*P* < 0.05).
+**Figure 7 | Correlation of change in metabolite concentration following *C. difficile* colonization and importance scores derived from transcript-informed metabolic modeling.** Spearman correlations for combined metabolome and metabolic model output in each condition with outlier metabolites identified through squared-residual analysis. \( \Delta \) median scaled intensity was calculated by dividing the median log10-scaled intensity of each metabolite from GS-MS in mock-infected mice by its corresponding intensity in *C. difficile*-infected mice (n = 9 per group). Larger values represent metabolites which decrease in concentration upon infection. These values are shown here relative to their calculated importance score in each condition separately using the algortihm outlined in Fig. 4B. **(A)** Results from all treatment groups pooled for single analysis (*P* < 0.05). Importance scores were first paired with their matching \( \Delta \) median scaled intensity within each treatment group prior to combining datasets. Outliers are labelled by their KEGG metabolite family annotation and were defined as those points with a \( \Delta \) median scaled intensity squared residual >1.5 with the cutoff area labeled in gray. Correlations and outliers were recalculated for each component condition as follows: **(B)** Streptomycin pretreatment, **(C)** Cefoperazone pretreatment, **(D)** Clindamycin pretreatment (*P* < 0.05), **(E)** and Gnotobiotic mice (*P* < 0.05).
 
 
 **Supplementary Figure 1 | Experimental time lines for mouse model pretreatments and *C. difficile* infection.** 9 wild-type C57BL/6 mice across 3 cages were included in each treatment group. **(A)** Streptomycin or **(B)** cefoperazone administered *ad libitum* in drinking water for 5 days with 2 days recovery with untreated drinking water before infection, **(C)** a single clindamycin intraperitoneal injection one day prior to infection, or **(D)** no antibiotic pretreatment (for both SPF control and GF mice). If no antibiotics were administered in the drinking water, mice were given untreated drinking water for the duration of the experiment beginning 7 days prior to infection. At the time of infection, mice were challenged with 1×10^3^ *C. difficile* str. 630 spores at the time of infection. Sacrifice and necropsy was done 18 hours post-challenge and cecal content was then collected.
@@ -923,5 +922,6 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 **Supplementary Table 4 | Growth curve analysis for each tested carbon source.**
 
+**Supplementary Table 5 | Outliers from generalized linear models of combined metabolome and metabolic network output analysis.**
 
 ### References
