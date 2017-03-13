@@ -1,4 +1,8 @@
 
+# Start with clean environment
+rm(list=ls())
+gc()
+
 # Load dependencies
 deps <- c('shape', 'wesanderson', 'plotrix');
 for (dep in deps){
@@ -14,9 +18,7 @@ toxin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_as
 
 # Read in data
 cfu <- read.delim(cfu_file, sep='\t', header=T)
-cfu_raw <- cfu
 toxin <- read.delim(toxin_file, sep='\t', header=T)
-toxin_raw <- toxin
 rm(cfu_file, toxin_file)
 
 # Format CFU data and collect summary statistics
@@ -31,80 +33,108 @@ vegetative_cfu <- cfu
 vegetative_cfu$cfu_spore <- NULL
 spore_cfu <- cfu
 spore_cfu$cfu_vegetative <- NULL
+cfu_veg_calc <- vegetative_cfu
+cfu_spore_calc <- spore_cfu
 cef <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'cefoperazone', 2]))
 strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomycin', 2]))
 clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
 vege_medians <- c(strep, cef, clinda, gf, conv)
-vege_medians[vege_medians == 2.0] <- 1.6
 cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
 strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
 clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
 spore_medians <- c(strep, cef, clinda, gf, conv)
-spore_medians[spore_medians == 2.0] <- 1.6
 rm(cfu, cef, strep, clinda, gf, conv)
 vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
-vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative == 2.0] <- 1.6
-spore_cfu$cfu_spore[spore_cfu$cfu_spore == 2.0] <- 1.6
 
 # Format toxin data and find summary statistics
 toxin$mouse <- NULL
 toxin$cage <- NULL
 toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
+toxin$titer[toxin$titer <= 2.3] <- 2.3
+toxin_calc <- toxin
 cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
 strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
 clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
 toxin_medians <- c(strep, cef, clinda, gf, conv)
-toxin_medians[toxin_medians <= 2.0] <- 2.0
-toxin$titer[toxin$titer <= 2.0] <- 2.0
 rm(cef, strep, clinda, gf, conv)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Calculate significant differences
 
-cefoperazone <- subset(toxin_raw, treatment == 'Cefoperazone')$titer
-clindamycin <- subset(toxin_raw, treatment == 'Clindamycin')$titer
-streptomycin <- subset(toxin_raw, treatment == 'Streptomycin')$titer
-germfree <- subset(toxin_raw, treatment == 'Germfree')$titer
+# Vegetative CFU
+cefoperazone <- subset(cfu_veg_calc, treatment == 'cefoperazone')$cfu_vegetative
+clindamycin <- subset(cfu_veg_calc, treatment == 'clindamycin')$cfu_vegetative
+streptomycin <- subset(cfu_veg_calc, treatment == 'streptomycin')$cfu_vegetative
+germfree <- subset(cfu_veg_calc, treatment == 'germfree')$cfu_vegetative
+p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
+           wilcox.test(germfree, clindamycin, exact=F)$p.value,
+           wilcox.test(germfree, streptomycin, exact=F)$p.value,
+           wilcox.test(clindamycin, cefoperazone, exact=F)$p.value,
+           wilcox.test(streptomycin, cefoperazone, exact=F)$p.value,
+           wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
+cat("Vegetative: Germfree vs Cefoperazone: p =", p_values[1],'\n',
+    "Vegetative: Germfree vs Clindamycin: p =", p_values[2],'\n',
+    "Vegetative: Germfree vs Streptomycin: p =", p_values[3],'\n',
+    "Vegetative: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
+    "Vegetative: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
+    "Vegetative: Clindamycin vs Streptomycin: p =", p_values[6])
 
-gf_vs_cef_tox_p <- wilcox.test(germfree, cefoperazone, exact=F)$p.value
-gf_vs_clinda_tox_p <- wilcox.test(germfree, clindamycin, exact=F)$p.value
-gf_vs_strep_tox_p <- wilcox.test(germfree, streptomycin, exact=F)$p.value
-cef_vs_clinda_tox_p <- wilcox.test(cefoperazone, clindamycin, exact=F)$p.value
-cef_vs_strep_tox_p <- wilcox.test(cefoperazone, streptomycin, exact=F)$p.value
-clinda_vs_strep_tox_p <- wilcox.test(clindamycin, streptomycin, exact=F)$p.value
+# Spore CFU
+cefoperazone <- subset(cfu_spore_calc, treatment == 'cefoperazone')$cfu_spore
+clindamycin <- subset(cfu_spore_calc, treatment == 'clindamycin')$cfu_spore
+streptomycin <- subset(cfu_spore_calc, treatment == 'streptomycin')$cfu_spore
+germfree <- subset(cfu_spore_calc, treatment == 'germfree')$cfu_spore
+p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
+           wilcox.test(germfree, clindamycin, exact=F)$p.value,
+           wilcox.test(germfree, streptomycin, exact=F)$p.value,
+           wilcox.test(clindamycin, cefoperazone, exact=F)$p.value,
+           wilcox.test(streptomycin, cefoperazone, exact=F)$p.value,
+           wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
+cat("Spores: Germfree vs Cefoperazone: p =", p_values[1],'\n',
+    "Spores: Germfree vs Clindamycin: p =", p_values[2],'\n',
+    "Spores: Germfree vs Streptomycin: p =", p_values[3],'\n',
+    "Spores: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
+    "Spores: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
+    "Spores: Clindamycin vs Streptomycin: p =", p_values[6])
 
-#p_values <- c(,,,,,,,)
-#p_values <- p.adjust(p_values, method='holm')
+# Toxin titer
+cefoperazone <- subset(toxin_calc, treatment == 'Cefoperazone')$titer
+clindamycin <- subset(toxin_calc, treatment == 'Clindamycin')$titer
+streptomycin <- subset(toxin_calc, treatment == 'Streptomycin')$titer
+germfree <- subset(toxin_calc, treatment == 'Germfree')$titer
+p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
+           wilcox.test(germfree, clindamycin, exact=F)$p.value,
+           wilcox.test(germfree, streptomycin, exact=F)$p.value,
+           wilcox.test(cefoperazone, clindamycin, exact=F)$p.value,
+           wilcox.test(cefoperazone, streptomycin, exact=F)$p.value,
+           wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
+cat("Toxin: Germfree vs Cefoperazone: p =", p_values[1],'\n',
+    "Toxin: Germfree vs Clindamycin: p =", p_values[2],'\n',
+    "Toxin: Germfree vs Streptomycin: p =", p_values[3],'\n',
+    "Toxin: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
+    "Toxin: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
+    "Toxin: Clindamycin vs Streptomycin: p =", p_values[6])
 
-cefoperazone <- subset(cfu_raw, treatment == 'cefoperazone')$cfu_spore
-clindamycin <- subset(cfu_raw, treatment == 'clindamycin')$cfu_spore
-streptomycin <- subset(cfu_raw, treatment == 'streptomycin')$cfu_spore
-germfree <- subset(cfu_raw, treatment == 'germfree')$cfu_spore
-
-wilcox.test(germfree, cefoperazone, exact=F) # p-value = 3.807e-05, corrected = 0.00019035, ***
-wilcox.test(germfree, clindamycin, exact=F) # p-value = 3.09e-05, corrected = 0.0001854, ***
-wilcox.test(germfree, streptomycin, exact=F) # p-value = 4.304e-05, corrected = 0.00019035, ***
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
-wilcox.test(streptomycin, cefoperazone, exact=F) # p-value = 0.4618, corrected = 0.9927, n.s.
-wilcox.test(clindamycin, cefoperazone, exact=F) # p-value = 0.3309, corrected = 0.9927, n.s.
 rm(germfree, cefoperazone, clindamycin, streptomycin)
 
-p_values <- c(3.807e-05,3.09e-05,4.304e-05,0.3309,0.4618,0.3309)
-p_values <- p.adjust(p_values, method='holm')
+# Change undetectable points for plotting clarity
+vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative <= 2.0] <- 1.6
+spore_cfu$cfu_spore[spore_cfu$cfu_spore <= 2.0] <- 1.6
+toxin$titer[toxin$titer <= 2.3] <- 2.15
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
 select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
-pdf(file=plot_file, width=5.5, height=9)
+pdf(file=plot_file, width=5, height=10)
 layout(matrix(c(1,
                 2,
                 3), 
@@ -120,7 +150,7 @@ stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd
 labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 abline(h=2, col="black", lty=2, lwd=1.5) # LOD
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.5,
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=19, lwd=2.5,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
            ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
@@ -134,7 +164,10 @@ segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
 segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
 segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 
-mtext('A', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
+# Adding significance to plot
+text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
+
+mtext('A', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -145,7 +178,7 @@ stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.2,
            ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
 abline(h=2, col="black", lty=2, lwd=1.5)
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.5, 
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=19, lwd=2.5, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
            ylab='Spore CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
 
@@ -162,30 +195,30 @@ segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
 # Adding significance to plot
 segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
+text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
-mtext('B', side=2, line=2, las=2, adj=1.7, padj=-10.5, cex=1.1)
+mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Toxin data
 par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
+           ylim=c(1.9,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=0)
 abline(h=2.3, lty=2, lwd=1.5) # LOD
-stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.5,
-           ylim=c(1.5,3.5), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
+stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
+           ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=2, add=TRUE)
 mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.77)
 mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
 mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
-
-axis(side=2, at=c(1.5,2.0,2.5,3.0,3.5), labels=c('0','2.0','2.5','3.0','3.5'))
+axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8'))
 
 # Draw axis break
-axis.break(2, 1.75, style='slash') 
+axis.break(side=2, 2.1, style='slash') 
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
@@ -197,9 +230,10 @@ segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
 # Adding significance to plot
 segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
 text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
+text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
 # Plot label
-mtext('C', side=2, line=2, las=2, adj=1.6, padj=-9, cex=1.1)
+mtext('C', side=2, line=2, las=2, adj=1.5, padj=-7, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
