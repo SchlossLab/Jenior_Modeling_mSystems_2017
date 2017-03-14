@@ -52,7 +52,7 @@ Overview
     |  |- figures/     # Manuscript figures (main body)
     |  +- supplement/  # Supplementary data presentation
     |      |- figures/     # Supplementary figures
-    |      +- tables/      # Text and excel versions of supplementary tables
+    |      +- tables/      # Excel versions of supplementary tables
 
 
 #### Running the analysis
