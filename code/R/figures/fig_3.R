@@ -1,4 +1,8 @@
 
+# Start with clean environment
+rm(list=ls())
+gc()
+
 # Load dependencies
 deps <- c('vegan', 'klaR', 'wesanderson', 'scatterplot3d', 'scales');
 for (dep in deps){
@@ -290,9 +294,9 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
 # Axis labels
-text(x=-0.35, y=-0.43, labels='Cefoperazone (SPF)', cex=1.4, col=wes_palette("FantasticFox")[3])
-text(x=-0.22, y=0.49, labels='Clindamycin (SPF)', cex=1.4, srt=60, col=wes_palette("FantasticFox")[5])
-text(x=0.56, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60, col=wes_palette("FantasticFox")[1])
+text(x=-0.35, y=-0.43, labels='Cefoperazone (SPF)', cex=1.4, col=wes_palette("FantasticFox")[3], font=2)
+text(x=-0.22, y=0.49, labels='Clindamycin (SPF)', cex=1.4, srt=60, col=wes_palette("FantasticFox")[5], font=2)
+text(x=0.56, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60, col=wes_palette("FantasticFox")[1], font=2)
 
 # Left axis - Clindmycin
 lines(x=c(-0.52,-0.54), y=c(-0.233,-0.22))
@@ -502,15 +506,9 @@ text(x=0, y=-0.48, labels='Fermentation product synthesis', cex=1.3)
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Clean up
-dev.off()
-rm(amino_sugars, stickland, monosaccharides, polysaccharides, ABC, PTS, sugar_alcohols, fermentation, 
-   ABC_relabund, amino_sugars_relabund, combined_mapping, fermentation_relabund, monosaccharides_relabund, 
-   polysaccharides_relabund, PTS_relabund, stickland_relabund, sugar_alcohols_relabund, plot_file, 
-   rainbow, tick_labels, fox)
-
 for (dep in deps){
   pkg <- paste('package:', dep, sep='')
   detach(pkg, character.only = TRUE)
 }
-rm(dep, deps, pkg)
+rm(list=ls())
 gc()
