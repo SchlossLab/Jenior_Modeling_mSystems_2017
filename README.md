@@ -55,9 +55,6 @@ Overview
     |  +- supplement/  # Supplementary data presentation
     |      |- figures/     # Supplementary figures
     |      +- tables/      # Text and excel versions of supplementary tables
-    |
-    |- Jenior_Modeling_mBio_2017_cache/
-    |  +- docx/  # files created during knitting of final docx from Rmd
 
 
 #### Running the analysis
