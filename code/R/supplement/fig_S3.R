@@ -1,258 +1,192 @@
 
+# Clear environment
+rm(list=ls())
+gc()
+
+# Load dependencies
 deps <- c('wesanderson','vegan');
 for (dep in deps){
-  if (dep %in% installed.packages()[,"Package"] == FALSE){
+  if (dep %in% installed.packages()[,'Package'] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
   }
   library(dep, verbose=FALSE, character.only=TRUE)
 }
-rm(dep, deps)
+set.seed(42)
 
 #--------------------------------------------------------------------------------------------------------------#
 
 # Define variables
-cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/cefoperazone_630.RNA_reads2cdf630.norm.annotated.txt'
-clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/clindamycin_630.RNA_reads2cdf630.norm.annotated.txt'
-streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/streptomycin_630.RNA_reads2cdf630.norm.annotated.txt'
-germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/all_genes/germfree.RNA_reads2cdf630.norm.annotated.txt'
+cefoperazone_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/cefoperazone_630.RNA_reads2select.all.norm.tsv'
+clindamycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/clindamycin_630.RNA_reads2select.all.norm.tsv'
+streptomycin_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/streptomycin_630.RNA_reads2select.all.norm.tsv'
+germfree_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/select_genes/germfree.RNA_reads2select.all.norm.tsv'
 
 # Open files
-cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE, row.names=1)
-colnames(cefoperazone) <- c('Cefoperazone', 'ko', 'gene', 'pathway')
-clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE, row.names=1)
-colnames(clindamycin) <- c('Clindamycin', 'ko', 'gene', 'pathway')
-streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE, row.names=1)
-colnames(streptomycin) <- c('Streptomycin', 'ko', 'gene', 'pathway')
-germfree <- read.delim(germfree_file, sep='\t', header=FALSE, row.names=1)
-colnames(germfree) <- c('Germfree', 'ko', 'gene', 'pathway')
+cefoperazone <- read.delim(cefoperazone_file, sep='\t', header=FALSE)
+colnames(cefoperazone) <- c('gene', 'Cefoperazone')
+clindamycin <- read.delim(clindamycin_file, sep='\t', header=FALSE)
+colnames(clindamycin) <- c('gene', 'Clindamycin')
+streptomycin <- read.delim(streptomycin_file, sep='\t', header=FALSE)
+colnames(streptomycin) <- c('gene', 'Streptomycin')
+germfree <- read.delim(germfree_file, sep='\t', header=FALSE)
+colnames(germfree) <- c('gene', 'Germfree')
 
 # Clean up
 rm(cefoperazone_file, clindamycin_file, streptomycin_file, germfree_file)
 
-#--------------------------------------------------------------------------------------------------------------#
-
-# Format data for merging
-cefoperazone$ko <- NULL
-cefoperazone$gene <- NULL
-cefoperazone$pathway <- NULL
-clindamycin$ko <- NULL
-clindamycin$gene <- NULL
-clindamycin$pathway <- NULL
-streptomycin$ko <- NULL
-streptomycin$gene <- NULL
-streptomycin$pathway <- NULL
-
 # Merge tables
-combined_mapping <- merge(streptomycin, cefoperazone, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
-combined_mapping <- merge(combined_mapping, clindamycin, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
-combined_mapping <- merge(combined_mapping, germfree, by='row.names')
-rownames(combined_mapping) <- combined_mapping$Row.names
-combined_mapping$Row.names <- NULL
+combined_mapping <- merge(streptomycin, cefoperazone, by='gene')
+combined_mapping <- merge(combined_mapping, clindamycin, by='gene')
+combined_mapping <- merge(combined_mapping, germfree, by='gene')
+combined_mapping$gene <- gsub('Clostridium_difficile_630\\|','', combined_mapping$gene)
+combined_mapping$gene <- gsub('ENA\\|CDT20869\\|CDT20869.1\\|Clostridium_difficile_putative_phage_replication_protein_','', combined_mapping$gene)
+combined_mapping$gene <- gsub('_',' ', combined_mapping$gene)
+rownames(combined_mapping) <- combined_mapping$gene
+combined_mapping$gene <- NULL
 rm(cefoperazone, clindamycin, streptomycin, germfree)
 
-# Remove genes not in a pathway
-combined_mapping <- subset(combined_mapping, pathway != 'none')
+#--------------------------------------------------------------------------------------------------------------#
 
-# Rarefy mappings to be equal within sequencing type
-sub_size <- round(min(colSums(combined_mapping[,1:4])) * 0.9)
-combined_mapping$Cefoperazone <- t(rrarefy(combined_mapping$Cefoperazone, sample=sub_size))
-combined_mapping$Clindamycin <- t(rrarefy(combined_mapping$Clindamycin, sample=sub_size))
-combined_mapping$Streptomycin <- t(rrarefy(combined_mapping$Streptomycin, sample=sub_size))
-combined_mapping$Germfree <- t(rrarefy(combined_mapping$Germfree, sample=sub_size))
+# Define subsets of interest
+sigma_keep <- c('TcdR','TcdC','CdtR','SigK', 'SigF', 'CodY', 'CcpA', 'SigH', 'Spo0A', 'PrdR', 'Rex', 'SigG', 'SigA1')
 
-# Eliminate genes with no transcripts mapping
-combined_mapping <- combined_mapping[rowSums(combined_mapping[,1:4]) != 0, ] 
+paloc_keep <- c('TcdE','TcdA','TcdB')
+sporulation_keep <- c('SpoIIAB','SpoIIE','SpoVS','SpoIVA','SpoVFB','SpoVB','SpoVG','CdeC','CotJB2','CotD',
+                      'SspA','SspB')
+quorum_keep <- c('LuxS', 'AgrD', 'AgrB', 'AgrA', 'AgrC')
+# Need to add agr A and C
+
+
+select_genes <- c(sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
+
+# Pull of the genes of interest
+combined_mapping <- subset(combined_mapping, rownames(combined_mapping) %in% select_genes)
+rm(select_genes)
+
+# Calculate relative abundance
+combined_mapping <- t(combined_mapping)
+combined_mapping <- sweep(combined_mapping, 1, rowSums(combined_mapping), '/') * 100
+combined_mapping[is.na(combined_mapping)] <- 0.0
+combined_mapping <- t(combined_mapping)
 
 #--------------------------------------------------------------------------------------------------------------#
 
-# Subset by KEGG catagory and pool
-all_carbohydrate <- subset(combined_mapping, grepl('Carbohydrate_metabolism', combined_mapping$pathway))
-carbohydrate <- t(as.data.frame(colSums(all_carbohydrate[,1:4])))
-energy <- subset(combined_mapping, grepl('Energy_metabolism', combined_mapping$pathway))
-energy <- t(as.data.frame(colSums(energy[,1:4])))
-lipid <- subset(combined_mapping, grepl('Lipid_metabolism', combined_mapping$pathway))
-lipid <- t(as.data.frame(colSums(lipid[,1:4])))
-nucleotide <- subset(combined_mapping, grepl('Nucleotide_metabolism', combined_mapping$pathway))
-nucleotide <- t(as.data.frame(colSums(nucleotide[,1:4])))
-amino_acid <- subset(combined_mapping, grepl('Amino_acid_metabolism', combined_mapping$pathway))
-other_amino_acids <- subset(combined_mapping, grepl('Metabolism_of_other_amino_acids', combined_mapping$pathway))
-all_amino_acid <- rbind(amino_acid, other_amino_acids)
-amino_acid <- t(as.data.frame(colSums(amino_acid[,1:4])))
-other_amino_acids <- t(as.data.frame(colSums(other_amino_acids[,1:4])))
-amino_acids <- amino_acid + other_amino_acids
-rm(amino_acid, other_amino_acids)
-glycan <- subset(combined_mapping, grepl('Glycan_biosynthesis_and_metabolism', combined_mapping$pathway))
-glycan <- t(as.data.frame(colSums(glycan[,1:4])))
-cofactors_and_vitamins <- subset(combined_mapping, grepl('Metabolism_of_cofactors_and_vitamins', combined_mapping$pathway))
-cofactors_and_vitamins <- t(as.data.frame(colSums(cofactors_and_vitamins[,1:4])))
-terpenoids_and_polyketides <- subset(combined_mapping, grepl('Metabolism_of_terpenoids_and_polyketides', combined_mapping$pathway))
-terpenoids_and_polyketides <- t(as.data.frame(colSums(terpenoids_and_polyketides[,1:4])))
-secondary_metabolites <- subset(combined_mapping, grepl('Biosynthesis_of_other_secondary_metabolites', combined_mapping$pathway))
-secondary_metabolites <- t(as.data.frame(colSums(secondary_metabolites[,1:4])))
-xenobiotics <- subset(combined_mapping, grepl('Xenobiotics_biodegradation_and_metabolism', combined_mapping$pathway))
-xenobiotics <- t(as.data.frame(colSums(xenobiotics[,1:4])))
-genetics <- subset(combined_mapping, grepl('Genetic_Information_Processing', combined_mapping$pathway))
-genetics <- t(as.data.frame(colSums(genetics[,1:4])))
-motility <- subset(combined_mapping, grepl('Cell_motility', combined_mapping$pathway))
-motility <- t(as.data.frame(colSums(motility[,1:4])))
-rm(combined_mapping)
+# Sigma factors
+# Integration of Metabolism and Virulence by Clostridium difficile CodY
+# Global transcriptional control by glucose and carbon regulator CcpA in Clostridium difficile.
+# Proline-Dependent Regulation of Clostridium difficile Stickland Metabolism
+# The Clostridium difficile spo0A Gene Is a Persistence and Transmission Factor
+sigma <- subset(combined_mapping, rownames(combined_mapping) %in% sigma_keep)
+rownames(sigma) <- c('ccpA', 'cdtR', 'codY', 'rex', 'prdR', 'sigA1', 'sigF', 
+                     'sigG', 'sigH', 'sigK', 'spo0A', 'tcdC', 'tcdR')
+sigma <- t(sigma)
+sigma <- cbind(sigma[,3], sigma[,1], sigma[,2], sigma[,12], sigma[,13], sigma[,11], 
+               sigma[,6], sigma[,7], sigma[,8], sigma[,9], sigma[,10], sigma[,5], sigma[,4])
+sigma[sigma == 0] <- NA
 
-# Assemble final table
-pooled_mapping <- rbind(carbohydrate, energy, lipid, nucleotide, amino_acids, glycan,
-                        cofactors_and_vitamins, terpenoids_and_polyketides, secondary_metabolites,
-                        xenobiotics, genetics, motility)
-rm(carbohydrate, energy, lipid, nucleotide, amino_acids, glycan, cofactors_and_vitamins, terpenoids_and_polyketides, secondary_metabolites, xenobiotics, genetics, motility)
-rownames(pooled_mapping) <- c('Carbohydrate metabolism','Energy metabolism','Lipid metabolism','Nucleotide metabolism',
-                              'Amino acid metabolism','Glycan metabolism', 'Cofactor/Vitamin metabolism','Terpenoid/Polyketide metabolism',
-                              'Secondary metabolite synthesis', 'Xenobiotic metabolism','Genetic Information Processing','Cell motility')
-transformed_mapping <- log10(pooled_mapping)
-rm(pooled_mapping)
+# Pathogenicity
+paloc <- subset(combined_mapping, rownames(combined_mapping) %in% paloc_keep)
+rownames(paloc) <- c('tcdA', 'tcdB', 'tcdE')
+paloc <- t(paloc)
+paloc[paloc == 0] <- NA
 
-# Agregate carbohydrate and amino acid tables seperately
+# Quorum sensing
+quorum <- subset(combined_mapping, rownames(combined_mapping) %in% quorum_keep)
+rownames(quorum) <- c('agrA', 'agrB', 'agrC', 'agrD', 'luxS')
+quorum <- t(quorum)
+quorum[quorum == 0] <- NA
 
-# Carbohydrates
-glycolysis <- subset(all_carbohydrate, grepl('Glycolysis_/_Gluconeogenesis', all_carbohydrate$pathway))
-glycolysis <- t(as.data.frame(colSums(glycolysis[,1:4])))
-starch <- subset(all_carbohydrate, grepl('Starch_and_sucrose_metabolism', all_carbohydrate$pathway))
-starch <- t(as.data.frame(colSums(starch[,1:4])))
-citrate_cycle <- subset(all_carbohydrate, grepl('Citrate_cycle', all_carbohydrate$pathway))
-citrate_cycle <- t(as.data.frame(colSums(citrate_cycle[,1:4])))
-fructose <- subset(all_carbohydrate, grepl('Fructose_and_mannose_metabolism', all_carbohydrate$pathway))
-fructose <- t(as.data.frame(colSums(fructose[,1:4])))
-butanoate <- subset(all_carbohydrate, grepl('Butanoate_metabolism', all_carbohydrate$pathway))
-butanoate <- t(as.data.frame(colSums(butanoate[,1:4])))
-pentose_phosphate <- subset(all_carbohydrate, grepl('Pentose_phosphate_pathway', all_carbohydrate$pathway))
-pentose_phosphate <- t(as.data.frame(colSums(pentose_phosphate[,1:4])))
-amino_sugar <- subset(all_carbohydrate, grepl('Amino_sugar_and_nucleotide_sugar_metabolism', all_carbohydrate$pathway))
-amino_sugar <- t(as.data.frame(colSums(amino_sugar[,1:4])))
-pyruvate <- subset(all_carbohydrate, grepl('Pyruvate_metabolism', all_carbohydrate$pathway))
-pyruvate <- t(as.data.frame(colSums(pyruvate[,1:4])))
-glyoxylate <- subset(all_carbohydrate, grepl('Glyoxylate_and_dicarboxylate_metabolism', all_carbohydrate$pathway))
-glyoxylate <- t(as.data.frame(colSums(glyoxylate[,1:4])))
-fatty_acid <- subset(all_carbohydrate, grepl('Fatty_acid_degradation', all_carbohydrate$pathway))
-fatty_acid <- t(as.data.frame(colSums(fatty_acid[,1:4])))
-ascorbate <- subset(all_carbohydrate, grepl('Ascorbate_and_aldarate_metabolism', all_carbohydrate$pathway))
-ascorbate <- t(as.data.frame(colSums(ascorbate[,1:4])))
-galactose <- subset(all_carbohydrate, grepl('Galactose_metabolism', all_carbohydrate$pathway))
-galactose <- t(as.data.frame(colSums(galactose[,1:4])))
-pooled_carbohydrate <- rbind(glycolysis, starch, citrate_cycle, fructose, butanoate, pentose_phosphate, 
-                             amino_sugar, pyruvate, glyoxylate, fatty_acid, ascorbate, galactose)
-rm(glycolysis, starch, citrate_cycle, fructose, butanoate, pentose_phosphate, 
-   amino_sugar, pyruvate, glyoxylate, fatty_acid, ascorbate, galactose)
-rownames(pooled_carbohydrate) <- c('Glycolysis/Gluconeogenesis', 'Starch/Sucrose metabolism', 'Citrate acid cycle', 
-                                   'Fructose/Mannose metabolism', 'Butanoate metabolism', 'Pentose phosphate pathway', 
-                                   'Amino/Nucleotide sugar metabolism', 'Pyruvate metabolism', 'Glyoxylate/Dicarboxylate metabolism', 
-                                   'Fatty acid degradation', 'Ascorbate/Aldarate metabolism', 'Galactose metabolism')
+# Sporulation
+# Genes with >0.01 variance included in final analysis
+sporulation <- subset(combined_mapping, rownames(combined_mapping) %in% sporulation_keep)
+rownames(sporulation) <- c('cdeC','cotD','cotJB2','spoIIAB','spoIIE',
+                           'spoIVA','spoVB','spoVFB','spoVG','spoVS','sspA','sspB')
+sporulation <- t(sporulation)
+sporulation <- cbind(sporulation[,4], sporulation[,5], sporulation[,9], sporulation[,1], 
+                     sporulation[,2], sporulation[,3], sporulation[,6], sporulation[,7], 
+                     sporulation[,10], sporulation[,8], sporulation[,11], sporulation[,12])
+colnames(sporulation) <- c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 
+                           'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')
+sporulation[sporulation == 0] <- NA
 
-# Log transform mappings
-transformed_carbohydrate <- log10(pooled_carbohydrate)
-rm(pooled_carbohydrate)
-
-# Amino acids
-alanine_aspartate_glutamate <- subset(all_amino_acid, grepl('Alanine,_aspartate_and_glutamate_metabolism', all_amino_acid$pathway))
-alanine_aspartate_glutamate <- t(as.data.frame(colSums(alanine_aspartate_glutamate[,1:4])))
-alanine <- subset(all_amino_acid, grepl('Alanine_metabolism', all_amino_acid$pathway))
-alanine <- t(as.data.frame(colSums(alanine[,1:4])))
-glutamine <- subset(all_amino_acid, grepl('D-Glutamine_and_D-glutamate_metabolism', all_amino_acid$pathway))
-glutamine <- t(as.data.frame(colSums(glutamine[,1:4])))
-alanine_aspartate_glutamate <- alanine_aspartate_glutamate + alanine + glutamine
-rm(alanine, glutamine)
-cysteine <- subset(all_amino_acid, grepl('Cysteine_and_methionine_metabolism', all_amino_acid$pathway))
-cysteine <- t(as.data.frame(colSums(cysteine[,1:4])))
-arginine <- subset(all_amino_acid, grepl('Arginine_and_proline_metabolism', all_amino_acid$pathway))
-arginine <- t(as.data.frame(colSums(arginine[,1:4])))
-histidine <- subset(all_amino_acid, grepl('Histidine_metabolism', all_amino_acid$pathway))
-histidine <- t(as.data.frame(colSums(histidine[,1:4])))
-valine <- subset(all_amino_acid, grepl('Valine,_leucine_and_isoleucine_biosynthesis', all_amino_acid$pathway))
-valine <- t(as.data.frame(colSums(valine[,1:4])))
-glycine <- subset(all_amino_acid, grepl('Glycine,_serine_and_threonine_metabolism', all_amino_acid$pathway))
-glycine <- t(as.data.frame(colSums(glycine[,1:4])))
-lysine <- subset(all_amino_acid, grepl('Lysine_biosynthesis', all_amino_acid$pathway))
-lysine <- t(as.data.frame(colSums(lysine[,1:4])))
-phenylalanine_tyrosine_tryptophan <- subset(all_amino_acid, grepl('Phenylalanine,_tyrosine_and_tryptophan_biosynthesis', all_amino_acid$pathway))
-phenylalanine_tyrosine_tryptophan <- t(as.data.frame(colSums(phenylalanine_tyrosine_tryptophan[,1:4])))
-phenylalanine <- subset(all_amino_acid, grepl('Phenylalanine_metabolism', all_amino_acid$pathway))
-phenylalanine <- t(as.data.frame(colSums(phenylalanine[,1:4])))
-tyrosine <- subset(all_amino_acid, grepl('Tyrosine_metabolism', all_amino_acid$pathway))
-tyrosine <- t(as.data.frame(colSums(tyrosine[,1:4])))
-taurine <- subset(all_amino_acid, grepl('Taurine_and_hypotaurine_metabolism', all_amino_acid$pathway))
-taurine <- t(as.data.frame(colSums(taurine[,1:4])))
-selenocompound <- subset(all_amino_acid, grepl('Selenocompound_metabolism', all_amino_acid$pathway))
-selenocompound <- t(as.data.frame(colSums(selenocompound[,1:4])))
-
-pooled_amino_acid <- rbind(histidine, cysteine, arginine, alanine_aspartate_glutamate, valine, glycine, 
-                           lysine, phenylalanine_tyrosine_tryptophan, phenylalanine, tyrosine, taurine, selenocompound)
-rm(alanine_aspartate_glutamate, cysteine, arginine, histidine, valine, glycine, 
-   lysine, phenylalanine_tyrosine_tryptophan, phenylalanine, tyrosine, taurine, selenocompound)
-rownames(pooled_amino_acid) <- c('Histidine metabolism', 'Cysteine/Methionine metabolism', 
-                                 'Arginine/Proline metabolism', 'Alanine/Aspartate/Glutamate metabolism', 'Valine/Leucine/Isoleucine synthesis', 
-                                 'Glycine/Serine/Threonine metabolism', 'Lysine synthesis', 'Phenylalanine/Tyrosine/Tryptophan synthesis', 
-                                 'Phenylalanine metabolism', 'Tyrosine metabolism', 'Taurine/Hypotaurine metabolism', 'Selenocompound metabolism')
-
-# Log transform mappings
-transformed_amino_acid <- log10(pooled_amino_acid)
-rm(pooled_amino_acid)
+# Clean up
+rm(combined_mapping, sigma_keep, paloc_keep, sporulation_keep, quorum_keep)
 
 #--------------------------------------------------------------------------------------------------------------#
 
-# Set the color palette and output file name
-darjeeling <- wes_palette("Darjeeling")
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S3.pdf'
-
-# Generate figure
+# Set the color palette and plotting environment
+select_palette <- c(wes_palette('FantasticFox')[1], wes_palette('FantasticFox')[3], wes_palette('FantasticFox')[5], 'forestgreen')
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_S3.pdf'
+make.italic <- function(x) as.expression(lapply(x, function(y) bquote(italic(.(y)))))
 pdf(file=plot_file, width=12, height=10)
-layout(matrix(c(1,2,2,2,
-                3,3,4,4), 
-              nrow=2, ncol=4, byrow = TRUE))
+layout(matrix(c(1,1,2,
+                3,4,4),
+              nrow=2, ncol=3, byrow = TRUE))
 
-plot(1, type='n', axes=F, xlab='', ylab='') # Empty plot
-legend('left', legend=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Gnotobiotic'), pt.cex=3.7, bty='n', cex=2.2,
-       pch=22, col='black', pt.bg=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
+#--------------------------------------------------------------------------------------------------------------#
 
-# Global pathway annotations
-par(las=1, mar=c(8,4,1,1))
-barplot(t(transformed_mapping), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5))
+# Sporulation
+par(las=1, mar=c(4.5,6,1,1), mgp=c(4, 1, 0))
+barplot(sporulation, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,30), cex.lab=1.4)
 box()
-abline(h=c(1:4), lty=2)
-barplot(t(transformed_mapping), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,5), add=TRUE)
-axis(side=2, at=c(1:4), parse(text=paste(rep(10,4), '^', seq(1,4,1), sep='')), tick=TRUE, las=1)
-text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(transformed_mapping), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('A', side=2, line=2, las=2, adj=1, padj=-13, cex=1.2)
-legend('topright', legend='All KEGG Categories', bty='n', cex=1.6)
+axis(side=2, at=c(0,10,20,30), c('0%','10%','20%','30%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,66,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('spoIIAB', 'spoIIE', 'spoVG', 'cdeC', 'cotD', 'cotJB2', 'spoIVA', 'spoVB', 'spoVS', 'spoVFB', 'sspA', 'sspB')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.5)
+legend('topright', legend='Sporulation', pt.cex=0, bty='n', cex=1.8)
+mtext('A', side=2, line=2, las=2, adj=2.9, padj=-11, cex=1.5)
+text(x=c(21.5,25,27,30.6,32.6,54.5), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
-# Subpathways in Carbohydrate metabolism
-par(las=1, mar=c(11,4,1,1))
-barplot(t(transformed_carbohydrate), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4))
-box()
-abline(h=c(1:3), lty=2)
-barplot(t(transformed_carbohydrate), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4), add=TRUE)
-axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
-text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(transformed_carbohydrate), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('B', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2)
-legend('topright', legend='Carbohydrate Metabolism', bty='n', cex=1.6)
+legend('topleft', legend=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No antibiotics (GF)'), pt.cex=3.5, cex=1.7,
+       pch=22, col='black', pt.bg=select_palette, ncol=1, bty='n')
 
-# Subpathways in Amino Acid metabolism
-par(las=1, mar=c(11,4,1,1))
-barplot(t(transformed_amino_acid), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4))
+# Pathogenicity
+barplot(paloc, col=select_palette, space=c(0,1.5),  beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,1), cex.lab=1.4)
 box()
-abline(h=c(1:3), lty=2)
-barplot(t(transformed_amino_acid), col=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-        beside=TRUE, xaxt='n', yaxt='n', ylab='Transcript Abundance (Log10)', ylim=c(0,4), add=TRUE)
-axis(side=2, at=c(1:3), parse(text=paste(rep(10,3), '^', seq(1,3,1), sep='')), tick=TRUE, las=1)
-text(x=seq(4,59,5), y=par()$usr[3]-0.03*(par()$usr[4]-par()$usr[3]),
-     labels=rownames(transformed_amino_acid), srt=45, adj=1, xpd=TRUE, cex=0.8)
-mtext('C', side=2, line=2, las=2, adj=1, padj=-11.5, cex=1.2)
-legend('topright', legend='Amino Acid Metabolism', bty='n', cex=1.6)
+axis(side=2, at=c(0,0.333,0.666,1.0), c('0%','0.3%','0.6%','1.0%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,16.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('tcdA', 'tcdB', 'tcdE')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Pathogenicity', pt.cex=0, bty='n', cex=1.8)
+mtext('B', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+text(x=c(5,10.5,13,15,16), y=0.025, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+
+# Quorum sensing
+barplot(quorum, col=select_palette, beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,2.5), cex.lab=1.4)
+box()
+axis(side=2, at=c(0,0.833,1.666,2.5), c('0%','0.83%','1.66%','2.5%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=c(2.7,8.2,13.7,18.7,23.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(colnames(quorum)), srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Quorum sensing', pt.cex=0, bty='n', cex=1.8)
+mtext('C', side=2, line=2, las=2, adj=2.7, padj=-11, cex=1.5)
+text(x=c(9.6,12.6,13.4,24.6), y=0.05, labels='*', cex=1.7, font=2) # Add symbol for undetectable
+
+# Sigma factors
+barplot(sigma, col=select_palette, space=c(0,1.5), beside=TRUE, xaxt='n', yaxt='n', 
+        ylab='Relative Transcript Abundance', ylim=c(0,25), cex.lab=1.4)
+box()
+axis(side=2, at=c(0,8,17,25), c('0%','8%','17%','25%'), tick=TRUE, las=1, cex.axis=1.3)
+text(x=seq(3.7,71.5,5.5), y=par()$usr[3]-0.035*(par()$usr[4]-par()$usr[3]),
+     labels=make.italic(c('codY', 'ccpA', 'cdtR', 'tcdC', 'tcdR', 'spo0A', 'sigA1', 
+                          'sigF', 'sigG', 'sigH', 'sigK', 'rex', 'prdR')), 
+     srt=45, adj=1, xpd=TRUE, cex=1.6)
+legend('topright', legend='Sigma factors', pt.cex=0, bty='n', cex=1.8)
+mtext('D', side=2, line=2, las=2, adj=3, padj=-11, cex=1.5)
+text(x=c(21.7,23.5,24.5,25.5,26.5,71.3), y=0.5, labels='*', cex=1.7, font=2) # Add symbol for undetectable
 
 dev.off()
+
+
+#--------------------------------------------------------------------------------------------------------------#
+
+# Clean up
+for (dep in deps){
+  pkg <- paste('package:', dep,sep='')
+   detach(pkg, character.only = TRUE)
+}
+rm(list=ls())
+gc()
+
