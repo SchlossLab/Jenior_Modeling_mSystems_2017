@@ -27,9 +27,7 @@ Overview
     |
     |- references.bib 	   # Bibtex formatted refereces cited in manuscript
     |
-    |- doc/            # Documentation for the study
-    |  |- protocols/   # Wet lab and dry lab step-by-step protocols for this study
-    |  +- paper/       # Word doc version of manuscript
+    |- protocols/            # Wet lab and dry lab step-by-step protocols for this study
     |
     |- data            # Raw and primary data
     |  |- README.md         # More specific overview of subdirectory
