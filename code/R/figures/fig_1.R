@@ -144,7 +144,7 @@ layout(matrix(c(1,
 
 # A.  Vegetative cell CFU
 par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=1, lwd=2.2,
+stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=19, lwd=2.2,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
            ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15)
 labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
@@ -173,7 +173,7 @@ mtext('A', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
 
 # B.  Spore CFU
 par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
-stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=1, lwd=2.2, 
+stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=19, lwd=2.2, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
            ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
 axis(side=2, at=c(1:9), labelsY, tick=TRUE)
@@ -203,7 +203,7 @@ mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
 
 # C.  Toxin data
 par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
-stripchart(titer~treatment, data=toxin, vertical=T, pch=1, lwd=2.2,
+stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.2,
            ylim=c(1.9,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=0)
@@ -218,7 +218,7 @@ mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
 axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8'))
 
 # Draw axis break
-axis.break(side=2, 2.1, style='slash') 
+axis.break(2, 2.1, style='slash') 
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
