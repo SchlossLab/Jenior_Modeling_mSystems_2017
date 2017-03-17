@@ -160,7 +160,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 ###Figure Legends
 
-**Table 1 | Antibiotics classes and pretreatment regimes for mouse experiments.**
+**Table 1 | Antibiotics used during *C. difficile* infection models.**
 
 **Figure 1 | *C. difficile* sporulation and toxin activity quantification after 18 hours of infection.** Nine mice were included in each treatment group. **(A)** Vegetative *C. difficile* c.f.u. per gram of cecal content (*P* = n.s.). **(B)** *C. difficile* spore c.f.u. per gram of cecal content. **(C)** Toxin titer from cecal content measured by activity in Vero cell rounding assay. Ex-GF mice displayed significantly more spore c.f.u. and toxin activity than all other groups (all *P* < 0.008). Untreated mice in A, B, & C had no detectable *C. difficile* or toxin activity (all *P* < 0.01). Dotted lines denote limits of detection (LOD), with undetectable points shown just below for clarity. Values for undetectable points were imputed as the LOD for calculation of significant differences which were identified by Wilcoxon signed-rank test with the Benjamini-Hochberg correction.
 
