@@ -127,13 +127,15 @@ stripchart(substrate~infection, data=acetylglucosamine_gf, vertical=T, pch=19, a
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,6), xlim=c(0,12),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 axis(side=2, at=c(0:6), labels=c('0.0','1.0','2.0','3.0','4.0','5.0','6.0'), cex.axis=1.2)
+abline(v=c(3,6,9), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-','+','-','+','-'), side=1, 
       at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','Gnotobiotic'), side=1, 
       at=c(1.5,4.5,7.5,10.6), padj=2)
 mtext('A', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='N-Acetylglucosamine / N-Acetylgalactosamine', pt.cex=0, bty='n', cex=1.2)
+legend('topright', legend='N-Acetylglucosamine / N-Acetylgalactosamine', pt.cex=0, cex=1.2, bg='white', box.col='white')
+box()
 segments(x0=c(0.6,1.6,3.6,4.6,6.6,7.6,9.6,10.6), x1=c(1.4,2.4,4.4,5.4,7.4,8.4,10.4,11.4),
          y0=c(median(subset(acetylglucosamine_strep, infection=='630')[,2]), median(subset(acetylglucosamine_strep, infection=='mock')[,2]),
               median(subset(acetylglucosamine_cef, infection=='630')[,2]), median(subset(acetylglucosamine_cef, infection=='mock')[,2]),
@@ -166,6 +168,7 @@ stripchart(substrate~infection, data=proline_gf, vertical=T, pch=19, at=c(10,11)
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,3), xlim=c(0,12),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 axis(side=2, at=c(0:3), labels=c('0.0','1.0','2.0','3.0'), cex.axis=1.2)
+abline(v=c(3,6,9), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-','+','-','+','-'), side=1, 
       at=c(1,2,4,5,7,8,10,11), padj=0.5, cex=1.2)
@@ -219,13 +222,15 @@ stripchart(substrate~infection, data=mannitolsorbitol_cef, vertical=T, pch=19, a
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,65), xlim=c(0,6),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
 axis(side=2, at=c(0,10,20,30,40,50,60), labels=c('0.0','10','20','30','40','50','60'), cex.axis=1.2)
+abline(v=3, lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.9)
 mtext(c('+','-','+','-'), side=1, 
       at=c(1,2,4,5), padj=0.5, cex=1.2)
 mtext(c('Streptomycin','Cefoperazone'), side=1, 
       at=c(1.5,4.5), padj=2)
 mtext('D', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, bty='n', cex=1.2)
+legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, cex=1.2, bg='white', box.col='white')
+box()
 segments(x0=c(0.6,1.6,3.6,4.6), x1=c(1.4,2.4,4.4,5.4),
          y0=c(median(subset(mannitolsorbitol_strep, infection=='630')[,2]), median(subset(mannitolsorbitol_strep, infection=='mock')[,2]),
               median(subset(mannitolsorbitol_cef, infection=='630')[,2]), median(subset(mannitolsorbitol_cef, infection=='mock')[,2])), 
