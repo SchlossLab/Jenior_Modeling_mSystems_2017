@@ -268,15 +268,15 @@ tick_labels <- c('10%','30%','50%','70%','90%')
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_2.pdf'
 
 # Open a PDF
-pdf(file=plot_file, width=9, height=13)
+pdf(file=plot_file, width=6, height=17)
 
 # Create layout for multi-plot
-layout(mat=matrix(c(1,1,1,1, 
-                    1,1,1,1, 
-                    1,1,1,1,
-                    1,1,1,1,
-                    2,3,4,5,
-                    6,7,8,9), nrow=6, ncol=4, byrow=TRUE))
+layout(mat=matrix(c(1,1, 
+                    1,1, 
+                    2,3,
+                    4,5,
+                    6,7,
+                    8,9), nrow=6, ncol=2, byrow=TRUE))
 
 # Generate raw plot
 par(mar=c(0,0,0,0))
@@ -294,9 +294,9 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 
 # Axis labels
-text(x=-0.35, y=-0.43, labels='Cefoperazone (SPF)', cex=1.4, col=wes_palette("FantasticFox")[3], font=2)
-text(x=-0.22, y=0.49, labels='Clindamycin (SPF)', cex=1.4, srt=60, col=wes_palette("FantasticFox")[5], font=2)
-text(x=0.56, y=-0.12, labels='Streptomycin (SPF)', cex=1.4, srt=-60, col=wes_palette("FantasticFox")[1], font=2)
+text(x=-0.38, y=-0.43, labels='Cefoperazone (SPF)', cex=1.2, col=wes_palette("FantasticFox")[3], font=2)
+text(x=-0.18, y=0.53, labels='Clindamycin (SPF)', cex=1.2, srt=60, col=wes_palette("FantasticFox")[5], font=2)
+text(x=0.56, y=-0.12, labels='Streptomycin (SPF)', cex=1.2, srt=-60, col=wes_palette("FantasticFox")[1], font=2)
 
 # Left axis - Clindmycin
 lines(x=c(-0.52,-0.54), y=c(-0.233,-0.22))
@@ -354,7 +354,7 @@ tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=poly
 tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
 
 # Add the legend
-legend(x=0.3, y=0.51, legend=c('Amino acid catabolism',
+legend(x=0.23, y=0.7, legend=c('Amino acid catabolism',
                                'Aminoglycan catabolism',
                                'Monosaccharide catabolism',
                                'Disaccharide catabolism',
@@ -363,7 +363,7 @@ legend(x=0.3, y=0.51, legend=c('Amino acid catabolism',
                                'PTS transporters', 
                                'ABC sugar transporters', 
                                'All other genes'), 
-       ncol=1, pch=21, cex=1.4, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
+       ncol=1, pch=21, cex=1.1, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
        pt.bg=c(fox[2],
                'firebrick1',
                fox[1],
@@ -374,17 +374,17 @@ legend(x=0.3, y=0.51, legend=c('Amino acid catabolism',
                rainbow[7], 
                'gray65'), bty='n')
 # Size legend
-legend(x=-0.6, y=0.41, legend=c('     500 transcripts','','','   50 transcripts','',' 5 transcripts'), pch=21, col='black', pt.bg='gray87', pt.cex=c(9.446395,0,0,5.946395,0,2.446395), cex=1.4, bty='n')
+legend(x=-0.6, y=0.41, legend=c('      500 transcripts','','','   50 transcripts','','5 transcripts'), pch=21, col='black', pt.bg='gray87', 
+       pt.cex=c(9.446395,0,0,5.946395,0,2.446395), bty='n')
 
 # Add figure label
-text(x=-0.5, y=0.5, labels='A', cex=1.8)
+text(x=-0.6, y=0.6, labels='A', cex=1.8)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
 # Individual plots
 
 # amino acid (stickland) alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 #label=c('Cef','Clinda','Strep')
@@ -399,7 +399,6 @@ text(x=0, y=-0.48, labels='Amino acid catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='B', cex=1.6)
 
 # amino sugars alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -414,7 +413,6 @@ text(x=0, y=-0.48, labels='Aminoglycan catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='C', cex=1.6)
 
 # glycolysis alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -429,7 +427,6 @@ text(x=0, y=-0.48, labels='Monosaccharide catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='D', cex=1.6)
 
 # polysaccharides alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -444,7 +441,6 @@ text(x=0, y=-0.48, labels='Disaccharide catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='E', cex=1.6)
 
 # PTS alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -459,7 +455,6 @@ text(x=0, y=-0.48, labels='PTS transporters', cex=1.3)
 text(x=-0.5, y=0.5, labels='F', cex=1.6)
 
 # ABC alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -474,7 +469,6 @@ text(x=0, y=-0.48, labels='ABC sugar transporters', cex=1.3)
 text(x=-0.5, y=0.5, labels='G', cex=1.6)
 
 # sugar alcohols alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
@@ -489,7 +483,6 @@ text(x=0, y=-0.48, labels='Sugar alcohol catabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='H', cex=1.6)
 
 # fermentation alone
-par(mar=c(1,0,0,0))
 triplot(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], 
         frame=TRUE, label=c('','',''), grid=FALSE, cex=0.3, col='gray75')
 lines(x=c(-0.288,0), y=c(0.1665,-0.333), col='gray68')
