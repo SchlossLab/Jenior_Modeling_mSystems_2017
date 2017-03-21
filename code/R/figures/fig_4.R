@@ -309,7 +309,7 @@ par(mar=c(4,4,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(shared_importance$Metabolite_score, labels=shared_importance$Compound_name, lcolor=NA, cex=1.2, color='black',
          xlab='Median Importance Score', xlim=c(0,10), pch=19, lwd=3)
 segments(x0=rep(0,10), y0=c(1:9), x1=rep(12,10), y1=c(1:9), lty=2) # Dotted lines
-mtext('A', side=2, line=2, las=2, adj=2.7, padj=-16, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=2.3, padj=-16, cex=1.5)
 
 #---------------------------------------#
 
@@ -319,7 +319,7 @@ dotchart(top_importances$Metabolite_score, labels=top_importances$Compound_name,
          lcolor=NA, cex=1.2, groups=top_importances$abx, color='black',
          xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
          gcolor=c(wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-mtext('B', side=2, line=2, las=2, adj=2.3, padj=-16, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-16, cex=1.5)
 segments(x0=rep(0, 15), y0=c(1:17, 20:21, 24:25, 28:30), 
          x1=rep(12, 15), y1=c(1:17, 20:21, 24:25, 28:30), lty=2) # Dotted lines
 
@@ -332,7 +332,7 @@ abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,37,2), lty=3, col='gray68') # adding gridlines
 axis(1, at=seq(1,37,2), labels=seq(0,18,1), tck=-0.018)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018)
-mtext('C', side=2, line=2, las=2, adj=3.5, padj=-17, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=3, padj=-17, cex=1.5)
 legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuriminate'), 
        col=c('black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
        pch=c(15,19,6,0,1,2,5), cex=1.8, pt.cex=c(2.5,2.5,3.2,3.4,3.4,3.2,3.2), lwd=3, bg='white')
