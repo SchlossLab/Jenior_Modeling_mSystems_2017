@@ -47,20 +47,6 @@ acetylglucosamine_gf <- subset(acetylglucosamine, abx == 'germfree')
 acetylglucosamine_gf$abx <- NULL
 colnames(acetylglucosamine_gf) <- c('infection', 'substrate')
 rm(acetylglucosamine)
-glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
-glycine_cef <- subset(glycine, abx == 'cefoperazone')
-glycine_cef$abx <- NULL
-colnames(glycine_cef) <- c('infection', 'substrate')
-glycine_strep <- subset(glycine, abx == 'streptomycin')
-glycine_strep$abx <- NULL
-colnames(glycine_strep) <- c('infection', 'substrate')
-glycine_clinda <- subset(glycine, abx == 'clindamycin')
-glycine_clinda$abx <- NULL
-colnames(glycine_clinda) <- c('infection', 'substrate')
-glycine_gf <- subset(glycine, abx == 'germfree')
-glycine_gf$abx <- NULL
-colnames(glycine_gf) <- c('infection', 'substrate')
-rm(glycine)
 proline <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('proline')))]
 proline_cef <- subset(proline, abx == 'cefoperazone')
 proline_cef$abx <- NULL
@@ -83,21 +69,11 @@ mannitolsorbitol_strep <- subset(mannitolsorbitol, abx == 'streptomycin')
 mannitolsorbitol_strep$abx <- NULL
 colnames(mannitolsorbitol_strep) <- c('infection', 'substrate')
 rm(mannitolsorbitol)
-salicin <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('salicylate')))]
-salicin_clinda <- subset(salicin, abx == 'clindamycin')
-salicin_clinda$abx <- NULL
-colnames(salicin_clinda) <- c('infection', 'substrate')
-rm(salicin)
 acetylneuraminate <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('N-acetylneuraminate')))]
 acetylneuraminate_gf <- subset(acetylneuraminate, abx == 'germfree')
 acetylneuraminate_gf$abx <- NULL
 colnames(acetylneuraminate_gf) <- c('infection', 'substrate')
 rm(acetylneuraminate)
-galactitol <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('galactitol_(dulcitol)')))]
-galactitol_strep <- subset(galactitol, abx == 'streptomycin')
-galactitol_strep$abx <- NULL
-colnames(galactitol_strep) <- c('infection', 'substrate')
-rm(galactitol)
 rm(metabolome)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -110,6 +86,14 @@ layout(matrix(c(1,1,
                 3,4,
                 5,6), nrow=4, ncol=2, byrow=TRUE))
 par(las=1, mgp=c(2.3,0.7,0), mar=c(3,4,1,1))
+
+
+
+
+
+
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -199,26 +183,6 @@ text(x=c(1.5,4.5,7.5,10.5), y=c(2.9,2.8,2.5,2.9), '*', font=2, cex=2.5)
 
 #------------------#
 
-# Galactitol
-stripchart(substrate~infection, data=galactitol_strep, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,2), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=seq(0,2,0.5), labels=c('0.0','0.5','1.0','1.5','2.0'), cex.axis=1.2)
-mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
-mtext(c('+','-'), side=1, 
-      at=c(1,2), padj=0.5, cex=1.2)
-mtext(c('Streptomycin'), side=1, 
-      at=c(1.5), padj=2)
-mtext('C', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='Galactitol', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
-         y0=c(median(subset(galactitol_strep, infection=='630')[,2]), median(subset(galactitol_strep, infection=='mock')[,2])), 
-         y1=c(median(subset(galactitol_strep, infection=='630')[,2]), median(subset(galactitol_strep, infection=='mock')[,2])),
-         lwd=3)
-wilcox.test(subset(galactitol_strep, infection=='630')[,2], subset(galactitol_strep, infection=='mock')[,2], exact=F)$p.value
-
-#------------------#
-
 # Mannitol / Sorbitol
 stripchart(substrate~infection, data=mannitolsorbitol_strep, vertical=T, pch=19, at=c(1,2),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,60), xlim=c(0,6),
@@ -244,26 +208,6 @@ segments(x0=c(0.6,1.6,3.6,4.6), x1=c(1.4,2.4,4.4,5.4),
          lwd=3)
 p.adjust(c(wilcox.test(subset(mannitolsorbitol_strep, infection=='630')[,2], subset(mannitolsorbitol_strep, infection=='mock')[,2], exact=F)$p.value,
            wilcox.test(subset(mannitolsorbitol_cef, infection=='630')[,2], subset(mannitolsorbitol_cef, infection=='mock')[,2], exact=F)$p.value), method='BH')
-
-#------------------#
-
-# Salicin
-stripchart(substrate~infection, data=salicin_clinda, vertical=T, pch=19, at=c(1,2),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,4), xlim=c(0.5,2.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2)
-axis(side=2, at=c(0:4), labels=c('0.0','1.0','2.0','3.0','4.0'), cex.axis=1.2)
-mtext('CDI:', side=1, at=0.5, padj=0.5, cex=0.9)
-mtext(c('+','-'), side=1, 
-      at=c(1,2), padj=0.5, cex=1.2)
-mtext(c('Clindamycin'), side=1, 
-      at=c(1.5), padj=2)
-mtext('E', side=2, line=2, las=2, adj=1.7, padj=-5, cex=1.3)
-legend('topright', legend='Salicylate', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.7,1.7), x1=c(1.3,2.3),
-         y0=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])), 
-         y1=c(median(subset(salicin_clinda, infection=='630')[,2]), median(subset(salicin_clinda, infection=='mock')[,2])),
-         lwd=3)
-wilcox.test(subset(salicin_clinda, infection=='630')[,2], subset(salicin_clinda, infection=='mock')[,2], exact=F)$p.value
 
 #------------------#
 
