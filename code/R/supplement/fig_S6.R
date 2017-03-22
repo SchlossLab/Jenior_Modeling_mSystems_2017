@@ -4,7 +4,7 @@ rm(list=ls())
 gc()
 
 # Load dependencies
-deps <- c('wesanderson', 'plyr');
+deps <- c('wesanderson');
 for (dep in deps){
   if (dep %in% installed.packages()[,"Package"] == FALSE){
     install.packages(as.character(dep), quiet=TRUE);
@@ -13,7 +13,7 @@ for (dep in deps){
 }
 
 # Select files
-metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
+metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.scaled_intensities.tsv'
 metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
 # Read in data

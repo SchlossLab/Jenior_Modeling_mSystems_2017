@@ -22,7 +22,7 @@ toxin <- read.delim(toxin_file, sep='\t', header=T)
 rm(cfu_file, toxin_file)
 
 # Format CFU data and collect summary statistics
-cfu[cfu == 0] <- 100
+cfu[cfu == 0] <- 50
 cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
 cfu$cfu_spore <- log10(cfu$cfu_spore)
 cfu$mouse <- NULL
@@ -54,7 +54,7 @@ vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', '
 toxin$mouse <- NULL
 toxin$cage <- NULL
 toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
-toxin$titer[toxin$titer <= 2.3] <- 2.3
+toxin$titer[toxin$titer < 2.3] <- 2.15
 toxin_calc <- toxin
 cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
 strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
@@ -124,9 +124,7 @@ cat("Toxin: Germfree vs Cefoperazone: p =", p_values[1],'\n',
 
 rm(germfree, cefoperazone, clindamycin, streptomycin)
 
-# Change undetectable points for plotting clarity
-vegetative_cfu$cfu_vegetative[vegetative_cfu$cfu_vegetative <= 2.0] <- 1.6
-spore_cfu$cfu_spore[spore_cfu$cfu_spore <= 2.0] <- 1.6
+# Change undetectable points for to points actually on the plot for clarity
 toxin$titer[toxin$titer <= 2.3] <- 2.15
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -134,7 +132,7 @@ toxin$titer[toxin$titer <= 2.3] <- 2.15
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
 select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
-pdf(file=plot_file, width=5, height=10)
+pdf(file=plot_file, width=6, height=10)
 layout(matrix(c(1,
                 2,
                 3), 
@@ -202,7 +200,7 @@ mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Toxin data
-par(las=1, mar=c(4,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
+par(las=1, mar=c(3,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
 stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.2,
            ylim=c(1.9,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
@@ -212,9 +210,7 @@ stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
            ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=2, add=TRUE)
-mtext(c('Streptomycin\nSPF','Cefoperazone\nSPF','Clindamycin\nSPF','No Antibiotics\nGF','No Antibiotics\nSPF'), side=1, at=c(1:5), padj=1, cex=0.77)
-mtext('Treatment:', side=1, at=0.14, padj=1.3, cex=0.7)
-mtext('Mice:', side=1, at=0.12, padj=3.1, cex=0.7)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-GF','No Antibiotics'), side=1, at=c(1:5), padj=1, cex=0.8)
 axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8'))
 
 # Draw axis break

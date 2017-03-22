@@ -12,7 +12,7 @@ library('wesanderson', verbose=FALSE, character.only=TRUE)
 
 # Select files
 scfa <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cef_acetate_630.txt'
-metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.tsv'
+metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.scaled_intensities.tsv'
 metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.tsv'
 
 # Read in data
@@ -30,7 +30,7 @@ scfa$acetate <- as.numeric(as.character(scfa$acetate))
 mock <- as.numeric(scfa[scfa$group == 'mock', 2])
 infected <- as.numeric(scfa[scfa$group == 'infected', 2])
 
-# Subset untargeted metabolomics
+# Merge metabolomics with metadata
 metadata$cage <- NULL
 metadata$mouse <- NULL
 metadata$gender <- NULL
@@ -44,6 +44,9 @@ metabolome <- merge(metadata, metabolome, by='row.names')
 rownames(metabolome) <- metabolome$Row.names
 metabolome$Row.names <- NULL
 rm(metadata)
+
+
+# Subset metabolites - 
 glycine <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('glycine')))]
 glycine_cef <- subset(glycine, abx == 'cefoperazone')
 glycine_cef$abx <- NULL
