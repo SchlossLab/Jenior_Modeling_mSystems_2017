@@ -107,6 +107,7 @@ shared_importance$abx <- 'Shared Across Conditions'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
 if (nrow(shared_importance) > 5) {shared_importance <- shared_importance[1:5,]}
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
+shared_importance$Compound_name <- gsub('-D-','', shared_importance$Compound_name)
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median)
 
 # Subset to most important, distinct metabolites
@@ -319,12 +320,12 @@ par(mar=c(3.5,4.5,1,1), las=1, cex.lab=2, cex.axis=1.8, xpd=FALSE, mgp=c(2.5,1,0
 plot(0, type='n', xaxt='n', yaxt='n', xlim=c(1,37), ylim=c(-0.03,1.0), pch=15, xlab='', ylab='')
 abline(h=seq(0,1.0,0.1), lty=3, col='gray68') # adding gridlines
 abline(v=seq(1,37,2), lty=3, col='gray68') # adding gridlines
-axis(1, at=seq(1,37,2), labels=seq(0,18,1), tck=-0.018, cex.axis=1.2)
+axis(1, at=seq(1,37,4), labels=seq(0,18,2), tck=-0.018, cex.axis=1.2)
 mtext('Time (hours)', side=1, at=19, padj=2.5, cex=)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018, cex.axis=1.2)
 text(x=-4, y=0.5, labels=expression(OD[600]), cex=1.5, xpd=TRUE, srt=90)
 mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.7)
-legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetyl-D-glucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuraminate'), 
+legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetylglucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuraminate'), 
        col=c('black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
        pch=c(15,19,6,0,1,2,5), cex=1.2, pt.cex=c(1.2,1.2,2,2.4,2.4,2,2.4), lwd=3, bg='white')
 

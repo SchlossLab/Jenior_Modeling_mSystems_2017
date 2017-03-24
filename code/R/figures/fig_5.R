@@ -1,7 +1,7 @@
 
 # Start with blank slate
-#rm(list=ls())
-#gc()
+rm(list=ls())
+gc()
 
 # Load dependency
 if ('wesanderson' %in% installed.packages()[,"Package"] == FALSE){
@@ -55,9 +55,9 @@ glucose_mock$abx <- factor(glucose_mock$abx, levels=c('none','streptomycin','cef
 fructose_mock <- mock_metabolome[, c(1,which(colnames(mock_metabolome) %in% c('fructose')))]
 colnames(fructose_mock) <- c('abx', 'substrate')
 fructose_mock$abx <- factor(fructose_mock$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
-ribose_mock <- mock_metabolome[, c(1,which(colnames(mock_metabolome) %in% c('ribose')))]
-colnames(ribose_mock) <- c('abx', 'substrate')
-ribose_mock$abx <- factor(ribose_mock$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
+succinate_mock <- mock_metabolome[, c(1,which(colnames(mock_metabolome) %in% c('succinate')))]
+colnames(succinate_mock) <- c('abx', 'substrate')
+succinate_mock$abx <- factor(succinate_mock$abx, levels=c('none','streptomycin','cefoperazone','clindamycin','germfree'))
 rm(mock_metabolome)
 
 # Subset metabolites - mock vs infected comparison
@@ -169,26 +169,25 @@ fructose_gf$abx <- NULL
 colnames(fructose_gf) <- c('infection', 'substrate')
 fructose_gf$infection <- factor(fructose_gf$infection, levels=c('mock','630'))
 rm(fructose)
-ribose <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('ribose')))]
-ribose_strep <- subset(ribose, abx == 'streptomycin')
-ribose_strep$abx <- NULL
-colnames(ribose_strep) <- c('infection', 'substrate')
-ribose_strep$infection <- factor(ribose_strep$infection, levels=c('mock','630'))
-ribose_cef <- subset(ribose, abx == 'cefoperazone')
-ribose_cef$abx <- NULL
-colnames(ribose_cef) <- c('infection', 'substrate')
-ribose_cef$infection <- factor(ribose_cef$infection, levels=c('mock','630'))
-ribose_clinda <- subset(ribose, abx == 'clindamycin')
-ribose_clinda$abx <- NULL
-colnames(ribose_clinda) <- c('infection', 'substrate')
-ribose_clinda$infection <- factor(ribose_clinda$infection, levels=c('mock','630'))
-ribose_gf <- subset(ribose, abx == 'germfree')
-ribose_gf$abx <- NULL
-colnames(ribose_gf) <- c('infection', 'substrate')
-ribose_gf$infection <- factor(ribose_gf$infection, levels=c('mock','630'))
-rm(ribose)
+succinate <- metabolome[, c(1,2,which(colnames(metabolome) %in% c('succinate')))]
+succinate_strep <- subset(succinate, abx == 'streptomycin')
+succinate_strep$abx <- NULL
+colnames(succinate_strep) <- c('infection', 'substrate')
+succinate_strep$infection <- factor(succinate_strep$infection, levels=c('mock','630'))
+succinate_cef <- subset(succinate, abx == 'cefoperazone')
+succinate_cef$abx <- NULL
+colnames(succinate_cef) <- c('infection', 'substrate')
+succinate_cef$infection <- factor(succinate_cef$infection, levels=c('mock','630'))
+succinate_clinda <- subset(succinate, abx == 'clindamycin')
+succinate_clinda$abx <- NULL
+colnames(succinate_clinda) <- c('infection', 'substrate')
+succinate_clinda$infection <- factor(succinate_clinda$infection, levels=c('mock','630'))
+succinate_gf <- subset(succinate, abx == 'germfree')
+succinate_gf$abx <- NULL
+colnames(succinate_gf) <- c('infection', 'substrate')
+succinate_gf$infection <- factor(succinate_gf$infection, levels=c('mock','630'))
+rm(succinate)
 rm(metabolome)
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -214,16 +213,11 @@ p.adjust(c(wilcox.test(subset(acetylneuraminate_mock, abx=='none')[,2], subset(a
            wilcox.test(subset(acetylneuraminate_mock, abx=='none')[,2], subset(acetylneuraminate_mock, abx=='cefoperazone')[,2], exact=F)$p.value,
            wilcox.test(subset(acetylneuraminate_mock, abx=='none')[,2], subset(acetylneuraminate_mock, abx=='clindamycin')[,2], exact=F)$p.value,
            wilcox.test(subset(acetylneuraminate_mock, abx=='none')[,2], subset(acetylneuraminate_mock, abx=='germfree')[,2], exact=F)$p.value), method='BH')
-# Glucose - Untreated vs Mock
-p.adjust(c(wilcox.test(subset(glucose_mock, abx=='none')[,2], subset(glucose_mock, abx=='streptomycin')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_mock, abx=='none')[,2], subset(glucose_mock, abx=='cefoperazone')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_mock, abx=='none')[,2], subset(glucose_mock, abx=='clindamycin')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_mock, abx=='none')[,2], subset(glucose_mock, abx=='germfree')[,2], exact=F)$p.value), method='BH')
-# Fructose - Untreated vs Mock
-p.adjust(c(wilcox.test(subset(fructose_mock, abx=='none')[,2], subset(fructose_mock, abx=='streptomycin')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_mock, abx=='none')[,2], subset(fructose_mock, abx=='cefoperazone')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_mock, abx=='none')[,2], subset(fructose_mock, abx=='clindamycin')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_mock, abx=='none')[,2], subset(fructose_mock, abx=='germfree')[,2], exact=F)$p.value), method='BH')
+# Succinate - Untreated vs Mock
+p.adjust(c(wilcox.test(subset(succinate_mock, abx=='none')[,2], subset(succinate_mock, abx=='streptomycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_mock, abx=='none')[,2], subset(succinate_mock, abx=='cefoperazone')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_mock, abx=='none')[,2], subset(succinate_mock, abx=='clindamycin')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_mock, abx=='none')[,2], subset(succinate_mock, abx=='germfree')[,2], exact=F)$p.value), method='BH')
 
 # N-acetylglucosamine - Mock vs Infected
 p.adjust(c(wilcox.test(subset(acetylglucosamine_strep, infection=='630')[,2], subset(acetylglucosamine_strep, infection=='mock')[,2], exact=F)$p.value,
@@ -245,16 +239,11 @@ p.adjust(c(wilcox.test(subset(acetylneuraminate_strep, infection=='630')[,2], su
            wilcox.test(subset(acetylneuraminate_cef, infection=='630')[,2], subset(acetylneuraminate_cef, infection=='mock')[,2], exact=F)$p.value,
            wilcox.test(subset(acetylneuraminate_clinda, infection=='630')[,2], subset(acetylneuraminate_clinda, infection=='mock')[,2], exact=F)$p.value,
            wilcox.test(subset(acetylneuraminate_gf, infection=='630')[,2], subset(acetylneuraminate_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
-# Glucose - Mock vs Infected
-p.adjust(c(wilcox.test(subset(glucose_strep, infection=='630')[,2], subset(glucose_strep, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_cef, infection=='630')[,2], subset(glucose_cef, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_clinda, infection=='630')[,2], subset(glucose_clinda, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(glucose_gf, infection=='630')[,2], subset(glucose_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
-# Fructose - Mock vs Infected
-p.adjust(c(wilcox.test(subset(fructose_strep, infection=='630')[,2], subset(fructose_strep, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_cef, infection=='630')[,2], subset(fructose_cef, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_clinda, infection=='630')[,2], subset(fructose_clinda, infection=='mock')[,2], exact=F)$p.value,
-           wilcox.test(subset(fructose_gf, infection=='630')[,2], subset(fructose_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
+# Succinate - Mock vs Infected
+p.adjust(c(wilcox.test(subset(succinate_strep, infection=='630')[,2], subset(succinate_strep, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_cef, infection=='630')[,2], subset(succinate_cef, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_clinda, infection=='630')[,2], subset(succinate_clinda, infection=='mock')[,2], exact=F)$p.value,
+           wilcox.test(subset(succinate_gf, infection=='630')[,2], subset(succinate_gf, infection=='mock')[,2], exact=F)$p.value), method='BH')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -265,20 +254,19 @@ mannitolsorbitol_mock <- subset(mannitolsorbitol_mock, abx == 'none')
 acetylneuraminate_mock <- subset(acetylneuraminate_mock, abx == 'none')
 glucose_mock <- subset(glucose_mock, abx == 'none')
 fructose_mock <- subset(fructose_mock, abx == 'none')
-ribose_mock <- subset(ribose_mock, abx == 'none')
+succinate_mock <- subset(succinate_mock, abx == 'none')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
 select_palette <- c('gray40', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
-pdf(file=plot_file, width=7, height=11)
+pdf(file=plot_file, width=7, height=10)
 layout(matrix(c(1,
                 2,
                 3,
                 4,
-                5,
-                6), nrow=6, ncol=1, byrow=TRUE))
+                5), nrow=5, ncol=1, byrow=TRUE))
 
 par(mar=c(3,5,1,1), xpd=FALSE, las=1, mgp=c(3,0.7,0))
 
@@ -408,42 +396,42 @@ text(x=12.5, y=50, '*', font=2, cex=2.5)
 
 #------------------#
 
-# Glucose
-stripchart(substrate~abx, data=glucose_mock, vertical=T, pch=19, 
-           xaxt='n', yaxt='n', col='gray40', ylim=c(0,26), xlim=c(0.5,13.5),
+#succinate
+stripchart(substrate~abx, data=succinate_mock, vertical=T, pch=19, 
+           xaxt='n', yaxt='n', col='gray40', ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-stripchart(substrate~infection, data=glucose_strep, vertical=T, pch=19, at=c(3,4),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,26), xlim=c(0.5,13.5),
+stripchart(substrate~infection, data=succinate_strep, vertical=T, pch=19, at=c(3,4),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=glucose_cef, vertical=T, pch=19, at=c(6,7),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,26), xlim=c(0.5,13.5),
+stripchart(substrate~infection, data=succinate_cef, vertical=T, pch=19, at=c(6,7),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=glucose_clinda, vertical=T, pch=19, at=c(9,10),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,26), xlim=c(0.5,13.5),
+stripchart(substrate~infection, data=succinate_clinda, vertical=T, pch=19, at=c(9,10),
+           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=glucose_gf, vertical=T, pch=19, at=c(12,13),
-           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,26), xlim=c(0.5,13.5),
+stripchart(substrate~infection, data=succinate_gf, vertical=T, pch=19, at=c(12,13),
+           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-axis(side=2, at=seq(0,70,17.5), labels=c('0.0','6.5','13.0','19.5','26.0'), cex.axis=1.2)
+axis(side=2, at=seq(0,40,10), labels=c('0','10','20','30','40'), cex.axis=1.2)
 abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.5, cex=0.8)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.5, cex=1.2)
 mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.9)
-mtext('C', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
-legend('topright', legend='Glucose', pt.cex=0, cex=1.2, bty='n')
+mtext('D', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+legend('topright', legend='Succinate', pt.cex=0, cex=1.2, bty='n')
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
-         y0=c(median(glucose_mock[,2]),
-              median(subset(glucose_strep, infection=='mock')[,2]), median(subset(glucose_strep, infection=='630')[,2]),
-              median(subset(glucose_cef, infection=='mock')[,2]), median(subset(glucose_cef, infection=='630')[,2]),
-              median(subset(glucose_clinda, infection=='mock')[,2]), median(subset(glucose_clinda, infection=='630')[,2]),
-              median(subset(glucose_gf, infection=='mock')[,2]), median(subset(glucose_gf, infection=='630')[,2])), 
-         y1=c(median(glucose_mock[,2]),
-              median(subset(glucose_strep, infection=='mock')[,2]), median(subset(glucose_strep, infection=='630')[,2]),
-              median(subset(glucose_cef, infection=='mock')[,2]), median(subset(glucose_cef, infection=='630')[,2]),
-              median(subset(glucose_clinda, infection=='mock')[,2]), median(subset(glucose_clinda, infection=='630')[,2]),
-              median(subset(glucose_gf, infection=='mock')[,2]), median(subset(glucose_gf, infection=='630')[,2])),
+         y0=c(median(succinate_mock[,2]),
+              median(subset(succinate_strep, infection=='mock')[,2]), median(subset(succinate_strep, infection=='630')[,2]),
+              median(subset(succinate_cef, infection=='mock')[,2]), median(subset(succinate_cef, infection=='630')[,2]),
+              median(subset(succinate_clinda, infection=='mock')[,2]), median(subset(succinate_clinda, infection=='630')[,2]),
+              median(subset(succinate_gf, infection=='mock')[,2]), median(subset(succinate_gf, infection=='630')[,2])), 
+         y1=c(median(succinate_mock[,2]),
+              median(subset(succinate_strep, infection=='mock')[,2]), median(subset(succinate_strep, infection=='630')[,2]),
+              median(subset(succinate_cef, infection=='mock')[,2]), median(subset(succinate_cef, infection=='630')[,2]),
+              median(subset(succinate_clinda, infection=='mock')[,2]), median(subset(succinate_clinda, infection=='630')[,2]),
+              median(subset(succinate_gf, infection=='mock')[,2]), median(subset(succinate_gf, infection=='630')[,2])),
          lwd=3)
 
 #------------------#
@@ -471,7 +459,7 @@ mtext(c('-','-','+','-','+','-','+','-','+'), side=1,
       at=c(1,3,4,6,7,9,10,12,13), padj=0.5, cex=1.2)
 mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.9)
-mtext('F', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
+mtext('E', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
 legend('topright', legend='Neu5Ac', pt.cex=0, bty='n', cex=1.2)
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(acetylneuraminate_mock[,2]),
@@ -488,54 +476,12 @@ segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9
 segments(x0=c(6,12), y0=c(2.3,2.3), x1=c(7,13), y1=c(2.3,2.3), lwd=2)
 text(x=c(6.5,12.5), y=c(2.6,2.6), '*', font=2, cex=2.5)
 
-#------------------#
-
-# Fructose
-stripchart(substrate~abx, data=fructose_mock, vertical=T, pch=19, 
-           xaxt='n', yaxt='n', col='gray40', ylim=c(0,10), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
-stripchart(substrate~infection, data=fructose_strep, vertical=T, pch=19, at=c(3,4),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,10), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=fructose_cef, vertical=T, pch=19, at=c(6,7),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,10), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=fructose_clinda, vertical=T, pch=19, at=c(9,10),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,10), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-stripchart(substrate~infection, data=fructose_gf, vertical=T, pch=19, at=c(12,13),
-           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,10), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.25, cex.lab=1.2, add=TRUE)
-axis(side=2, at=seq(0,70,17.5), labels=c('0.0','2.5','5.0','7.5','10.0'), cex.axis=1.2)
-abline(v=c(2,5,8,11), lty=2, col='gray35')
-mtext('CDI:', side=1, at=0, padj=0.5, cex=0.8)
-mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
-      at=c(1,3,4,6,7,9,10,12,13), padj=0.5, cex=1.2)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
-      at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.9)
-mtext('C', side=2, line=2, las=2, adj=2, padj=-4, cex=1.3)
-legend('topright', legend='Fructose', pt.cex=0, cex=1.2, bty='n')
-segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
-         y0=c(median(fructose_mock[,2]),
-              median(subset(fructose_strep, infection=='mock')[,2]), median(subset(fructose_strep, infection=='630')[,2]),
-              median(subset(fructose_cef, infection=='mock')[,2]), median(subset(fructose_cef, infection=='630')[,2]),
-              median(subset(fructose_clinda, infection=='mock')[,2]), median(subset(fructose_clinda, infection=='630')[,2]),
-              median(subset(fructose_gf, infection=='mock')[,2]), median(subset(fructose_gf, infection=='630')[,2])), 
-         y1=c(median(fructose_mock[,2]),
-              median(subset(fructose_strep, infection=='mock')[,2]), median(subset(fructose_strep, infection=='630')[,2]),
-              median(subset(fructose_cef, infection=='mock')[,2]), median(subset(fructose_cef, infection=='630')[,2]),
-              median(subset(fructose_clinda, infection=='mock')[,2]), median(subset(fructose_clinda, infection=='630')[,2]),
-              median(subset(fructose_gf, infection=='mock')[,2]), median(subset(fructose_gf, infection=='630')[,2])),
-         lwd=3)
-segments(x0=c(3,6,9,12), y0=c(2.9,2.8,2.5,2.9), x1=c(4,7,10,13), y1=c(2.9,2.8,2.5,2.9), lwd=2)
-text(x=c(3.5,6.5,9.5,12.5), y=c(3.2,3.1,2.8,3.2), '*', font=2, cex=2.5)
-
 dev.off()
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 #Clean up
-#detach('package:wesanderson', character.only = TRUE)
-#rm(list=ls())
-#gc()
+detach('package:wesanderson', character.only = TRUE)
+rm(list=ls())
+gc()
 
