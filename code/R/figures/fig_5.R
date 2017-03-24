@@ -396,7 +396,7 @@ text(x=12.5, y=50, '*', font=2, cex=2.5)
 
 #------------------#
 
-#succinate
+# Succinate
 stripchart(substrate~abx, data=succinate_mock, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.25, cex.lab=1.2)
