@@ -325,9 +325,9 @@ mtext('Time (hours)', side=1, at=19, padj=2.5, cex=)
 axis(2, at=seq(0.0,1.0,0.2), labels=c('0.0','0.2','0.4','0.6','0.8','1.0'), tck=-0.018, cex.axis=1.2)
 text(x=-4, y=0.5, labels=expression(OD[600]), cex=1.5, xpd=TRUE, srt=90)
 mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.7)
-legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetylglucosamine','D-Sorbitol', 'Mannitol','Succinate','N-Acetylneuraminate'), 
+legend('topleft', legend=c('No Carbohydrates','No Amino Acids','N-Acetylglucosamine','D-Sorbitol', 'Mannitol','Salicin','N-Acetylneuraminate'), 
        col=c('black','black','darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'), 
-       pch=c(15,19,6,0,1,2,5), cex=1.2, pt.cex=c(1.2,1.2,2,2.4,2.4,2,2.4), lwd=3, bg='white')
+       pch=c(15,19,6,0,1,2,5), cex=1.2, pt.cex=c(1.2,1.2,2,2.4,2.4,2,2), lwd=3, bg='white')
 
 # Controls
 lines(growth_medians$no_carb_median, type='o', lwd=3, pch=15, cex=1.1, col='black') # Carbohydrates
