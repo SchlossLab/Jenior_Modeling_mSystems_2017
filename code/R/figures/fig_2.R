@@ -239,12 +239,14 @@ fermentation[,1:3] <- log10(fermentation[,1:3] + 1)
 
 # Prep the data from and write it to a file
 gene_table$KEGG_code <- rownames(gene_table)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1A.tsv'
 write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)
 
 # Calculate rleative abundance for the rest of the genes
 combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3])
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1B.tsv'
+write.table(combined_mapping, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 

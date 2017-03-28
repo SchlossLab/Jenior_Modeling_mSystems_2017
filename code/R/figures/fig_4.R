@@ -99,11 +99,13 @@ shared_strep$Metabolite_score <- as.numeric(as.character(shared_strep$Metabolite
 shared_gf <- as.data.frame(subset(gf_importance_top, (gf_importance_top[,1] %in% shared_importance)))
 shared_gf <- shared_gf[order(shared_gf$Compound_name),]
 shared_gf$Metabolite_score <- as.numeric(as.character(shared_gf$Metabolite_score))
-score_median <- as.data.frame(apply(cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score), 1, median))
+antilog_scores <- 2 ^ cbind(shared_cef$Metabolite_score, shared_clinda$Metabolite_score, shared_strep$Metabolite_score, shared_gf$Metabolite_score)
+score_sd <- log2(as.data.frame(apply(antilog_scores, 1, sd)))
+score_median <- log2(as.data.frame(apply(antilog_scores, 1, median)))
 shared_importance <- cbind(shared_cef$Compound_name, score_median)
 rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
-shared_importance$abx <- 'Shared Across Conditions'
+shared_importance$abx <- 'Median Shared Importance'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
 if (nrow(shared_importance) > 5) {shared_importance <- shared_importance[1:5,]}
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
@@ -135,35 +137,29 @@ cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_
 clinda_only_importance <- clinda_only_importance[order(clinda_only_importance$Metabolite_score),]
 strep_only_importance <- strep_only_importance[order(strep_only_importance$Metabolite_score),]
 gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_score),]
-cef_only_importance$abx <- 'Cefoperazone (SPF)'
-clinda_only_importance$abx <- 'Clindamycin (SPF)'
-strep_only_importance$abx <- 'Streptomycin (SPF)'
-gf_only_importance$abx <- 'No Antibiotics (GF)'
+cef_only_importance$abx <- 'Cefoperazone-pretreated'
+clinda_only_importance$abx <- 'Clindamycin-pretreated'
+strep_only_importance$abx <- 'Streptomycin-pretreated'
+gf_only_importance$abx <- 'ex-Germfree'
 top_importances <- rbind(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances$abx <- as.factor(top_importances$abx)
-top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
 # Format names to look better for the plot
 top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('monophosphate','p',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('phosphate','p',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('alpha-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('beta-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('\\(R\\)\\-','',top_importances$Compound_name)
-top_importances$Compound_name <- gsub('\\(S\\)\\-','',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('-phosphate','P',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('Salicin ','Salicin-',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('D-Ribose ','D-Ribose-',top_importances$Compound_name)
 top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR' # shorten a long name
-top_importances$Compound_name[top_importances$Compound_name == '5,6,7,8-Tetrahydromethanopterin'] <- 'THMPT' # shorten a long name
+top_importances$Compound_name[top_importances$Compound_name == 'Nicotinamide-beta-riboside'] <- expression(Nicotinamide- ~ beta ~ -riboside)
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('phosphate','p',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('alpha,alpha\'-','',shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('\\(R\\)\\-','',shared_importance$Compound_name)
 shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- expression(CO[2])
 
 # Combine Shared and top hits
 importances <- rbind(shared_importance, top_importances)
 importances$Metabolite_score <- as.numeric(as.character(importances$Metabolite_score))
-importances$abx <- ordered(importances$abx, levels=c('Shared Across Conditions', 'Streptomycin (SPF)', 'Cefoperazone (SPF)', 'Clindamycin (SPF)', 'No Antibiotics (GF)'))
+importances$abx <- ordered(importances$abx, levels=c('Median Shared Importance', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
 rm(shared_importance, top_importances)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

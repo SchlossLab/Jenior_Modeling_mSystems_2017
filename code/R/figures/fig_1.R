@@ -132,25 +132,26 @@ toxin$titer[toxin$titer <= 2.3] <- 2.15
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
 select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
-pdf(file=plot_file, width=6, height=10)
+pdf(file=plot_file, width=6, height=8)
 layout(matrix(c(1,
                 2,
-                3), 
+                3),
               nrow=3, ncol=1, byrow = TRUE))
+par(las=1, mgp=c(3,0.7,0), yaxs='i')
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # A.  Vegetative cell CFU
-par(las=1, mar=c(0.7,4,1,1), mgp=c(2.5,0.7,0), yaxs='i')
+par(mar=c(0.6,5,1,1))
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=19, lwd=2.2,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
-           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15)
+           ylab='Vegetative cfu/g content', method='jitter', jitter=0.15, cex.lab=1.2)
 labelsY <- c(0, parse(text=paste(rep(10,8), '^', seq(2,9,1), sep='')))
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
 abline(h=2, col="black", lty=2, lwd=1.5) # LOD
 stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=19, lwd=2.5,
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Vegetative CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
+           ylab='Vegetative cfu/g content', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
 
 # Draw axis break
 axis.break(2, 1.5, style='slash')
@@ -165,20 +166,20 @@ segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
 # Adding significance to plot
 text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
-mtext('A', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=2, padj=-6.5, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # B.  Spore CFU
-par(las=1, mar=c(0.7,4,0.7,1), mgp=c(2.5,0.7,0), yaxs='i')
+par(mar=c(0.6,5,0.6,1))
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=19, lwd=2.2, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=0, col=select_palette,
-           ylab='Spore CFU/g Content', method='jitter', jitter=0.15)
-axis(side=2, at=c(1:9), labelsY, tick=TRUE)
+           ylab='Spore cfu/g content', method='jitter', jitter=0.15, cex.lab=1.2)
+axis(side=2, at=c(1:9), labelsY, tick=TRUE, cex.axis=1.2)
 abline(h=2, col="black", lty=2, lwd=1.5)
 stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=19, lwd=2.5, 
            ylim=c(1,9), xaxt='n', yaxt='n', cex=2, col=select_palette,
-           ylab='Spore CFU/g Content', method='jitter', jitter=0.15, add=TRUE)
+           ylab='Spore cfu/g content', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
 
 # Draw axis break
 axis.break(2, 1.5, style='slash') 
@@ -195,26 +196,26 @@ segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
 text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
 text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
-mtext('B', side=2, line=2, las=2, adj=1.5, padj=-8, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-6.5, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
 # C.  Toxin data
-par(las=1, mar=c(3,4,0.7,1), mgp=c(2.3,0.6,0), xpd=FALSE, yaxs='i')
+par(mar=c(3,5,0.6,1))
 stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.2,
            ylim=c(1.9,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
-           method='jitter', jitter=0.15, cex=0)
+           ylab='Toxin titer/g content', xlab='',
+           method='jitter', jitter=0.15, cex=0, cex.lab=1.2)
 abline(h=2.3, lty=2, lwd=1.5) # LOD
 stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
            ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
-           method='jitter', jitter=0.15, cex=2, add=TRUE)
-mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-GF','No Antibiotics'), side=1, at=c(1:5), padj=1, cex=0.8)
-axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8'))
+           ylab='Toxin titer/g content', xlab='',
+           method='jitter', jitter=0.15, cex=2, cex.lab=1.2, add=TRUE)
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-Germfree','No Antibiotics'), side=1, at=c(1:5), padj=1, cex=0.9)
+axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','200','398','794','1585','3162','6310'), cex.axis=1.2)
 
 # Draw axis break
-axis.break(2, 2.1, style='slash') 
+axis.break(2, 2.05, style='slash') 
 
 # Draw median
 segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
@@ -229,7 +230,7 @@ text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
 text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
 # Plot label
-mtext('C', side=2, line=2, las=2, adj=1.5, padj=-7, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=2, padj=-5.7, cex=1.5)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
 
