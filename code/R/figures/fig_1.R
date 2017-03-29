@@ -28,7 +28,7 @@ cfu$cfu_spore <- log10(cfu$cfu_spore)
 cfu$mouse <- NULL
 cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
 cfu$cage <- NULL
-cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree', 'conventional'))
+cfu$treatment <- factor(cfu$treatment, levels=c('conventional', 'streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
 vegetative_cfu <- cfu
 vegetative_cfu$cfu_spore <- NULL
 spore_cfu <- cfu
@@ -40,20 +40,19 @@ strep <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'streptomy
 clinda <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(vegetative_cfu[vegetative_cfu$treatment == 'conventional', 2]))
-vege_medians <- c(strep, cef, clinda, gf, conv)
+vege_medians <- c(conv, strep, cef, clinda, gf)
 cef <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'cefoperazone', 2]))
 strep <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'streptomycin', 2]))
 clinda <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'clindamycin', 2]))
 gf <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'germfree', 2]))
 conv <- as.numeric(median(spore_cfu[spore_cfu$treatment == 'conventional', 2]))
-spore_medians <- c(strep, cef, clinda, gf, conv)
+spore_medians <- c(conv, strep, cef, clinda, gf)
 rm(cfu, cef, strep, clinda, gf, conv)
-vegetative_cfu$color <- ifelse(vegetative_cfu$cfu_vegetative == 2.0, 'gray50', 'black')
 
 # Format toxin data and find summary statistics
 toxin$mouse <- NULL
 toxin$cage <- NULL
-toxin$treatment <- factor(toxin$treatment, levels=c('Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree', 'Conventional'))
+toxin$treatment <- factor(toxin$treatment, levels=c('Conventional', 'Streptomycin', 'Cefoperazone', 'Clindamycin', 'Germfree'))
 toxin$titer[toxin$titer < 2.3] <- 2.15
 toxin_calc <- toxin
 cef <- as.numeric(median(toxin[toxin$treatment == 'Cefoperazone', 2]))
@@ -61,7 +60,7 @@ strep <- as.numeric(median(toxin[toxin$treatment == 'Streptomycin', 2]))
 clinda <- as.numeric(median(toxin[toxin$treatment == 'Clindamycin', 2]))
 gf <- as.numeric(median(toxin[toxin$treatment == 'Germfree', 2]))
 conv <- as.numeric(median(toxin[toxin$treatment == 'Conventional', 2]))
-toxin_medians <- c(strep, cef, clinda, gf, conv)
+toxin_medians <- c(conv, strep, cef, clinda, gf)
 rm(cef, strep, clinda, gf, conv)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -131,7 +130,7 @@ toxin$titer[toxin$titer <= 2.3] <- 2.15
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_1.pdf'
-select_palette <- c(wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen', 'black')
+select_palette <- c('gray40', wes_palette("FantasticFox")[1], wes_palette("FantasticFox")[3], wes_palette("FantasticFox")[5], 'forestgreen')
 pdf(file=plot_file, width=6, height=8)
 layout(matrix(c(1,
                 2,
@@ -157,14 +156,14 @@ stripchart(cfu_vegetative~treatment, data=vegetative_cfu, vertical=T, pch=19, lw
 axis.break(2, 1.5, style='slash')
 
 # Draw median
-segments(0.6, vege_medians[1], 1.4, vege_medians[1], lwd=3) # cefoperazone
-segments(1.6, vege_medians[2], 2.4, vege_medians[2], lwd=3) # streptomycin
-segments(2.6, vege_medians[3], 3.4, vege_medians[3], lwd=3) # clindamycin
-segments(3.6, vege_medians[4], 4.4, vege_medians[4], lwd=3) # germfree
-segments(4.6, vege_medians[5], 5.4, vege_medians[5], lwd=3) # conventional
+segments(0.7, vege_medians[1], 1.3, vege_medians[1], lwd=3)
+segments(1.7, vege_medians[2], 2.3, vege_medians[2], lwd=3)
+segments(2.7, vege_medians[3], 3.3, vege_medians[3], lwd=3)
+segments(3.7, vege_medians[4], 4.3, vege_medians[4], lwd=3)
+segments(4.7, vege_medians[5], 5.3, vege_medians[5], lwd=3)
 
 # Adding significance to plot
-text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
+text(1, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
 mtext('A', side=2, line=2, las=2, adj=2, padj=-6.5, cex=1.5)
 
@@ -185,16 +184,16 @@ stripchart(cfu_spore~treatment, data=spore_cfu, vertical=T, pch=19, lwd=2.5,
 axis.break(2, 1.5, style='slash') 
 
 # Draw median
-segments(0.6, spore_medians[1], 1.4, spore_medians[1], lwd=3) # cefoperazone
-segments(1.6, spore_medians[2], 2.4, spore_medians[2], lwd=3) # streptomycin
-segments(2.6, spore_medians[3], 3.4, spore_medians[3], lwd=3) # clindamycin
-segments(3.6, spore_medians[4], 4.4, spore_medians[4], lwd=3) # germfree
-segments(4.6, spore_medians[5], 5.4, spore_medians[5], lwd=3) # conventional
+segments(0.7, spore_medians[1], 1.3, spore_medians[1], lwd=3) # cefoperazone
+segments(1.7, spore_medians[2], 2.3, spore_medians[2], lwd=3) # streptomycin
+segments(2.7, spore_medians[3], 3.3, spore_medians[3], lwd=3) # clindamycin
+segments(3.7, spore_medians[4], 4.3, spore_medians[4], lwd=3) # germfree
+segments(4.7, spore_medians[5], 5.3, spore_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
-segments(x0=c(1,2,3), y0=c(7,7.5,8), x1=c(4,4,4), y1=c(7,7.5,8), lwd=2)
-text(c(2.5,3,3.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
-text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
+segments(x0=c(2,3,4), y0=c(7,7.5,8), x1=c(5,5,5), y1=c(7,7.5,8), lwd=2)
+text(c(3.5,4,4.5), c(7.2,7.7,8.2), labels=c('*','*','*'), cex=2.2)
+text(1, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
 mtext('B', side=2, line=2, las=2, adj=2, padj=-6.5, cex=1.5)
 
@@ -211,23 +210,23 @@ stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
            ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab='Toxin titer/g content', xlab='',
            method='jitter', jitter=0.15, cex=2, cex.lab=1.2, add=TRUE)
-mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-Germfree','No Antibiotics'), side=1, at=c(1:5), padj=1, cex=0.9)
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, at=c(1:5), padj=1, cex=0.85)
 axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','200','398','794','1585','3162','6310'), cex.axis=1.2)
 
 # Draw axis break
 axis.break(2, 2.05, style='slash') 
 
 # Draw median
-segments(0.6, toxin_medians[1], 1.4, toxin_medians[1], lwd=3) # cefoperazone
-segments(1.6, toxin_medians[2], 2.4, toxin_medians[2], lwd=3) # streptomycin
-segments(2.6, toxin_medians[3], 3.4, toxin_medians[3], lwd=3) # clindamycin
-segments(3.6, toxin_medians[4], 4.4, toxin_medians[4], lwd=3) # germfree
-segments(4.6, toxin_medians[5], 5.4, toxin_medians[5], lwd=3) # conventional
+segments(0.7, toxin_medians[1], 1.3, toxin_medians[1], lwd=3) # cefoperazone
+segments(1.7, toxin_medians[2], 2.3, toxin_medians[2], lwd=3) # streptomycin
+segments(2.7, toxin_medians[3], 3.3, toxin_medians[3], lwd=3) # clindamycin
+segments(3.7, toxin_medians[4], 4.3, toxin_medians[4], lwd=3) # germfree
+segments(4.7, toxin_medians[5], 5.3, toxin_medians[5], lwd=3) # conventional
 
 # Adding significance to plot
-segments(x0=c(1,2,3), y0=c(3.1,3.25,3.4), x1=c(4,4,4), y1=c(3.1,3.25,3.4), lwd=2)
-text(c(2.5,3,3.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
-text(5, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
+segments(x0=c(2,3,4), y0=c(3.1,3.25,3.4), x1=c(5,5,5), y1=c(3.1,3.25,3.4), lwd=2)
+text(c(3.5,4,4.5), c(3.16,3.31,3.46), labels=c('*','*','*'), cex=2.2)
+text(1, 2.4, labels='*', cex=3, font=2, col='gray40') # Resistant mice
 
 # Plot label
 mtext('C', side=2, line=2, las=2, adj=2, padj=-5.7, cex=1.5)

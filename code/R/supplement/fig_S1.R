@@ -26,8 +26,8 @@ par(mar=c(0,0,0,0))
 plot(0, type='n', axes=F, xlab='', ylab='', xlim=c(-5,5), ylim=c(-2,2)) # Empty plot
 
 # Legend
-legend('center', legend=expression('Untreated water', paste(italic('C. difficile'), ' gavage'), 'Euthanize & Necropsy'), 
-       pt.bg=c(wes_palette("Chevalier")[3],'darkorchid2','black'), cex=1.5,  pch=c(22,25,25), pt.cex=c(4,3,3), bty='n', ncol=3)
+legend('center', legend=expression('Untreated water','Intraperitoneal Injection', paste(italic('C. difficile'),' gavage'),'Euthanize & Necropsy'), 
+       pt.bg=c(wes_palette("Chevalier")[3],wes_palette("FantasticFox")[5],'darkorchid2','black'), cex=1.5,  pch=c(22,25,25,25), pt.cex=c(4,3,3,3), bty='n', ncol=2)
 
 #----------------------------#
 
@@ -73,7 +73,7 @@ segments(x0=c(-4,2,3,3.75), y0=c(0.5,0.5,0.5,0.5), x1=c(-4,2,3,3.75), y1=c(-0.5,
 segments(x0=c(-4,-3,-2,-1,0,1), y0=c(0.25,0.25,0.25,0.25,0.25), x1=c(-4,-3,-2,-1,0,1), y1=c(-0.25,-0.25,-0.25,-0.25,-0.25), lwd=2)
 points(x=2, y=1, pch=25, bg=c(wes_palette("FantasticFox")[5]), col='black', cex=3.4)
 text(x=c(-4,3), y=c(-0.8,-0.8), c('Day -7', 'Day 0'), cex=1.5)
-legend('topleft', legend='Clindamycin IP Injection (SPF)', pt.cex=0, cex=1.5, bty='n')
+legend('topleft', legend='Clindamycin (SPF)', pt.cex=0, cex=1.5, bty='n')
 text(x=-4.5, y=0, 'C', cex=1.9)
 
 points(x=c(3,3.75), y=c(1,1), pch=25, bg=c('darkorchid2','black'), col='black', cex=3.4)

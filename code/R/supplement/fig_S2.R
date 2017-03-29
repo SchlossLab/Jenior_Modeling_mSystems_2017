@@ -212,16 +212,16 @@ mtext('B', side=2, line=2, las=2, adj=1.3, padj=-8.2, cex=1.5)
 par(las=1, mar=c(4,4,1,1), mgp=c(2.5,0.7,0))
 boxplot(cdifficile~abx, data=shared_630, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(1,8,15),
            col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5]),
-           ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
+           ylab='16S V4 Region Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n')
 boxplot(other~abx, data=shared_630, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(2,9,16),
            col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5]),
-           ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
+           ylab='16S V4 Region Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
 boxplot(cdifficile~abx, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(4,11,18,22),
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
+        ylab='16S V4 Region Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
 boxplot(other~abx, data=shared_mock, cex=0, lwd=2.5, xlim=c(0.5,23.5), ylim=c(0,4), at=c(5,12,19,23),
         col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],'gray50'),
-        ylab='16S rRNA Gene Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
+        ylab='16S V4 Region Amplicon Read Abundance', staplewex=0.8, boxwex=1, lty=1, medlwd=2.5, xaxt='n', yaxt='n', add=TRUE)
 mtext(c('630','Other','630','Other','630','Other','630','Other','630','Other','630','Other','630','Other'), # define symbols
       side=1, at=c(1,2,4,5,8,9,11,12,15,16,18,19,22,23), padj=0.2, cex=0.7)
 mtext(c('Infected','Mock','Infected','Mock','Infected','Mock','Mock'), side=1, at=c(1.5,4.5,8.5,11.5,15.5,18.5,22.5), padj=1.8, cex=0.8)

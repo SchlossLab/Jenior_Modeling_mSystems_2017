@@ -361,11 +361,12 @@ legend(x=0.23, y=0.7, legend=c('Amino acid catabolism',
                                'Monosaccharide catabolism',
                                'Disaccharide catabolism',
                                'Sugar alcohol catabolism', 
-                               'Fermentation product synthesis', 
+                               'Fermentation product metabolism', 
                                'PTS transporters', 
                                'ABC sugar transporters', 
                                'All other genes'), 
-       ncol=1, pch=21, cex=1.1, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
+       ncol=1, pch=21, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), 
+       col=c('black','black','black','black','black','black','black','black','gray65'), 
        pt.bg=c(fox[2],
                'firebrick1',
                fox[1],
@@ -495,7 +496,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
           pch=21, cex=2, bg=fox[5])
-text(x=0, y=-0.48, labels='Fermentation product synthesis', cex=1.3)
+text(x=0, y=-0.48, labels='Fermentation product metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='I', cex=1.6)
 
 dev.off()
