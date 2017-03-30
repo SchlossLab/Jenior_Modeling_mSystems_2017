@@ -157,7 +157,6 @@ monosaccharides$grouping <- NULL
 monosaccharides[,1:3] <- log10(monosaccharides[,1:3] + 1)
 
 # Polysaccharide catabolism
-sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
 maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosidase', combined_mapping$gene)),
                  subset(combined_mapping, grepl('maa;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('mapA;', combined_mapping$gene)),
@@ -165,8 +164,8 @@ maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosida
 tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalose utilization operon
 glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)))
-polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
-rm(sucrose, maltose, tre, glucosidase, cel)
+polysaccharides <- rbind(maltose, tre, glucosidase, cel)
+rm(maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
 polysaccharides_relabund <- polysaccharides[,1:3] / rowSums(polysaccharides[,1:3])
 gene_table <- rbind(gene_table, polysaccharides)
