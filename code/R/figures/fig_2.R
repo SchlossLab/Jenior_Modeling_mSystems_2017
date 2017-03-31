@@ -157,7 +157,6 @@ monosaccharides$grouping <- NULL
 monosaccharides[,1:3] <- log10(monosaccharides[,1:3] + 1)
 
 # Polysaccharide catabolism
-sucrose <- subset(combined_mapping, grepl('scr.;', combined_mapping$gene))
 maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosidase', combined_mapping$gene)),
                  subset(combined_mapping, grepl('maa;', combined_mapping$gene)),
                  subset(combined_mapping, grepl('mapA;', combined_mapping$gene)),
@@ -165,8 +164,8 @@ maltose <- rbind(subset(combined_mapping, grepl('maltose-6\'-phosphate_glucosida
 tre <- subset(combined_mapping, grepl('tre.;', combined_mapping$gene)) # Trehalose utilization operon
 glucosidase <- subset(combined_mapping, grepl('glucosidase', combined_mapping$gene))
 cel <- rbind(subset(combined_mapping, grepl('celG;', combined_mapping$gene)))
-polysaccharides <- rbind(sucrose, maltose, tre, glucosidase, cel)
-rm(sucrose, maltose, tre, glucosidase, cel)
+polysaccharides <- rbind(maltose, tre, glucosidase, cel)
+rm(maltose, tre, glucosidase, cel)
 polysaccharides$grouping <- rep('Polysaccharide catabolism', nrow(polysaccharides))
 polysaccharides_relabund <- polysaccharides[,1:3] / rowSums(polysaccharides[,1:3])
 gene_table <- rbind(gene_table, polysaccharides)
@@ -239,12 +238,14 @@ fermentation[,1:3] <- log10(fermentation[,1:3] + 1)
 
 # Prep the data from and write it to a file
 gene_table$KEGG_code <- rownames(gene_table)
-table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1.tsv'
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1A.tsv'
 write.table(gene_table, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 rm(table_file, gene_table)
 
 # Calculate rleative abundance for the rest of the genes
 combined_mapping[,1:3] <- combined_mapping[,1:3] / rowSums(combined_mapping[,1:3])
+table_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/tables/table_S1B.tsv'
+write.table(combined_mapping, file=table_file, sep='\t', row.names=FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------------------------------------------------#
 
@@ -359,11 +360,12 @@ legend(x=0.23, y=0.7, legend=c('Amino acid catabolism',
                                'Monosaccharide catabolism',
                                'Disaccharide catabolism',
                                'Sugar alcohol catabolism', 
-                               'Fermentation product synthesis', 
+                               'Fermentation product metabolism', 
                                'PTS transporters', 
                                'ABC sugar transporters', 
                                'All other genes'), 
-       ncol=1, pch=21, cex=1.1, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), col=c('black','black','black','black','black','black','black','black','gray65'), 
+       ncol=1, pch=21, pt.cex=c(2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,1.4), 
+       col=c('black','black','black','black','black','black','black','black','gray65'), 
        pt.bg=c(fox[2],
                'firebrick1',
                fox[1],
@@ -493,7 +495,7 @@ lines(x=c(0,0), y=c(-0.333,0.665))
 lines(x=c(-0.288,0.577), y=c(0.1665,-0.333))
 tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], 
           pch=21, cex=2, bg=fox[5])
-text(x=0, y=-0.48, labels='Fermentation product synthesis', cex=1.3)
+text(x=0, y=-0.48, labels='Fermentation product metabolism', cex=1.3)
 text(x=-0.5, y=0.5, labels='I', cex=1.6)
 
 dev.off()
