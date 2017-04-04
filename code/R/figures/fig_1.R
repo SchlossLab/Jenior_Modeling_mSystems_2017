@@ -203,15 +203,15 @@ mtext('B', side=2, line=2, las=2, adj=2, padj=-6.5, cex=1.5)
 par(mar=c(3,5,0.6,1))
 stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.2,
            ylim=c(1.9,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab='Toxin titer/g content', xlab='',
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=0, cex.lab=1.2)
 abline(h=2.3, lty=2, lwd=1.5) # LOD
 stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
            ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
-           ylab='Toxin titer/g content', xlab='',
+           ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=2, cex.lab=1.2, add=TRUE)
 mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, at=c(1:5), padj=1, cex=0.85)
-axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','200','398','794','1585','3162','6310'), cex.axis=1.2)
+axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8')) 
 
 # Draw axis break
 axis.break(2, 2.05, style='slash') 
