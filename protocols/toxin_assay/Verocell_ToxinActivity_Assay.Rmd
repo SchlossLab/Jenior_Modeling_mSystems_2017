@@ -1,5 +1,5 @@
 # Vero Cell Toxin Activity Assay 
-## Modified by Jhansi Leslie from a protocol written by [Cassie Schumacher](https://www.linkedin.com/in/cassie-schumacher-2542595)
+## by Jhansi Leslie from a protocol originally written by [Cassie Schumacher](https://www.linkedin.com/in/cassie-schumacher-2542595)
 
 ### Day 1 : Part 1 Preparing the Cells
 
