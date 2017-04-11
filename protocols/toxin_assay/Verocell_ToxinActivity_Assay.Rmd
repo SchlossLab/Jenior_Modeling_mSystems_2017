@@ -100,6 +100,6 @@
 		This corresponds to the 10^-3 dilution in both replicate A and B. 
 		If replicate A and B were discordant then we would take the average value. 
 		Total dilution of mouse #1 sample = 1/50 (dilution of well #2 in plate 1) * 1/2 (addition of sample to PBS, dilution plate 2) * 1/10 (addition of sample to vero cells)  = 1/1000 
-		Toxin activity = Log10 (1/(1/1000) = 3 
+		Toxin activity = Log10 (1/(1/1000)) = 3 
 		The limit of detection on this assay is 2.3 
  	```
