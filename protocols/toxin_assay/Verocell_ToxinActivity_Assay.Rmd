@@ -92,7 +92,7 @@
 3. Sample wells: Choose well that is last well to have >= 80% cell rounding & use the dilution of this well to calculate  toxin activity 
 4. Positive control: Wells with higher concentrations of toxin  diluted in PBS should be round while the counterpart wells added to the anti-toxin sera should have no rounding. 
 	+ This allows you to know that any cell rounding is due to the toxin and not other things in the sample 
-5. Toxin activity:  log [reciprocal of the final dilution factor]/ per gram of cecal content.
+5. Toxin Titer:  log [reciprocal of the final dilution factor]/ per gram of cecal content.
 
 	```
 		Toxin activity calculation: 
