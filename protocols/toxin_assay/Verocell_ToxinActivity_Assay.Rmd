@@ -15,7 +15,7 @@
 5. Spin 5min @ 1000 RPM @ 25°C (room temp).
 5. Decant supernatant.
 6. Resuspend the cells in 3mL of fresh supplemented DMEM
-	+ As a rule you need 3mL fresh media per 
+	+ As a rule you need 3mL fresh media per flask of cells 
 
 #### Count cells
 1. Add 100uL cell suspension to 100uL [trypan blue](https://www.thermofisher.com/order/catalog/product/15250061).
@@ -57,19 +57,19 @@
 5. Spin for 5 min at 13,000 rpm at room temperature
 	+ This pellets the solid part of the content 
 6. Load 160uL of the supernatant into a [MultiScreenHTS GV Filter Plate, 0.22 µm, clear, sterile](https://www.emdmillipore.com/US/en/product/MultiScreenHTS-GV-Filter-Plate,-0.22%C2%A0%C2%B5m,-clear,-sterile,MM_NF-MSGVS2210)
-	+ Alternatively you can sterilize diluted content  into an eppendorf tube by putting content in syringe and passing through 0.22um filter. 
+	+ Alternatively you can sterilize diluted content into an eppendorf tube by putting content in syringe and passing through 0.22um filter. 
 	+ This is the 10^‐1 stock that is used with the dilution plate.
 
 #### Create Dilution plate #1 (this plate will be all of the serial dilutions needed for each sample) 
 1. Use a sterile 96-well plate
 2. Load 100uL of each filter sterilized sample in wells 1 or 7 in rows A-H, include pure toxin or culture supernatant as a postive control and PBS as a negative control 
-3. Add 90uL of PBS to the rest of the wells on the plate
-4. Make 1:10 serial dilutions across the plate (see plate map bellow) 
+3. Add 80uL of PBS to the rest of the wells on the plate
+4. Make 1:5 serial dilutions across the plate (see plate map bellow) 
 <div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569675/523a1b04-5f17-11e6-926b-e5253f54a7ac.jpg" width="500" height="300" /></div> 
 
 
 #### Create Dilution plate #2 (this plate is for the addition of  anti-toxin Ab to the sample)
-1. Label all wells with their dilution (10^‐1  to 10^‐6)
+1. Label all wells with their dilution 
   	+  Need 2 lanes of 6 wells each for each sample.
 2. Remove an aliquot of [Alere's goat anti-toxin A&B sera](https://www.fishersci.com/shop/products/alere-c-difficile-toxin-antitoxin-kit-c-difficile-toxin-antitoxin-kit/23046761) from the -20C.
 	+  Dilute the sera 1:25 in sterile PBS 
@@ -78,14 +78,14 @@
 	+ In rows B, D, F, and H add 20uL of diluted anti-toxin sera 
 4. Transfer 20uL from appropriate sample/wells on dilution plate 1 to appropriate wells on this plate  (this is a further 1:2 dilution)
 <div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569686/5c28996a-5f17-11e6-9b92-11ff5c4e28ae.jpg" width="500" height="300" /></div> 
-5. Once all samples have been added incubate for 40 min so anti-toxin antibodies in sera can bind/inactivate the toxin. 
+5. Once all samples have been added incubate for 40 min  at room temperature so anti-toxin antibodies in sera can bind/inactivate the toxin. 
 6. Add 10uL of mixture from  dilution plate 2 to wells of Vero cells (this is a further 1/10 dilution).
 7. Incubate cells at 37C in a 5% CO2 humidified incubator over night.
 
 ### Day 2:  Reading the Plate 
 
 #### Analyze Vero cells using the light microscope
-1. Remember, the dilution factor changes by a factor of 10 when added to Vero cells (10^‐3  -­‐> 10^‐4)
+1. Remember, the dilution factor changes by a factor of 10 when added to Vero cells (1/20 -‐> 1/200)
 2. Anti-toxin wells should show no cell rounding.
 3. Sample wells: Choose well that is last well to have >= 80% cell rounding & use the dilution of this well to calculate  toxin activity 
 4. Positive control: Wells with higher concentrations of toxin  diluted in PBS should be round while the counterpart wells added to the anti-toxin sera should have no rounding. 
@@ -94,11 +94,10 @@
 
 	```
 		Toxin activity calculation: 
-		Say the last well with 80% or more of the cells round  for mouse #1 was A4 and A10 (see plate maps above).
-		This corresponds to the 10^-4 dilution in both replicate A and B. 
+		Say the last well with 80% or more of the cells round  for mouse #1 was A2 and A5 (see plate maps above).
+		This corresponds to the 10^-3 dilution in both replicate A and B. 
 		If replicate A and B were discordant then we would take the average value. 
-		Total dilution of mouse #1 sample = 10^-4 * 1/2 (addition of sample to PBS, dilution plate 2) * 1/10 (addition of sample to vero cells) 
-		Total dilution of mouse #1 sample = 5 x 10^-6 
-		Toxin activity = Log10 (1/(5x 10^-6) =5.3 
+		Total dilution of mouse #1 sample = 1/50 (dilution of well #2 in plate 1) * 1/2 (addition of sample to PBS, dilution plate 2) * 1/10 (addition of sample to vero cells)  = 1/1000 
+		Toxin activity = Log10 (1/(1/1000) = 3 
 		The limit of detection on this assay is 2.3 
  	```
