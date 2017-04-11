@@ -78,6 +78,7 @@
 	+ In rows B, D, F, and H add 20uL of diluted anti-toxin sera 
 4. Transfer 20uL from appropriate sample/wells on dilution plate 1 to appropriate wells on this plate  (this is a further 1:2 dilution)
 <div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569686/5c28996a-5f17-11e6-9b92-11ff5c4e28ae.jpg" width="500" height="300" /></div> 
+
 5. Once all samples have been added incubate for 40 min  at room temperature so anti-toxin antibodies in sera can bind/inactivate the toxin. 
 6. Add 10uL of mixture from  dilution plate 2 to wells of Vero cells (this is a further 1/10 dilution).
 7. Incubate cells at 37C in a 5% CO2 humidified incubator over night.
