@@ -21,7 +21,7 @@
 1. Add 100uL cell suspension to 100uL [trypan blue](https://www.thermofisher.com/order/catalog/product/15250061).
 2. Add 10uL of this mixture to each chamber of a hemocytometer.
 3. Count the number of viable cells (not blue) in the corners of the hemocytometer highlighted in yellow, remember to count cells on the line for the top and right sides of the square only 
-<div style="text-align:center"><img src ="hthttps://cloud.githubusercontent.com/assets/10421686/17569669/4b216796-5f17-11e6-8a21-c3bcc9eec3e8.jpg" width="100" height="100" /></div> 
+<div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569669/4b216796-5f17-11e6-8a21-c3bcc9eec3e8.jpg" width="100" height="100" /></div> 
 4.	Average number of viable cells
 5.	Multiply by dilution factor 
 	+ dilution factor is 2 since 100uL cells was added to 100uL trypan (for a total volume of 200uL)
