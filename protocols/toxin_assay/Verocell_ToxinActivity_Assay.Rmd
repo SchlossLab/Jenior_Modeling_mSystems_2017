@@ -21,7 +21,7 @@
 1. Add 100uL cell suspension to 100uL [trypan blue](https://www.thermofisher.com/order/catalog/product/15250061).
 2. Add 10uL of this mixture to each chamber of a hemocytometer.
 3. Count the number of viable cells (not blue) in the corners of the hemocytometer highlighted in yellow, remember to count cells on the line for the top and right sides of the square only 
-<div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569669/4b216796-5f17-11e6-8a21-c3bcc9eec3e8.jpg" width="100" height="100" /></div> 
+<div style="text-align:center"><img src ="https://github.com/SchlossLab/Jenior_Modeling_mBio_2017/blob/master/protocols/toxin_assay/hemocytometer%20.jpg?raw=true" width="100" height="100" /></div> 
 
 4.	Average number of viable cells
 5.	Multiply by dilution factor 
@@ -66,7 +66,7 @@
 2. Load 100uL of each filter sterilized sample in wells 1 or 7 in rows A-H, include pure toxin or culture supernatant as a postive control and PBS as a negative control 
 3. Add 80uL of PBS to the rest of the wells on the plate
 4. Make 1:5 serial dilutions across the plate (see plate map bellow) 
-<div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569675/523a1b04-5f17-11e6-926b-e5253f54a7ac.jpg" width="500" height="300" /></div> 
+<div style="text-align:center"><img src ="https://github.com/SchlossLab/Jenior_Modeling_mBio_2017/blob/master/protocols/toxin_assay/Toxinassay_dilutionplate1_Jenior_mBio.jpg?raw=true" width="500" height="300" /></div> 
 
 
 #### Create Dilution plate #2 (this plate is for the addition of  anti-toxin Ab to the sample)
@@ -78,7 +78,7 @@
 	+ In rows A, C, E, and G add 20uL of PBS  across all wells
 	+ In rows B, D, F, and H add 20uL of diluted anti-toxin sera 
 4. Transfer 20uL from appropriate sample/wells on dilution plate 1 to appropriate wells on this plate  (this is a further 1:2 dilution)
-<div style="text-align:center"><img src ="https://cloud.githubusercontent.com/assets/10421686/17569686/5c28996a-5f17-11e6-9b92-11ff5c4e28ae.jpg" width="500" height="300" /></div> 
+<div style="text-align:center"><img src ="https://github.com/SchlossLab/Jenior_Modeling_mBio_2017/blob/master/protocols/toxin_assay/Toxinassay_dilutionplate2_Jenior_mBio.jpg?raw=true" width="500" height="300" /></div> 
 
 5. Once all samples have been added incubate for 40 min  at room temperature so anti-toxin antibodies in sera can bind/inactivate the toxin. 
 6. Add 10uL of mixture from  dilution plate 2 to wells of Vero cells (this is a further 1/10 dilution).
