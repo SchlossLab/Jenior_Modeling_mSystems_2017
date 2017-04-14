@@ -1,5 +1,5 @@
 ---
-title: "*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut communities"
+title: "*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut microbiomes"
 csl: mbio.csl
 output:
  word_document:
@@ -409,7 +409,7 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 **Supplementary Figure 6 | Change in *in vivo* concentrations of additional Stickland fermentation substrates.** Comparison of concentrations for other Stickland fermentation substrates from *C. difficile*-infected and mock-infected mouse cecal content 18 hours post-infection. Labels in the top left corner of each panel indicate whether the amino acid is a Stickland donor or acceptor. Black asterisks inside the panels denote significant differences between mock and *C. difficile*-infected groups within separate treatment groups (all *P* < 0.05). Gray asterisks along the top margin of each panel indicate significant difference from untreated SPF mice (all *P* < 0.05).
 
 
-**Supplementary Table 1 | Sets of genes included in Figure 2 with normalized abundances and annotations.**
+**Supplementary Table 1 | Sets of genes included in Figure 2 with normalized and precent abundances.**
 
 **Supplementary Table 2 | Topology metrics for enzyme and metabolite nodes in the *C. difficile* str. 630 metabolic network.**
 
