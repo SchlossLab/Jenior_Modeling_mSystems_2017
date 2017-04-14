@@ -17,8 +17,7 @@ Overview
     |     |- fig_2.R
     |     |- fig_3.R
     |     |- fig_4.R
-    |     |- fig_5.R
-    |     +- fig_6.R
+    |     +- fig_5.R
     |  |- supplement/     # Code for supplementary figures
     |     |- fig_S1.R
     |     |- fig_S2.R
