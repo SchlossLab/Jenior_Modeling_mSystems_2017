@@ -80,13 +80,11 @@ R code/R/figures/fig_2.R
 R code/R/figures/fig_3.R
 R code/R/figures/fig_4.R
 R code/R/figures/fig_5.R
-R code/R/figures/fig_6.R
 R code/R/supplement/fig_S1.R
 R code/R/supplement/fig_S2.R
 R code/R/supplement/fig_S3.R
 R code/R/supplement/fig_S4.R
 R code/R/supplement/fig_S5.R
 R code/R/supplement/fig_S6.R
-R code/R/supplement/fig_S7.R
 
 ```
