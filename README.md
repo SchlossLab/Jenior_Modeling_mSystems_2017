@@ -1,4 +1,4 @@
-*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut communities
+*Clostridium difficile* colonizes alternative nutrient niches during infection across distinct murine gut microbiomes
 =======
 
 **Abstract**
