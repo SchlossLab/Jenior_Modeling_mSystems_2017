@@ -75,6 +75,7 @@ python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/cefoperaz
 python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/clindamycin_630.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name clindamycin_630
 python ~/Desktop/bigsmall/bigsmall.py data/metabolic_models/expression/germfree.RNA_reads2cdf630.norm.ko.pick.txt --iters 10000 --name germfree_630
 
+R code/R/support/subsample.R
 R code/R/figures/fig_1.R
 R code/R/figures/fig_2.R
 R code/R/figures/fig_3.R
