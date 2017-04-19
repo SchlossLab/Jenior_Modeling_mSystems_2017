@@ -23,7 +23,6 @@ Overview
     |     |- fig_S2.R
     |     +- fig_S3.R
     |  +- support/     # Additional analysis scripts
-    |     |- curve_test.R     # Formates growth data for ANOVA tests
     |     +- subsample.R     # Evenly subsamples mapping files for even analysis
     |
     |- pbs/     # PBS scripts used during data processing
