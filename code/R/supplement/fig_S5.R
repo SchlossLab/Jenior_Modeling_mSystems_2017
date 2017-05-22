@@ -121,22 +121,6 @@ rm(strep, cef, clinda, conv)
 
 #----------------------------------------#
 
-# Calculate population variance
-#strep_metabolome_mock <- pop_var(strep_metabolome_mock)
-#strep_metabolome_630 <- pop_var(strep_metabolome_630)
-#cef_metabolome_mock <- pop_var(cef_metabolome_mock)
-#cef_metabolome_630 <- pop_var(cef_metabolome_630)
-#clinda_metabolome_mock <- pop_var(clinda_metabolome_mock)
-#clinda_metabolome_630 <- pop_var(clinda_metabolome_630)
-#conv_metabolome_mock <- pop_var(conv_metabolome_mock)
-#strep_shared_mock <- pop_var(strep_shared_mock)
-#strep_shared_630 <- pop_var(strep_shared_630)
-#cef_shared_mock <- pop_var(cef_shared_mock)
-#cef_shared_630 <- pop_var(cef_shared_630)
-#clinda_shared_mock <- pop_var(clinda_shared_mock)
-#clinda_shared_630 <- pop_var(clinda_shared_630)
-#conv_shared_mock <- pop_var(conv_shared_mock)
-
 # Calculate sample variance
 strep_metabolome_mock <- samp_var(strep_metabolome_mock)
 strep_metabolome_630 <- samp_var(strep_metabolome_630)
@@ -152,10 +136,6 @@ cef_shared_630 <- samp_var(cef_shared_630)
 clinda_shared_mock <- samp_var(clinda_shared_mock)
 clinda_shared_630 <- samp_var(clinda_shared_630)
 conv_shared_mock <- samp_var(conv_shared_mock)
-
-# Calculate differences
-#pvalues_16S <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
-#pvalues_metabolome <- p.adjust(c(wilcox.test(, , exact=F)$p.value, ), method='BH')
 
 # Calculate summary stats for barplots
 metabolome <- rbind(quantile(strep_metabolome_mock)[2:4],
