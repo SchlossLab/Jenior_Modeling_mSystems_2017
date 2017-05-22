@@ -1,6 +1,10 @@
 
 library(vegan)
 library(stringr)
+RowVar <- function(x) {
+  rowSums((x - rowMeans(x))^2)/(dim(x)[2] - 1)
+}
+
 cef_reads <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/expression/cefoperazone_630.RNA_reads2cdf630.norm.ko.pick.txt', 
                     sep='\t', header=F)
 colnames(cef_reads) <- c('ko', 'cefoperazone')
@@ -27,11 +31,26 @@ reads[,3] <- as.vector(rrarefy(floor(reads[,3]), sample=sub_size))
 reads[,4] <- as.vector(rrarefy(floor(reads[,4]), sample=sub_size))
 reads[,5] <- as.vector(rrarefy(floor(reads[,5]), sample=sub_size))
 rm(sub_size)
+
+# K02469 = gyrA - DNA gyrase subunit A
+# K03040 = rpoA - DNA-directed RNA polymerase subunit alpha
+# K10670 = glycine_reductase_[EC:1.21.4.2]
+# K10793 = D-proline_reductase_(dithiol)_PrdA_[EC:1.21.4.1]
+# K02406 = flagellin
+# K06334 = spore_coat_protein_JC
+test <- reads
+test[,1] <- NULL
+reads$variance <- RowVar(test)
+reads <- reads[order(-reads$variance),]
 defs <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/ko_definition.list', 
                        sep='\t', header=FALSE, quote='')
 colnames(defs) <- c('ko', 'definition')
 defs$definition <- gsub(' ', '_', defs$definition)
 reads <- merge(reads, defs, by='ko')
+test <- reads[reads$ko %in% c('K02469','K03040','K10670','K10793','K02406','K06334'),]
+write.table(test, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/variance_ko.tsv', row.names=FALSE, quote=FALSE, sep='\t')
+rm(test)
+reads$variance <- NULL
 rm(defs)
 cdf <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg/cdf_ko.list', 
                    sep='\t', header=FALSE)
