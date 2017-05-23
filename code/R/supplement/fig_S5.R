@@ -2,6 +2,7 @@
 # Start with a blank slate
 rm(list=ls())
 gc()
+source('~/Desktop/Repositories/Jenior_Metatranscriptomics_2016/code/R/functions.R')
 
 # Load dependencies
 deps <- c('wesanderson', 'plotrix');
@@ -35,6 +36,7 @@ metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.ts
 metabolome <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/metabolomics.scaled_intensities.tsv'
 shared <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/16S_analysis/all_treatments.0.03.unique_list.0.03.filter.0.03.subsample.shared'
 ko_var <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/variance_ko.tsv'
+cfu <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/wetlab_assays/cfu.dat'
 
 #----------------------------------------#
 
@@ -46,6 +48,17 @@ metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] 
 shared <- read.delim(shared, sep='\t', header=T, row.names=2)
 shared <- shared[!rownames(shared) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
 ko_var <- read.delim(ko_var, sep='\t', header=T, row.names=1)
+cfu <- read.delim(cfu, sep='\t', header=T)
+
+# Subset and format KO variation data
+clpP <- as.numeric(ko_var['K01358',c(1:4)])
+thrS <- as.numeric(ko_var['K01868',c(1:4)])
+gyrA <- as.numeric(ko_var['K02469',c(1:4)])
+enolase <- as.numeric(ko_var['K01689',c(1:4)])
+grdA <- as.numeric(ko_var['K10670',c(1:4)])
+prdA <- as.numeric(ko_var['K10793',c(1:4)])
+kar_var <- c(gyrA,0,thrS,0,clpP,0,enolase,0,grdA,0,prdA)
+rm(gyrA,thrS,clpP,enolase,grdA,prdA)
 
 # Format data
 metadata$cage <- NULL
@@ -62,6 +75,13 @@ shared$label <- NULL
 shared$numOtus <- NULL
 shared <- log10(shared + 10)
 otus <- colnames(shared)
+cfu$mouse <- NULL
+cfu$cfu_spore <- NULL
+cfu <- subset(cfu, cage < 4 ) # Remove uninfected controls
+cfu$cage <- NULL
+cfu <- subset(cfu, cfu$treatment != 'conventional')
+cfu$treatment <- factor(cfu$treatment, levels=c('streptomycin', 'cefoperazone', 'clindamycin', 'germfree'))
+cfu$cfu_vegetative <- log10(cfu$cfu_vegetative)
 
 # Merge datasets
 shared <- merge(metadata, shared, by='row.names')
@@ -120,6 +140,11 @@ conv_shared_mock <- subset(conv, infection == 'mock')
 conv_shared_mock$infection <- NULL
 rm(shared)
 rm(strep, cef, clinda, conv)
+cef_cfu <- as.numeric(cfu[cfu$treatment == 'cefoperazone', 2])
+strep_cfu <- as.numeric(cfu[cfu$treatment == 'streptomycin', 2])
+clinda_cfu <- as.numeric(cfu[cfu$treatment == 'clindamycin', 2])
+gf_cfu <- as.numeric(cfu[cfu$treatment == 'germfree', 2])
+rm(cfu)
 
 #----------------------------------------#
 
@@ -164,6 +189,8 @@ colnames(shared) <- c('q25','median','q75')
 rownames(shared) <- c('strep_mock','strep_630','cef_mock','cef_630',
                           'clinda_mock','clinda_630','conv_mock')
 shared$q75[nrow(shared)] <- 0.00095
+cfu_var <- c(var(strep_cfu),var(cef_cfu),var(clinda_cfu),var(gf_cfu))
+rm(strep_cfu,cef_cfu,clinda_cfu,gf_cfu)
 
 rm(strep_metabolome_mock,strep_metabolome_630,cef_metabolome_mock,cef_metabolome_630,
    clinda_metabolome_mock,clinda_metabolome_630,conv_metabolome_mock,strep_shared_mock,
@@ -173,45 +200,50 @@ rm(strep_metabolome_mock,strep_metabolome_630,cef_metabolome_mock,cef_metabolome
 
 # Generate plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S5.pdf'
-pdf(file=plot_file, width=6, height=12)
+pdf(file=plot_file, width=6, height=15)
 layout(matrix(c(1,
                 2,
-                3), nrow=3, ncol=1, byrow=TRUE))
+                3,
+                4), nrow=4, ncol=1, byrow=TRUE))
 
+# Conserved colors across studies and figures
+strep_col <- '#D37A1F'
+cef_col <- '#3A9CBC'
+clinda_col <- '#A40019'
+noabx_col <- 'gray40'
+gf_col <- 'forestgreen'
 
 # Housekeeping genes
-
-# Overrepresented pathways
-par(mar=c(15,4,1,2), las=1, mgp=c(1.6,0.7,0))
-plot(0, type='n', xlab='', xaxt='n', yaxt='n', ylab=, xlim=c(0.5,20), ylim=c(-12,12))
-abline(h=0, lwd=1.5)
-abline(h=c(-confidence,confidence), lwd=1.2, lty=5, col='gray30')
-axis(side=2, at=seq(-12,12,3), labels=c(12,9,6,3,0,3,6,9,12))
-text(x=c(2.6,2.39), y=c(12,-12), cex=0.9,
-     labels=c(as.expression(bquote(paste('Greater in ',italic('C. difficile'),'-infected Metatranscriptome'))), 'Greater in Mock-infected Metatranscriptome'))
-legend('topright', legend=c('Streptomycin-pretreated','Cefoperazone-pretreated','Clindamycin-pretreated'),
-       pt.bg=c(strep_col, cef_col, clinda_col), pch=22, pt.cex=1.7, col='black', bty='n')
-text(cex=1, x=c(seq(1.2,6,1.2),seq(8.4,13.2,1.2),seq(15.6,20.4,1.2)), y=-14, pathway_names, xpd=TRUE, srt=60, pos=2)
-
+par(mar=c(3,5,1,1), las=1, mgp=c(3,0.7,0))
+plot(0, type='n', xlab='', xaxt='n', ylab='Normalized Read Abundance', xlim=c(0,35), ylim=c(0,650), yaxs='i')
+legend('topleft', legend=c('Streptomycin-pretreated','Cefoperazone-pretreated','Clindamycin-pretreated','ex-Germfree'),
+       pt.bg=c(strep_col, cef_col, clinda_col, gf_col), pch=22, cex=1.1, pt.cex=2, col='black', bty='n')
 # Add groups
-barplot(ko_var$streptomycin, xlim=c(0.5,20), ylim=c(-12,12), col=adjustcolor(strep_col, alpha.f=0.75), yaxt='n', add=TRUE) # Streptomycin
+barplot(kar_var, col=c(strep_col,cef_col,clinda_col,gf_col,'white',
+                       strep_col,cef_col,clinda_col,gf_col,'white',
+                       strep_col,cef_col,clinda_col,gf_col,'white',
+                       strep_col,cef_col,clinda_col,gf_col,'white',
+                       strep_col,cef_col,clinda_col,gf_col,'white',
+                       strep_col,cef_col,clinda_col,gf_col,'white'), yaxt='n', add=TRUE, yaxs='i')
+text(cex=1.2, x=c(4,10,16,23,28,34), y=-30, c('GyrA','ThrS','ClpP','Enolase','GrdA','PrdA'), xpd=TRUE, pos=2)
+abline(v=17.5, lwd=1.5)
+text(x=c(16.25,19), y=625, labels=c('I','II'), cex=2, vfont=c('serif','bold')) # label either side of vertical line
+mtext('A', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
 
-barplot(ko_var$cefoperazone, xlim=c(0.5,20), ylim=c(-12,12), col=adjustcolor(strep_col, alpha.f=0.75), yaxt='n', add=TRUE) # Streptomycin
-
-barplot(ko_var$clindamycin, xlim=c(0.5,20), ylim=c(-12,12), col=adjustcolor(strep_col, alpha.f=0.75), yaxt='n', add=TRUE) # Streptomycin
-
-barplot(ko_var$germfree, xlim=c(0.5,20), ylim=c(-12,12), col=adjustcolor(strep_col, alpha.f=0.75), yaxt='n', add=TRUE) # Streptomycin
-
-
-
-
-mtext('A', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
-
+# Vegetative C. difficile CFU
+par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
+barplot(cfu_var, ylim=c(0,1), ylab='Sample Variance',
+        col=c(strep_col,cef_col,clinda_col,gf_col))
+box()
+mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+      at=c(0.7,1.9,3.1,4.3), padj=2, cex=0.9)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+legend('topleft', legend='Vegetative CFU (Log10)', pt.cex=0, bty='n', cex=1.2)
 
 # 16S
 par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
-barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Within-group Sample Variance',
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
+barplot(shared$median, xaxt='n', yaxt='n', ylim=c(0,0.001), ylab='Sample Variance',
+        col=c(strep_col,strep_col,cef_col,cef_col,clinda_col,clinda_col,noabx_col))
 segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=shared$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=shared$q75)
 mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
 mtext(c('+','-','+','-','+','-','-'), side=1, 
@@ -223,12 +255,13 @@ axis(side=2, at=c(0,0.0002,0.0004,0.0006,0.001), labels=c('0.0','0.0002','0.0004
 axis.break(2, 0.0008, style='slash') 
 rect(xleft=7.7, xright=8.1, ytop=0.00081, ybottom=0.00079, col='white', border='white')
 segments(x0=c(-1,-1,8.72),y0=c(0,0.001,0),x1=c(10,10,8.72),y1=c(0,0.001,0.001), lwd=2)
-mtext('B', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+legend('topleft', legend='OTU Abundance', pt.cex=0, bty='n', cex=1.2)
 
 # Metabolome
 par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
-barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Within-group Sample Variance',
-        col=c(wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[1],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[3],wes_palette("FantasticFox")[5],wes_palette("FantasticFox")[5], 'gray50'))
+barplot(metabolome$median, xaxt='n', yaxt='n', ylim=c(0,0.9), ylab='Sample Variance',
+        col=c(strep_col,strep_col,cef_col,cef_col,clinda_col,clinda_col,noabx_col))
 segments(x0=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y0=metabolome$q25, x1=c(0.7,1.9,3.1,4.3,5.5,6.7,7.9), y1=metabolome$q75)
 mtext('CDI:', side=1, at=0, padj=0.2, cex=0.9)
 mtext(c('+','-','+','-','+','-','-'), side=1, 
@@ -240,7 +273,8 @@ axis(side=2, at=c(0,0.2,0.4,0.6,0.9), labels=c('0.0','0.2','0.4','0.6','9.0'))
 axis.break(2, 0.8, style='slash') 
 segments(x0=c(-1,-1,8.72),y0=c(0,0.9,0),x1=c(10,10,8.72),y1=c(0,0.9,0.9), lwd=2)
 rect(xleft=7.7, xright=8.1, ytop=0.81, ybottom=0.79, col='white', border='white')
-mtext('C', side=2, line=2, las=2, adj=3, padj=-8, cex=1.5)
+mtext('D', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+legend('topleft', legend='Metabolome (Log10)', pt.cex=0, bty='n', cex=1.2)
 
 dev.off()
 

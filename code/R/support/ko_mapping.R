@@ -21,8 +21,8 @@ gf_reads <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/
                         sep='\t', header=F)
 colnames(gf_reads) <- c('ko', 'germfree')
 gf_reads <- aggregate(germfree~ko,data=gf_reads,FUN=sum)
-reads <- merge(cef_reads, clinda_reads, by='ko')
-reads <- merge(reads, strep_reads, by='ko')
+reads <- merge(strep_reads, cef_reads, by='ko')
+reads <- merge(reads, clinda_reads, by='ko')
 reads <- merge(reads, gf_reads, by='ko')
 rm(cef_reads, clinda_reads, strep_reads, gf_reads)
 sub_size <- ceiling(min(colSums(reads[,2:5])) * 0.95)
@@ -32,12 +32,6 @@ reads[,4] <- as.vector(rrarefy(floor(reads[,4]), sample=sub_size))
 reads[,5] <- as.vector(rrarefy(floor(reads[,5]), sample=sub_size))
 rm(sub_size)
 
-# K02469 = gyrA - DNA gyrase subunit A
-# K03040 = rpoA - DNA-directed RNA polymerase subunit alpha
-# K10670 = glycine_reductase_[EC:1.21.4.2]
-# K10793 = D-proline_reductase_(dithiol)_PrdA_[EC:1.21.4.1]
-# K02406 = flagellin
-# K06334 = spore_coat_protein_JC
 test <- reads
 test[,1] <- NULL
 reads$variance <- RowVar(test)
@@ -47,7 +41,15 @@ defs <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/kegg
 colnames(defs) <- c('ko', 'definition')
 defs$definition <- gsub(' ', '_', defs$definition)
 reads <- merge(reads, defs, by='ko')
-test <- reads[reads$ko %in% c('K02469','K03040','K10670','K10793','K02406','K06334'),]
+
+# K02469 = gyrA - DNA gyrase subunit A
+# K01868 = thrS - threonyl-tRNA_synthetase
+# K01358 = clpP - ATP-dependent_Clp_protease,_protease_subunit
+# K10670 = glycine_reductase_[EC:1.21.4.2]
+# K10793 = D-proline_reductase_(dithiol)_PrdA_[EC:1.21.4.1]
+# K01689 = enolase
+test <- reads[reads$ko %in% c('K02469','K01868','K01358','K10670','K10793','K01689'),]
+
 write.table(test, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/variance_ko.tsv', row.names=FALSE, quote=FALSE, sep='\t')
 rm(test)
 reads$variance <- NULL
