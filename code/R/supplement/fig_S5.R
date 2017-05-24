@@ -2,7 +2,6 @@
 # Start with a blank slate
 rm(list=ls())
 gc()
-source('~/Desktop/Repositories/Jenior_Metatranscriptomics_2016/code/R/functions.R')
 
 # Load dependencies
 deps <- c('wesanderson', 'plotrix');
@@ -200,11 +199,9 @@ rm(strep_metabolome_mock,strep_metabolome_630,cef_metabolome_mock,cef_metabolome
 
 # Generate plot
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/supplement/figures/figure_S5.pdf'
-pdf(file=plot_file, width=6, height=15)
-layout(matrix(c(1,
-                2,
-                3,
-                4), nrow=4, ncol=1, byrow=TRUE))
+pdf(file=plot_file, width=12, height=10)
+layout(matrix(c(1,2,
+                3,4), nrow=2, ncol=2, byrow=TRUE))
 
 # Conserved colors across studies and figures
 strep_col <- '#D37A1F'
@@ -215,7 +212,7 @@ gf_col <- 'forestgreen'
 
 # Housekeeping genes
 par(mar=c(3,5,1,1), las=1, mgp=c(3,0.7,0))
-plot(0, type='n', xlab='', xaxt='n', ylab='Normalized Read Abundance', xlim=c(0,35), ylim=c(0,650), yaxs='i')
+plot(0, type='n', xlab='', xaxt='n', ylab='Normalized cDNA Abundance', xlim=c(0,35), ylim=c(0,650), yaxs='i')
 legend('topleft', legend=c('Streptomycin-pretreated','Cefoperazone-pretreated','Clindamycin-pretreated','ex-Germfree'),
        pt.bg=c(strep_col, cef_col, clinda_col, gf_col), pch=22, cex=1.1, pt.cex=2, col='black', bty='n')
 # Add groups
@@ -228,7 +225,7 @@ barplot(kar_var, col=c(strep_col,cef_col,clinda_col,gf_col,'white',
 text(cex=1.2, x=c(4,10,16,23,28,34), y=-30, c('GyrA','ThrS','ClpP','Enolase','GrdA','PrdA'), xpd=TRUE, pos=2)
 abline(v=17.5, lwd=1.5)
 text(x=c(16.25,19), y=625, labels=c('I','II'), cex=2, vfont=c('serif','bold')) # label either side of vertical line
-mtext('A', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+mtext('A', side=2, line=2, las=2, adj=2, padj=-11, cex=1.5)
 
 # Vegetative C. difficile CFU
 par(las=1, mar=c(3,5,1,1), mgp=c(3,0.7,0), yaxs='i')
@@ -237,7 +234,7 @@ barplot(cfu_var, ylim=c(0,1), ylab='Sample Variance',
 box()
 mtext(c('Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
       at=c(0.7,1.9,3.1,4.3), padj=2, cex=0.9)
-mtext('B', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+mtext('B', side=2, line=2, las=2, adj=2, padj=-11, cex=1.5)
 legend('topleft', legend='Vegetative CFU (Log10)', pt.cex=0, bty='n', cex=1.2)
 
 # 16S
@@ -255,7 +252,7 @@ axis(side=2, at=c(0,0.0002,0.0004,0.0006,0.001), labels=c('0.0','0.0002','0.0004
 axis.break(2, 0.0008, style='slash') 
 rect(xleft=7.7, xright=8.1, ytop=0.00081, ybottom=0.00079, col='white', border='white')
 segments(x0=c(-1,-1,8.72),y0=c(0,0.001,0),x1=c(10,10,8.72),y1=c(0,0.001,0.001), lwd=2)
-mtext('C', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+mtext('C', side=2, line=2, las=2, adj=2, padj=-11, cex=1.5)
 legend('topleft', legend='OTU Abundance', pt.cex=0, bty='n', cex=1.2)
 
 # Metabolome
@@ -273,7 +270,7 @@ axis(side=2, at=c(0,0.2,0.4,0.6,0.9), labels=c('0.0','0.2','0.4','0.6','9.0'))
 axis.break(2, 0.8, style='slash') 
 segments(x0=c(-1,-1,8.72),y0=c(0,0.9,0),x1=c(10,10,8.72),y1=c(0,0.9,0.9), lwd=2)
 rect(xleft=7.7, xright=8.1, ytop=0.81, ybottom=0.79, col='white', border='white')
-mtext('D', side=2, line=2, las=2, adj=2, padj=-8, cex=1.5)
+mtext('D', side=2, line=2, las=2, adj=2, padj=-11, cex=1.5)
 legend('topleft', legend='Metabolome (Log10)', pt.cex=0, bty='n', cex=1.2)
 
 dev.off()
