@@ -406,19 +406,19 @@ mtext(rep('*',4), side=3, adj=c(0.43,0.5,
 # Alanine
 stripchart(substrate~infection, data=alanine_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=alanine_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
 stripchart(substrate~infection, data=alanine_cef, vertical=T, pch=19, at=c(6,7),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
 stripchart(substrate~infection, data=alanine_clinda, vertical=T, pch=19, at=c(9,10),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
 stripchart(substrate~infection, data=alanine_gf, vertical=T, pch=19, at=c(12,13),
            xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
 axis(side=2, at=c(0:4), labels=c('0.0','1.0','2.0','3.0', '4.0'), cex.axis=1.2)
 abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.3, cex=0.8)
