@@ -107,7 +107,8 @@ rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
 shared_importance$abx <- 'Median Shared Importance'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
-if (nrow(shared_importance) > 5) {shared_importance <- shared_importance[1:5,]}
+if (nrow(shared_importance) > 10) {shared_importance <- shared_importance[1:10,]}
+
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 shared_importance$Compound_name <- gsub('-D-','', shared_importance$Compound_name)
 rm(shared_cef, shared_clinda, shared_strep, shared_gf, score_median)
@@ -117,20 +118,24 @@ cef_only_importance <- as.data.frame(subset(cef_importance_top, !(cef_importance
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance_top[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance_top[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance$Compound_name %in% c('[Enzyme]-cysteine')))) 
-if (nrow(cef_only_importance) > 5) {cef_only_importance <- cef_only_importance[1:5,]}
+if (nrow(cef_only_importance) > 10) {cef_only_importance <- cef_only_importance[1:10,]}
+
 clinda_only_importance <- as.data.frame(subset(clinda_importance_top, !(clinda_importance_top[,1] %in% cef_importance_top[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance_top[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance_top[,1])))
-if (nrow(clinda_only_importance) > 5) {clinda_only_importance <- clinda_only_importance[1:5,]}
+if (nrow(clinda_only_importance) > 10) {clinda_only_importance <- clinda_only_importance[1:10,]}
+
 strep_only_importance <- as.data.frame(subset(strep_importance_top, !(strep_importance_top[,1] %in% clinda_importance_top[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance_top[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance_top[,1])))
-if (nrow(strep_only_importance) > 5) {strep_only_importance <- strep_only_importance[1:5,]}
+if (nrow(strep_only_importance) > 10) {strep_only_importance <- strep_only_importance[1:10,]}
+
 gf_only_importance <- as.data.frame(subset(gf_importance_top, !(gf_importance_top[,1] %in% clinda_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance$Compound_name %in% c('Peptide')))) 
-if (nrow(gf_only_importance) > 5) {gf_only_importance <- gf_only_importance[1:5,]}
+if (nrow(gf_only_importance) > 10) {gf_only_importance <- gf_only_importance[1:10,]}
+
 rm(cef_importance, clinda_importance, strep_importance, gf_importance,
    cef_importance_top, clinda_importance_top, strep_importance_top, gf_importance_top)
 cef_only_importance <- cef_only_importance[order(cef_only_importance$Metabolite_score),]
@@ -302,12 +307,12 @@ layout(matrix(c(1,
 # Metabolite importances
 par(mar=c(3,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(importances$Metabolite_score, labels=importances$Compound_name,
-         lcolor=NA, cex=1.2, groups=importances$abx, color='black',
+         lcolor=NA, cex=1, groups=importances$abx, color='black',
          xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
          gcolor=c('darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('A', side=2, line=2, las=2, adj=1, padj=-17, cex=1.7)
-segments(x0=rep(0, 15), y0=c(1:5, 8:11, 14:18, 21:25, 28:32), 
-         x1=rep(12, 15), y1=c(1:5, 8:11, 14:18, 21:25, 28:32), lty=2) # Dotted lines
+segments(x0=rep(0, 33), y0=c(1:10, 13:16, 19:24, 27:33, 36:41), 
+         x1=rep(12, 33), y1=c(1:10, 13:16, 19:24, 27:33, 36:41), lty=2) # Dotted lines
 
 #---------------------------------------#
 
