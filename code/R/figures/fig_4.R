@@ -107,7 +107,7 @@ rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
 shared_importance$abx <- 'Median Shared Importance'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
-if (nrow(shared_importance) > 10) {shared_importance <- shared_importance[1:10,]}
+#if (nrow(shared_importance) > 10) {shared_importance <- shared_importance[1:10,]}
 
 shared_importance <- shared_importance[order(shared_importance$Metabolite_score),]
 shared_importance$Compound_name <- gsub('-D-','', shared_importance$Compound_name)
@@ -118,23 +118,23 @@ cef_only_importance <- as.data.frame(subset(cef_importance_top, !(cef_importance
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% strep_importance_top[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance[,1] %in% gf_importance_top[,1])))
 cef_only_importance <- as.data.frame(subset(cef_only_importance, !(cef_only_importance$Compound_name %in% c('[Enzyme]-cysteine')))) 
-if (nrow(cef_only_importance) > 10) {cef_only_importance <- cef_only_importance[1:10,]}
+#if (nrow(cef_only_importance) > 10) {cef_only_importance <- cef_only_importance[1:10,]}
 
 clinda_only_importance <- as.data.frame(subset(clinda_importance_top, !(clinda_importance_top[,1] %in% cef_importance_top[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% strep_importance_top[,1])))
 clinda_only_importance <- as.data.frame(subset(clinda_only_importance, !(clinda_only_importance[,1] %in% gf_importance_top[,1])))
-if (nrow(clinda_only_importance) > 10) {clinda_only_importance <- clinda_only_importance[1:10,]}
+#if (nrow(clinda_only_importance) > 10) {clinda_only_importance <- clinda_only_importance[1:10,]}
 
 strep_only_importance <- as.data.frame(subset(strep_importance_top, !(strep_importance_top[,1] %in% clinda_importance_top[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% cef_importance_top[,1])))
 strep_only_importance <- as.data.frame(subset(strep_only_importance, !(strep_only_importance[,1] %in% gf_importance_top[,1])))
-if (nrow(strep_only_importance) > 10) {strep_only_importance <- strep_only_importance[1:10,]}
+#if (nrow(strep_only_importance) > 10) {strep_only_importance <- strep_only_importance[1:10,]}
 
 gf_only_importance <- as.data.frame(subset(gf_importance_top, !(gf_importance_top[,1] %in% clinda_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% strep_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance[,1] %in% cef_importance_top[,1])))
 gf_only_importance <- as.data.frame(subset(gf_only_importance, !(gf_only_importance$Compound_name %in% c('Peptide')))) 
-if (nrow(gf_only_importance) > 10) {gf_only_importance <- gf_only_importance[1:10,]}
+#if (nrow(gf_only_importance) > 10) {gf_only_importance <- gf_only_importance[1:10,]}
 
 rm(cef_importance, clinda_importance, strep_importance, gf_importance,
    cef_importance_top, clinda_importance_top, strep_importance_top, gf_importance_top)
@@ -156,6 +156,10 @@ top_importances$Compound_name <- gsub('_',' ',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('-phosphate','P',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('Salicin ','Salicin-',top_importances$Compound_name)
 top_importances$Compound_name <- gsub('D-Ribose ','D-Ribose-',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('-monophosphate','P',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('2-Hydroxy-3-m','3-M',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('2-Hydroxy-4-h','4-H',top_importances$Compound_name)
+top_importances$Compound_name <- gsub('2-Hydroxy-3-c','3-C',top_importances$Compound_name)
 top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphoribosyl)-5-amino-4-(N-succinocarboxamide)-imidazole'] <- 'SAICAR' # shorten a long name
 top_importances$Compound_name[top_importances$Compound_name == 'Nicotinamide-beta-riboside'] <- expression(Nicotinamide- ~ beta ~ -riboside)
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
@@ -307,12 +311,12 @@ layout(matrix(c(1,
 # Metabolite importances
 par(mar=c(3,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(importances$Metabolite_score, labels=importances$Compound_name,
-         lcolor=NA, cex=1, groups=importances$abx, color='black',
-         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3,
+         lcolor=NA, cex=0.85, groups=importances$abx, color='black',
+         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3, 
          gcolor=c('darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
-mtext('A', side=2, line=2, las=2, adj=1, padj=-17, cex=1.7)
-segments(x0=rep(0, 33), y0=c(1:10, 13:16, 19:24, 27:33, 36:41), 
-         x1=rep(12, 33), y1=c(1:10, 13:16, 19:24, 27:33, 36:41), lty=2) # Dotted lines
+mtext('A', side=2, line=2, las=2, adj=0.6, padj=-18, cex=1.7)
+segments(x0=rep(0, 40), y0=c(1:21, 24:27, 30:35, 38:44, 47:52), 
+         x1=rep(12, 40), y1=c(1:21, 24:27, 30:35, 38:44, 47:52), lty=2) # Dotted lines
 
 #---------------------------------------#
 
