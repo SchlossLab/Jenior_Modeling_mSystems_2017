@@ -1,0 +1,8 @@
+User Defined Parameters
+KO expression file: sucrose_rep2_ko.tsv
+Graph name: sucrose_rep2
+KEGG ortholog nodes: 455
+Substrate nodes: 758
+Probability distribution generated: yes
+Permutations: 10000
+Duration: 77 seconds
