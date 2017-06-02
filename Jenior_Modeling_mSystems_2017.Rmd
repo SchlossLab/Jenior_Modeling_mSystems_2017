@@ -14,7 +14,7 @@ bibliography: references.bib
 ```{r startup, echo=F, message=F, warning=F, cache=F}
 
 # Load dependencies
-deps <- c('shape', 'vegan', 'klaR', 'igraph', 'matrixStats', 'flux', 'knitr','plyr')
+deps <- c('shape', 'vegan', 'klaR', 'igraph', 'matrixStats', 'flux', 'knitr','plyr','pixiedust')
 for (dep in deps){
  if (dep %in% installed.packages()[,"Package"] == FALSE){
   install.packages(as.character(dep), quiet=TRUE);
@@ -50,7 +50,7 @@ network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/gr
 # Figure 4 data
 growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
 # Table 1 contents
-table_1 <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/table_1.tsv', sep='\t', header=TRUE, row.names=1)
+table_1 <- read.delim('data/table_1.tsv', sep='\t', header=TRUE)
 table_1 <- as.data.frame(lapply(table_1, function(x) {gsub('_', ' ', x)}))
 
 ```
@@ -164,6 +164,14 @@ gf_both_p <- max(c(gf_vs_cef_tox_p,gf_vs_clinda_tox_p,gf_vs_strep_tox_p,gf_vs_ce
 ```
 
 
+```{r table_1, echo=F, warning=F, message=F, cache=F}
+
+dust(table_1) %>%
+  sprinkle(font_size=8,
+           font_size_units='pt') %>% 
+  sprinkle_print_method('markdown')
+
+```
 
 
 **Table 1 | Antibiotics used during *C. difficile* murine infection models.**

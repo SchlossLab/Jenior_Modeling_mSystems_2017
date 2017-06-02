@@ -30,6 +30,18 @@ To overcome these limitations, we implemented transcriptomic and untargeted meta
 
 
 
+|Antibiotic   |Class                          |Target                                                                                        |Activity                                                                                           |Administration                                                                            |Dosage                   |
+|:------------|:------------------------------|:---------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------|:------------------------|
+|Cefoperazone |Cephalosporin (3rd generation) |Primarily Gram-positive bacteria, with increased activity against Gram-negative bacteria      |Irreversibly crosslink bacterial transpeptidases to peptidoglycan and prevents cell wall synthesis |Drinking water Ad libitum for 5 days, 2 days untreated drinking water prior to infection  |0.5 mg/ml drinking water |
+|Streptomycin |Aminoglycoside                 |Active against most Gram-negative aerobic and facultative anaerobic bacilli                   |Protein synthesis inhibitor through binding the 30S portion of the 70S ribosomal subunit           |Drinking water Ad libitum for 5 days,  2 days untreated drinking water prior to infection |5.0 mg/ml drinking water |
+|Clindamycin  |Lincosamide                    |Primarily active against Gram-positive bacteria, most anaerobic bacteria, and some mycoplasma |Protein synthesis inhibition through binding to the 23s portion of the 50S ribosomal subunit       |Intraperitoneal injection 24 hours prior to infection                                     |10 mg/kg body weight     |
+
+
+  
+
+
+  
+
 
 **Table 1 | Antibiotics used during *C. difficile* murine infection models.**
 
