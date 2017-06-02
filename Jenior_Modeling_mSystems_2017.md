@@ -29,6 +29,11 @@ To overcome these limitations, we implemented transcriptomic and untargeted meta
 
 
 
+
+
+**Table 1 | Antibiotics used during *C. difficile* murine infection models.**
+
+
 **Levels of *C. difficile* sporulation and toxin activity vary among different microbiomes.**
 Conventionally-reared SPF mice were treated with either streptomycin, cefoperazone, or clindamycin (Table 1 and Fig. S1). These antibiotics were selected because they each have distinct and significant impacts on the structure of the cecal microbiome (Fig. S2A and S2B). We challenged the antibiotic treated mice and germfree (ex-GF) mice with *C. difficile* stain 630 to understand the pathogen's physiology with and without other microbiota. This toxigenic strain of *C. difficile* was chosen for its moderate clinical severity in mouse models [@Theriot2011] and well-annotated genome [@Monot2011]. After infection, we measured sporulation and toxin production at 18 hours post inoculation. That time point corresponded with when another laboratory strain of *C. difficile* reached its maximum vegetative cell density in the cecum with limited sporulation [@Koenigsknecht2015]. There was not a significant difference in the number of vegetative *C. difficile* cells in the ceca of mice pretreated with any of the three antibiotics (Fig. 1A). All antibiotic treated and ex-GF mice were colonized to ~1×10^8^ colony forming units (cfu) per gram of cecal content, while untreated mice maintained colonization resistance to *C. difficile* (Fig. 1A). Despite having the same number of vegetative *C. difficile* cells, more spores were detected in ex-GF mice than in the antibiotic pretreated mice (*P* = 0.003, 0.004, and 0.003; Fig. 1B). There was also a significantly higher toxin titer in ex-GF animals than any other colonized group (all *P* < 0.001), with slight variation between antibiotic pretreatment groups (Fig. 1C). These results showed that *C. difficile* colonized different communities to consistently high levels. In addition, colonization in the context of different microbiomes resulted in moderate differences in the expression of *C. difficile* pathogenicity. To investigate the physiology of *C. difficile* when colonizing distinct susceptible gut environments, we performed whole transcriptome analysis of *C. difficile* from the same cecal content of the same mice.
 
@@ -133,8 +138,6 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 
 ### Figure Legends
-
-**Table 1 | Antibiotics used during *C. difficile* murine infection models.**
 
 **Figure 1 | Gut environment context affects *C. difficile* sporulation and toxin activity.** Quantification of spore cfu and toxin titer from cecal content of infected mice (n = 9 per group). **(A)** Vegetative *C. difficile* cfu per gram of cecal content (*P* = n.s.). **(B)** *C. difficile* spore cfu per gram of cecal content. **(C)** Toxin titer from cecal content measured by activity in Vero cell rounding assay. Dotted lines denote limits of detection (LOD). Values for undetectable points were imputed as half the LOD for calculation of significant differences. Significance (*P* < 0.05), denoted by single asterisk, was determined with Wilcoxon signed-rank test with Benjamini–Hochberg correction.
 

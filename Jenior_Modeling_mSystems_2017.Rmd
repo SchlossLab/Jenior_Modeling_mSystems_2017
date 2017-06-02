@@ -49,6 +49,9 @@ toxin <- read.delim('data/wetlab_assays/toxin_titer.dat', sep='\t', header=T)
 network <- read.delim('data/metabolic_models/cefoperazone_630.bipartite.files/graph.tsv', header=FALSE, sep='\t')
 # Figure 4 data
 growth <- read.delim('data/wetlab_assays/cd630_growth.tsv', sep='\t', header=TRUE, row.names=1)
+# Table 1 contents
+table_1 <- read.delim('~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/table_1.tsv', sep='\t', header=TRUE, row.names=1)
+table_1 <- as.data.frame(lapply(table_1, function(x) {gsub('_', ' ', x)}))
 
 ```
 
@@ -159,6 +162,11 @@ gf_both_p <- max(c(gf_vs_cef_tox_p,gf_vs_clinda_tox_p,gf_vs_strep_tox_p,gf_vs_ce
 
 
 ```
+
+
+
+
+**Table 1 | Antibiotics used during *C. difficile* murine infection models.**
 
 
 **Levels of *C. difficile* sporulation and toxin activity vary among different microbiomes.**
@@ -381,8 +389,6 @@ Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
 
 
 ### Figure Legends
-
-**Table 1 | Antibiotics used during *C. difficile* murine infection models.**
 
 **Figure 1 | Gut environment context affects *C. difficile* sporulation and toxin activity.** Quantification of spore cfu and toxin titer from cecal content of infected mice (n = 9 per group). **(A)** Vegetative *C. difficile* cfu per gram of cecal content (*P* = n.s.). **(B)** *C. difficile* spore cfu per gram of cecal content. **(C)** Toxin titer from cecal content measured by activity in Vero cell rounding assay. Dotted lines denote limits of detection (LOD). Values for undetectable points were imputed as half the LOD for calculation of significant differences. Significance (*P* < 0.05), denoted by single asterisk, was determined with Wilcoxon signed-rank test with Benjamini–Hochberg correction.
 
