@@ -19,3 +19,27 @@ rm(ko)
 write.table(rep1, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/scaria_2013/sucrose_rep1_ko.tsv', sep='\t', row.names=FALSE, quote=FALSE, col.names=FALSE)
 write.table(rep2, file='~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/mapping/cdifficile630/scaria_2013/sucrose_rep2_ko.tsv', sep='\t', row.names=FALSE, quote=FALSE, col.names=FALSE)
 rm(rep1, rep2)
+
+#----------------------------------------------------------------------------------------------#
+
+scores1 <- read.delim('/home/matt/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/scaria_2013/sucrose_rep1.bipartite.files/importances.tsv', sep='\t', header=TRUE, row.names=1)
+scores1$p_value <- NULL
+scores2 <- read.delim('/home/matt/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metabolic_models/scaria_2013/sucrose_rep2.bipartite.files/importances.tsv', sep='\t', header=TRUE, row.names=1)
+scores2$Metabolite_name <- NULL
+scores2$p_value <- NULL
+scores <- merge(scores1, scores2, by='row.names')
+scores$Row.names <- NULL
+rm(scores1, scores2)
+colnames(scores) <- c('metabolite','rep1','rep2')
+scores$difference <- abs(scores$rep1 - scores$rep2)
+quantile(scores$difference)
+var(scores$difference)
+scores$rep1 <- 2 ^ abs(scores$rep1)
+scores$rep2 <- 2 ^ abs(scores$rep2)
+scores$difference <- abs(scores$rep1 - scores$rep2)
+quantile(scores$difference)
+var(scores$difference)
+
+
+
+
