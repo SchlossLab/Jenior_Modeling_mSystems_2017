@@ -210,16 +210,15 @@ text(x=-1, y=1, 'A', cex=2)
 
 #---------------------------------------#
 
-# Importance calculation
-
+# Metabolite score calculation
 plot.new()
 text(x=0.2, y=0.65, expression(paste(bold('( I ) '), mu[i]) == paste(bgroup('(',frac(Sigma * t[i], italic(n) * (e[o])),')'))), cex = 1.8)
 text(x=0.7, y=0.65, expression(paste(bold('( II ) '), mu[o]) == paste(bgroup('(',frac(Sigma * t[o], italic(n) * (e[i])),')'))), cex = 1.8)
-text(x=0.46, y=0.35, expression(paste(bold('( III ) '), Importance(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
+text(x=0.46, y=0.35, expression(paste(bold('( III ) '), Score(m)) == paste(log[2], '(', mu[i], ' - ', mu[o], ')')), cex = 1.8)
 
 #---------------------------------------#
 
-# Example network and importance calculation
+# Example network and score calculation
 par(mar=c(0,0,0,1), xpd=FALSE)
 plot(network, vertex.label=NA, layout=optimal_layout2, vertex.frame.color='black', xlim=c(-1.2,1.2), ylim=c(-1.2,1.2))
 text(x=-1.5, y=1.35, 'B', cex=2)
@@ -232,7 +231,7 @@ text(x=1, y=0.75, labels='Fructose Dehydrogenase', font=2, cex=1.3) # Enzyme 3
 text(x=0.99, y=0.44, labels='165', col='white', cex=2.6) # Enzyme 3 transcription
 text(x=-0.165, y=0.145, 'm', col='white', cex=2.1) # Substrate node label
 
-text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('D-Fructose','Importance = 7.0'), cex=1.5, font=c(2,1)) # Compound & calculated importance
+text(x=c(-0.8,-0.8), y=c(0.15,0.05), labels=c('D-Fructose','Score = 7.0'), cex=1.5, font=c(2,1))
 segments(x0=-1.15, y0=0, x1=-0.45, y1=0, lwd=2)
 
 legend(x=0.6, y=1.28, legend=c('Enzyme node', 'Metabolite node'),
@@ -252,7 +251,7 @@ text(x=0.12, y=-0.61, '-', cex=2.2)
 text(x=1.14, y=-0.61, '+', cex=2.2)
 text(x=1.13, y=-0.4, 'More likely consumed', cex=1.35)
 text(x=0.15, y=-0.4, 'More likely produced', cex=1.35)
-text(x=0.63, y=-0.75, 'Importance Score', cex=1.5, font=2)
+text(x=0.63, y=-0.75, 'Metabolite Score', cex=1.5, font=2)
 
 # Continuation arrows
 Arrows(x0=-1.38, y0=1, x1=-1.12, y1=1, arr.type='curved', arr.length=0.45, arr.width=0.25, col='gray15')
@@ -268,7 +267,7 @@ rect(xleft=-1.38, ybottom=-1.4, xright=1.56, ytop=1.3, lwd=2)
 
 par(mar=c(5,6,1,3), las=1, mgp=c(3.5,1,0), xaxs='i', yaxs='i', xpd=FALSE)
 plot(score_density, xlim=c(-12,12), ylim=c(0,0.14), main='', xaxt='n', cex.lab=1.7, cex.axis=1.1,
-     xlab='Simulated Importance Score', ylab='Score Density') 
+     xlab='Simulated Metabolite Score', ylab='Score Density') 
 axis(side=1, at=seq(-12,12,4), labels=seq(-12,12,4), cex.axis=1.2, tck=-0.03)
 axis(side=1, at=c(-12:12), tck=-0.015, labels=FALSE)
 polygon(score_density, col='gray80', border='black', lwd=1.5) 

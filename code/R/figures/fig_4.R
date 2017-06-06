@@ -105,7 +105,7 @@ score_median <- log2(as.data.frame(apply(antilog_scores, 1, median)))
 shared_importance <- cbind(shared_cef$Compound_name, score_median)
 rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
-shared_importance$abx <- 'Median Shared Importance'
+shared_importance$abx <- 'Median Shared Score'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
 #if (nrow(shared_importance) > 10) {shared_importance <- shared_importance[1:10,]}
 
@@ -164,13 +164,11 @@ top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphori
 top_importances$Compound_name[top_importances$Compound_name == 'Nicotinamide-beta-riboside'] <- expression(Nicotinamide- ~ beta ~ -riboside)
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- expression(CO[2])
-shared_importance$Compound_name <- gsub('Ethanol', 'Acetaldehyde', shared_importance$Compound_name)
-shared_importance$Compound_name <- gsub('Primary alcohol', 'Aldehyde', shared_importance$Compound_name)
 
 # Combine Shared and top hits
 importances <- rbind(shared_importance, top_importances)
 importances$Metabolite_score <- as.numeric(as.character(importances$Metabolite_score))
-importances$abx <- ordered(importances$abx, levels=c('Median Shared Importance', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
+importances$abx <- ordered(importances$abx, levels=c('Median Shared Score', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
 rm(shared_importance, top_importances)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -314,7 +312,7 @@ layout(matrix(c(1,
 par(mar=c(3,3,1,1), xaxs='i', xpd=FALSE, mgp=c(2,1,0))
 dotchart(importances$Metabolite_score, labels=importances$Compound_name,
          lcolor=NA, cex=0.85, groups=importances$abx, color='black',
-         xlab='Importance Score', xlim=c(0,10), pch=19, lwd=3, 
+         xlab='Metabolite Score', xlim=c(0,10), pch=19, lwd=3, 
          gcolor=c('darkmagenta',wes_palette('FantasticFox')[1],wes_palette('FantasticFox')[3],wes_palette('FantasticFox')[5],'forestgreen'))
 mtext('A', side=2, line=2, las=2, adj=0.6, padj=-18, cex=1.7)
 segments(x0=rep(0, 40), y0=c(1:21, 24:27, 30:35, 38:44, 47:52), 
