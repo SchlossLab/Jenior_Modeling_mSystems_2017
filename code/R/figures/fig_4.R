@@ -164,6 +164,8 @@ top_importances$Compound_name[top_importances$Compound_name == '1-(5\'-Phosphori
 top_importances$Compound_name[top_importances$Compound_name == 'Nicotinamide-beta-riboside'] <- expression(Nicotinamide- ~ beta ~ -riboside)
 shared_importance$Compound_name <- gsub('_',' ',shared_importance$Compound_name)
 shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- expression(CO[2])
+shared_importance$Compound_name <- gsub('Ethanol', 'Acetaldehyde', shared_importance$Compound_name)
+shared_importance$Compound_name <- gsub('Primary alcohol', 'Aldehyde', shared_importance$Compound_name)
 
 # Combine Shared and top hits
 importances <- rbind(shared_importance, top_importances)
