@@ -145,10 +145,10 @@ gf_only_importance <- gf_only_importance[order(gf_only_importance$Metabolite_sco
 cef_only_importance$abx <- 'Cefoperazone-pretreated'
 clinda_only_importance$abx <- 'Clindamycin-pretreated'
 strep_only_importance$abx <- 'Streptomycin-pretreated'
-gf_only_importance$abx <- 'ex-Germfree'
+gf_only_importance$abx <- 'exGerm-free'
 top_importances <- rbind(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 top_importances$abx <- as.factor(top_importances$abx)
-top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
+top_importances$abx <- ordered(top_importances$abx, levels=c('Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'exGerm-free'))
 rm(cef_only_importance, clinda_only_importance, strep_only_importance, gf_only_importance)
 
 # Format names to look better for the plot
@@ -168,7 +168,7 @@ shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- exp
 # Combine Shared and top hits
 importances <- rbind(shared_importance, top_importances)
 importances$Metabolite_score <- as.numeric(as.character(importances$Metabolite_score))
-importances$abx <- ordered(importances$abx, levels=c('Median Shared Score', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'ex-Germfree'))
+importances$abx <- ordered(importances$abx, levels=c('Median Shared Score', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'exGerm-free'))
 rm(shared_importance, top_importances)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#

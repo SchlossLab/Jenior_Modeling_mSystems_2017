@@ -78,9 +78,9 @@ p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
            wilcox.test(clindamycin, cefoperazone, exact=F)$p.value,
            wilcox.test(streptomycin, cefoperazone, exact=F)$p.value,
            wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
-cat("Vegetative: Germfree vs Cefoperazone: p =", p_values[1],'\n',
-    "Vegetative: Germfree vs Clindamycin: p =", p_values[2],'\n',
-    "Vegetative: Germfree vs Streptomycin: p =", p_values[3],'\n',
+cat("Vegetative: Germ-free vs Cefoperazone: p =", p_values[1],'\n',
+    "Vegetative: Germ-free vs Clindamycin: p =", p_values[2],'\n',
+    "Vegetative: Germ-free vs Streptomycin: p =", p_values[3],'\n',
     "Vegetative: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
     "Vegetative: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
     "Vegetative: Clindamycin vs Streptomycin: p =", p_values[6])
@@ -96,9 +96,9 @@ p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
            wilcox.test(clindamycin, cefoperazone, exact=F)$p.value,
            wilcox.test(streptomycin, cefoperazone, exact=F)$p.value,
            wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
-cat("Spores: Germfree vs Cefoperazone: p =", p_values[1],'\n',
-    "Spores: Germfree vs Clindamycin: p =", p_values[2],'\n',
-    "Spores: Germfree vs Streptomycin: p =", p_values[3],'\n',
+cat("Spores: Germ-free vs Cefoperazone: p =", p_values[1],'\n',
+    "Spores: Germ-free vs Clindamycin: p =", p_values[2],'\n',
+    "Spores: Germ-free vs Streptomycin: p =", p_values[3],'\n',
     "Spores: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
     "Spores: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
     "Spores: Clindamycin vs Streptomycin: p =", p_values[6])
@@ -114,9 +114,9 @@ p_values <- p.adjust(c(wilcox.test(germfree, cefoperazone, exact=F)$p.value,
            wilcox.test(cefoperazone, clindamycin, exact=F)$p.value,
            wilcox.test(cefoperazone, streptomycin, exact=F)$p.value,
            wilcox.test(clindamycin, streptomycin, exact=F)$p.value), method='BH')
-cat("Toxin: Germfree vs Cefoperazone: p =", p_values[1],'\n',
-    "Toxin: Germfree vs Clindamycin: p =", p_values[2],'\n',
-    "Toxin: Germfree vs Streptomycin: p =", p_values[3],'\n',
+cat("Toxin: Germ-free vs Cefoperazone: p =", p_values[1],'\n',
+    "Toxin: Germ-free vs Clindamycin: p =", p_values[2],'\n',
+    "Toxin: Germ-free vs Streptomycin: p =", p_values[3],'\n',
     "Toxin: Cefoperazone vs Clindamycin: p =", p_values[4],'\n',
     "Toxin: Cefoperazone vs Streptomycin: p =", p_values[5],'\n',
     "Toxin: Clindamycin vs Streptomycin: p =", p_values[6])
@@ -210,7 +210,7 @@ stripchart(titer~treatment, data=toxin, vertical=T, pch=19, lwd=2.5,
            ylim=c(1.5,3.8), xlim=c(0.5,5.5), xaxt='n', yaxt='n', col=select_palette,
            ylab=expression(paste('Toxin Titer/g Content (',log[10],')')), xlab='',
            method='jitter', jitter=0.15, cex=2, cex.lab=1.2, add=TRUE)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, at=c(1:5), padj=1, cex=0.85)
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, at=c(1:5), padj=1, cex=0.85)
 axis(side=2, at=c(1.9,2.3,2.6,2.9,3.2,3.5,3.8), labels=c('0','2.3','2.6','2.9','3.2','3.5','3.8')) 
 
 # Draw axis break

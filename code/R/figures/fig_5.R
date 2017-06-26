@@ -288,7 +288,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','8.248 / NA','7.285 / NA','8.435 / NA','3.17 / NA'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
@@ -336,7 +336,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','6.411','6.796','7.06','3.74'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
@@ -384,7 +384,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','4.615 / 6.329','6.098 / 3.0','0.0 / 3.406','2.7 / 0.0'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
@@ -430,7 +430,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','3.17','2.0','5.14','0.807'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
@@ -476,7 +476,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','NA','NA','NA','NA'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
@@ -522,7 +522,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-Germfree'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','5.044','4.644','0.0','6.304'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
