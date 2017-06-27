@@ -15,9 +15,7 @@ metadata <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/data/metadata.ts
 
 # Read in data
 metabolome <- read.delim(metabolome, sep='\t', header=T, row.names=1)
-metabolome <- metabolome[, !colnames(metabolome) %in% c('CefC5M2','StrepC4M1')] # Remove possible contamination
 metadata <- read.delim(metadata, sep='\t', header=T, row.names=1)
-metadata <- metadata[!rownames(metadata) %in% c('CefC5M2','StrepC4M1'), ] # Remove possible contamination
 
 # Merge metabolomics with metadata
 metadata$cage <- NULL
@@ -255,13 +253,12 @@ p.adjust(c(wilcox.test(subset(alanine_strep, infection=='630')[,2], subset(alani
 
 # Set up multi-panel figure
 plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/results/figures/figure_5.pdf'
-pdf(file=plot_file, width=6, height=11)
+pdf(file=plot_file, width=6, height=10)
 layout(matrix(c(1,
                 2,
                 3,
                 4,
-                5,
-                6), nrow=6, ncol=1, byrow=TRUE))
+                5), nrow=5, ncol=1, byrow=TRUE))
 
 par(mar=c(3.5,5,1.5,1), xpd=FALSE, las=1, mgp=c(3,0.7,0))
 
@@ -270,7 +267,7 @@ par(mar=c(3.5,5,1.5,1), xpd=FALSE, las=1, mgp=c(3,0.7,0))
 # N-acetylglucosamine
 stripchart(substrate~infection, data=acetylglucosamine_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,14), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.15, cex.lab=1.2)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=acetylglucosamine_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,14), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
@@ -292,7 +289,7 @@ mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-fre
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','8.248 / NA','7.285 / NA','8.435 / NA','3.17 / NA'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('A', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
+mtext('A', side=2, line=2, las=2, adj=2.5, padj=-4.5, cex=1.2)
 legend('topright', legend='GlcNAc/GalNAc', pt.cex=0, cex=1.1, bty='n')
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(acetylglucosamine_untreated[,2]),
@@ -318,7 +315,7 @@ mtext(rep('*',8), side=3, adj=c(0.21,0.28,
 # Proline
 stripchart(substrate~infection, data=proline_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.15, cex.lab=1.2)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=proline_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,4), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
@@ -340,7 +337,7 @@ mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-fre
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','6.411','6.796','7.06','3.74'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('B', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
+mtext('B', side=2, line=2, las=2, adj=2.5, padj=-4.5, cex=1.2)
 legend('topright', legend='Proline', pt.cex=0, bty='n', cex=1.1)
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(proline_untreated[,2]),
@@ -366,7 +363,7 @@ mtext(rep('*',7), side=3, adj=c(0.21,0.28,
 # Mannitol / Sorbitol
 stripchart(substrate~infection, data=mannitolsorbitol_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,70), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.15, cex.lab=1.2)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=mannitolsorbitol_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,70), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
@@ -388,7 +385,7 @@ mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-fre
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','4.615 / 6.329','6.098 / 3.0','0.0 / 3.406','2.7 / 0.0'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('C', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
+mtext('C', side=2, line=2, las=2, adj=2.5, padj=-4.5, cex=1.2)
 legend('topright', legend='Mannitol / Sorbitol', pt.cex=0, cex=1.1, bty='n')
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(mannitolsorbitol_untreated[,2]),
@@ -409,56 +406,10 @@ mtext(rep('*',4), side=3, adj=c(0.43,0.5,
 
 #------------------#
 
-# Alanine
-stripchart(substrate~infection, data=alanine_untreated, vertical=T, pch=19, 
-           xaxt='n', yaxt='n', col='gray40', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
-stripchart(substrate~infection, data=alanine_strep, vertical=T, pch=19, at=c(3,4),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
-stripchart(substrate~infection, data=alanine_cef, vertical=T, pch=19, at=c(6,7),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[3], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
-stripchart(substrate~infection, data=alanine_clinda, vertical=T, pch=19, at=c(9,10),
-           xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[5], ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
-stripchart(substrate~infection, data=alanine_gf, vertical=T, pch=19, at=c(12,13),
-           xaxt='n', yaxt='n', col='forestgreen', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, add=TRUE, cex.lab=1.2)
-axis(side=2, at=c(0:4), labels=c('0.0','1.0','2.0','3.0', '4.0'), cex.axis=1.2)
-abline(v=c(2,5,8,11), lty=2, col='gray35')
-mtext(c('CDI:','Group:','Score:'), side=1, at=-0.7, padj=c(0.3,2.2,4.2), cex=0.5)
-mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
-      at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.1)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
-      at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
-mtext(c('-','3.17','2.0','5.14','0.807'), side=1, 
-      at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('D', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
-legend('topright', legend='Alanine', pt.cex=0, bty='n', cex=1.2)
-segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
-         y0=c(median(alanine_untreated[,2]),
-              median(subset(alanine_strep, infection=='mock')[,2]), median(subset(alanine_strep, infection=='630')[,2]),
-              median(subset(alanine_cef, infection=='mock')[,2]), median(subset(alanine_cef, infection=='630')[,2]),
-              median(subset(alanine_clinda, infection=='mock')[,2]), median(subset(alanine_clinda, infection=='630')[,2]),
-              median(subset(alanine_gf, infection=='mock')[,2]), median(subset(alanine_gf, infection=='630')[,2])), 
-         y1=c(median(alanine_untreated[,2]),
-              median(subset(alanine_strep, infection=='mock')[,2]), median(subset(alanine_strep, infection=='630')[,2]),
-              median(subset(alanine_cef, infection=='mock')[,2]), median(subset(alanine_cef, infection=='630')[,2]),
-              median(subset(alanine_clinda, infection=='mock')[,2]), median(subset(alanine_clinda, infection=='630')[,2]),
-              median(subset(alanine_gf, infection=='mock')[,2]), median(subset(alanine_gf, infection=='630')[,2])),
-         lwd=3)
-mtext(rep('*',8), side=3, adj=c(0.21,0.28,
-                                0.43,0.5,
-                                0.645,0.715,
-                                0.863,0.933), padj=0.4, font=2, cex=1.3, col='gray40') # Untreated vs Mock significance
-
-#------------------#
-
 # Succinate
 stripchart(substrate~infection, data=succinate_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,40), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.15, cex.lab=1.2)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=succinate_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,40), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
@@ -480,7 +431,7 @@ mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-fre
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','NA','NA','NA','NA'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('E', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
+mtext('D', side=2, line=2, las=2, adj=2.5, padj=-4.5, cex=1.2)
 legend('topright', legend='Succinate', pt.cex=0, cex=1.1, bty='n')
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(succinate_untreated[,2]),
@@ -504,7 +455,7 @@ mtext(rep('*',7), side=3, adj=c(0.21,
 # N-acetylneuraminate
 stripchart(substrate~infection, data=acetylneuraminate_untreated, vertical=T, pch=19, 
            xaxt='n', yaxt='n', col='gray40', ylim=c(0,4), xlim=c(0.5,13.5),
-           cex=1.5, ylab='Scaled Intesity', method='jitter', jitter=0.15, cex.lab=1.2)
+           cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2)
 stripchart(substrate~infection, data=acetylneuraminate_strep, vertical=T, pch=19, at=c(3,4),
            xaxt='n', yaxt='n', col=wes_palette('FantasticFox')[1], ylim=c(0,4), xlim=c(0.5,13.5),
            cex=1.5, ylab='Scaled Intensity', method='jitter', jitter=0.15, cex.lab=1.2, add=TRUE)
@@ -526,7 +477,7 @@ mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-fre
       at=c(1,3.5,6.5,9.5,12.5), padj=1.8, cex=0.7)
 mtext(c('-','5.044','4.644','0.0','6.304'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=3.7, cex=0.6)
-mtext('F', side=2, line=2, las=2, adj=3, padj=-4.5, cex=1.1)
+mtext('E', side=2, line=2, las=2, adj=2.5, padj=-4.5, cex=1.2)
 legend('topright', legend='Neu5Ac', pt.cex=0, bty='n', cex=1.1)
 segments(x0=c(0.6,2.6,3.6,5.6,6.6,8.6,9.6,11.6,12.6), x1=c(1.4,3.4,4.4,6.4,7.4,9.4,10.4,12.4,13.4),
          y0=c(median(acetylneuraminate_untreated[,2]),
