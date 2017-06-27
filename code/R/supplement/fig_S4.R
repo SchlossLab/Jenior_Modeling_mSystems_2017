@@ -211,7 +211,7 @@ gf_col <- 'forestgreen'
 # Housekeeping genes
 par(mar=c(3,5,1,1), las=1, mgp=c(3,0.7,0))
 plot(0, type='n', xlab='', xaxt='n', ylab='Normalized cDNA Abundance', xlim=c(0,17), ylim=c(0,100), yaxs='i')
-legend('topleft', legend=c('Streptomycin-pretreated','Cefoperazone-pretreated','Clindamycin-pretreated','ex-Germfree'),
+legend('topleft', legend=c('Streptomycin-pretreated','Cefoperazone-pretreated','Clindamycin-pretreated','exGerm-free'),
        pt.bg=c(strep_col, cef_col, clinda_col, gf_col), pch=22, cex=1.1, pt.cex=2, col='black', bty='n')
 # Add groups
 barplot(kar_var, col=c(strep_col,cef_col,clinda_col,gf_col,'white',

@@ -214,7 +214,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.3, cex=0.8)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.2)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.8)
 mtext('A', side=2, line=2, las=2, adj=1, padj=-5, cex=1.3)
 legend('topright', legend='Leucine', pt.cex=0, bty='n', cex=1.2)
@@ -261,7 +261,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.3, cex=0.8)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.2)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.8)
 mtext('B', side=2, line=2, las=2, adj=1, padj=-5, cex=1.3)
 legend('topright', legend='Isoleucine', pt.cex=0, bty='n', cex=1.2)
@@ -308,7 +308,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.3, cex=0.8)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.2)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.8)
 mtext('C', side=2, line=2, las=2, adj=1, padj=-5, cex=1.3)
 legend('topright', legend='Hydroxyproline', pt.cex=0, bty='n', cex=1.2)
@@ -355,7 +355,7 @@ abline(v=c(2,5,8,11), lty=2, col='gray35')
 mtext('CDI:', side=1, at=0, padj=0.3, cex=0.8)
 mtext(c('-','-','+','-','+','-','+','-','+'), side=1, 
       at=c(1,3,4,6,7,9,10,12,13), padj=0.3, cex=1.2)
-mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','ex-GF'), side=1, 
+mtext(c('No Antibiotics','Streptomycin','Cefoperazone','Clindamycin','exGerm-free'), side=1, 
       at=c(1,3.5,6.5,9.5,12.5), padj=2, cex=0.8)
 mtext('D', side=2, line=2, las=2, adj=1, padj=-5, cex=1.3)
 legend('topright', legend='Glycine', pt.cex=0, bty='n', cex=1.2)
