@@ -105,7 +105,7 @@ score_median <- log2(as.data.frame(apply(antilog_scores, 1, median)))
 shared_importance <- cbind(shared_cef$Compound_name, score_median)
 rownames(shared_importance) <- rownames(shared_cef)
 colnames(shared_importance) <- c('Compound_name','Metabolite_score')
-shared_importance$abx <- 'Median Shared Score'
+shared_importance$abx <- 'Median Highest Conserved Scores'
 shared_importance <- shared_importance[order(-shared_importance$Metabolite_score),]
 #if (nrow(shared_importance) > 10) {shared_importance <- shared_importance[1:10,]}
 
@@ -168,7 +168,7 @@ shared_importance$Compound_name[shared_importance$Compound_name == 'CO2'] <- exp
 # Combine Shared and top hits
 importances <- rbind(shared_importance, top_importances)
 importances$Metabolite_score <- as.numeric(as.character(importances$Metabolite_score))
-importances$abx <- ordered(importances$abx, levels=c('Median Shared Score', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'exGerm-free'))
+importances$abx <- ordered(importances$abx, levels=c('Median Highest Conserved Scores', 'Streptomycin-pretreated', 'Cefoperazone-pretreated', 'Clindamycin-pretreated', 'exGerm-free'))
 rm(shared_importance, top_importances)
 
 #-------------------------------------------------------------------------------------------------------------------------------------#
@@ -412,3 +412,4 @@ for (dep in deps){
 }
 rm(list=ls())
 gc()
+
