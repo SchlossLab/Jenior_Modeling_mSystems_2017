@@ -23,7 +23,7 @@ Overview
     |
     |- manuscript_format.docx 	   # Text tyle-formatting file used for generated docx
     |
-    |- mbio.csl 	   # Journal-specific formatting csl file
+    |- mSystems.csl 	   # Journal-specific formatting csl file
     |
     |- references.bib 	   # Bibtex formatted refereces cited in manuscript
     |
