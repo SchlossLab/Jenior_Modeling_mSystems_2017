@@ -266,7 +266,7 @@ rainbow <- c("#882E72", "#B178A6", "#D6C1DE", "#1965B0", "#5289C7", "#7BAFDE", "
              "#90C987", "#CAE0AB", "#F7EE55", "#F6C141", "#F1932D", "#E8601C", "#DC050C")
 fox <- wes_palette("FantasticFox")
 tick_labels <- c('10%','30%','50%','70%','90%')
-plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/msystems_cover.pdf'
+plot_file <- '~/Desktop/Repositories/Jenior_Transcriptomics_2015/msystems_cover.tiff'
 
 # Open a TIFF
 tiff(file=plot_file, width=15, height=12, units='cm', res=400)
@@ -334,17 +334,17 @@ text(x=c(-0.462, -0.231, 0, 0.232, 0.463),
      labels=rev(tick_labels))
 
 # Add points
-tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.8, col='gray65', pch=19)
+tripoints(x=combined_mapping[,1], y=combined_mapping[,2], z=combined_mapping[,3], cex=0.7, col='gray65', pch=19)
 
 # Color points by substrate
-tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=apply(PTS, 1, max)*3.5, bg=alpha(fox[3],0.7))
-tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=apply(ABC, 1, max)*3.5, bg=alpha(rainbow[7],0.7))
-tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=apply(monosaccharides, 1, max)*3.5, bg=alpha(fox[1],0.7))
-tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=apply(stickland, 1, max)*3.5, bg=alpha(fox[2],0.7))
-tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=apply(sugar_alcohols, 1, max)*3.5, bg=alpha('darkorchid3',0.7))
-tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=apply(fermentation, 1, max)*3.5, bg=alpha(fox[5],0.7))
-tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=apply(polysaccharides, 1, max)*3.5, bg=alpha('blue3',0.7))
-tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*3.5, bg=alpha('firebrick1',0.7))
+tripoints(x=PTS_relabund[,1], y=PTS_relabund[,2], z=PTS_relabund[,3], pch=21, cex=apply(PTS, 1, max)*2, bg=alpha(fox[3],0.7))
+tripoints(x=ABC_relabund[,1], y=ABC_relabund[,2], z=ABC_relabund[,3], pch=21, cex=apply(ABC, 1, max)*2, bg=alpha(rainbow[7],0.7))
+tripoints(x=monosaccharides_relabund[,1], y=monosaccharides_relabund[,2], z=monosaccharides_relabund[,3], pch=21, cex=apply(monosaccharides, 1, max)*2, bg=alpha(fox[1],0.7))
+tripoints(x=stickland_relabund[,1], y=stickland_relabund[,2], z=stickland_relabund[,3], pch=21, cex=apply(stickland, 1, max)*2, bg=alpha(fox[2],0.7))
+tripoints(x=sugar_alcohols_relabund[,1], y=sugar_alcohols_relabund[,2], z=sugar_alcohols_relabund[,3], pch=21, cex=apply(sugar_alcohols, 1, max)*2, bg=alpha('darkorchid3',0.7))
+tripoints(x=fermentation_relabund[,1], y=fermentation_relabund[,2], z=fermentation_relabund[,3], pch=21, cex=apply(fermentation, 1, max)*2, bg=alpha(fox[5],0.7))
+tripoints(x=polysaccharides_relabund[,1], y=polysaccharides_relabund[,2], z=polysaccharides_relabund[,3], pch=21, cex=apply(polysaccharides, 1, max)*2, bg=alpha('blue3',0.7))
+tripoints(x=amino_sugars_relabund[,1], y=amino_sugars_relabund[,2], z=amino_sugars_relabund[,3], pch=21, cex=apply(amino_sugars, 1, max)*2, bg=alpha('firebrick1',0.7))
 
 # Add the legend
 legend(x=0.23, y=0.7, legend=c('Amino acid catabolism',
@@ -369,7 +369,7 @@ legend(x=0.23, y=0.7, legend=c('Amino acid catabolism',
                'gray65'), bty='n')
 # Size legend
 legend(x=-0.75, y=0.41, legend=c('      500 transcripts','','','   50 transcripts','','5 transcripts'), pch=21, col='black', pt.bg='gray87', 
-       pt.cex=c(9.446,0,0,5.946,0,2.446), bty='n', cex=0.95)
+       pt.cex=c(8,0,0,5,0,2), bty='n', cex=0.95)
 
 dev.off()
 
