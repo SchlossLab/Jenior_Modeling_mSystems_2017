@@ -29,13 +29,9 @@ Overview
     |  |- combined_sim.tsv     # Shared metabolite importance analysis and confidence intervals
     |  |- optimal_layout.tsv       # Optimum node layout for Fig. 5a
     |  |- expression/      # Raw, and evenly subsamled (.pick) *C. difficil* KO mapping files
-    |     |- cefoperazone_630.RNA_reads2cdf630.norm.ko.txt
     |     |- cefoperazone_630.RNA_reads2cdf630.norm.ko.pick.txt
-    |     |- cefoperazone_630.RNA_reads2cdf630.norm.ko.txt
-    |     |- cefoperazone_630.RNA_reads2cdf630.norm.ko.pick.txt
-    |     |- streptomycin_630.RNA_reads2cdf630.norm.ko.txt
+    |     |- clindamycin_630.RNA_reads2cdf630.norm.ko.pick.txt
     |     |- streptomycin_630.RNA_reads2cdf630.norm.ko.pick.txt
-    |     |- germfree.RNA_reads2cdf630.norm.ko.txt
     |     +- germfree.RNA_reads2cdf630.norm.ko.pick.txt
     |  |- cefoperazone_630.bipartite.files/        # bigSMALL output for *C. difficile* during infection of cefoperazone-treated mice
     |     |- bipartite_graph.tsv       # 2 column matrix of all edges in graph
