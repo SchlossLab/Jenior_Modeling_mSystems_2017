@@ -125,7 +125,7 @@ M.L.J. conceived, designed and performed experiments, analyzed data, and drafted
 The authors declare no conflicts of interest.
 
 **Corresponding author**
-Correspondence to [Patrick D. Schloss](pdschloss@umich.edu)
+Correspondence to [Patrick D. Schloss](pschloss@umich.edu)
 
 
 ### Figure Legends

@@ -86,6 +86,5 @@ Rscript code/R/supplement/fig_S2.R
 Rscript code/R/supplement/fig_S3.R
 Rscript code/R/supplement/fig_S4.R
 Rscript code/R/supplement/fig_S5.R
-Rscript code/R/supplement/fig_S6.R
 
 ```
