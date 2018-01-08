@@ -1,0 +1,42 @@
+#!/bin/sh
+#PBS -N pool
+#PBS -l nodes=1:ppn=8
+#PBS -l walltime=400:00:00
+#PBS -l mem=44gb
+#PBS -j oe
+#PBS -m abe
+#PBS -V
+#PBS -M mljenior@umich.edu
+#PBS -q fluxod
+#PBS -l qos=flux
+#PBS -A pschloss_fluxod
+
+echo "ncpus-2.pbs"
+cat $PBS_NODEFILE
+qstat -f $PBS_JOBID
+
+cd $PBS_O_WORKDIR
+
+NCPUS=`wc -l $PBS_NODEFILE | awk '{print $1}'`
+
+
+# Uncompress and combine like read files with each lane
+zcat *_L001_R1_*.fastq.gz > ${metagenome}.lane1.read1.fastq.gz
+zcat *_L001_R2_*.fastq.gz > ${metagenome}.lane1.read2.fastq.gz
+zcat *_L002_R1_*.fastq.gz > ${metagenome}.lane2.read1.fastq.gz
+zcat *_L002_R2_*.fastq.gz > ${metagenome}.lane2.read2.fastq.gz
+
+# Combine like lanes together to ultimately give you only files for read 1 & read 2
+zcat ${metagenome}.lane1.read1.fastq.gz ${metagenome}.lane2.read1.fastq.gz > ${metagenome}.read1.pool.fastq.gz
+zcat ${metagenome}.lane1.read2.fastq.gz ${metagenome}.lane2.read2.fastq.gz > ${metagenome}.read2.pool.fastq.gz
+rm ${metagenome}*.read1.fastq.gz ${metagenome}*.read2.fastq.gz
+gunzip *.pool.fastq.gz
+
+# Return some stats on the pooled fastqs
+python /nfs/turbo/schloss-lab/bin/seq_stats.py ${metagenome}.read1.pool.fastq > ${metagenome}.pooling.summary
+python /nfs/turbo/schloss-lab/bin/seq_stats.py ${metagenome}.read2.pool.fastq >> ${metagenome}.pooling.summary
+
+
+echo "qsub working directory absolute is"
+echo $PBS_O_WORKDIR
+exit
